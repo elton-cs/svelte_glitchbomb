@@ -7,10 +7,19 @@
   import MarketplaceView from './MarketplaceView.svelte';
 
   let gameState = $state(createInitialGameState());
+  let devMode = $state(false);
   
   function handleClaimRocks() {
     const newAmount = claimFreeRocks(gameState.playerStats.moonrocks);
     gameState.playerStats.moonrocks = newAmount;
+  }
+  
+  function resetMoonrocks() {
+    gameState.playerStats.moonrocks = 0;
+  }
+  
+  function toggleDevMode() {
+    devMode = !devMode;
   }
   
   // Save moonrocks whenever they change
@@ -32,9 +41,17 @@
 <div class="min-h-screen bg-gray-50 p-3">
   <div class="max-w-md mx-auto space-y-4">
     <!-- Header -->
-    <header class="text-center mb-4">
+    <header class="text-center mb-4 relative">
       <h1 class="text-2xl font-bold text-gray-800">Glitch Bomb</h1>
       <p class="text-sm text-gray-600">Bag-building luck game</p>
+      
+      <!-- Dev Mode Toggle - positioned in top right -->
+      <button 
+        onclick={toggleDevMode}
+        class="absolute top-0 right-0 text-xs px-2 py-1 rounded border {devMode ? 'bg-red-100 text-red-700 border-red-300' : 'bg-gray-100 text-gray-600 border-gray-300'} hover:opacity-80 transition-colors"
+      >
+        {devMode ? '🔧 Dev ON' : '🔧 Dev'}
+      </button>
     </header>
     
     <!-- Moonrocks - Separate section -->
@@ -54,6 +71,25 @@
         </div>
       {/if}
     </div>
+
+    <!-- Dev Mode Panel -->
+    {#if devMode}
+      <div class="bg-red-50 p-3 rounded-lg shadow-sm border border-red-200">
+        <div class="flex justify-between items-center mb-2">
+          <h3 class="font-medium text-red-800 text-sm">🔧 Developer Tools</h3>
+          <span class="text-xs text-red-600">Debug Mode</span>
+        </div>
+        
+        <div class="space-y-2">
+          <button 
+            onclick={resetMoonrocks}
+            class="w-full bg-red-600 hover:bg-red-700 text-white text-sm font-medium py-2 px-3 rounded-lg transition-colors"
+          >
+            Reset Moonrocks to 0
+          </button>
+        </div>
+      </div>
+    {/if}
 
     <!-- Stats - Compact horizontal layout - Only show when game started -->
     {#if gameState.gameStarted}
