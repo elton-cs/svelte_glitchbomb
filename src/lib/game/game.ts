@@ -54,7 +54,11 @@ export function enterLevel(gameState: GameState, level: number): boolean {
     gameState.playerStats.cheddah = 0;
     
     resetLevelStats(gameState);
-    resetConsumedOrbs(gameState.orbBag);
+    
+    // Only reset consumed orbs when starting a new game (level 1)
+    if (level === 1) {
+      resetConsumedOrbs(gameState.orbBag);
+    }
     
     return true;
   } catch (error) {
@@ -135,6 +139,8 @@ export function completeLevel(gameState: GameState): void {
   } else {
     gameState.phase = 'marketplace';
     gameState.marketplace.available = true;
+    // Reset consumed orbs so players can see their full collection in marketplace
+    resetConsumedOrbs(gameState.orbBag);
   }
 }
 
