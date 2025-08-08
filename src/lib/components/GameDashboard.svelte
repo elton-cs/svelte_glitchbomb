@@ -26,13 +26,17 @@
       <p class="text-sm text-gray-600">Bag-building luck game</p>
     </header>
     
+    <!-- Moonrocks - Separate section -->
+    <div class="bg-white p-3 rounded-lg shadow-sm border">
+      <div class="flex justify-between items-center">
+        <div class="text-sm text-gray-600">Moonrocks</div>
+        <div class="text-xl font-bold text-blue-600">{gameState.playerStats.moonrocks} 🌙</div>
+      </div>
+    </div>
+
     <!-- Stats - Compact horizontal layout -->
     <div class="bg-white p-3 rounded-lg shadow-sm border">
-      <div class="grid grid-cols-3 gap-2 text-center text-xs mb-2">
-        <div>
-          <div class="text-lg font-bold text-blue-600">{gameState.playerStats.moonrocks}</div>
-          <div class="text-gray-600">Rocks</div>
-        </div>
+      <div class="grid grid-cols-2 gap-2 text-center text-xs mb-2">
         <div>
           <div class="text-lg font-bold text-green-600">{gameState.playerStats.cheddah}</div>
           <div class="text-gray-600">Cash</div>
