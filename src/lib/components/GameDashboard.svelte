@@ -96,9 +96,6 @@
             ></div>
           </div>
         </div>
-        {#if gameState.playerStats.health <= 2}
-          <p class="text-red-600 font-medium text-xs mt-1">⚠️ Low health!</p>
-        {/if}
       </div>
     {/if}
 
