@@ -42,10 +42,10 @@
 ## Phase 2: Game Controller
 
 ### 4. Game Flow Management
-- [ ] Create `src/lib/game/gameStates.ts` - State machine
+- [x] Create `src/lib/game/gameStates.ts` - State machine
   - GamePhase enum: MENU, LEVEL, MARKETPLACE, GAMEOVER, VICTORY
   - State transition validation
-- [ ] Create `src/lib/game/game.ts` - Main game controller
+- [x] Create `src/lib/game/game.ts` - Main game controller
   - `startNewGame()` - Initialize game session
   - `enterLevel(level)` - Level entry with cost validation  
   - `pullOrb()` - Execute orb pull and apply effects
