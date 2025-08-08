@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { getTotalAvailableOrbs } from '../game/orbs.js';
+  import { getTotalAvailableOrbs, getAvailableOrbCount } from '../game/orbs.js';
   import { pullOrb } from '../game/game.js';
   import type { GameState } from '../game/types.js';
 
@@ -20,27 +20,33 @@
   <h2 class="text-lg font-bold mb-3">Orb Bag</h2>
   
   <div class="space-y-3 mb-4">
-    <div class="flex justify-between items-center {gameState.orbBag.health.available === 0 ? 'opacity-50' : ''}">
-      <span class="font-medium text-red-500">Health Orbs (+1 HP):</span>
+    <div class="flex justify-between items-center {getAvailableOrbCount(gameState.orbBag, 'health') === 0 ? 'opacity-50' : ''}">
+      <span class="font-medium text-red-500">Health Orbs:</span>
       <div class="text-right">
-        <span class="text-lg font-bold">{gameState.orbBag.health.available}</span>
-        <span class="text-gray-500">/ {gameState.orbBag.health.total}</span>
+        <span class="text-lg font-bold">{getAvailableOrbCount(gameState.orbBag, 'health')}</span>
+        {#if gameState.orbBag.health.length > 0}
+          <span class="text-sm text-gray-600">({gameState.orbBag.health.map(orb => `+${orb.amount}`).join(', ')})</span>
+        {/if}
       </div>
     </div>
     
-    <div class="flex justify-between items-center {gameState.orbBag.point.available === 0 ? 'opacity-50' : ''}">
-      <span class="font-medium text-purple-500">Point Orbs (+5 pts):</span>
+    <div class="flex justify-between items-center {getAvailableOrbCount(gameState.orbBag, 'point') === 0 ? 'opacity-50' : ''}">
+      <span class="font-medium text-purple-500">Point Orbs:</span>
       <div class="text-right">
-        <span class="text-lg font-bold">{gameState.orbBag.point.available}</span>
-        <span class="text-gray-500">/ {gameState.orbBag.point.total}</span>
+        <span class="text-lg font-bold">{getAvailableOrbCount(gameState.orbBag, 'point')}</span>
+        {#if gameState.orbBag.point.length > 0}
+          <span class="text-sm text-gray-600">({gameState.orbBag.point.map(orb => `+${orb.amount}`).join(', ')})</span>
+        {/if}
       </div>
     </div>
     
-    <div class="flex justify-between items-center {gameState.orbBag.bomb.available === 0 ? 'opacity-50' : ''}">
-      <span class="font-medium text-orange-500">Bomb Orbs (-2 HP):</span>
+    <div class="flex justify-between items-center {getAvailableOrbCount(gameState.orbBag, 'bomb') === 0 ? 'opacity-50' : ''}">
+      <span class="font-medium text-orange-500">Bomb Orbs:</span>
       <div class="text-right">
-        <span class="text-lg font-bold">{gameState.orbBag.bomb.available}</span>
-        <span class="text-gray-500">/ {gameState.orbBag.bomb.total}</span>
+        <span class="text-lg font-bold">{getAvailableOrbCount(gameState.orbBag, 'bomb')}</span>
+        {#if gameState.orbBag.bomb.length > 0}
+          <span class="text-sm text-gray-600">({gameState.orbBag.bomb.map(orb => `-${orb.amount}`).join(', ')})</span>
+        {/if}
       </div>
     </div>
   </div>

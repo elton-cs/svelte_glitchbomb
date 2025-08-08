@@ -8,10 +8,10 @@ export const GAME_CONFIG: GameConfig = {
     health: 2,
     point: 2,
   },
-  orbEffects: {
+  defaultOrbAmounts: {
     health: 1,
     point: 5,
-    bomb: -2,
+    bomb: 2,
   },
   victoryReward: 100,
   maxHealth: 5,

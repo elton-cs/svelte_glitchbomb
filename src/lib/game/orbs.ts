@@ -1,90 +1,76 @@
 import type { OrbBag, OrbType, Orb } from './types.js';
 import { GAME_CONFIG } from './constants.js';
 
+export function createOrb(type: OrbType, amount?: number): Orb {
+  return {
+    type,
+    amount: amount ?? GAME_CONFIG.defaultOrbAmounts[type]
+  };
+}
+
 export function createInitialBag(): OrbBag {
   const { startingOrbs } = GAME_CONFIG;
   return {
-    health: {
-      total: startingOrbs.health,
-      available: startingOrbs.health,
-    },
-    point: {
-      total: startingOrbs.point,
-      available: startingOrbs.point,
-    },
-    bomb: {
-      total: startingOrbs.bomb,
-      available: startingOrbs.bomb,
-    },
+    health: Array(startingOrbs.health).fill(null).map(() => createOrb('health')),
+    point: Array(startingOrbs.point).fill(null).map(() => createOrb('point')),
+    bomb: Array(startingOrbs.bomb).fill(null).map(() => createOrb('bomb')),
   };
 }
 
 export function getTotalAvailableOrbs(bag: OrbBag): number {
-  return bag.health.available + bag.point.available + bag.bomb.available;
+  return bag.health.length + bag.point.length + bag.bomb.length;
+}
+
+export function getAvailableOrbCount(bag: OrbBag, type: OrbType): number {
+  return bag[type].length;
+}
+
+export function getAllOrbs(bag: OrbBag): Orb[] {
+  return [...bag.health, ...bag.point, ...bag.bomb];
 }
 
 export function pullRandomOrb(bag: OrbBag): Orb | null {
-  const totalAvailable = getTotalAvailableOrbs(bag);
+  const allOrbs = getAllOrbs(bag);
   
-  if (totalAvailable === 0) {
+  if (allOrbs.length === 0) {
     return null;
   }
 
-  const random = Math.random() * totalAvailable;
-  let currentCount = 0;
-
-  if (bag.health.available > 0) {
-    currentCount += bag.health.available;
-    if (random < currentCount) {
-      bag.health.available--;
-      return {
-        type: 'health',
-        effect: GAME_CONFIG.orbEffects.health,
-      };
-    }
+  const randomIndex = Math.floor(Math.random() * allOrbs.length);
+  const selectedOrb = allOrbs[randomIndex];
+  
+  // Remove the orb from the appropriate array
+  const orbArray = bag[selectedOrb.type];
+  const orbIndexInArray = orbArray.findIndex(orb => orb === selectedOrb);
+  if (orbIndexInArray !== -1) {
+    orbArray.splice(orbIndexInArray, 1);
   }
-
-  if (bag.point.available > 0) {
-    currentCount += bag.point.available;
-    if (random < currentCount) {
-      bag.point.available--;
-      return {
-        type: 'point',
-        effect: GAME_CONFIG.orbEffects.point,
-      };
-    }
-  }
-
-  if (bag.bomb.available > 0) {
-    bag.bomb.available--;
-    return {
-      type: 'bomb',
-      effect: GAME_CONFIG.orbEffects.bomb,
-    };
-  }
-
-  return null;
+  
+  return selectedOrb;
 }
 
 export function resetConsumedOrbs(bag: OrbBag): void {
-  bag.health.available = bag.health.total;
-  bag.point.available = bag.point.total;
-  bag.bomb.available = bag.bomb.total;
+  // This function needs to restore orbs to their original state
+  // For now, we'll recreate the initial bag - this might need refinement
+  // based on how orbs are added during gameplay
+  const initialCounts = {
+    health: GAME_CONFIG.startingOrbs.health,
+    point: GAME_CONFIG.startingOrbs.point,
+    bomb: GAME_CONFIG.startingOrbs.bomb
+  };
+  
+  // Count current total orbs (including consumed ones would require tracking)
+  // For now, assume we want to reset to initial + any permanently added orbs
+  const totalHealth = Math.max(initialCounts.health, bag.health.length);
+  const totalPoint = Math.max(initialCounts.point, bag.point.length);
+  const totalBomb = Math.max(initialCounts.bomb, bag.bomb.length);
+  
+  bag.health = Array(totalHealth).fill(null).map(() => createOrb('health'));
+  bag.point = Array(totalPoint).fill(null).map(() => createOrb('point'));
+  bag.bomb = Array(totalBomb).fill(null).map(() => createOrb('bomb'));
 }
 
-export function addOrbsToBag(bag: OrbBag, orbType: OrbType, quantity: number): void {
-  switch (orbType) {
-    case 'health':
-      bag.health.total += quantity;
-      bag.health.available += quantity;
-      break;
-    case 'point':
-      bag.point.total += quantity;
-      bag.point.available += quantity;
-      break;
-    case 'bomb':
-      bag.bomb.total += quantity;
-      bag.bomb.available += quantity;
-      break;
-  }
+export function addOrbsToBag(bag: OrbBag, orbType: OrbType, quantity: number, amount?: number): void {
+  const newOrbs = Array(quantity).fill(null).map(() => createOrb(orbType, amount));
+  bag[orbType].push(...newOrbs);
 }

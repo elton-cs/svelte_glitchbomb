@@ -3,15 +3,15 @@ import type { OrbBag, OrbType } from '../game/types.js';
 export function getRandomOrbFromBag(bag: OrbBag): OrbType | null {
   const availableOrbs: OrbType[] = [];
   
-  for (let i = 0; i < bag.health.available; i++) {
+  for (let i = 0; i < bag.health.length; i++) {
     availableOrbs.push('health');
   }
   
-  for (let i = 0; i < bag.point.available; i++) {
+  for (let i = 0; i < bag.point.length; i++) {
     availableOrbs.push('point');
   }
   
-  for (let i = 0; i < bag.bomb.available; i++) {
+  for (let i = 0; i < bag.bomb.length; i++) {
     availableOrbs.push('bomb');
   }
   

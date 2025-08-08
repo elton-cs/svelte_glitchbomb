@@ -84,3 +84,7 @@ The project is now a fully functional Glitch Bomb game. All core mechanics have 
 - Uses TypeScript project references with separate configs for app and node
 - Svelte 5 syntax and APIs
 - Vite client types included
+
+## Development Workflow
+
+**Git Commit Guidelines**: Always create a simple, one-line commit message and commit immediately after completing any feature or making code changes. Use descriptive but concise messages that explain what was changed, not why.

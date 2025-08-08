@@ -1,22 +1,9 @@
 import type { GameState, OrbBag, PlayerStats, MarketplaceState } from './types.js';
 import { GAME_CONFIG } from './constants.js';
+import { createInitialBag } from './orbs.js';
 
 function createInitialOrbBag(): OrbBag {
-  const { startingOrbs } = GAME_CONFIG;
-  return {
-    health: {
-      total: startingOrbs.health,
-      available: startingOrbs.health,
-    },
-    point: {
-      total: startingOrbs.point,
-      available: startingOrbs.point,
-    },
-    bomb: {
-      total: startingOrbs.bomb,
-      available: startingOrbs.bomb,
-    },
-  };
+  return createInitialBag();
 }
 
 function createInitialPlayerStats(moonrocks: number): PlayerStats {
@@ -51,10 +38,6 @@ export function createInitialGameState(moonrocks: number = GAME_CONFIG.initialMo
 export function resetLevelStats(state: GameState): void {
   state.playerStats.health = GAME_CONFIG.maxHealth;
   state.playerStats.points = 0;
-  
-  state.orbBag.health.available = state.orbBag.health.total;
-  state.orbBag.point.available = state.orbBag.point.total;
-  state.orbBag.bomb.available = state.orbBag.bomb.total;
 }
 
 export function resetGameSession(state: GameState, moonrocks: number): void {

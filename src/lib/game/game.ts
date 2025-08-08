@@ -78,15 +78,15 @@ export function pullOrb(gameState: GameState): boolean {
     switch (orb.type) {
       case 'health':
         gameState.playerStats.health = Math.min(
-          gameState.playerStats.health + orb.effect,
+          gameState.playerStats.health + orb.amount,
           GAME_CONFIG.maxHealth
         );
         break;
       case 'point':
-        gameState.playerStats.points += orb.effect;
+        gameState.playerStats.points += orb.amount;
         break;
       case 'bomb':
-        gameState.playerStats.health = Math.max(0, gameState.playerStats.health + orb.effect);
+        gameState.playerStats.health = Math.max(0, gameState.playerStats.health - orb.amount);
         break;
     }
 

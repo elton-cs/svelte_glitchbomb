@@ -4,22 +4,13 @@ export type GamePhase = 'menu' | 'level' | 'marketplace' | 'gameover' | 'victory
 
 export interface Orb {
   type: OrbType;
-  effect: number;
+  amount: number;
 }
 
 export interface OrbBag {
-  health: {
-    total: number;
-    available: number;
-  };
-  point: {
-    total: number;
-    available: number;
-  };
-  bomb: {
-    total: number;
-    available: number;
-  };
+  health: Orb[];
+  point: Orb[];
+  bomb: Orb[];
 }
 
 export interface PlayerStats {
@@ -59,7 +50,7 @@ export interface GameConfig {
     health: number;
     point: number;
   };
-  orbEffects: {
+  defaultOrbAmounts: {
     health: number;
     point: number;
     bomb: number;
