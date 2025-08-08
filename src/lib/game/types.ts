@@ -75,5 +75,6 @@ export interface GameConfig {
     health: number;
     point: number;
     bomb: number;
+    points_per_anyorb: number;
   };
 }

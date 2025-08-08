@@ -20,6 +20,7 @@ export const GAME_CONFIG: GameConfig = {
     health: 1,
     point: 3,
     bomb: 5,
+    points_per_anyorb: 1,
   },
 };
 

@@ -28,7 +28,9 @@ export function createInitialBag(): OrbBag {
     createOrb('health', 1), // Health 1
   ];
   
-  const pointsPerAnyOrbOrbs: Orb[] = [];
+  const pointsPerAnyOrbOrbs = [
+    createOrb('points_per_anyorb', 1), // Points Per Any Orb
+  ];
   
   return {
     health: {
