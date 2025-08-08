@@ -53,14 +53,14 @@
       </div>
     </div>
     
-    <div class="flex justify-between items-center {getAvailableOrbCount(gameState.orbBag, 'multiplier') === 0 ? 'opacity-50' : ''}">
-      <span class="font-medium text-blue-500">Multiplier Orbs:</span>
+    <div class="flex justify-between items-center {getAvailableOrbCount(gameState.orbBag, 'points_per_anyorb') === 0 ? 'opacity-50' : ''}">
+      <span class="font-medium text-blue-500">Points Per Any Orb:</span>
       <div class="text-right">
-        <span class="text-lg font-bold">{getAvailableOrbCount(gameState.orbBag, 'multiplier')}</span>
-        {#if gameState.orbBag.multiplier.available.length > 0}
+        <span class="text-lg font-bold">{getAvailableOrbCount(gameState.orbBag, 'points_per_anyorb')}</span>
+        {#if gameState.orbBag.points_per_anyorb.available.length > 0}
           <span class="text-sm text-gray-600">(×{getTotalAvailableOrbs(gameState.orbBag) - 1} pts)</span>
         {/if}
-        <span class="text-gray-500">/ {getTotalOrbCount(gameState.orbBag, 'multiplier')}</span>
+        <span class="text-gray-500">/ {getTotalOrbCount(gameState.orbBag, 'points_per_anyorb')}</span>
       </div>
     </div>
   </div>

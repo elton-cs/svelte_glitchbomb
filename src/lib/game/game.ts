@@ -1,6 +1,6 @@
 import { resetLevelStats } from './state.js';
 import type { GameState } from './types.js';
-import { pullRandomOrb, resetConsumedOrbs, addOrbsToBag, calculateMultiplierPoints } from './orbs.js';
+import { pullRandomOrb, resetConsumedOrbs, addOrbsToBag, calculatePointsPerAnyOrbPoints } from './orbs.js';
 import { 
   canAffordLevel, 
   calculateCashOut, 
@@ -88,9 +88,9 @@ export function pullOrb(gameState: GameState): boolean {
       case 'bomb':
         gameState.playerStats.health = Math.max(0, gameState.playerStats.health - orb.amount);
         break;
-      case 'multiplier':
-        const multiplierPoints = calculateMultiplierPoints(gameState.orbBag);
-        gameState.playerStats.points += multiplierPoints;
+      case 'points_per_anyorb':
+        const pointsPerAnyOrbPoints = calculatePointsPerAnyOrbPoints(gameState.orbBag);
+        gameState.playerStats.points += pointsPerAnyOrbPoints;
         break;
     }
 
