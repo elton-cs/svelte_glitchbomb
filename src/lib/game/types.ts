@@ -1,4 +1,4 @@
-export type OrbType = 'health' | 'point' | 'bomb' | 'points_per_anyorb';
+export type OrbType = 'health' | 'point' | 'bomb' | 'points_per_anyorb' | 'points_per_bombpulled';
 
 export type GamePhase = 'menu' | 'level' | 'marketplace' | 'gameover' | 'victory';
 
@@ -24,6 +24,10 @@ export interface OrbBag {
     available: Orb[];
     total: Orb[];
   };
+  points_per_bombpulled: {
+    available: Orb[];
+    total: Orb[];
+  };
 }
 
 export interface PlayerStats {
@@ -31,6 +35,7 @@ export interface PlayerStats {
   cheddah: number;
   health: number;
   points: number;
+  bombsPulledThisLevel: number;
 }
 
 export interface LevelConfig {
@@ -68,6 +73,7 @@ export interface GameConfig {
     point: number;
     bomb: number;
     points_per_anyorb: number;
+    points_per_bombpulled: number;
   };
   victoryReward: number;
   maxHealth: number;
@@ -76,5 +82,6 @@ export interface GameConfig {
     point: number;
     bomb: number;
     points_per_anyorb: number;
+    points_per_bombpulled: number;
   };
 }

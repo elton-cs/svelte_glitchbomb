@@ -32,6 +32,10 @@ export function createInitialBag(): OrbBag {
     createOrb('points_per_anyorb', 1), // Points Per Any Orb
   ];
   
+  const pointsPerBombPulledOrbs = [
+    createOrb('points_per_bombpulled', 1), // Points Per Bomb Pulled
+  ];
+  
   return {
     health: {
       available: [...healthOrbs],
@@ -48,12 +52,16 @@ export function createInitialBag(): OrbBag {
     points_per_anyorb: {
       available: [...pointsPerAnyOrbOrbs],
       total: [...pointsPerAnyOrbOrbs]
+    },
+    points_per_bombpulled: {
+      available: [...pointsPerBombPulledOrbs],
+      total: [...pointsPerBombPulledOrbs]
     }
   };
 }
 
 export function getTotalAvailableOrbs(bag: OrbBag): number {
-  return bag.health.available.length + bag.point.available.length + bag.bomb.available.length + bag.points_per_anyorb.available.length;
+  return bag.health.available.length + bag.point.available.length + bag.bomb.available.length + bag.points_per_anyorb.available.length + bag.points_per_bombpulled.available.length;
 }
 
 export function getAvailableOrbCount(bag: OrbBag, type: OrbType): number {
@@ -65,7 +73,7 @@ export function getTotalOrbCount(bag: OrbBag, type: OrbType): number {
 }
 
 export function getAllAvailableOrbs(bag: OrbBag): Orb[] {
-  return [...bag.health.available, ...bag.point.available, ...bag.bomb.available, ...bag.points_per_anyorb.available];
+  return [...bag.health.available, ...bag.point.available, ...bag.bomb.available, ...bag.points_per_anyorb.available, ...bag.points_per_bombpulled.available];
 }
 
 export function pullRandomOrb(bag: OrbBag): Orb | null {
@@ -94,6 +102,7 @@ export function resetConsumedOrbs(bag: OrbBag): void {
   bag.point.available = [...bag.point.total];
   bag.bomb.available = [...bag.bomb.total];
   bag.points_per_anyorb.available = [...bag.points_per_anyorb.total];
+  bag.points_per_bombpulled.available = [...bag.points_per_bombpulled.total];
 }
 
 export function addOrbsToBag(bag: OrbBag, orbType: OrbType, quantity: number, amount?: number): void {

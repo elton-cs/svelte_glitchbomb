@@ -63,6 +63,17 @@
         <span class="text-gray-500">/ {getTotalOrbCount(gameState.orbBag, 'points_per_anyorb')}</span>
       </div>
     </div>
+    
+    <div class="flex justify-between items-center {getAvailableOrbCount(gameState.orbBag, 'points_per_bombpulled') === 0 ? 'opacity-50' : ''}">
+      <span class="font-medium text-yellow-500">Points Per Bomb Pulled:</span>
+      <div class="text-right">
+        <span class="text-lg font-bold">{getAvailableOrbCount(gameState.orbBag, 'points_per_bombpulled')}</span>
+        {#if gameState.orbBag.points_per_bombpulled.available.length > 0}
+          <span class="text-sm text-gray-600">(×{gameState.playerStats.bombsPulledThisLevel} pts)</span>
+        {/if}
+        <span class="text-gray-500">/ {getTotalOrbCount(gameState.orbBag, 'points_per_bombpulled')}</span>
+      </div>
+    </div>
   </div>
   
   <div class="border-t pt-3">

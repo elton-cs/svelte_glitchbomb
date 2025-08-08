@@ -87,10 +87,15 @@ export function pullOrb(gameState: GameState): boolean {
         break;
       case 'bomb':
         gameState.playerStats.health = Math.max(0, gameState.playerStats.health - orb.amount);
+        gameState.playerStats.bombsPulledThisLevel += 1;
         break;
       case 'points_per_anyorb':
         const pointsPerAnyOrbPoints = calculatePointsPerAnyOrbPoints(gameState.orbBag);
         gameState.playerStats.points += pointsPerAnyOrbPoints;
+        break;
+      case 'points_per_bombpulled':
+        const bombPoints = gameState.playerStats.bombsPulledThisLevel;
+        gameState.playerStats.points += bombPoints;
         break;
     }
 
