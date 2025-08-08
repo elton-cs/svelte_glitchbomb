@@ -37,7 +37,7 @@
     <!-- Stats - Compact horizontal layout - Only show when game started -->
     {#if gameState.gameStarted}
       <div class="bg-white p-3 rounded-lg shadow-sm border">
-        <div class="grid grid-cols-2 gap-2 text-center text-xs mb-2">
+        <div class="grid grid-cols-3 gap-2 text-center text-xs mb-2">
           <div>
             <div class="text-lg font-bold text-green-600">{gameState.playerStats.cheddah}</div>
             <div class="text-gray-600">Cheddah</div>
@@ -46,8 +46,12 @@
             <div class="text-lg font-bold text-red-600">{gameState.playerStats.health}</div>
             <div class="text-gray-600">HP</div>
           </div>
+          <div>
+            <div class="text-lg font-bold text-blue-600">{gameState.currentLevel}</div>
+            <div class="text-gray-600">Level</div>
+          </div>
         </div>
-        <div class="grid grid-cols-2 gap-2 text-center text-xs">
+        <div class="grid grid-cols-3 gap-2 text-center text-xs">
           <div>
             <div class="text-lg font-bold text-purple-600">{gameState.playerStats.points}</div>
             <div class="text-gray-600">Points</div>
@@ -55,6 +59,10 @@
           <div>
             <div class="text-lg font-bold text-orange-600">{gameState.playerStats.levelMultiplier}×</div>
             <div class="text-gray-600">Mult</div>
+          </div>
+          <div>
+            <div class="text-lg font-bold text-gray-600">{getLevelMilestone(gameState.currentLevel)}</div>
+            <div class="text-gray-600">Goal</div>
           </div>
         </div>
       </div>
