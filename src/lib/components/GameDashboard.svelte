@@ -94,7 +94,7 @@
       <div class="bg-white p-3 rounded-lg shadow-sm border">
         <div class="flex justify-between items-center text-sm">
           <span class="font-medium">Level {gameState.currentLevel}/5</span>
-          <span class="text-gray-600">Goal: {getLevelMilestone(gameState.currentLevel)}</span>
+          <span class="text-gray-600">Milestone: {getLevelMilestone(gameState.currentLevel)}</span>
         </div>
         <div class="mt-1">
           <div class="bg-gray-200 rounded-full h-2">
