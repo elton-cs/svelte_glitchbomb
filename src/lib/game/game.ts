@@ -2,7 +2,6 @@ import { resetLevelStats } from './state.js';
 import type { GameState } from './types.js';
 import { pullRandomOrb, resetConsumedOrbs, addOrbsToBag } from './orbs.js';
 import { 
-  canAffordGame, 
   canAffordLevel, 
   calculateCashOut, 
   processLevelReward, 
@@ -21,20 +20,7 @@ import type { OrbType } from './types.js';
 
 export function startNewGame(gameState: GameState): boolean {
   try {
-    if (!canAffordGame(gameState.playerStats.moonrocks)) {
-      console.warn('Cannot afford to start game');
-      return false;
-    }
-
-    gameState.playerStats.moonrocks -= GAME_CONFIG.gameEntryCost;
-    gameState.currentLevel = 1;
-    gameState.playerStats.cheddah = 0;
-    gameState.gameStarted = true;
-    gameState.phase = 'level';
-    
-    resetLevelStats(gameState);
-    
-    return true;
+    return enterLevel(gameState, 1);
   } catch (error) {
     console.error('Error starting new game:', error);
     return false;
@@ -59,6 +45,8 @@ export function enterLevel(gameState: GameState, level: number): boolean {
     gameState.currentLevel = level;
     gameState.phase = 'level';
     gameState.levelCompleted = false;
+    gameState.gameStarted = true;
+    gameState.playerStats.cheddah = 0;
     
     resetLevelStats(gameState);
     resetConsumedOrbs(gameState.orbBag);

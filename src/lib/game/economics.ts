@@ -1,8 +1,5 @@
 import { GAME_CONFIG } from './constants.js';
 
-export function canAffordGame(moonrocks: number): boolean {
-  return moonrocks >= GAME_CONFIG.gameEntryCost;
-}
 
 export function canAffordLevel(moonrocks: number, level: number): boolean {
   if (level < 1 || level > GAME_CONFIG.levelCosts.length) {

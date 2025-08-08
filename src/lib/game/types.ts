@@ -53,7 +53,6 @@ export interface GameState {
 
 export interface GameConfig {
   initialMoonrocks: number;
-  gameEntryCost: number;
   levelMilestones: number[];
   levelCosts: number[];
   orbCosts: {

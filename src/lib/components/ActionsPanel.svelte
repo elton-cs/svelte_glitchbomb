@@ -6,7 +6,7 @@
     proceedToNextLevel, 
     returnToMenu 
   } from '../game/game.js';
-  import { canAffordGame, canAffordLevel, getLevelEntryCost } from '../game/economics.js';
+  import { canAffordLevel, getLevelEntryCost } from '../game/economics.js';
   import { GAME_CONFIG } from '../game/constants.js';
   import { isLastLevel, getNextLevel } from '../game/levels.js';
   import type { GameState } from '../game/types.js';
@@ -41,7 +41,7 @@
     returnToMenu(gameState);
   }
 
-  const canStartGame = $derived(gameState.phase === 'menu' && canAffordGame(gameState.playerStats.moonrocks));
+  const canStartGame = $derived(gameState.phase === 'menu' && canAffordLevel(gameState.playerStats.moonrocks, 1));
   const canCashOutMid = $derived(gameState.phase === 'level' && gameState.gameStarted);
   const canCashOutPost = $derived(gameState.phase === 'marketplace' && gameState.levelCompleted);
   const canProceed = $derived(gameState.phase === 'marketplace' && 
@@ -63,12 +63,12 @@
                  ? 'bg-green-600 text-white hover:bg-green-700' 
                  : 'bg-gray-300 text-gray-500 cursor-not-allowed'}"
       >
-        Start Game (-{GAME_CONFIG.gameEntryCost} moonrocks)
+        Start Game (-{getLevelEntryCost(1)} moonrocks)
       </button>
       
       {#if !canStartGame}
         <p class="text-sm text-red-500 text-center">
-          Need {GAME_CONFIG.gameEntryCost} moonrocks to start
+          Need {getLevelEntryCost(1)} moonrocks to start
         </p>
       {/if}
     {/if}

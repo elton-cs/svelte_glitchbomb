@@ -2,9 +2,8 @@ import type { GameConfig } from './types.js';
 
 export const GAME_CONFIG: GameConfig = {
   initialMoonrocks: 1000,
-  gameEntryCost: 5,
-  levelMilestones: [10, 20, 30, 40, 50],
-  levelCosts: [0, 15, 25, 35, 45],
+  levelMilestones: [12, 18, 28, 44, 66],
+  levelCosts: [10, 3, 5, 7, 9],
   orbCosts: {
     health: 2,
     point: 2,
