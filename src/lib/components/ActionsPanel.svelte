@@ -4,7 +4,8 @@
     cashOutMidLevel, 
     cashOutPostLevel, 
     proceedToNextLevel, 
-    returnToMenu 
+    returnToMenu,
+    pullOrb 
   } from '../game/game.js';
   import { canAffordLevel, getLevelEntryCost } from '../game/economics.js';
   import { GAME_CONFIG } from '../game/constants.js';
@@ -41,6 +42,10 @@
     returnToMenu(gameState);
   }
 
+  function handlePullOrb() {
+    pullOrb(gameState);
+  }
+
   const canStartGame = $derived(gameState.phase === 'menu' && canAffordLevel(gameState.playerStats.moonrocks, 1));
   const canCashOutMid = $derived(gameState.phase === 'level' && gameState.gameStarted);
   const canCashOutPost = $derived(gameState.phase === 'marketplace' && gameState.levelCompleted);
@@ -48,6 +53,15 @@
     !isLastLevel(gameState.currentLevel) && 
     canAffordLevel(gameState.playerStats.moonrocks, getNextLevel(gameState.currentLevel)));
   const nextLevelCost = $derived(getLevelEntryCost(getNextLevel(gameState.currentLevel)));
+  
+  const totalAvailableOrbs = $derived(gameState.orbBag.health.available.length + 
+                                      gameState.orbBag.point.available.length + 
+                                      gameState.orbBag.bomb.available.length + 
+                                      gameState.orbBag.points_per_anyorb.available.length + 
+                                      gameState.orbBag.points_per_bombpulled.available.length + 
+                                      gameState.orbBag.multiplier.available.length);
+  
+  const canPullOrb = $derived(gameState.phase === 'level' && totalAvailableOrbs > 0);
 </script>
 
 <div class="bg-gray-100 p-4 rounded border">
@@ -74,6 +88,17 @@
     {/if}
     
     {#if gameState.phase === 'level'}
+      <button 
+        onclick={handlePullOrb}
+        disabled={!canPullOrb}
+        class="w-full py-2 px-4 rounded font-medium transition-colors
+               {canPullOrb 
+                 ? 'bg-blue-600 text-white hover:bg-blue-700' 
+                 : 'bg-gray-300 text-gray-500 cursor-not-allowed'}"
+      >
+        {canPullOrb ? 'Pull Orb' : 'Cannot Pull Orb'}
+      </button>
+      
       <button 
         onclick={handleCashOutMidLevel}
         disabled={!canCashOutMid}

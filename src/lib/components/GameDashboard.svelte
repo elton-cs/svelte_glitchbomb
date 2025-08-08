@@ -5,13 +5,9 @@
   import BagView from './BagView.svelte';
   import ActionsPanel from './ActionsPanel.svelte';
   import MarketplaceView from './MarketplaceView.svelte';
-  import { pullOrb } from '../game/game.js';
 
   let gameState = $state(createInitialGameState());
   
-  function handlePullOrb() {
-    pullOrb(gameState);
-  }
   
   const totalAvailableOrbs = $derived(gameState.orbBag.health.available.length + 
                                       gameState.orbBag.point.available.length + 
@@ -20,7 +16,6 @@
                                       gameState.orbBag.points_per_bombpulled.available.length + 
                                       gameState.orbBag.multiplier.available.length);
   
-  const canPullOrb = $derived(gameState.phase === 'level' && totalAvailableOrbs > 0);
 </script>
 
 <div class="min-h-screen bg-gray-50 p-3">
@@ -88,18 +83,8 @@
 
     <!-- Orb Bag - Compact design -->
     <div class="bg-white p-3 rounded-lg shadow-sm border">
-      <div class="flex justify-between items-center mb-2">
+      <div class="mb-2">
         <h3 class="font-medium text-sm">Orb Bag ({totalAvailableOrbs})</h3>
-        <button 
-          onclick={handlePullOrb}
-          disabled={!canPullOrb}
-          class="px-3 py-1 text-xs font-medium rounded transition-colors
-                 {canPullOrb 
-                   ? 'bg-blue-600 text-white hover:bg-blue-700' 
-                   : 'bg-gray-200 text-gray-500 cursor-not-allowed'}"
-        >
-          {canPullOrb ? 'Pull Orb' : 'Cannot Pull'}
-        </button>
       </div>
       
       <div class="space-y-2 text-xs">
