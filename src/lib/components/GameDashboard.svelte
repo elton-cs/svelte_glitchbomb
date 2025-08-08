@@ -102,35 +102,82 @@
         </button>
       </div>
       
-      <div class="space-y-1 text-xs">
-        <div class="flex justify-between">
-          <span class="text-red-500">♥ Health:</span>
-          <span>{gameState.orbBag.health.available.length}/{gameState.orbBag.health.total.length}</span>
+      <div class="space-y-2 text-xs">
+        <!-- Health Orbs -->
+        <div class="flex justify-between items-center {gameState.orbBag.health.available.length === 0 ? 'opacity-50' : ''}">
+          <span class="font-medium text-red-500">♥ Health Orbs:</span>
+          <div class="text-right">
+            <span class="font-bold">{gameState.orbBag.health.available.length}</span>
+            {#if gameState.orbBag.health.available.length > 0}
+              <span class="text-gray-600">({gameState.orbBag.health.available.map(orb => `+${orb.amount}`).join(', ')})</span>
+            {/if}
+            <span class="text-gray-500">/ {gameState.orbBag.health.total.length}</span>
+          </div>
         </div>
-        <div class="flex justify-between">
-          <span class="text-purple-500">★ Points:</span>
-          <span>{gameState.orbBag.point.available.length}/{gameState.orbBag.point.total.length}</span>
+        
+        <!-- Point Orbs -->
+        <div class="flex justify-between items-center {gameState.orbBag.point.available.length === 0 ? 'opacity-50' : ''}">
+          <span class="font-medium text-purple-500">★ Point Orbs:</span>
+          <div class="text-right">
+            <span class="font-bold">{gameState.orbBag.point.available.length}</span>
+            {#if gameState.orbBag.point.available.length > 0}
+              <span class="text-gray-600">({gameState.orbBag.point.available.map(orb => `+${orb.amount}`).join(', ')})</span>
+            {/if}
+            <span class="text-gray-500">/ {gameState.orbBag.point.total.length}</span>
+          </div>
         </div>
-        <div class="flex justify-between">
-          <span class="text-orange-500">💥 Bombs:</span>
-          <span>{gameState.orbBag.bomb.available.length}/{gameState.orbBag.bomb.total.length}</span>
+        
+        <!-- Bomb Orbs -->
+        <div class="flex justify-between items-center {gameState.orbBag.bomb.available.length === 0 ? 'opacity-50' : ''}">
+          <span class="font-medium text-orange-500">💥 Bomb Orbs:</span>
+          <div class="text-right">
+            <span class="font-bold">{gameState.orbBag.bomb.available.length}</span>
+            {#if gameState.orbBag.bomb.available.length > 0}
+              <span class="text-gray-600">({gameState.orbBag.bomb.available.map(orb => `-${orb.amount}`).join(', ')})</span>
+            {/if}
+            <span class="text-gray-500">/ {gameState.orbBag.bomb.total.length}</span>
+          </div>
         </div>
+        
+        <!-- Points Per Any Orb -->
         {#if gameState.orbBag.points_per_anyorb.total.length > 0}
-          <div class="flex justify-between">
-            <span class="text-blue-500">⚡ Any Orb:</span>
-            <span>{gameState.orbBag.points_per_anyorb.available.length}/{gameState.orbBag.points_per_anyorb.total.length}</span>
+          <div class="flex justify-between items-center {gameState.orbBag.points_per_anyorb.available.length === 0 ? 'opacity-50' : ''}">
+            <span class="font-medium text-blue-500">⚡ Points Per Any Orb:</span>
+            <div class="text-right">
+              <span class="font-bold">{gameState.orbBag.points_per_anyorb.available.length}</span>
+              {#if gameState.orbBag.points_per_anyorb.available.length > 0}
+                <span class="text-gray-600">({gameState.orbBag.points_per_anyorb.available[0].amount}×{totalAvailableOrbs - 1} = {gameState.orbBag.points_per_anyorb.available[0].amount * (totalAvailableOrbs - 1)} pts)</span>
+              {/if}
+              <span class="text-gray-500">/ {gameState.orbBag.points_per_anyorb.total.length}</span>
+            </div>
           </div>
         {/if}
+        
+        <!-- Points Per Bomb Pulled -->
         {#if gameState.orbBag.points_per_bombpulled.total.length > 0}
-          <div class="flex justify-between">
-            <span class="text-yellow-500">🎯 Bomb Count:</span>
-            <span>{gameState.orbBag.points_per_bombpulled.available.length}/{gameState.orbBag.points_per_bombpulled.total.length}</span>
+          <div class="flex justify-between items-center {gameState.orbBag.points_per_bombpulled.available.length === 0 ? 'opacity-50' : ''}">
+            <span class="font-medium text-yellow-500">🎯 Points Per Bomb Pulled:</span>
+            <div class="text-right">
+              <span class="font-bold">{gameState.orbBag.points_per_bombpulled.available.length}</span>
+              {#if gameState.orbBag.points_per_bombpulled.available.length > 0}
+                <span class="text-gray-600">({gameState.orbBag.points_per_bombpulled.available[0].amount}×{gameState.playerStats.bombsPulledThisLevel} = {gameState.orbBag.points_per_bombpulled.available[0].amount * gameState.playerStats.bombsPulledThisLevel} pts)</span>
+              {/if}
+              <span class="text-gray-500">/ {gameState.orbBag.points_per_bombpulled.total.length}</span>
+            </div>
           </div>
         {/if}
+        
+        <!-- Multiplier Orbs -->
         {#if gameState.orbBag.multiplier.total.length > 0}
-          <div class="flex justify-between">
-            <span class="text-orange-500">⭐ Multiplier:</span>
-            <span>{gameState.orbBag.multiplier.available.length}/{gameState.orbBag.multiplier.total.length}</span>
+          <div class="flex justify-between items-center {gameState.orbBag.multiplier.available.length === 0 ? 'opacity-50' : ''}">
+            <span class="font-medium text-orange-500">⭐ Multiplier Orbs:</span>
+            <div class="text-right">
+              <span class="font-bold">{gameState.orbBag.multiplier.available.length}</span>
+              {#if gameState.orbBag.multiplier.available.length > 0}
+                <span class="text-gray-600">(+{gameState.orbBag.multiplier.available[0].amount}× boost)</span>
+              {/if}
+              <span class="text-gray-500">/ {gameState.orbBag.multiplier.total.length}</span>
+            </div>
           </div>
         {/if}
       </div>
