@@ -40,11 +40,17 @@
         <div class="grid grid-cols-2 gap-2 text-center text-xs mb-2">
           <div>
             <div class="text-lg font-bold text-green-600">{gameState.playerStats.cheddah}</div>
-            <div class="text-gray-600">Cash</div>
+            <div class="text-gray-600">Cheddah</div>
           </div>
           <div>
-            <div class="text-lg font-bold text-red-600">{gameState.playerStats.health}</div>
+            <div class="text-lg font-bold text-red-600">{gameState.playerStats.health}/5</div>
             <div class="text-gray-600">HP</div>
+            <div class="bg-gray-200 rounded-full h-1 mt-1">
+              <div 
+                class="bg-red-600 h-1 rounded-full transition-all duration-300"
+                style="width: {(gameState.playerStats.health / 5) * 100}%"
+              ></div>
+            </div>
           </div>
         </div>
         <div class="grid grid-cols-2 gap-2 text-center text-xs">
