@@ -17,6 +17,7 @@ This is a Svelte + TypeScript + Vite project for implementing **Glitch Bomb**, a
 
 ### Core Stack
 - **Frontend**: Svelte 5 with TypeScript
+- **Styling**: Tailwind CSS v4 with @tailwindcss/vite plugin
 - **Build Tool**: Vite with @sveltejs/vite-plugin-svelte
 - **Type Checking**: TypeScript with svelte-check
 
