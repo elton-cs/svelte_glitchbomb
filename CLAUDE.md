@@ -87,4 +87,7 @@ The project is now a fully functional Glitch Bomb game. All core mechanics have 
 
 ## Development Workflow
 
-**Git Commit Guidelines**: Always create a simple, one-line commit message and commit immediately after completing any feature or making code changes. Use descriptive but concise messages that explain what was changed, not why.
+**Git Commit Guidelines**: 
+1. Always run `npm run build` to check for errors before committing any changes
+2. Create a simple, one-line commit message and commit immediately after completing any feature or making code changes
+3. Use descriptive but concise messages that explain what was changed, not why
