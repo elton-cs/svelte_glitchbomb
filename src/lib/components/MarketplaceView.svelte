@@ -128,9 +128,9 @@
       name: 'HEALTH',
       description: '+1 HP',
       cost: gameState.marketplace.healthOrbCost,
-      icon: '♥',
-      color: 'text-red-500',
-      borderColor: 'border-red-500 hover:border-red-700',
+      icon: '',
+      color: 'text-red-400',
+      borderColor: 'border-red-400 hover:border-red-500',
       available: true,
       canPurchase: canPurchaseHealth
     },
@@ -139,9 +139,9 @@
       name: 'POINT',
       description: '+5 PTS',
       cost: gameState.marketplace.pointOrbCost,
-      icon: '★',
-      color: 'text-purple-500',
-      borderColor: 'border-purple-500 hover:border-purple-700',
+      icon: '',
+      color: 'text-white',
+      borderColor: 'border-white hover:border-gray-300',
       available: true,
       canPurchase: canPurchasePoint
     },
@@ -150,9 +150,9 @@
       name: 'LOCKED',
       description: '???',
       cost: 0,
-      icon: '🔒',
-      color: 'text-gray-400',
-      bgColor: 'bg-gray-300',
+      icon: '',
+      color: 'text-gray-600',
+      bgColor: 'bg-gray-900',
       available: false,
       canPurchase: false
     },
@@ -161,9 +161,9 @@
       name: 'LOCKED',
       description: '???',
       cost: 0,
-      icon: '🔒',
-      color: 'text-gray-400',
-      bgColor: 'bg-gray-300',
+      icon: '',
+      color: 'text-gray-600',
+      bgColor: 'bg-gray-900',
       available: false,
       canPurchase: false
     },
@@ -172,9 +172,9 @@
       name: 'LOCKED',
       description: '???',
       cost: 0,
-      icon: '🔒',
-      color: 'text-gray-400',
-      bgColor: 'bg-gray-300',
+      icon: '',
+      color: 'text-gray-600',
+      bgColor: 'bg-gray-900',
       available: false,
       canPurchase: false
     },
@@ -183,9 +183,9 @@
       name: 'LOCKED',
       description: '???',
       cost: 0,
-      icon: '🔒',
-      color: 'text-gray-400',
-      bgColor: 'bg-gray-300',
+      icon: '',
+      color: 'text-gray-600',
+      bgColor: 'bg-gray-900',
       available: false,
       canPurchase: false
     }
@@ -193,12 +193,12 @@
 </script>
 
 {#if gameState.phase === 'marketplace' && gameState.marketplace.available}
-  <div class="bg-white p-3 rounded-lg shadow-sm border">
+  <div class="bg-black p-3 rounded-lg shadow-sm border border-white">
     <div class="flex justify-between items-center mb-3">
-      <h2 class="text-lg font-bold">MARKETPLACE</h2>
+      <h2 class="text-sm font-bold text-white">MARKETPLACE</h2>
       <div class="text-right">
-        <div class="text-lg font-bold text-green-600">{gameState.playerStats.cheddah}</div>
-        <div class="text-xs text-gray-600">CHEDDAH</div>
+        <div class="text-lg font-bold text-white">{gameState.playerStats.cheddah}</div>
+        <div class="text-xs text-gray-400">CHEDDAH</div>
       </div>
     </div>
     
@@ -212,10 +212,10 @@
           onmouseleave={item.available ? () => handleMouseLeave(item.id as 'health' | 'point') : undefined}
           class="p-2 rounded font-medium transition-colors select-none flex items-center gap-2 text-left border-2
                  {item.available && item.canPurchase
-                   ? `${item.borderColor} bg-white active:scale-95` 
-                   : 'bg-gray-200 text-gray-500 cursor-not-allowed border-gray-300'}"
+                   ? `${item.borderColor} bg-black active:scale-95` 
+                   : 'bg-gray-900 text-gray-600 cursor-not-allowed border-gray-700'}"
         >
-          <div class="text-lg {item.color}">{item.icon}</div>
+          {#if item.icon}<div class="text-lg {item.color}">{item.icon}</div>{/if}
           <div class="flex-1 min-w-0">
             <div class="text-sm font-medium truncate">{item.name}</div>
             <div class="text-xs opacity-75 truncate">{item.description}</div>
@@ -227,12 +227,12 @@
       {/each}
     </div>
     
-    <div class="mt-3 text-xs text-gray-500 text-center">
+    <div class="mt-3 text-xs text-gray-400 text-center">
       CLICK TO BUY ONE • HOLD 1S TO BUY MAX
     </div>
     
     {#if gameState.playerStats.cheddah === 0}
-      <p class="text-xs text-gray-500 text-center mt-2">
+      <p class="text-xs text-gray-400 text-center mt-2">
         NO CHEDDAH REMAINING
       </p>
     {/if}
@@ -247,7 +247,7 @@
   >
     <div class="relative w-12 h-12">
       <!-- White background circle -->
-      <div class="absolute inset-0 bg-white rounded-full border-2 border-gray-300"></div>
+      <div class="absolute inset-0 bg-black rounded-full border-2 border-white"></div>
       
       <!-- Progress SVG -->
       <svg class="w-12 h-12 -rotate-90 absolute inset-0" viewBox="0 0 36 36">
@@ -255,7 +255,7 @@
         <path
           d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
           fill="none"
-          stroke="{activeHold === 'health' ? '#ef4444' : '#a855f7'}"
+          stroke="{activeHold === 'health' ? '#f87171' : '#ffffff'}"
           stroke-width="3"
           stroke-dasharray="{holdProgress[activeHold] || 0}, 100"
           stroke-linecap="round"
@@ -264,8 +264,8 @@
       </svg>
       
       <!-- Center icon -->
-      <div class="absolute inset-0 flex items-center justify-center text-lg {activeHold === 'health' ? 'text-red-500' : 'text-purple-500'}">
-        {activeHold === 'health' ? '♥' : '★'}
+      <div class="absolute inset-0 flex items-center justify-center text-lg {activeHold === 'health' ? 'text-red-400' : 'text-white'}">
+        {activeHold === 'health' ? 'H' : 'P'}
       </div>
     </div>
   </div>

@@ -11,7 +11,7 @@
 </script>
 
 <div class="bg-gray-100 p-4 rounded border">
-  <h2 class="text-lg font-bold mb-3">GAME STATS</h2>
+  <h2 class="text-sm font-bold mb-3">GAME STATS</h2>
   
   <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-4">
     <div class="text-center">

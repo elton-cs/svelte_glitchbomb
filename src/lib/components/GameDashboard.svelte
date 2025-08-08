@@ -38,7 +38,7 @@
   
 </script>
 
-<div class="min-h-screen bg-gray-50 p-3">
+<div class="min-h-screen bg-black p-3">
   <div class="max-w-md mx-auto space-y-4">
     <!-- Header -->
     <header class="text-center mb-4 relative">
@@ -48,17 +48,17 @@
       <!-- Dev Mode Toggle - positioned in top right -->
       <button 
         onclick={toggleDevMode}
-        class="absolute top-0 right-0 text-xs px-2 py-1 rounded border {devMode ? 'bg-red-100 text-red-700 border-red-300' : 'bg-gray-100 text-gray-600 border-gray-300'} hover:opacity-80 transition-colors"
+        class="absolute top-0 right-0 text-xs px-2 py-1 rounded border {devMode ? 'bg-gray-900 text-red-400 border-gray-700' : 'bg-black text-gray-400 border-white'} hover:opacity-80 transition-colors"
       >
-        {devMode ? '🔧 DEV ON' : '🔧 DEV'}
+        {devMode ? 'DEV ON' : 'DEV'}
       </button>
     </header>
     
     <!-- Moonrocks - Separate section -->
     <div class="bg-white p-3 rounded-lg shadow-sm border">
       <div class="flex justify-between items-center">
-        <div class="text-sm text-gray-600">MOONROCKS</div>
-        <div class="text-xl font-bold text-blue-600">{gameState.playerStats.moonrocks} 🌙</div>
+        <div class="text-sm font-bold text-white">MOONROCKS</div>
+        <div class="text-xl font-bold text-white">{gameState.playerStats.moonrocks}</div>
       </div>
       {#if canClaimRocks}
         <div class="mt-2 pt-2 border-t border-gray-200">
@@ -129,13 +129,13 @@
     {#if gameState.gameStarted}
       <div class="bg-white p-3 rounded-lg shadow-sm border">
         <div class="flex justify-between items-center text-sm">
-          <span class="font-medium">HEALTH</span>
+          <span class="text-sm font-bold">HEALTH</span>
           <span class="text-gray-600">{gameState.playerStats.health}/5</span>
         </div>
         <div class="mt-1">
           <div class="bg-gray-200 rounded-full h-2">
             <div 
-              class="bg-red-600 h-2 rounded-full transition-all duration-300"
+              class="h-2 rounded-full transition-all duration-300 {gameState.playerStats.health <= 2 ? 'bg-red-500' : 'bg-green-500'}"
               style="width: {(gameState.playerStats.health / 5) * 100}%"
             ></div>
           </div>
@@ -150,13 +150,13 @@
     {#if gameState.gameStarted}
       <div class="bg-white p-3 rounded-lg shadow-sm border">
         <div class="flex justify-between items-center text-sm">
-          <span class="font-medium">POINTS</span>
+          <span class="text-sm font-bold">POINTS</span>
           <span class="text-gray-600">{gameState.playerStats.points}/{getLevelMilestone(gameState.currentLevel)}</span>
         </div>
         <div class="mt-1">
           <div class="bg-gray-200 rounded-full h-2">
             <div 
-              class="bg-purple-600 h-2 rounded-full transition-all duration-300"
+              class="bg-purple-500 h-2 rounded-full transition-all duration-300"
               style="width: {Math.min(100, (gameState.playerStats.points / getLevelMilestone(gameState.currentLevel)) * 100)}%"
             ></div>
           </div>
@@ -173,7 +173,7 @@
     <!-- Orb Bag - Compact design -->
     <div class="bg-white p-3 rounded-lg shadow-sm border">
       <div class="mb-2">
-        <h3 class="font-medium text-sm">ORB BAG ({totalAvailableOrbs})</h3>
+        <h3 class="text-sm font-bold">ORB BAG ({totalAvailableOrbs})</h3>
       </div>
       
       <div class="space-y-2 text-xs">
