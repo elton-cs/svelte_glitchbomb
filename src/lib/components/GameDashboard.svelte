@@ -170,7 +170,8 @@
     <!-- Marketplace -->
     <MarketplaceView {gameState} />
 
-    <!-- Orb Bag - Compact design -->
+    <!-- Orb Bag - Compact design - Only show when game started -->
+    {#if gameState.gameStarted}
     <div class="bg-white p-3 rounded-lg shadow-sm border">
       <div class="mb-2">
         <h3 class="text-sm font-bold">ORB BAG ({totalAvailableOrbs})</h3>
@@ -256,6 +257,7 @@
         {/if}
       </div>
     </div>
+    {/if}
 
     <!-- How to Play - Only show on menu, compact -->
     {#if gameState.phase === 'menu'}
