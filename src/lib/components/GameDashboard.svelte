@@ -1,7 +1,5 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
   import { createInitialGameState } from '../game/state.js';
-  import { loadMoonrocks } from '../game/persistence.js';
   import { getLevelMilestone } from '../game/levels.js';
   import StatsDisplay from './StatsDisplay.svelte';
   import BagView from './BagView.svelte';
@@ -9,12 +7,6 @@
   import MarketplaceView from './MarketplaceView.svelte';
 
   let gameState = $state(createInitialGameState());
-
-  onMount(() => {
-    const savedMoonrocks = loadMoonrocks();
-    const initialState = createInitialGameState(savedMoonrocks);
-    Object.assign(gameState, initialState);
-  });
 </script>
 
 <div class="min-h-screen bg-gray-50 p-4">

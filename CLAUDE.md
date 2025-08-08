@@ -42,8 +42,7 @@ src/
 │   │   ├── economics.ts        # Economic calculations
 │   │   ├── levels.ts           # Level management
 │   │   ├── gameStates.ts       # Game state machine
-│   │   ├── game.ts             # Main game controller
-│   │   └── persistence.ts      # Local storage
+│   │   └── game.ts             # Main game controller
 │   └── utils/                   # Utility Functions
 │       ├── random.ts           # Random number generation
 │       └── validation.ts       # Input validation
@@ -55,7 +54,7 @@ src/
 All systems from `specs.md` have been implemented:
 
 1. **State Management** ✅: 
-   - Persistent moonrocks via localStorage
+   - Session-only moonrocks (resets to 1000 on refresh)
    - Reactive game state with Svelte 5 runes
    - Proper state transitions and validation
 

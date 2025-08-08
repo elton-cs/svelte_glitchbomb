@@ -16,7 +16,6 @@ import {
   isLastLevel, 
   getNextLevel 
 } from './levels.js';
-import { saveMoonrocks } from './persistence.js';
 import { GAME_CONFIG } from './constants.js';
 import type { OrbType } from './types.js';
 
@@ -34,7 +33,6 @@ export function startNewGame(gameState: GameState): boolean {
     gameState.phase = 'level';
     
     resetLevelStats(gameState);
-    saveMoonrocks(gameState.playerStats.moonrocks);
     
     return true;
   } catch (error) {
@@ -64,7 +62,6 @@ export function enterLevel(gameState: GameState, level: number): boolean {
     
     resetLevelStats(gameState);
     resetConsumedOrbs(gameState.orbBag);
-    saveMoonrocks(gameState.playerStats.moonrocks);
     
     return true;
   } catch (error) {
@@ -130,7 +127,6 @@ export function completeLevel(gameState: GameState): void {
   if (isLastLevel(gameState.currentLevel)) {
     gameState.phase = 'victory';
     gameState.playerStats.moonrocks += calculateVictoryReward();
-    saveMoonrocks(gameState.playerStats.moonrocks);
   } else {
     gameState.phase = 'marketplace';
     gameState.marketplace.available = true;
@@ -144,7 +140,6 @@ export function cashOutMidLevel(gameState: GameState): number {
   gameState.playerStats.moonrocks += cashOut;
   gameState.phase = 'menu';
   gameState.gameStarted = false;
-  saveMoonrocks(gameState.playerStats.moonrocks);
   
   return cashOut;
 }
@@ -154,7 +149,6 @@ export function cashOutPostLevel(gameState: GameState): number {
   gameState.playerStats.moonrocks += points;
   gameState.phase = 'menu';
   gameState.gameStarted = false;
-  saveMoonrocks(gameState.playerStats.moonrocks);
   
   return points;
 }
