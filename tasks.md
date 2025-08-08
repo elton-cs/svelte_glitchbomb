@@ -59,28 +59,28 @@
 ## Phase 3: UI Components
 
 ### 5. Core UI Components
-- [ ] Create `src/lib/components/StatsDisplay.svelte` - Stats dashboard
+- [x] Create `src/lib/components/StatsDisplay.svelte` - Stats dashboard
   - Moonrocks, cheddah, health, points display
   - Current level and milestone progress
-- [ ] Create `src/lib/components/BagView.svelte` - Orb bag interface
+- [x] Create `src/lib/components/BagView.svelte` - Orb bag interface
   - Display available orbs by type with counts
   - Show consumed orbs (grayed out)
   - Pull orb button with availability state
-- [ ] Create `src/lib/components/ActionsPanel.svelte` - Game controls
+- [x] Create `src/lib/components/ActionsPanel.svelte` - Game controls
   - Start game button (with cost validation)
   - Cash out buttons (mid-level and post-level)
   - Continue to next level button
-- [ ] Create `src/lib/components/MarketplaceView.svelte` - Marketplace
+- [x] Create `src/lib/components/MarketplaceView.svelte` - Marketplace
   - Available cheddah display
   - Purchase buttons for health/point orbs
   - Purchase quantity controls
 
 ### 6. Main Game Interface
-- [ ] Create `src/lib/components/GameDashboard.svelte` - Main dashboard
+- [x] Create `src/lib/components/GameDashboard.svelte` - Main dashboard
   - Single-page layout with all components
   - Responsive grid layout using Tailwind
   - Conditional rendering based on game phase
-- [ ] Update `src/App.svelte` - Replace template with game
+- [x] Update `src/App.svelte` - Replace template with game
   - Import and render GameDashboard
   - Remove placeholder content
 

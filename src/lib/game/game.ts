@@ -20,82 +20,106 @@ import { GAME_CONFIG } from './constants.js';
 import type { OrbType } from './types.js';
 
 export function startNewGame(): boolean {
-  if (!canAffordGame(gameState.playerStats.moonrocks)) {
+  try {
+    if (!canAffordGame(gameState.playerStats.moonrocks)) {
+      console.warn('Cannot afford to start game');
+      return false;
+    }
+
+    gameState.playerStats.moonrocks -= GAME_CONFIG.gameEntryCost;
+    gameState.currentLevel = 1;
+    gameState.playerStats.cheddah = 0;
+    gameState.gameStarted = true;
+    gameState.phase = 'level';
+    
+    resetLevelStats(gameState);
+    saveMoonrocks(gameState.playerStats.moonrocks);
+    
+    return true;
+  } catch (error) {
+    console.error('Error starting new game:', error);
     return false;
   }
-
-  gameState.playerStats.moonrocks -= GAME_CONFIG.gameEntryCost;
-  gameState.currentLevel = 1;
-  gameState.playerStats.cheddah = 0;
-  gameState.gameStarted = true;
-  gameState.phase = 'level';
-  
-  resetLevelStats(gameState);
-  saveMoonrocks(gameState.playerStats.moonrocks);
-  
-  return true;
 }
 
 export function enterLevel(level: number): boolean {
-  const cost = getLevelEntryCost(level);
-  
-  if (!canAffordLevel(gameState.playerStats.moonrocks, level)) {
+  try {
+    if (level < 1 || level > 5) {
+      console.warn('Invalid level:', level);
+      return false;
+    }
+
+    const cost = getLevelEntryCost(level);
+    
+    if (!canAffordLevel(gameState.playerStats.moonrocks, level)) {
+      console.warn('Cannot afford level', level, 'cost:', cost);
+      return false;
+    }
+
+    gameState.playerStats.moonrocks -= cost;
+    gameState.currentLevel = level;
+    gameState.phase = 'level';
+    gameState.levelCompleted = false;
+    
+    resetLevelStats(gameState);
+    resetConsumedOrbs(gameState.orbBag);
+    saveMoonrocks(gameState.playerStats.moonrocks);
+    
+    return true;
+  } catch (error) {
+    console.error('Error entering level:', error);
     return false;
   }
-
-  gameState.playerStats.moonrocks -= cost;
-  gameState.currentLevel = level;
-  gameState.phase = 'level';
-  gameState.levelCompleted = false;
-  
-  resetLevelStats(gameState);
-  resetConsumedOrbs(gameState.orbBag);
-  saveMoonrocks(gameState.playerStats.moonrocks);
-  
-  return true;
 }
 
 export function pullOrb(): boolean {
-  if (gameState.phase !== 'level') {
+  try {
+    if (gameState.phase !== 'level') {
+      console.warn('Cannot pull orb - not in level phase');
+      return false;
+    }
+
+    const orb = pullRandomOrb(gameState.orbBag);
+    
+    if (!orb) {
+      console.log('No more orbs available');
+      if (!checkLevelComplete(gameState.playerStats.points, gameState.currentLevel)) {
+        gameState.phase = 'gameover';
+      }
+      return false;
+    }
+
+    switch (orb.type) {
+      case 'health':
+        gameState.playerStats.health = Math.min(
+          gameState.playerStats.health + orb.effect,
+          GAME_CONFIG.maxHealth
+        );
+        break;
+      case 'point':
+        gameState.playerStats.points += orb.effect;
+        break;
+      case 'bomb':
+        gameState.playerStats.health = Math.max(0, gameState.playerStats.health + orb.effect);
+        break;
+    }
+
+    if (checkGameOver(gameState.playerStats.health, gameState.orbBag)) {
+      if (!checkLevelComplete(gameState.playerStats.points, gameState.currentLevel)) {
+        gameState.phase = 'gameover';
+        return true;
+      }
+    }
+
+    if (checkLevelComplete(gameState.playerStats.points, gameState.currentLevel)) {
+      completeLevel();
+    }
+
+    return true;
+  } catch (error) {
+    console.error('Error pulling orb:', error);
     return false;
   }
-
-  const orb = pullRandomOrb(gameState.orbBag);
-  
-  if (!orb) {
-    if (!checkLevelComplete(gameState.playerStats.points, gameState.currentLevel)) {
-      gameState.phase = 'gameover';
-    }
-    return false;
-  }
-
-  switch (orb.type) {
-    case 'health':
-      gameState.playerStats.health = Math.min(
-        gameState.playerStats.health + orb.effect,
-        GAME_CONFIG.maxHealth
-      );
-      break;
-    case 'point':
-      gameState.playerStats.points += orb.effect;
-      break;
-    case 'bomb':
-      gameState.playerStats.health += orb.effect;
-      break;
-  }
-
-  if (checkGameOver(gameState.playerStats.health, gameState.orbBag)) {
-    if (!checkLevelComplete(gameState.playerStats.points, gameState.currentLevel)) {
-      gameState.phase = 'gameover';
-      return true;
-    }
-  }
-
-  if (checkLevelComplete(gameState.playerStats.points, gameState.currentLevel)) {
-    completeLevel();
-  }
-
-  return true;
 }
 
 export function completeLevel(): void {

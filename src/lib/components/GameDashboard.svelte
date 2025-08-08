@@ -2,6 +2,7 @@
   import { onMount } from 'svelte';
   import { gameState, createInitialGameState } from '../game/state.js';
   import { loadMoonrocks } from '../game/persistence.js';
+  import { getLevelMilestone } from '../game/levels.js';
   import StatsDisplay from './StatsDisplay.svelte';
   import BagView from './BagView.svelte';
   import ActionsPanel from './ActionsPanel.svelte';
@@ -67,7 +68,3 @@
     </div>
   </div>
 </div>
-
-<script>
-  import { getLevelMilestone } from '../game/levels.js';
-</script>

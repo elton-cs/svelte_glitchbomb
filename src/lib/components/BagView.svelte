@@ -14,24 +14,24 @@
   <h2 class="text-lg font-bold mb-3">Orb Bag</h2>
   
   <div class="space-y-3 mb-4">
-    <div class="flex justify-between items-center">
-      <span class="font-medium text-red-500">Health Orbs:</span>
+    <div class="flex justify-between items-center {gameState.orbBag.health.available === 0 ? 'opacity-50' : ''}">
+      <span class="font-medium text-red-500">Health Orbs (+1 HP):</span>
       <div class="text-right">
         <span class="text-lg font-bold">{gameState.orbBag.health.available}</span>
         <span class="text-gray-500">/ {gameState.orbBag.health.total}</span>
       </div>
     </div>
     
-    <div class="flex justify-between items-center">
-      <span class="font-medium text-purple-500">Point Orbs:</span>
+    <div class="flex justify-between items-center {gameState.orbBag.point.available === 0 ? 'opacity-50' : ''}">
+      <span class="font-medium text-purple-500">Point Orbs (+5 pts):</span>
       <div class="text-right">
         <span class="text-lg font-bold">{gameState.orbBag.point.available}</span>
         <span class="text-gray-500">/ {gameState.orbBag.point.total}</span>
       </div>
     </div>
     
-    <div class="flex justify-between items-center">
-      <span class="font-medium text-orange-500">Bomb Orbs:</span>
+    <div class="flex justify-between items-center {gameState.orbBag.bomb.available === 0 ? 'opacity-50' : ''}">
+      <span class="font-medium text-orange-500">Bomb Orbs (-2 HP):</span>
       <div class="text-right">
         <span class="text-lg font-bold">{gameState.orbBag.bomb.available}</span>
         <span class="text-gray-500">/ {gameState.orbBag.bomb.total}</span>

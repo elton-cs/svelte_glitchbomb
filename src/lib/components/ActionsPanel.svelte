@@ -16,13 +16,15 @@
   }
 
   function handleCashOutMidLevel() {
-    const amount = cashOutMidLevel();
-    alert(`Cashed out ${amount} moonrocks!`);
+    if (confirm(`Cash out ${gameState.playerStats.points} points for moonrocks? You'll lose progress and moonrocks spent on this level.`)) {
+      const amount = cashOutMidLevel();
+    }
   }
 
   function handleCashOutPostLevel() {
-    const amount = cashOutPostLevel();
-    alert(`Cashed out ${amount} moonrocks!`);
+    if (confirm(`Cash out ${gameState.playerStats.points} points for moonrocks and end the game?`)) {
+      const amount = cashOutPostLevel();
+    }
   }
 
   function handleProceedToNext() {
