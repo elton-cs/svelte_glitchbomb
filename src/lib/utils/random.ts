@@ -15,6 +15,10 @@ export function getRandomOrbFromBag(bag: OrbBag): OrbType | null {
     availableOrbs.push('bomb');
   }
   
+  for (let i = 0; i < bag.multiplier.available.length; i++) {
+    availableOrbs.push('multiplier');
+  }
+  
   if (availableOrbs.length === 0) {
     return null;
   }

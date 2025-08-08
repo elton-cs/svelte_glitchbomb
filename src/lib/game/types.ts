@@ -1,4 +1,4 @@
-export type OrbType = 'health' | 'point' | 'bomb';
+export type OrbType = 'health' | 'point' | 'bomb' | 'multiplier';
 
 export type GamePhase = 'menu' | 'level' | 'marketplace' | 'gameover' | 'victory';
 
@@ -17,6 +17,10 @@ export interface OrbBag {
     total: Orb[];
   };
   bomb: {
+    available: Orb[];
+    total: Orb[];
+  };
+  multiplier: {
     available: Orb[];
     total: Orb[];
   };
@@ -63,6 +67,7 @@ export interface GameConfig {
     health: number;
     point: number;
     bomb: number;
+    multiplier: number;
   };
   victoryReward: number;
   maxHealth: number;

@@ -28,6 +28,8 @@ export function createInitialBag(): OrbBag {
     createOrb('health', 1), // Health 1
   ];
   
+  const multiplierOrbs: Orb[] = [];
+  
   return {
     health: {
       available: [...healthOrbs],
@@ -40,12 +42,16 @@ export function createInitialBag(): OrbBag {
     bomb: {
       available: [...bombOrbs],
       total: [...bombOrbs]
+    },
+    multiplier: {
+      available: [...multiplierOrbs],
+      total: [...multiplierOrbs]
     }
   };
 }
 
 export function getTotalAvailableOrbs(bag: OrbBag): number {
-  return bag.health.available.length + bag.point.available.length + bag.bomb.available.length;
+  return bag.health.available.length + bag.point.available.length + bag.bomb.available.length + bag.multiplier.available.length;
 }
 
 export function getAvailableOrbCount(bag: OrbBag, type: OrbType): number {
@@ -57,7 +63,7 @@ export function getTotalOrbCount(bag: OrbBag, type: OrbType): number {
 }
 
 export function getAllAvailableOrbs(bag: OrbBag): Orb[] {
-  return [...bag.health.available, ...bag.point.available, ...bag.bomb.available];
+  return [...bag.health.available, ...bag.point.available, ...bag.bomb.available, ...bag.multiplier.available];
 }
 
 export function pullRandomOrb(bag: OrbBag): Orb | null {
@@ -85,6 +91,7 @@ export function resetConsumedOrbs(bag: OrbBag): void {
   bag.health.available = [...bag.health.total];
   bag.point.available = [...bag.point.total];
   bag.bomb.available = [...bag.bomb.total];
+  bag.multiplier.available = [...bag.multiplier.total];
 }
 
 export function addOrbsToBag(bag: OrbBag, orbType: OrbType, quantity: number, amount?: number): void {
@@ -93,4 +100,10 @@ export function addOrbsToBag(bag: OrbBag, orbType: OrbType, quantity: number, am
   // Add to both total and available
   bag[orbType].total.push(...newOrbs);
   bag[orbType].available.push(...newOrbs);
+}
+
+export function calculateMultiplierPoints(bag: OrbBag): number {
+  // Count all remaining orbs (excluding the multiplier orb that's about to be consumed)
+  const remainingOrbs = getTotalAvailableOrbs(bag) - 1; // -1 for the multiplier orb itself
+  return remainingOrbs;
 }
