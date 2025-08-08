@@ -9,6 +9,7 @@
   let { gameState }: Props = $props();
   let holdTimeouts: { [key: string]: NodeJS.Timeout | null } = {};
   let progressIntervals: { [key: string]: NodeJS.Timeout | null } = {};
+  let progressDelayTimeouts: { [key: string]: NodeJS.Timeout | null } = {};
   let holdProgress: { [key: string]: number } = $state({});
   let mousePosition = $state({ x: 0, y: 0 });
   let activeHold: string | null = $state(null);
@@ -18,25 +19,29 @@
   }
 
   function handleMouseDown(event: MouseEvent, orbType: 'health' | 'point') {
-    // Clear any existing timeout/interval
+    // Clear any existing timeouts/intervals
     if (holdTimeouts[orbType]) {
       clearTimeout(holdTimeouts[orbType]);
     }
     if (progressIntervals[orbType]) {
       clearInterval(progressIntervals[orbType]);
     }
+    if (progressDelayTimeouts[orbType]) {
+      clearTimeout(progressDelayTimeouts[orbType]);
+    }
     
     // Track mouse position
     mousePosition.x = event.clientX;
     mousePosition.y = event.clientY;
     holdProgress[orbType] = 0;
+    activeHold = null; // Clear any existing progress bar
     
     const startTime = Date.now();
     const duration = 1000; // 1 second
     const progressDelay = 300; // 0.3 second delay before showing progress
     
     // Delay before showing progress bar and starting progress
-    setTimeout(() => {
+    progressDelayTimeouts[orbType] = setTimeout(() => {
       // Only start if we're still holding (timeout hasn't been cleared)
       if (holdTimeouts[orbType]) {
         activeHold = orbType;
@@ -53,6 +58,7 @@
           }
         }, 16);
       }
+      progressDelayTimeouts[orbType] = null;
     }, progressDelay);
     
     // Set timeout for hold-to-buy-all (1 second + delay)
@@ -80,10 +86,14 @@
       }
     }
     
-    // Clean up progress
+    // Clean up all timers and progress
     if (progressIntervals[orbType]) {
       clearInterval(progressIntervals[orbType]);
       progressIntervals[orbType] = null;
+    }
+    if (progressDelayTimeouts[orbType]) {
+      clearTimeout(progressDelayTimeouts[orbType]);
+      progressDelayTimeouts[orbType] = null;
     }
     activeHold = null;
     holdProgress[orbType] = 0;
@@ -95,10 +105,14 @@
       holdTimeouts[orbType] = null;
     }
     
-    // Clean up progress
+    // Clean up all timers and progress
     if (progressIntervals[orbType]) {
       clearInterval(progressIntervals[orbType]);
       progressIntervals[orbType] = null;
+    }
+    if (progressDelayTimeouts[orbType]) {
+      clearTimeout(progressDelayTimeouts[orbType]);
+      progressDelayTimeouts[orbType] = null;
     }
     activeHold = null;
     holdProgress[orbType] = 0;
