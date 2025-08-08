@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { createInitialGameState } from '../game/state.js';
+  import { createInitialGameState, claimFreeRocks, saveMoonrocks } from '../game/state.js';
   import { getLevelMilestone } from '../game/levels.js';
   import StatsDisplay from './StatsDisplay.svelte';
   import BagView from './BagView.svelte';
@@ -8,6 +8,15 @@
 
   let gameState = $state(createInitialGameState());
   
+  function handleClaimRocks() {
+    const newAmount = claimFreeRocks(gameState.playerStats.moonrocks);
+    gameState.playerStats.moonrocks = newAmount;
+  }
+  
+  // Save moonrocks whenever they change
+  $effect(() => {
+    saveMoonrocks(gameState.playerStats.moonrocks);
+  });
   
   const totalAvailableOrbs = $derived(gameState.orbBag.health.available.length + 
                                       gameState.orbBag.point.available.length + 
@@ -15,6 +24,8 @@
                                       gameState.orbBag.points_per_anyorb.available.length + 
                                       gameState.orbBag.points_per_bombpulled.available.length + 
                                       gameState.orbBag.multiplier.available.length);
+  
+  const canClaimRocks = $derived(gameState.playerStats.moonrocks < 100);
   
 </script>
 
@@ -32,6 +43,16 @@
         <div class="text-sm text-gray-600">Moonrocks</div>
         <div class="text-xl font-bold text-blue-600">{gameState.playerStats.moonrocks} 🌙</div>
       </div>
+      {#if canClaimRocks}
+        <div class="mt-2 pt-2 border-t border-gray-200">
+          <button 
+            onclick={handleClaimRocks}
+            class="w-full bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium py-2 px-3 rounded-lg transition-colors"
+          >
+            Claim 1000 Free Rocks!
+          </button>
+        </div>
+      {/if}
     </div>
 
     <!-- Stats - Compact horizontal layout - Only show when game started -->
@@ -89,12 +110,12 @@
       </div>
     {/if}
 
-    <!-- Game Status Info -->
+    <!-- Milestone Progress -->
     {#if gameState.gameStarted}
       <div class="bg-white p-3 rounded-lg shadow-sm border">
         <div class="flex justify-between items-center text-sm">
-          <span class="font-medium">Level {gameState.currentLevel}/5</span>
-          <span class="text-gray-600">Milestone: {getLevelMilestone(gameState.currentLevel)}</span>
+          <span class="font-medium">Points</span>
+          <span class="text-gray-600">{gameState.playerStats.points}/{getLevelMilestone(gameState.currentLevel)}</span>
         </div>
         <div class="mt-1">
           <div class="bg-gray-200 rounded-full h-2">
