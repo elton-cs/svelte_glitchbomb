@@ -58,7 +58,7 @@
       <div class="text-right">
         <span class="text-lg font-bold">{getAvailableOrbCount(gameState.orbBag, 'points_per_anyorb')}</span>
         {#if gameState.orbBag.points_per_anyorb.available.length > 0}
-          <span class="text-sm text-gray-600">(×{getTotalAvailableOrbs(gameState.orbBag) - 1} pts)</span>
+          <span class="text-sm text-gray-600">({gameState.orbBag.points_per_anyorb.available[0].amount}×{getTotalAvailableOrbs(gameState.orbBag) - 1} = {gameState.orbBag.points_per_anyorb.available[0].amount * (getTotalAvailableOrbs(gameState.orbBag) - 1)} pts)</span>
         {/if}
         <span class="text-gray-500">/ {getTotalOrbCount(gameState.orbBag, 'points_per_anyorb')}</span>
       </div>
@@ -69,7 +69,7 @@
       <div class="text-right">
         <span class="text-lg font-bold">{getAvailableOrbCount(gameState.orbBag, 'points_per_bombpulled')}</span>
         {#if gameState.orbBag.points_per_bombpulled.available.length > 0}
-          <span class="text-sm text-gray-600">(×{gameState.playerStats.bombsPulledThisLevel} pts)</span>
+          <span class="text-sm text-gray-600">({gameState.orbBag.points_per_bombpulled.available[0].amount}×{gameState.playerStats.bombsPulledThisLevel} = {gameState.orbBag.points_per_bombpulled.available[0].amount * gameState.playerStats.bombsPulledThisLevel} pts)</span>
         {/if}
         <span class="text-gray-500">/ {getTotalOrbCount(gameState.orbBag, 'points_per_bombpulled')}</span>
       </div>

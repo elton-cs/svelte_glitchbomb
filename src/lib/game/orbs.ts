@@ -29,11 +29,11 @@ export function createInitialBag(): OrbBag {
   ];
   
   const pointsPerAnyOrbOrbs = [
-    createOrb('points_per_anyorb', 1), // Points Per Any Orb
+    createOrb('points_per_anyorb', 2), // 2 Points Per Any Orb
   ];
   
   const pointsPerBombPulledOrbs = [
-    createOrb('points_per_bombpulled', 1), // Points Per Bomb Pulled
+    createOrb('points_per_bombpulled', 3), // 3 Points Per Bomb Pulled
   ];
   
   return {
@@ -113,8 +113,8 @@ export function addOrbsToBag(bag: OrbBag, orbType: OrbType, quantity: number, am
   bag[orbType].available.push(...newOrbs);
 }
 
-export function calculatePointsPerAnyOrbPoints(bag: OrbBag): number {
+export function calculatePointsPerAnyOrbPoints(bag: OrbBag, multiplier: number): number {
   // Count all remaining orbs (excluding the points_per_anyorb orb that's about to be consumed)
   const remainingOrbs = getTotalAvailableOrbs(bag) - 1; // -1 for the points_per_anyorb orb itself
-  return remainingOrbs;
+  return remainingOrbs * multiplier;
 }
