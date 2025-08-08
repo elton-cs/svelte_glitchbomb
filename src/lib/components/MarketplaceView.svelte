@@ -58,7 +58,7 @@
       cost: gameState.marketplace.healthOrbCost,
       icon: '♥',
       color: 'text-red-500',
-      bgColor: 'bg-red-600 hover:bg-red-700',
+      borderColor: 'border-red-500 hover:border-red-700',
       available: true,
       canPurchase: canPurchaseHealth
     },
@@ -69,7 +69,7 @@
       cost: gameState.marketplace.pointOrbCost,
       icon: '★',
       color: 'text-purple-500',
-      bgColor: 'bg-purple-600 hover:bg-purple-700',
+      borderColor: 'border-purple-500 hover:border-purple-700',
       available: true,
       canPurchase: canPurchasePoint
     },
@@ -138,12 +138,12 @@
           onmousedown={item.available ? () => handleMouseDown(item.id as 'health' | 'point') : undefined}
           onmouseup={item.available ? () => handleMouseUp(item.id as 'health' | 'point') : undefined}
           onmouseleave={item.available ? () => handleMouseLeave(item.id as 'health' | 'point') : undefined}
-          class="p-2 rounded font-medium transition-colors select-none flex items-center gap-2 text-left
+          class="p-2 rounded font-medium transition-colors select-none flex items-center gap-2 text-left border-2
                  {item.available && item.canPurchase
-                   ? `${item.bgColor} text-white active:scale-95` 
-                   : 'bg-gray-200 text-gray-500 cursor-not-allowed'}"
+                   ? `${item.borderColor} bg-white active:scale-95` 
+                   : 'bg-gray-200 text-gray-500 cursor-not-allowed border-gray-300'}"
         >
-          <div class="text-lg {item.available && item.canPurchase ? 'text-white' : item.color}">{item.icon}</div>
+          <div class="text-lg {item.color}">{item.icon}</div>
           <div class="flex-1 min-w-0">
             <div class="text-sm font-medium truncate">{item.name}</div>
             <div class="text-xs opacity-75 truncate">{item.description}</div>
