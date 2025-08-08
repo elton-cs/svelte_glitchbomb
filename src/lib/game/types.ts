@@ -81,7 +81,6 @@ export interface GameConfig {
     points_per_bombpulled: number;
     multiplier: number;
   };
-  victoryReward: number;
   maxHealth: number;
   startingOrbs: {
     health: number;

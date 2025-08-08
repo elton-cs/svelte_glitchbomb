@@ -131,7 +131,7 @@ export function completeLevel(gameState: GameState): void {
 
   if (isLastLevel(gameState.currentLevel)) {
     gameState.phase = 'victory';
-    gameState.playerStats.moonrocks += calculateVictoryReward();
+    gameState.playerStats.moonrocks += calculateVictoryReward(gameState.playerStats.points);
   } else {
     gameState.phase = 'marketplace';
     gameState.marketplace.available = true;
