@@ -25,8 +25,9 @@ export function getLevelEntryCost(level: number): number {
   return GAME_CONFIG.levelCosts[level - 1];
 }
 
-export function calculateVictoryReward(): number {
-  return GAME_CONFIG.victoryReward + GAME_CONFIG.levelMilestones[GAME_CONFIG.levelMilestones.length - 1];
+export function calculateVictoryReward(points: number): number {
+  // Auto-convert points to moonrocks (1:1 ratio) instead of fixed reward
+  return points;
 }
 
 export function validatePurchase(cheddah: number, cost: number): boolean {

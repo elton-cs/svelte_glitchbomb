@@ -2,6 +2,32 @@ import type { GameState, OrbBag, PlayerStats, MarketplaceState } from './types.j
 import { GAME_CONFIG } from './constants.js';
 import { createInitialBag } from './orbs.js';
 
+// LocalStorage utilities for moonrocks persistence
+const MOONROCKS_STORAGE_KEY = 'glitchbomb_moonrocks';
+
+export function loadMoonrocks(): number {
+  if (typeof localStorage === 'undefined') return GAME_CONFIG.initialMoonrocks;
+  
+  const stored = localStorage.getItem(MOONROCKS_STORAGE_KEY);
+  if (stored === null) return GAME_CONFIG.initialMoonrocks;
+  
+  const parsed = parseInt(stored, 10);
+  return isNaN(parsed) ? GAME_CONFIG.initialMoonrocks : parsed;
+}
+
+export function saveMoonrocks(amount: number): void {
+  if (typeof localStorage === 'undefined') return;
+  localStorage.setItem(MOONROCKS_STORAGE_KEY, amount.toString());
+}
+
+export function claimFreeRocks(currentAmount: number): number {
+  if (currentAmount >= 100) return currentAmount;
+  
+  const newAmount = currentAmount + 1000;
+  saveMoonrocks(newAmount);
+  return newAmount;
+}
+
 function createInitialOrbBag(): OrbBag {
   return createInitialBag();
 }
@@ -25,7 +51,7 @@ function createInitialMarketplaceState(): MarketplaceState {
   };
 }
 
-export function createInitialGameState(moonrocks: number = GAME_CONFIG.initialMoonrocks): GameState {
+export function createInitialGameState(moonrocks: number = loadMoonrocks()): GameState {
   return {
     phase: 'menu',
     currentLevel: 1,

@@ -17,7 +17,7 @@
 </script>
 
 <div class="bg-gray-100 p-4 rounded border">
-  <h2 class="text-lg font-bold mb-3">Orb Bag</h2>
+  <h2 class="text-sm font-bold mb-3">Orb Bag</h2>
   
   <div class="space-y-3 mb-4">
     <div class="flex justify-between items-center {getAvailableOrbCount(gameState.orbBag, 'health') === 0 ? 'opacity-50' : ''}">
@@ -101,7 +101,7 @@
                ? 'bg-blue-600 text-white hover:bg-blue-700' 
                : 'bg-gray-300 text-gray-500 cursor-not-allowed'}"
     >
-      {canPullOrb ? 'Pull Orb' : 'Cannot Pull Orb'}
+      {canPullOrb ? 'PULL ORB' : 'CANNOT PULL ORB'}
     </button>
   </div>
 </div>

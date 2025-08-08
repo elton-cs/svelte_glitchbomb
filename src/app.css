@@ -1,1 +1,64 @@
 @import "tailwindcss";
+
+/* Minimal Black & White Theme */
+body {
+  @apply bg-black text-white font-mono;
+}
+
+/* Remove default button styles and add minimal styling */
+button {
+  @apply border border-white bg-transparent text-white hover:bg-white hover:text-black transition-colors duration-200;
+}
+
+button:disabled {
+  @apply border-gray-600 text-gray-600 hover:bg-transparent hover:text-gray-600;
+}
+
+/* Override bright colors with minimal palette - except for orb bag display */
+.text-red-600 { @apply text-white; }
+.text-green-600 { @apply text-white; }
+.text-blue-600 { @apply text-white; }
+.text-purple-600 { @apply text-white; }
+.text-orange-600 { @apply text-white; }
+.text-yellow-600 { @apply text-white; }
+
+/* Allow original colors for orb bag display and progress bars */
+.text-red-500 { @apply text-red-500; }
+.text-purple-500 { @apply text-purple-500; }
+.text-orange-500 { @apply text-orange-500; }
+.text-blue-500 { @apply text-blue-500; }
+.text-yellow-500 { @apply text-yellow-500; }
+
+/* Allow progress bar colors */
+.bg-red-500 { @apply bg-red-500; }
+.bg-green-500 { @apply bg-green-500; }
+.bg-purple-500 { @apply bg-purple-500; }
+.text-gray-600 { @apply text-gray-400; }
+.text-gray-800 { @apply text-white; }
+
+/* Background overrides */
+.bg-gray-50, .bg-gray-100 { @apply bg-black border border-white; }
+.bg-white { @apply bg-black border border-white; }
+.bg-red-50, .bg-blue-50 { @apply bg-gray-900 border border-gray-700; }
+.bg-red-100 { @apply bg-gray-900; }
+
+/* Button color overrides */
+.bg-yellow-600, .bg-yellow-700 { @apply bg-white text-black; }
+.bg-green-600, .bg-green-700 { @apply bg-white text-black; }
+.bg-gray-600, .bg-gray-700 { @apply bg-white text-black; }
+.bg-blue-600, .bg-blue-700 { @apply bg-white text-black; }
+.bg-red-600, .bg-red-700 { @apply bg-white text-black; }
+
+/* Progress bar overrides */
+.bg-gray-200 { @apply bg-gray-800; }
+.bg-red-600 { @apply bg-white; }
+.bg-purple-600 { @apply bg-white; }
+
+/* Border overrides */
+.border-red-200, .border-red-300 { @apply border-gray-700; }
+.border-blue-200 { @apply border-gray-700; }
+.border-gray-200, .border-gray-300 { @apply border-gray-700; }
+
+/* Accent colors - keep minimal color for critical elements */
+.text-red-600.font-medium, .text-red-800 { @apply text-red-400; }
+.text-blue-800, .text-blue-700 { @apply text-blue-400; }
