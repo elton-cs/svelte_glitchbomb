@@ -1,6 +1,6 @@
 import { resetLevelStats } from './state.js';
 import type { GameState } from './types.js';
-import { pullRandomOrb, resetConsumedOrbs, addOrbsToBag, calculatePointsPerAnyOrbPoints } from './orbs.js';
+import { pullRandomOrb, resetConsumedOrbs, addOrbsToBag, calculatePointsPerAnyOrbPoints, createInitialBag } from './orbs.js';
 import { 
   canAffordLevel, 
   calculateCashOut, 
@@ -146,6 +146,9 @@ export function cashOutMidLevel(gameState: GameState): number {
   gameState.phase = 'menu';
   gameState.gameStarted = false;
   
+  // Reset orb bag to initial state (lose all purchased orbs)
+  gameState.orbBag = createInitialBag();
+  
   return cashOut;
 }
 
@@ -154,6 +157,9 @@ export function cashOutPostLevel(gameState: GameState): number {
   gameState.playerStats.moonrocks += points;
   gameState.phase = 'menu';
   gameState.gameStarted = false;
+  
+  // Reset orb bag to initial state (lose all purchased orbs)
+  gameState.orbBag = createInitialBag();
   
   return points;
 }
@@ -205,4 +211,7 @@ export function returnToMenu(gameState: GameState): void {
   gameState.gameStarted = false;
   gameState.levelCompleted = false;
   gameState.marketplace.available = false;
+  
+  // Reset orb bag to initial state (lose all purchased orbs)
+  gameState.orbBag = createInitialBag();
 }
