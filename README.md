@@ -1,47 +1,75 @@
-# Svelte + TS + Vite
+# Glitch Bomb
 
-This template should help get you started developing with Svelte and TypeScript in Vite.
+A bag-building, luck-based game built with Svelte 5 and TypeScript. Manage your orb collection, survive bomb draws, and progress through increasingly challenging levels to earn moonrocks.
 
-## Recommended IDE Setup
+## Game Overview
 
-[VS Code](https://code.visualstudio.com/) + [Svelte](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode).
+Glitch Bomb is a strategic luck game where you pull orbs from a bag to score points and reach level milestones. Balance risk and reward as you decide when to cash out your progress or push forward for bigger payouts.
 
-## Need an official Svelte framework?
+## Core Game Features
 
-Check out [SvelteKit](https://github.com/sveltejs/kit#readme), which is also powered by Vite. Deploy anywhere with its serverless-first approach and adapt to various platforms, with out of the box support for TypeScript, SCSS, and Less, and easily-added support for mdsvex, GraphQL, PostCSS, Tailwind CSS, and more.
+### 🎯 **Orb Bag System**
+- Start with 15 orbs (5 Health, 5 Point, 5 Bomb)
+- Pull random orbs with different effects
+- Track available vs consumed orbs
+- Advanced orb types with special mechanics
 
-## Technical considerations
+### 🏆 **Level Progression** 
+- 5 levels with increasing difficulty
+- Progressive point milestones: 10 → 20 → 30 → 40 → 50
+- Entry costs increase per level [0, 15, 25, 35, 45 moonrocks]
+- Level multipliers affect scoring
 
-**Why use this over SvelteKit?**
+### 💰 **Economic System**
+- Start with 1000 moonrocks (session-based)
+- Game entry costs 5 moonrocks
+- Cash out mid-level or after completion
+- Victory rewards up to 150 total moonrocks
 
-- It brings its own routing solution which might not be preferable for some users.
-- It is first and foremost a framework that just happens to use Vite under the hood, not a Vite app.
+### 🛒 **Marketplace**
+- Buy Health Orbs (30 moonrocks) 
+- Buy Point Orbs (20 moonrocks)
+- Available between levels
+- Strategic orb management
 
-This template contains as little as possible to get started with Vite + TypeScript + Svelte, while taking into account the developer experience with regards to HMR and intellisense. It demonstrates capabilities on par with the other `create-vite` templates and is a good starting point for beginners dipping their toes into a Vite + Svelte project.
+### 📊 **Game States & UI**
+- Single-page dashboard with real-time stats
+- Health and progress tracking
+- Visual orb bag display
+- Confirmation dialogs for major decisions
 
-Should you later need the extended capabilities and extensibility provided by SvelteKit, the template has been structured similarly to SvelteKit so that it is easy to migrate.
+## Orb Types
 
-**Why `global.d.ts` instead of `compilerOptions.types` inside `jsconfig.json` or `tsconfig.json`?**
+- **Health Orbs** ♥: Restore 1-3 health points
+- **Point Orbs** ★: Award 3-7 points toward milestones  
+- **Bomb Orbs** 💥: Deal 1-3 damage, end turn
+- **Points Per Any Orb** ⚡: Bonus points for each orb pulled
+- **Points Per Bomb Pulled** 🎯: Bonus points for bomb count this level
+- **Multiplier Orbs** ⭐: Increase level scoring multiplier
 
-Setting `compilerOptions.types` shuts out all other types not explicitly listed in the configuration. Using triple-slash references keeps the default TypeScript setting of accepting type information from the entire workspace, while also adding `svelte` and `vite/client` type information.
+## Tech Stack
 
-**Why include `.vscode/extensions.json`?**
+- **Frontend**: Svelte 5 with TypeScript
+- **Styling**: Tailwind CSS v4
+- **Build**: Vite
+- **State**: Reactive runes-based state management
 
-Other templates indirectly recommend extensions via the README, but this file allows VS Code to prompt the user to install the recommended extension upon opening the project.
+## Development
 
-**Why enable `allowJs` in the TS template?**
+```bash
+npm run dev      # Start development server  
+npm run build    # Build for production
+npm run preview  # Preview production build
+npm run check    # Type checking
+```
 
-While `allowJs: false` would indeed prevent the use of `.js` files in the project, it does not prevent the use of JavaScript syntax in `.svelte` files. In addition, it would force `checkJs: false`, bringing the worst of both worlds: not being able to guarantee the entire codebase is TypeScript, and also having worse typechecking for the existing JavaScript. In addition, there are valid use cases in which a mixed codebase may be relevant.
+## Project Structure
 
-**Why is HMR not preserving my local component state?**
-
-HMR state preservation comes with a number of gotchas! It has been disabled by default in both `svelte-hmr` and `@sveltejs/vite-plugin-svelte` due to its often surprising behavior. You can read the details [here](https://github.com/rixo/svelte-hmr#svelte-hmr).
-
-If you have state that's important to retain within a component, consider creating an external store which would not be replaced by HMR.
-
-```ts
-// store.ts
-// An extremely simple external store
-import { writable } from 'svelte/store'
-export default writable(0)
+```
+src/
+├── lib/
+│   ├── components/     # UI components
+│   ├── game/          # Core game logic
+│   └── utils/         # Utility functions
+└── assets/            # Static assets
 ```
