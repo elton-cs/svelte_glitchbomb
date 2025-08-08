@@ -16,8 +16,8 @@ export const GAME_CONFIG: GameConfig = {
   victoryReward: 100,
   maxHealth: 5,
   startingOrbs: {
-    health: 5,
-    point: 5,
+    health: 1,
+    point: 3,
     bomb: 5,
   },
 };

@@ -9,11 +9,24 @@ export function createOrb(type: OrbType, amount?: number): Orb {
 }
 
 export function createInitialBag(): OrbBag {
-  const { startingOrbs } = GAME_CONFIG;
+  // Create specific orbs as per specification
+  const bombOrbs = [
+    createOrb('bomb', 1),  // Bomb
+    createOrb('bomb', 1),  // Bomb  
+    createOrb('bomb', 2),  // Double Bomb
+    createOrb('bomb', 2),  // Double Bomb
+    createOrb('bomb', 3),  // Triple Bomb
+  ];
   
-  const healthOrbs = Array(startingOrbs.health).fill(null).map(() => createOrb('health'));
-  const pointOrbs = Array(startingOrbs.point).fill(null).map(() => createOrb('point'));
-  const bombOrbs = Array(startingOrbs.bomb).fill(null).map(() => createOrb('bomb'));
+  const pointOrbs = [
+    createOrb('point', 5), // Points 5
+    createOrb('point', 5), // Points 5
+    createOrb('point', 5), // Points 5
+  ];
+  
+  const healthOrbs = [
+    createOrb('health', 1), // Health 1
+  ];
   
   return {
     health: {
