@@ -36,6 +36,7 @@ export interface PlayerStats {
   health: number;
   points: number;
   bombsPulledThisLevel: number;
+  levelMultiplier: number;
 }
 
 export interface LevelConfig {

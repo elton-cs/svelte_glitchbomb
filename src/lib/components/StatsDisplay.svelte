@@ -13,7 +13,7 @@
 <div class="bg-gray-100 p-4 rounded border">
   <h2 class="text-lg font-bold mb-3">Game Stats</h2>
   
-  <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+  <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-4">
     <div class="text-center">
       <div class="text-2xl font-bold text-blue-600">{gameState.playerStats.moonrocks}</div>
       <div class="text-sm text-gray-600">Moonrocks</div>
@@ -32,6 +32,11 @@
     <div class="text-center">
       <div class="text-2xl font-bold text-purple-600">{gameState.playerStats.points}</div>
       <div class="text-sm text-gray-600">Points</div>
+    </div>
+    
+    <div class="text-center">
+      <div class="text-2xl font-bold text-orange-600">{gameState.playerStats.levelMultiplier}×</div>
+      <div class="text-sm text-gray-600">Multiplier</div>
     </div>
   </div>
   

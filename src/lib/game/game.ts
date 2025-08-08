@@ -18,6 +18,11 @@ import {
 import { GAME_CONFIG } from './constants.js';
 import type { OrbType } from './types.js';
 
+function applyPointsWithMultiplier(gameState: GameState, basePoints: number): void {
+  const multipliedPoints = Math.floor(basePoints * gameState.playerStats.levelMultiplier);
+  gameState.playerStats.points += multipliedPoints;
+}
+
 export function startNewGame(gameState: GameState): boolean {
   try {
     return enterLevel(gameState, 1);
@@ -83,7 +88,7 @@ export function pullOrb(gameState: GameState): boolean {
         );
         break;
       case 'point':
-        gameState.playerStats.points += orb.amount;
+        applyPointsWithMultiplier(gameState, orb.amount);
         break;
       case 'bomb':
         gameState.playerStats.health = Math.max(0, gameState.playerStats.health - orb.amount);
@@ -91,11 +96,11 @@ export function pullOrb(gameState: GameState): boolean {
         break;
       case 'points_per_anyorb':
         const pointsPerAnyOrbPoints = calculatePointsPerAnyOrbPoints(gameState.orbBag, orb.amount);
-        gameState.playerStats.points += pointsPerAnyOrbPoints;
+        applyPointsWithMultiplier(gameState, pointsPerAnyOrbPoints);
         break;
       case 'points_per_bombpulled':
         const bombPoints = gameState.playerStats.bombsPulledThisLevel * orb.amount;
-        gameState.playerStats.points += bombPoints;
+        applyPointsWithMultiplier(gameState, bombPoints);
         break;
     }
 

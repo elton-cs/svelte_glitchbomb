@@ -13,6 +13,7 @@ function createInitialPlayerStats(moonrocks: number): PlayerStats {
     health: GAME_CONFIG.maxHealth,
     points: 0,
     bombsPulledThisLevel: 0,
+    levelMultiplier: 1.0,
   };
 }
 
@@ -40,6 +41,7 @@ export function resetLevelStats(state: GameState): void {
   state.playerStats.health = GAME_CONFIG.maxHealth;
   state.playerStats.points = 0;
   state.playerStats.bombsPulledThisLevel = 0;
+  state.playerStats.levelMultiplier = 1.0;
 }
 
 export function resetGameSession(state: GameState, moonrocks: number): void {
