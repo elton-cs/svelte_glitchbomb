@@ -3,39 +3,39 @@
 ## Phase 1: Core Foundation
 
 ### 1. Data Layer Setup
-- [ ] Create `src/lib/game/types.ts` - Define all TypeScript interfaces
+- [x] Create `src/lib/game/types.ts` - Define all TypeScript interfaces
   - GameState, PlayerStats, OrbBag, LevelConfig, MarketplaceState
   - Orb types (Health, Point, Bomb), GamePhase enum
-- [ ] Create `src/lib/game/constants.ts` - Game configuration constants
+- [x] Create `src/lib/game/constants.ts` - Game configuration constants
   - Level milestones [10,20,30,40,50], level costs [0,15,25,35,45]
   - Starting values, orb costs, victory rewards
-- [ ] Create `src/lib/game/state.ts` - Reactive state management
+- [x] Create `src/lib/game/state.ts` - Reactive state management
   - Global game state with Svelte runes
   - State initialization and reset functions
 
 ### 2. Core Game Logic
-- [ ] Create `src/lib/game/orbs.ts` - Orb system logic
+- [x] Create `src/lib/game/orbs.ts` - Orb system logic
   - `createInitialBag()` - Generate starting orb bag (5/5/5)
   - `pullRandomOrb(bag)` - Random orb selection and consumption
   - `resetConsumedOrbs(bag)` - Level reset functionality
   - `addOrbsToBag(bag, orbs)` - Marketplace purchases
-- [ ] Create `src/lib/game/economics.ts` - Economic calculations
+- [x] Create `src/lib/game/economics.ts` - Economic calculations
   - `canAffordGame(moonrocks)` - Validate game entry
   - `canAffordLevel(moonrocks, level)` - Validate level entry  
   - `calculateCashOut(points, levelCost)` - Cash-out calculations
   - `processLevelReward(points)` - Convert points to cheddah
-- [ ] Create `src/lib/game/levels.ts` - Level management
+- [x] Create `src/lib/game/levels.ts` - Level management
   - `getLevelMilestone(level)` - Get point requirements
   - `getLevelCost(level)` - Get moonrock costs
   - `checkLevelComplete(points, level)` - Victory condition
   - `checkGameOver(health, orbs)` - Failure conditions
 
 ### 3. Utility Functions  
-- [ ] Create `src/lib/utils/random.ts` - Deterministic randomization
+- [x] Create `src/lib/utils/random.ts` - Deterministic randomization
   - `getRandomOrbFromBag(bag)` - Weighted random selection
-- [ ] Create `src/lib/utils/validation.ts` - Input validation
+- [x] Create `src/lib/utils/validation.ts` - Input validation
   - `validatePurchase(cheddah, cost)` - Marketplace validation
-- [ ] Create `src/lib/game/persistence.ts` - Data persistence
+- [x] Create `src/lib/game/persistence.ts` - Data persistence
   - `saveMoonrocks(amount)` - Local storage save
   - `loadMoonrocks()` - Local storage load with fallback to 100
 
