@@ -43,14 +43,8 @@
             <div class="text-gray-600">Cheddah</div>
           </div>
           <div>
-            <div class="text-lg font-bold text-red-600">{gameState.playerStats.health}/5</div>
+            <div class="text-lg font-bold text-red-600">{gameState.playerStats.health}</div>
             <div class="text-gray-600">HP</div>
-            <div class="bg-gray-200 rounded-full h-1 mt-1">
-              <div 
-                class="bg-red-600 h-1 rounded-full transition-all duration-300"
-                style="width: {(gameState.playerStats.health / 5) * 100}%"
-              ></div>
-            </div>
           </div>
         </div>
         <div class="grid grid-cols-2 gap-2 text-center text-xs">
@@ -63,6 +57,27 @@
             <div class="text-gray-600">Mult</div>
           </div>
         </div>
+      </div>
+    {/if}
+
+    <!-- Health Status - Show when game started -->
+    {#if gameState.gameStarted}
+      <div class="bg-white p-3 rounded-lg shadow-sm border">
+        <div class="flex justify-between items-center text-sm">
+          <span class="font-medium">Health</span>
+          <span class="text-gray-600">{gameState.playerStats.health}/5</span>
+        </div>
+        <div class="mt-1">
+          <div class="bg-gray-200 rounded-full h-2">
+            <div 
+              class="bg-red-600 h-2 rounded-full transition-all duration-300"
+              style="width: {(gameState.playerStats.health / 5) * 100}%"
+            ></div>
+          </div>
+        </div>
+        {#if gameState.playerStats.health <= 2}
+          <p class="text-red-600 font-medium text-xs mt-1">⚠️ Low health!</p>
+        {/if}
       </div>
     {/if}
 
