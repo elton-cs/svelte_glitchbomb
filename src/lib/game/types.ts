@@ -8,9 +8,18 @@ export interface Orb {
 }
 
 export interface OrbBag {
-  health: Orb[];
-  point: Orb[];
-  bomb: Orb[];
+  health: {
+    available: Orb[];
+    total: Orb[];
+  };
+  point: {
+    available: Orb[];
+    total: Orb[];
+  };
+  bomb: {
+    available: Orb[];
+    total: Orb[];
+  };
 }
 
 export interface PlayerStats {

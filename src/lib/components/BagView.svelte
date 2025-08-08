@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { getTotalAvailableOrbs, getAvailableOrbCount } from '../game/orbs.js';
+  import { getTotalAvailableOrbs, getAvailableOrbCount, getTotalOrbCount } from '../game/orbs.js';
   import { pullOrb } from '../game/game.js';
   import type { GameState } from '../game/types.js';
 
@@ -24,9 +24,10 @@
       <span class="font-medium text-red-500">Health Orbs:</span>
       <div class="text-right">
         <span class="text-lg font-bold">{getAvailableOrbCount(gameState.orbBag, 'health')}</span>
-        {#if gameState.orbBag.health.length > 0}
-          <span class="text-sm text-gray-600">({gameState.orbBag.health.map(orb => `+${orb.amount}`).join(', ')})</span>
+        {#if gameState.orbBag.health.available.length > 0}
+          <span class="text-sm text-gray-600">({gameState.orbBag.health.available.map(orb => `+${orb.amount}`).join(', ')})</span>
         {/if}
+        <span class="text-gray-500">/ {getTotalOrbCount(gameState.orbBag, 'health')}</span>
       </div>
     </div>
     
@@ -34,9 +35,10 @@
       <span class="font-medium text-purple-500">Point Orbs:</span>
       <div class="text-right">
         <span class="text-lg font-bold">{getAvailableOrbCount(gameState.orbBag, 'point')}</span>
-        {#if gameState.orbBag.point.length > 0}
-          <span class="text-sm text-gray-600">({gameState.orbBag.point.map(orb => `+${orb.amount}`).join(', ')})</span>
+        {#if gameState.orbBag.point.available.length > 0}
+          <span class="text-sm text-gray-600">({gameState.orbBag.point.available.map(orb => `+${orb.amount}`).join(', ')})</span>
         {/if}
+        <span class="text-gray-500">/ {getTotalOrbCount(gameState.orbBag, 'point')}</span>
       </div>
     </div>
     
@@ -44,9 +46,10 @@
       <span class="font-medium text-orange-500">Bomb Orbs:</span>
       <div class="text-right">
         <span class="text-lg font-bold">{getAvailableOrbCount(gameState.orbBag, 'bomb')}</span>
-        {#if gameState.orbBag.bomb.length > 0}
-          <span class="text-sm text-gray-600">({gameState.orbBag.bomb.map(orb => `-${orb.amount}`).join(', ')})</span>
+        {#if gameState.orbBag.bomb.available.length > 0}
+          <span class="text-sm text-gray-600">({gameState.orbBag.bomb.available.map(orb => `-${orb.amount}`).join(', ')})</span>
         {/if}
+        <span class="text-gray-500">/ {getTotalOrbCount(gameState.orbBag, 'bomb')}</span>
       </div>
     </div>
   </div>
