@@ -1,12 +1,14 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { gameState, createInitialGameState } from '../game/state.js';
+  import { createInitialGameState } from '../game/state.js';
   import { loadMoonrocks } from '../game/persistence.js';
   import { getLevelMilestone } from '../game/levels.js';
   import StatsDisplay from './StatsDisplay.svelte';
   import BagView from './BagView.svelte';
   import ActionsPanel from './ActionsPanel.svelte';
   import MarketplaceView from './MarketplaceView.svelte';
+
+  let gameState = $state(createInitialGameState());
 
   onMount(() => {
     const savedMoonrocks = loadMoonrocks();
@@ -25,13 +27,13 @@
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
       <!-- Left Column: Stats & Bag -->
       <div class="space-y-6">
-        <StatsDisplay />
-        <BagView />
+        <StatsDisplay {gameState} />
+        <BagView {gameState} />
       </div>
       
       <!-- Center Column: Marketplace & Game Info -->
       <div class="space-y-6">
-        <MarketplaceView />
+        <MarketplaceView {gameState} />
         
         {#if gameState.phase === 'menu'}
           <div class="bg-blue-50 p-4 rounded border border-blue-200">
@@ -63,7 +65,7 @@
       
       <!-- Right Column: Actions -->
       <div>
-        <ActionsPanel />
+        <ActionsPanel {gameState} />
       </div>
     </div>
   </div>

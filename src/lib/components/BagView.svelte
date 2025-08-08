@@ -1,13 +1,19 @@
 <script lang="ts">
-  import { gameState } from '../game/state.js';
-  import { pullOrb } from '../game/game.js';
   import { getTotalAvailableOrbs } from '../game/orbs.js';
+  import { pullOrb } from '../game/game.js';
+  import type { GameState } from '../game/types.js';
 
-  function handlePullOrb() {
-    pullOrb();
+  interface Props {
+    gameState: GameState;
   }
 
-  $: canPullOrb = gameState.phase === 'level' && getTotalAvailableOrbs(gameState.orbBag) > 0;
+  let { gameState }: Props = $props();
+
+  function handlePullOrb() {
+    pullOrb(gameState);
+  }
+
+  const canPullOrb = $derived(gameState.phase === 'level' && getTotalAvailableOrbs(gameState.orbBag) > 0);
 </script>
 
 <div class="bg-gray-100 p-4 rounded border">

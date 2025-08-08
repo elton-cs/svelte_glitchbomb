@@ -1,7 +1,13 @@
 <script lang="ts">
-  import { gameState } from '../game/state.js';
   import { getLevelMilestone } from '../game/levels.js';
   import { getPhaseDisplayName } from '../game/gameStates.js';
+  import type { GameState } from '../game/types.js';
+
+  interface Props {
+    gameState: GameState;
+  }
+
+  let { gameState }: Props = $props();
 </script>
 
 <div class="bg-gray-100 p-4 rounded border">

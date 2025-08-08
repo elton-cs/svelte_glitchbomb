@@ -1,4 +1,5 @@
-import { gameState, resetLevelStats } from './state.js';
+import { resetLevelStats } from './state.js';
+import type { GameState } from './types.js';
 import { pullRandomOrb, resetConsumedOrbs, addOrbsToBag } from './orbs.js';
 import { 
   canAffordGame, 
@@ -19,7 +20,7 @@ import { saveMoonrocks } from './persistence.js';
 import { GAME_CONFIG } from './constants.js';
 import type { OrbType } from './types.js';
 
-export function startNewGame(): boolean {
+export function startNewGame(gameState: GameState): boolean {
   try {
     if (!canAffordGame(gameState.playerStats.moonrocks)) {
       console.warn('Cannot afford to start game');
@@ -42,7 +43,7 @@ export function startNewGame(): boolean {
   }
 }
 
-export function enterLevel(level: number): boolean {
+export function enterLevel(gameState: GameState, level: number): boolean {
   try {
     if (level < 1 || level > 5) {
       console.warn('Invalid level:', level);
@@ -72,7 +73,7 @@ export function enterLevel(level: number): boolean {
   }
 }
 
-export function pullOrb(): boolean {
+export function pullOrb(gameState: GameState): boolean {
   try {
     if (gameState.phase !== 'level') {
       console.warn('Cannot pull orb - not in level phase');
@@ -112,7 +113,7 @@ export function pullOrb(): boolean {
     }
 
     if (checkLevelComplete(gameState.playerStats.points, gameState.currentLevel)) {
-      completeLevel();
+      completeLevel(gameState);
     }
 
     return true;
@@ -122,7 +123,7 @@ export function pullOrb(): boolean {
   }
 }
 
-export function completeLevel(): void {
+export function completeLevel(gameState: GameState): void {
   gameState.levelCompleted = true;
   gameState.playerStats.cheddah = processLevelReward(gameState.playerStats.points);
 
@@ -136,7 +137,7 @@ export function completeLevel(): void {
   }
 }
 
-export function cashOutMidLevel(): number {
+export function cashOutMidLevel(gameState: GameState): number {
   const levelCost = getLevelEntryCost(gameState.currentLevel);
   const cashOut = calculateCashOut(gameState.playerStats.points, levelCost);
   
@@ -148,7 +149,7 @@ export function cashOutMidLevel(): number {
   return cashOut;
 }
 
-export function cashOutPostLevel(): number {
+export function cashOutPostLevel(gameState: GameState): number {
   const points = gameState.playerStats.points;
   gameState.playerStats.moonrocks += points;
   gameState.phase = 'menu';
@@ -158,14 +159,14 @@ export function cashOutPostLevel(): number {
   return points;
 }
 
-export function enterMarketplace(): void {
+export function enterMarketplace(gameState: GameState): void {
   if (gameState.levelCompleted) {
     gameState.phase = 'marketplace';
     gameState.marketplace.available = true;
   }
 }
 
-export function purchaseOrb(type: OrbType, quantity: number = 1): boolean {
+export function purchaseOrb(gameState: GameState, type: OrbType, quantity: number = 1): boolean {
   if (gameState.phase !== 'marketplace' || !gameState.marketplace.available) {
     return false;
   }
@@ -188,7 +189,7 @@ export function purchaseOrb(type: OrbType, quantity: number = 1): boolean {
   return true;
 }
 
-export function proceedToNextLevel(): boolean {
+export function proceedToNextLevel(gameState: GameState): boolean {
   if (gameState.phase !== 'marketplace') {
     return false;
   }
@@ -197,10 +198,10 @@ export function proceedToNextLevel(): boolean {
   gameState.playerStats.cheddah = 0;
   gameState.marketplace.available = false;
   
-  return enterLevel(nextLevel);
+  return enterLevel(gameState, nextLevel);
 }
 
-export function returnToMenu(): void {
+export function returnToMenu(gameState: GameState): void {
   gameState.phase = 'menu';
   gameState.gameStarted = false;
   gameState.levelCompleted = false;

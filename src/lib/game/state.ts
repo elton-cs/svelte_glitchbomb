@@ -62,6 +62,5 @@ export function resetGameSession(state: GameState, moonrocks: number): void {
   Object.assign(state, newState);
 }
 
-let gameState = $state(createInitialGameState());
-
-export { gameState };
+// Global game state - will be initialized in GameDashboard component
+export let gameState: GameState;

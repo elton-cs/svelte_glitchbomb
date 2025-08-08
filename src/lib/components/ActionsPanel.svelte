@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { gameState } from '../game/state.js';
   import { 
     startNewGame, 
     cashOutMidLevel, 
@@ -10,38 +9,45 @@
   import { canAffordGame, canAffordLevel, getLevelEntryCost } from '../game/economics.js';
   import { GAME_CONFIG } from '../game/constants.js';
   import { isLastLevel, getNextLevel } from '../game/levels.js';
+  import type { GameState } from '../game/types.js';
+
+  interface Props {
+    gameState: GameState;
+  }
+
+  let { gameState }: Props = $props();
 
   function handleStartGame() {
-    startNewGame();
+    startNewGame(gameState);
   }
 
   function handleCashOutMidLevel() {
     if (confirm(`Cash out ${gameState.playerStats.points} points for moonrocks? You'll lose progress and moonrocks spent on this level.`)) {
-      const amount = cashOutMidLevel();
+      const amount = cashOutMidLevel(gameState);
     }
   }
 
   function handleCashOutPostLevel() {
     if (confirm(`Cash out ${gameState.playerStats.points} points for moonrocks and end the game?`)) {
-      const amount = cashOutPostLevel();
+      const amount = cashOutPostLevel(gameState);
     }
   }
 
   function handleProceedToNext() {
-    proceedToNextLevel();
+    proceedToNextLevel(gameState);
   }
 
   function handleReturnToMenu() {
-    returnToMenu();
+    returnToMenu(gameState);
   }
 
-  $: canStartGame = gameState.phase === 'menu' && canAffordGame(gameState.playerStats.moonrocks);
-  $: canCashOutMid = gameState.phase === 'level' && gameState.gameStarted;
-  $: canCashOutPost = gameState.phase === 'marketplace' && gameState.levelCompleted;
-  $: canProceed = gameState.phase === 'marketplace' && 
+  const canStartGame = $derived(gameState.phase === 'menu' && canAffordGame(gameState.playerStats.moonrocks));
+  const canCashOutMid = $derived(gameState.phase === 'level' && gameState.gameStarted);
+  const canCashOutPost = $derived(gameState.phase === 'marketplace' && gameState.levelCompleted);
+  const canProceed = $derived(gameState.phase === 'marketplace' && 
     !isLastLevel(gameState.currentLevel) && 
-    canAffordLevel(gameState.playerStats.moonrocks, getNextLevel(gameState.currentLevel));
-  $: nextLevelCost = getLevelEntryCost(getNextLevel(gameState.currentLevel));
+    canAffordLevel(gameState.playerStats.moonrocks, getNextLevel(gameState.currentLevel)));
+  const nextLevelCost = $derived(getLevelEntryCost(getNextLevel(gameState.currentLevel)));
 </script>
 
 <div class="bg-gray-100 p-4 rounded border">

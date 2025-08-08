@@ -1,26 +1,31 @@
 <script lang="ts">
-  import { gameState } from '../game/state.js';
   import { purchaseOrb } from '../game/game.js';
+  import type { GameState } from '../game/types.js';
 
-  let healthQuantity = 1;
-  let pointQuantity = 1;
+  interface Props {
+    gameState: GameState;
+  }
+
+  let { gameState }: Props = $props();
+  let healthQuantity = $state(1);
+  let pointQuantity = $state(1);
 
   function handlePurchaseHealth() {
-    if (purchaseOrb('health', healthQuantity)) {
+    if (purchaseOrb(gameState, 'health', healthQuantity)) {
       healthQuantity = 1;
     }
   }
 
   function handlePurchasePoint() {
-    if (purchaseOrb('point', pointQuantity)) {
+    if (purchaseOrb(gameState, 'point', pointQuantity)) {
       pointQuantity = 1;
     }
   }
 
-  $: canPurchaseHealth = gameState.playerStats.cheddah >= gameState.marketplace.healthOrbCost * healthQuantity;
-  $: canPurchasePoint = gameState.playerStats.cheddah >= gameState.marketplace.pointOrbCost * pointQuantity;
-  $: maxHealthQuantity = Math.floor(gameState.playerStats.cheddah / gameState.marketplace.healthOrbCost);
-  $: maxPointQuantity = Math.floor(gameState.playerStats.cheddah / gameState.marketplace.pointOrbCost);
+  const canPurchaseHealth = $derived(gameState.playerStats.cheddah >= gameState.marketplace.healthOrbCost * healthQuantity);
+  const canPurchasePoint = $derived(gameState.playerStats.cheddah >= gameState.marketplace.pointOrbCost * pointQuantity);
+  const maxHealthQuantity = $derived(Math.floor(gameState.playerStats.cheddah / gameState.marketplace.healthOrbCost));
+  const maxPointQuantity = $derived(Math.floor(gameState.playerStats.cheddah / gameState.marketplace.pointOrbCost));
 </script>
 
 {#if gameState.phase === 'marketplace' && gameState.marketplace.available}
