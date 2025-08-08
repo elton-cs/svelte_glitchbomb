@@ -125,7 +125,7 @@
   const marketItems = $derived([
     {
       id: 'health',
-      name: 'Health',
+      name: 'HEALTH',
       description: '+1 HP',
       cost: gameState.marketplace.healthOrbCost,
       icon: '♥',
@@ -136,8 +136,8 @@
     },
     {
       id: 'point',
-      name: 'Point',
-      description: '+5 pts',
+      name: 'POINT',
+      description: '+5 PTS',
       cost: gameState.marketplace.pointOrbCost,
       icon: '★',
       color: 'text-purple-500',
@@ -147,7 +147,7 @@
     },
     {
       id: 'locked1',
-      name: 'Locked',
+      name: 'LOCKED',
       description: '???',
       cost: 0,
       icon: '🔒',
@@ -158,7 +158,7 @@
     },
     {
       id: 'locked2',
-      name: 'Locked',
+      name: 'LOCKED',
       description: '???',
       cost: 0,
       icon: '🔒',
@@ -169,7 +169,7 @@
     },
     {
       id: 'locked3',
-      name: 'Locked',
+      name: 'LOCKED',
       description: '???',
       cost: 0,
       icon: '🔒',
@@ -180,7 +180,7 @@
     },
     {
       id: 'locked4',
-      name: 'Locked',
+      name: 'LOCKED',
       description: '???',
       cost: 0,
       icon: '🔒',
@@ -195,10 +195,10 @@
 {#if gameState.phase === 'marketplace' && gameState.marketplace.available}
   <div class="bg-white p-3 rounded-lg shadow-sm border">
     <div class="flex justify-between items-center mb-3">
-      <h2 class="text-lg font-bold">Marketplace</h2>
+      <h2 class="text-lg font-bold">MARKETPLACE</h2>
       <div class="text-right">
         <div class="text-lg font-bold text-green-600">{gameState.playerStats.cheddah}</div>
-        <div class="text-xs text-gray-600">Cheddah</div>
+        <div class="text-xs text-gray-600">CHEDDAH</div>
       </div>
     </div>
     
@@ -228,12 +228,12 @@
     </div>
     
     <div class="mt-3 text-xs text-gray-500 text-center">
-      Click to buy one • Hold 1s to buy max
+      CLICK TO BUY ONE • HOLD 1S TO BUY MAX
     </div>
     
     {#if gameState.playerStats.cheddah === 0}
       <p class="text-xs text-gray-500 text-center mt-2">
-        No cheddah remaining
+        NO CHEDDAH REMAINING
       </p>
     {/if}
   </div>

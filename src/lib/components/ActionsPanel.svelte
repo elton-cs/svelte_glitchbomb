@@ -65,7 +65,7 @@
 </script>
 
 <div class="bg-gray-100 p-4 rounded border">
-  <h2 class="text-lg font-bold mb-3">Actions</h2>
+  <h2 class="text-lg font-bold mb-3">ACTIONS</h2>
   
   <div class="space-y-2">
     {#if gameState.phase === 'menu'}
@@ -77,12 +77,12 @@
                  ? 'bg-green-600 text-white hover:bg-green-700' 
                  : 'bg-gray-300 text-gray-500 cursor-not-allowed'}"
       >
-        Start Game (-{getLevelEntryCost(1)} moonrocks)
+        START GAME (-{getLevelEntryCost(1)} MOONROCKS)
       </button>
       
       {#if !canStartGame}
         <p class="text-sm text-red-500 text-center">
-          Need {getLevelEntryCost(1)} moonrocks to start
+          NEED {getLevelEntryCost(1)} MOONROCKS TO START
         </p>
       {/if}
     {/if}
@@ -96,7 +96,7 @@
                  ? 'bg-blue-600 text-white hover:bg-blue-700' 
                  : 'bg-gray-300 text-gray-500 cursor-not-allowed'}"
       >
-        {canPullOrb ? 'Pull Orb' : 'Cannot Pull Orb'}
+        {canPullOrb ? 'PULL ORB' : 'CANNOT PULL ORB'}
       </button>
       
       <button 
@@ -104,7 +104,7 @@
         disabled={!canCashOutMid}
         class="w-full py-2 px-4 rounded font-medium bg-yellow-600 text-white hover:bg-yellow-700 transition-colors"
       >
-        Cash Out ({gameState.playerStats.points} points → moonrocks)
+        CASH OUT ({gameState.playerStats.points} POINTS → MOONROCKS)
       </button>
     {/if}
     
@@ -114,7 +114,7 @@
         disabled={!canCashOutPost}
         class="w-full py-2 px-4 rounded font-medium bg-yellow-600 text-white hover:bg-yellow-700 transition-colors"
       >
-        Cash Out ({gameState.playerStats.points} points → moonrocks)
+        CASH OUT ({gameState.playerStats.points} POINTS → MOONROCKS)
       </button>
       
       {#if !isLastLevel(gameState.currentLevel)}
@@ -126,12 +126,12 @@
                    ? 'bg-blue-600 text-white hover:bg-blue-700' 
                    : 'bg-gray-300 text-gray-500 cursor-not-allowed'}"
         >
-          Continue to Level {getNextLevel(gameState.currentLevel)} (-{nextLevelCost} moonrocks)
+          CONTINUE TO LEVEL {getNextLevel(gameState.currentLevel)} (-{nextLevelCost} MOONROCKS)
         </button>
         
         {#if !canProceed}
           <p class="text-sm text-red-500 text-center">
-            Need {nextLevelCost} moonrocks for next level
+            NEED {nextLevelCost} MOONROCKS FOR NEXT LEVEL
           </p>
         {/if}
       {/if}
@@ -139,29 +139,29 @@
     
     {#if gameState.phase === 'gameover'}
       <div class="text-center mb-3">
-        <h3 class="text-xl font-bold text-red-600">Game Over!</h3>
-        <p class="text-gray-600">Better luck next time</p>
+        <h3 class="text-xl font-bold text-red-600">GAME OVER!</h3>
+        <p class="text-gray-600">BETTER LUCK NEXT TIME</p>
       </div>
       
       <button 
         onclick={handleReturnToMenu}
         class="w-full py-2 px-4 rounded font-medium bg-gray-600 text-white hover:bg-gray-700 transition-colors"
       >
-        Return to Menu
+        RETURN TO MENU
       </button>
     {/if}
     
     {#if gameState.phase === 'victory'}
       <div class="text-center mb-3">
-        <h3 class="text-xl font-bold text-green-600">Victory!</h3>
-        <p class="text-gray-600">You completed all levels!</p>
+        <h3 class="text-xl font-bold text-green-600">VICTORY!</h3>
+        <p class="text-gray-600">YOU COMPLETED ALL LEVELS!</p>
       </div>
       
       <button 
         onclick={handleReturnToMenu}
         class="w-full py-2 px-4 rounded font-medium bg-green-600 text-white hover:bg-green-700 transition-colors"
       >
-        Return to Menu
+        RETURN TO MENU
       </button>
     {/if}
   </div>

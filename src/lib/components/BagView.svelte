@@ -101,7 +101,7 @@
                ? 'bg-blue-600 text-white hover:bg-blue-700' 
                : 'bg-gray-300 text-gray-500 cursor-not-allowed'}"
     >
-      {canPullOrb ? 'Pull Orb' : 'Cannot Pull Orb'}
+      {canPullOrb ? 'PULL ORB' : 'CANNOT PULL ORB'}
     </button>
   </div>
 </div>

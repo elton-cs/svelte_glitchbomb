@@ -42,22 +42,22 @@
   <div class="max-w-md mx-auto space-y-4">
     <!-- Header -->
     <header class="text-center mb-4 relative">
-      <h1 class="text-2xl font-bold text-gray-800">Glitch Bomb</h1>
-      <p class="text-sm text-gray-600">Bag-building luck game</p>
+      <h1 class="text-2xl font-bold text-gray-800">GLITCH BOMB</h1>
+      <p class="text-sm text-gray-600">BAG-BUILDING LUCK GAME</p>
       
       <!-- Dev Mode Toggle - positioned in top right -->
       <button 
         onclick={toggleDevMode}
         class="absolute top-0 right-0 text-xs px-2 py-1 rounded border {devMode ? 'bg-red-100 text-red-700 border-red-300' : 'bg-gray-100 text-gray-600 border-gray-300'} hover:opacity-80 transition-colors"
       >
-        {devMode ? '🔧 Dev ON' : '🔧 Dev'}
+        {devMode ? '🔧 DEV ON' : '🔧 DEV'}
       </button>
     </header>
     
     <!-- Moonrocks - Separate section -->
     <div class="bg-white p-3 rounded-lg shadow-sm border">
       <div class="flex justify-between items-center">
-        <div class="text-sm text-gray-600">Moonrocks</div>
+        <div class="text-sm text-gray-600">MOONROCKS</div>
         <div class="text-xl font-bold text-blue-600">{gameState.playerStats.moonrocks} 🌙</div>
       </div>
       {#if canClaimRocks}
@@ -66,7 +66,7 @@
             onclick={handleClaimRocks}
             class="w-full bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium py-2 px-3 rounded-lg transition-colors"
           >
-            Claim 1000 Free Rocks!
+            CLAIM 1000 FREE ROCKS!
           </button>
         </div>
       {/if}
@@ -76,8 +76,8 @@
     {#if devMode}
       <div class="bg-red-50 p-3 rounded-lg shadow-sm border border-red-200">
         <div class="flex justify-between items-center mb-2">
-          <h3 class="font-medium text-red-800 text-sm">🔧 Developer Tools</h3>
-          <span class="text-xs text-red-600">Debug Mode</span>
+          <h3 class="font-medium text-red-800 text-sm">🔧 DEVELOPER TOOLS</h3>
+          <span class="text-xs text-red-600">DEBUG MODE</span>
         </div>
         
         <div class="space-y-2">
@@ -85,7 +85,7 @@
             onclick={resetMoonrocks}
             class="w-full bg-red-600 hover:bg-red-700 text-white text-sm font-medium py-2 px-3 rounded-lg transition-colors"
           >
-            Reset Moonrocks to 0
+            RESET MOONROCKS TO 0
           </button>
         </div>
       </div>
@@ -97,29 +97,29 @@
         <div class="grid grid-cols-3 gap-2 text-center text-xs mb-2">
           <div>
             <div class="text-lg font-bold text-green-600">{gameState.playerStats.cheddah}</div>
-            <div class="text-gray-600">Cheddah</div>
+            <div class="text-gray-600">CHEDDAH</div>
           </div>
           <div>
             <div class="text-lg font-bold text-blue-600">{gameState.currentLevel}</div>
-            <div class="text-gray-600">Level</div>
+            <div class="text-gray-600">LEVEL</div>
           </div>
           <div>
             <div class="text-lg font-bold text-purple-600">{gameState.playerStats.points}</div>
-            <div class="text-gray-600">Points</div>
+            <div class="text-gray-600">POINTS</div>
           </div>
         </div>
         <div class="grid grid-cols-3 gap-2 text-center text-xs">
           <div>
             <div class="text-lg font-bold text-red-600">{gameState.playerStats.health}</div>
-            <div class="text-gray-600">Health</div>
+            <div class="text-gray-600">HEALTH</div>
           </div>
           <div>
             <div class="text-lg font-bold text-orange-600">{gameState.playerStats.levelMultiplier}×</div>
-            <div class="text-gray-600">Mult</div>
+            <div class="text-gray-600">MULT</div>
           </div>
           <div>
             <div class="text-lg font-bold text-gray-600">{getLevelMilestone(gameState.currentLevel)}</div>
-            <div class="text-gray-600">Milestone</div>
+            <div class="text-gray-600">MILESTONE</div>
           </div>
         </div>
       </div>
@@ -129,7 +129,7 @@
     {#if gameState.gameStarted}
       <div class="bg-white p-3 rounded-lg shadow-sm border">
         <div class="flex justify-between items-center text-sm">
-          <span class="font-medium">Health</span>
+          <span class="font-medium">HEALTH</span>
           <span class="text-gray-600">{gameState.playerStats.health}/5</span>
         </div>
         <div class="mt-1">
@@ -141,7 +141,7 @@
           </div>
         </div>
         {#if gameState.playerStats.health <= 2}
-          <p class="text-red-600 font-medium text-xs mt-1">⚠️ Low health!</p>
+          <p class="text-red-600 font-medium text-xs mt-1">⚠️ LOW HEALTH!</p>
         {/if}
       </div>
     {/if}
@@ -150,7 +150,7 @@
     {#if gameState.gameStarted}
       <div class="bg-white p-3 rounded-lg shadow-sm border">
         <div class="flex justify-between items-center text-sm">
-          <span class="font-medium">Points</span>
+          <span class="font-medium">POINTS</span>
           <span class="text-gray-600">{gameState.playerStats.points}/{getLevelMilestone(gameState.currentLevel)}</span>
         </div>
         <div class="mt-1">
@@ -173,13 +173,13 @@
     <!-- Orb Bag - Compact design -->
     <div class="bg-white p-3 rounded-lg shadow-sm border">
       <div class="mb-2">
-        <h3 class="font-medium text-sm">Orb Bag ({totalAvailableOrbs})</h3>
+        <h3 class="font-medium text-sm">ORB BAG ({totalAvailableOrbs})</h3>
       </div>
       
       <div class="space-y-2 text-xs">
         <!-- Health Orbs -->
         <div class="flex justify-between items-center {gameState.orbBag.health.available.length === 0 ? 'opacity-50' : ''}">
-          <span class="font-medium text-red-500">♥ Health Orbs:</span>
+          <span class="font-medium text-red-500">♥ HEALTH ORBS:</span>
           <div class="text-right">
             <span class="font-bold">{gameState.orbBag.health.available.length}</span>
             {#if gameState.orbBag.health.available.length > 0}
@@ -191,7 +191,7 @@
         
         <!-- Point Orbs -->
         <div class="flex justify-between items-center {gameState.orbBag.point.available.length === 0 ? 'opacity-50' : ''}">
-          <span class="font-medium text-purple-500">★ Point Orbs:</span>
+          <span class="font-medium text-purple-500">★ POINT ORBS:</span>
           <div class="text-right">
             <span class="font-bold">{gameState.orbBag.point.available.length}</span>
             {#if gameState.orbBag.point.available.length > 0}
@@ -203,7 +203,7 @@
         
         <!-- Bomb Orbs -->
         <div class="flex justify-between items-center {gameState.orbBag.bomb.available.length === 0 ? 'opacity-50' : ''}">
-          <span class="font-medium text-orange-500">💥 Bomb Orbs:</span>
+          <span class="font-medium text-orange-500">💥 BOMB ORBS:</span>
           <div class="text-right">
             <span class="font-bold">{gameState.orbBag.bomb.available.length}</span>
             {#if gameState.orbBag.bomb.available.length > 0}
@@ -216,7 +216,7 @@
         <!-- Points Per Any Orb -->
         {#if gameState.orbBag.points_per_anyorb.total.length > 0}
           <div class="flex justify-between items-center {gameState.orbBag.points_per_anyorb.available.length === 0 ? 'opacity-50' : ''}">
-            <span class="font-medium text-blue-500">⚡ Points Per Any Orb:</span>
+            <span class="font-medium text-blue-500">⚡ POINTS PER ANY ORB:</span>
             <div class="text-right">
               <span class="font-bold">{gameState.orbBag.points_per_anyorb.available.length}</span>
               {#if gameState.orbBag.points_per_anyorb.available.length > 0}
@@ -230,7 +230,7 @@
         <!-- Points Per Bomb Pulled -->
         {#if gameState.orbBag.points_per_bombpulled.total.length > 0}
           <div class="flex justify-between items-center {gameState.orbBag.points_per_bombpulled.available.length === 0 ? 'opacity-50' : ''}">
-            <span class="font-medium text-yellow-500">🎯 Points Per Bomb Pulled:</span>
+            <span class="font-medium text-yellow-500">🎯 POINTS PER BOMB PULLED:</span>
             <div class="text-right">
               <span class="font-bold">{gameState.orbBag.points_per_bombpulled.available.length}</span>
               {#if gameState.orbBag.points_per_bombpulled.available.length > 0}
@@ -244,7 +244,7 @@
         <!-- Multiplier Orbs -->
         {#if gameState.orbBag.multiplier.total.length > 0}
           <div class="flex justify-between items-center {gameState.orbBag.multiplier.available.length === 0 ? 'opacity-50' : ''}">
-            <span class="font-medium text-orange-500">⭐ Multiplier Orbs:</span>
+            <span class="font-medium text-orange-500">⭐ MULTIPLIER ORBS:</span>
             <div class="text-right">
               <span class="font-bold">{gameState.orbBag.multiplier.available.length}</span>
               {#if gameState.orbBag.multiplier.available.length > 0}
@@ -260,11 +260,11 @@
     <!-- How to Play - Only show on menu, compact -->
     {#if gameState.phase === 'menu'}
       <div class="bg-blue-50 p-3 rounded-lg border border-blue-200">
-        <h3 class="font-medium text-blue-800 mb-1 text-sm">How to Play</h3>
+        <h3 class="font-medium text-blue-800 mb-1 text-sm">HOW TO PLAY</h3>
         <div class="text-xs text-blue-700 space-y-0.5">
-          <p>• Pull orbs: Health (+1), Points (+5), avoid Bombs (-2 HP)</p>
-          <p>• Reach milestones: 12→18→28→44→66 points</p>
-          <p>• Buy orbs between levels, cash out anytime</p>
+          <p>• PULL ORBS: HEALTH (+1), POINTS (+5), AVOID BOMBS (-2 HP)</p>
+          <p>• REACH MILESTONES: 12→18→28→44→66 POINTS</p>
+          <p>• BUY ORBS BETWEEN LEVELS, CASH OUT ANYTIME</p>
         </div>
       </div>
     {/if}

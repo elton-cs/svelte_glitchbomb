@@ -11,49 +11,49 @@
 </script>
 
 <div class="bg-gray-100 p-4 rounded border">
-  <h2 class="text-lg font-bold mb-3">Game Stats</h2>
+  <h2 class="text-lg font-bold mb-3">GAME STATS</h2>
   
   <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-4">
     <div class="text-center">
       <div class="text-2xl font-bold text-blue-600">{gameState.playerStats.moonrocks}</div>
-      <div class="text-sm text-gray-600">Moonrocks</div>
+      <div class="text-sm text-gray-600">MOONROCKS</div>
     </div>
     
     <div class="text-center">
       <div class="text-2xl font-bold text-green-600">{gameState.playerStats.cheddah}</div>
-      <div class="text-sm text-gray-600">Cheddah</div>
+      <div class="text-sm text-gray-600">CHEDDAH</div>
     </div>
     
     <div class="text-center">
       <div class="text-2xl font-bold text-red-600">{gameState.playerStats.health}</div>
-      <div class="text-sm text-gray-600">Health</div>
+      <div class="text-sm text-gray-600">HEALTH</div>
     </div>
     
     <div class="text-center">
       <div class="text-2xl font-bold text-purple-600">{gameState.playerStats.points}</div>
-      <div class="text-sm text-gray-600">Points</div>
+      <div class="text-sm text-gray-600">POINTS</div>
     </div>
     
     <div class="text-center">
       <div class="text-2xl font-bold text-orange-600">{gameState.playerStats.levelMultiplier}×</div>
-      <div class="text-sm text-gray-600">Multiplier</div>
+      <div class="text-sm text-gray-600">MULTIPLIER</div>
     </div>
   </div>
   
   <div class="border-t pt-3">
     <div class="flex justify-between items-center mb-2">
-      <span class="font-medium">Status:</span>
+      <span class="font-medium">STATUS:</span>
       <span class="text-gray-700">{getPhaseDisplayName(gameState.phase)}</span>
     </div>
     
     {#if gameState.gameStarted}
       <div class="flex justify-between items-center mb-2">
-        <span class="font-medium">Level:</span>
+        <span class="font-medium">LEVEL:</span>
         <span class="text-gray-700">{gameState.currentLevel} / 5</span>
       </div>
       
       <div class="flex justify-between items-center">
-        <span class="font-medium">Milestone:</span>
+        <span class="font-medium">MILESTONE:</span>
         <span class="text-gray-700">
           {gameState.playerStats.points} / {getLevelMilestone(gameState.currentLevel)}
         </span>
