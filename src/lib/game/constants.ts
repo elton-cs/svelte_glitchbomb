@@ -14,6 +14,7 @@ export const GAME_CONFIG: GameConfig = {
     bomb: 2,
     points_per_anyorb: 1,
     points_per_bombpulled: 1,
+    multiplier: 0.5,
   },
   victoryReward: 100,
   maxHealth: 5,
@@ -23,6 +24,7 @@ export const GAME_CONFIG: GameConfig = {
     bomb: 5,
     points_per_anyorb: 1,
     points_per_bombpulled: 1,
+    multiplier: 1,
   },
 };
 

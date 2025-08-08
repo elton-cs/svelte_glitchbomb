@@ -102,6 +102,9 @@ export function pullOrb(gameState: GameState): boolean {
         const bombPoints = gameState.playerStats.bombsPulledThisLevel * orb.amount;
         applyPointsWithMultiplier(gameState, bombPoints);
         break;
+      case 'multiplier':
+        gameState.playerStats.levelMultiplier += orb.amount;
+        break;
     }
 
     if (checkGameOver(gameState.playerStats.health, gameState.orbBag)) {

@@ -36,6 +36,10 @@ export function createInitialBag(): OrbBag {
     createOrb('points_per_bombpulled', 3), // 3 Points Per Bomb Pulled
   ];
   
+  const multiplierOrbs = [
+    createOrb('multiplier', 1.0), // 1x Multiplier Boost
+  ];
+  
   return {
     health: {
       available: [...healthOrbs],
@@ -56,12 +60,16 @@ export function createInitialBag(): OrbBag {
     points_per_bombpulled: {
       available: [...pointsPerBombPulledOrbs],
       total: [...pointsPerBombPulledOrbs]
+    },
+    multiplier: {
+      available: [...multiplierOrbs],
+      total: [...multiplierOrbs]
     }
   };
 }
 
 export function getTotalAvailableOrbs(bag: OrbBag): number {
-  return bag.health.available.length + bag.point.available.length + bag.bomb.available.length + bag.points_per_anyorb.available.length + bag.points_per_bombpulled.available.length;
+  return bag.health.available.length + bag.point.available.length + bag.bomb.available.length + bag.points_per_anyorb.available.length + bag.points_per_bombpulled.available.length + bag.multiplier.available.length;
 }
 
 export function getAvailableOrbCount(bag: OrbBag, type: OrbType): number {
@@ -73,7 +81,7 @@ export function getTotalOrbCount(bag: OrbBag, type: OrbType): number {
 }
 
 export function getAllAvailableOrbs(bag: OrbBag): Orb[] {
-  return [...bag.health.available, ...bag.point.available, ...bag.bomb.available, ...bag.points_per_anyorb.available, ...bag.points_per_bombpulled.available];
+  return [...bag.health.available, ...bag.point.available, ...bag.bomb.available, ...bag.points_per_anyorb.available, ...bag.points_per_bombpulled.available, ...bag.multiplier.available];
 }
 
 export function pullRandomOrb(bag: OrbBag): Orb | null {
@@ -103,6 +111,7 @@ export function resetConsumedOrbs(bag: OrbBag): void {
   bag.bomb.available = [...bag.bomb.total];
   bag.points_per_anyorb.available = [...bag.points_per_anyorb.total];
   bag.points_per_bombpulled.available = [...bag.points_per_bombpulled.total];
+  bag.multiplier.available = [...bag.multiplier.total];
 }
 
 export function addOrbsToBag(bag: OrbBag, orbType: OrbType, quantity: number, amount?: number): void {
