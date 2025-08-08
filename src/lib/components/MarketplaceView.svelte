@@ -54,6 +54,7 @@
     {
       id: 'health',
       name: 'Health',
+      description: '+1 HP',
       cost: gameState.marketplace.healthOrbCost,
       icon: '♥',
       color: 'text-red-500',
@@ -64,6 +65,7 @@
     {
       id: 'point',
       name: 'Point',
+      description: '+5 pts',
       cost: gameState.marketplace.pointOrbCost,
       icon: '★',
       color: 'text-purple-500',
@@ -74,6 +76,7 @@
     {
       id: 'locked1',
       name: 'Locked',
+      description: '???',
       cost: 0,
       icon: '🔒',
       color: 'text-gray-400',
@@ -84,6 +87,7 @@
     {
       id: 'locked2',
       name: 'Locked',
+      description: '???',
       cost: 0,
       icon: '🔒',
       color: 'text-gray-400',
@@ -94,6 +98,7 @@
     {
       id: 'locked3',
       name: 'Locked',
+      description: '???',
       cost: 0,
       icon: '🔒',
       color: 'text-gray-400',
@@ -104,6 +109,7 @@
     {
       id: 'locked4',
       name: 'Locked',
+      description: '???',
       cost: 0,
       icon: '🔒',
       color: 'text-gray-400',
@@ -125,23 +131,26 @@
     </div>
     
     <!-- 2x3 Grid Layout -->
-    <div class="grid grid-cols-2 gap-3">
+    <div class="grid grid-cols-2 gap-2">
       {#each marketItems as item}
         <button
           disabled={!item.available || !item.canPurchase}
           onmousedown={item.available ? () => handleMouseDown(item.id as 'health' | 'point') : undefined}
           onmouseup={item.available ? () => handleMouseUp(item.id as 'health' | 'point') : undefined}
           onmouseleave={item.available ? () => handleMouseLeave(item.id as 'health' | 'point') : undefined}
-          class="aspect-square p-3 rounded-lg font-medium transition-colors select-none flex flex-col items-center justify-center gap-1
+          class="p-2 rounded font-medium transition-colors select-none flex items-center gap-2 text-left
                  {item.available && item.canPurchase
                    ? `${item.bgColor} text-white active:scale-95` 
                    : 'bg-gray-200 text-gray-500 cursor-not-allowed'}"
         >
-          <div class="text-2xl {item.color}">{item.icon}</div>
-          <div class="text-sm font-medium">{item.name}</div>
-          {#if item.available}
-            <div class="text-xs opacity-90">{item.cost}</div>
-          {/if}
+          <div class="text-lg {item.available && item.canPurchase ? 'text-white' : item.color}">{item.icon}</div>
+          <div class="flex-1 min-w-0">
+            <div class="text-sm font-medium truncate">{item.name}</div>
+            <div class="text-xs opacity-75 truncate">{item.description}</div>
+            {#if item.available}
+              <div class="text-xs opacity-90">{item.cost} cheddah</div>
+            {/if}
+          </div>
         </button>
       {/each}
     </div>
