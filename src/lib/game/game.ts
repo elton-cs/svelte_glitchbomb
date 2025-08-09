@@ -6,7 +6,9 @@ import {
   calculateCashOut, 
   processLevelReward, 
   getLevelEntryCost, 
-  calculateVictoryReward 
+  calculateVictoryReward,
+  calculateTotalCostForOrbQuantity,
+  calculateMaxAffordableForOrb
 } from './economics.js';
 import { 
   getLevelMilestone, 
@@ -17,6 +19,14 @@ import {
 } from './levels.js';
 import { GAME_CONFIG } from './constants.js';
 import type { OrbType } from './types.js';
+
+function resetMarketplacePurchaseCounts(gameState: GameState): void {
+  // Reset all orb type purchase counts to 0
+  const orbTypes: OrbType[] = ['health', 'point', 'bomb', 'points_per_anyorb', 'points_per_bombpulled', 'multiplier'];
+  orbTypes.forEach(orbType => {
+    gameState.marketplace.purchaseCounts[orbType] = 0;
+  });
+}
 
 function applyPointsWithMultiplier(gameState: GameState, basePoints: number): void {
   const multipliedPoints = Math.floor(basePoints * gameState.playerStats.levelMultiplier);
@@ -141,6 +151,8 @@ export function completeLevel(gameState: GameState): void {
     gameState.marketplace.available = true;
     // Reset consumed orbs so players can see their full collection in marketplace
     resetConsumedOrbs(gameState.orbBag);
+    // Reset purchase counts for dynamic pricing - generic approach
+    resetMarketplacePurchaseCounts(gameState);
   }
 }
 
@@ -174,6 +186,8 @@ export function enterMarketplace(gameState: GameState): void {
   if (gameState.levelCompleted) {
     gameState.phase = 'marketplace';
     gameState.marketplace.available = true;
+    // Reset purchase counts for dynamic pricing - generic approach
+    resetMarketplacePurchaseCounts(gameState);
   }
 }
 
@@ -186,16 +200,28 @@ export function purchaseOrb(gameState: GameState, type: OrbType, quantity: numbe
     return false;
   }
 
-  const cost = type === 'health' ? 
-    gameState.marketplace.healthOrbCost * quantity :
-    gameState.marketplace.pointOrbCost * quantity;
+  // Get base price from config - only health and point are purchaseable for now
+  let basePrice: number;
+  if (type === 'health') {
+    basePrice = GAME_CONFIG.orbCosts.health;
+  } else if (type === 'point') {
+    basePrice = GAME_CONFIG.orbCosts.point;
+  } else {
+    return false; // Other orb types not purchaseable yet
+  }
+  
+  const currentPurchaseCount = gameState.marketplace.purchaseCounts[type];
+  const totalCost = calculateTotalCostForOrbQuantity(type, basePrice, currentPurchaseCount, quantity);
 
-  if (gameState.playerStats.cheddah < cost) {
+  if (gameState.playerStats.cheddah < totalCost) {
     return false;
   }
 
-  gameState.playerStats.cheddah -= cost;
+  gameState.playerStats.cheddah -= totalCost;
   addOrbsToBag(gameState.orbBag, type, quantity);
+  
+  // Update purchase count using generic approach
+  gameState.marketplace.purchaseCounts[type] += quantity;
   
   return true;
 }

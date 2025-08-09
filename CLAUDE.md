@@ -40,6 +40,7 @@ src/
 │   │   ├── state.ts            # Reactive state management
 │   │   ├── orbs.ts             # Orb bag system
 │   │   ├── economics.ts        # Economic calculations
+│   │   ├── pricing.ts          # Extensible dynamic pricing system
 │   │   ├── levels.ts           # Level management
 │   │   ├── gameStates.ts       # Game state machine
 │   │   └── game.ts             # Main game controller
@@ -69,6 +70,7 @@ All systems from `specs.md` have been implemented:
    - Level entry costs [0,15,25,35,45]
    - Cash-out mechanics (mid-level and post-level)
    - Victory reward (150 moonrocks total)
+   - Extensible dynamic pricing with escalating marketplace costs
 
 4. **UI Components** ✅:
    - Single-page dashboard with all information visible

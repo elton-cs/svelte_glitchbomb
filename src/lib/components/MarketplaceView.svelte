@@ -1,15 +1,17 @@
 <script lang="ts">
   import { purchaseOrb } from '../game/game.js';
   import type { GameState } from '../game/types.js';
+  import { calculateDynamicPriceForOrb, calculateMaxAffordableForOrb } from '../game/economics.js';
+  import { GAME_CONFIG } from '../game/constants.js';
 
   interface Props {
     gameState: GameState;
   }
 
   let { gameState }: Props = $props();
-  let holdTimeouts: { [key: string]: NodeJS.Timeout | null } = {};
-  let progressIntervals: { [key: string]: NodeJS.Timeout | null } = {};
-  let progressDelayTimeouts: { [key: string]: NodeJS.Timeout | null } = {};
+  let holdTimeouts: { [key: string]: ReturnType<typeof setTimeout> | null } = {};
+  let progressIntervals: { [key: string]: ReturnType<typeof setInterval> | null } = {};
+  let progressDelayTimeouts: { [key: string]: ReturnType<typeof setTimeout> | null } = {};
   let holdProgress: { [key: string]: number } = $state({});
   let mousePosition = $state({ x: 0, y: 0 });
   let activeHold: string | null = $state(null);
@@ -63,8 +65,16 @@
     
     // Set timeout for hold-to-buy-all (1 second + delay)
     holdTimeouts[orbType] = setTimeout(() => {
-      const cost = orbType === 'health' ? gameState.marketplace.healthOrbCost : gameState.marketplace.pointOrbCost;
-      const maxQuantity = Math.floor(gameState.playerStats.cheddah / cost);
+      const basePrice = orbType === 'health' ? GAME_CONFIG.orbCosts.health : GAME_CONFIG.orbCosts.point;
+      const currentPurchaseCount = gameState.marketplace.purchaseCounts[orbType];
+      
+      const maxQuantity = calculateMaxAffordableForOrb(
+        orbType,
+        gameState.playerStats.cheddah, 
+        basePrice, 
+        currentPurchaseCount
+      );
+      
       if (maxQuantity > 0) {
         purchaseOrb(gameState, orbType, maxQuantity);
       }
@@ -118,8 +128,19 @@
     holdProgress[orbType] = 0;
   }
 
-  const canPurchaseHealth = $derived(gameState.playerStats.cheddah >= gameState.marketplace.healthOrbCost);
-  const canPurchasePoint = $derived(gameState.playerStats.cheddah >= gameState.marketplace.pointOrbCost);
+  const currentHealthPrice = $derived(calculateDynamicPriceForOrb(
+    'health',
+    GAME_CONFIG.orbCosts.health, 
+    gameState.marketplace.purchaseCounts.health
+  ));
+  const currentPointPrice = $derived(calculateDynamicPriceForOrb(
+    'point',
+    GAME_CONFIG.orbCosts.point, 
+    gameState.marketplace.purchaseCounts.point
+  ));
+  
+  const canPurchaseHealth = $derived(gameState.playerStats.cheddah >= currentHealthPrice);
+  const canPurchasePoint = $derived(gameState.playerStats.cheddah >= currentPointPrice);
 
   // Market items - 2 available, 4 locked placeholders
   const marketItems = $derived([
@@ -127,7 +148,7 @@
       id: 'health',
       name: 'HEALTH',
       description: '+1 HP',
-      cost: gameState.marketplace.healthOrbCost,
+      cost: currentHealthPrice,
       icon: '',
       color: 'text-red-400',
       borderColor: 'border-red-400 hover:border-red-500',
@@ -138,7 +159,7 @@
       id: 'point',
       name: 'POINT',
       description: '+5 PTS',
-      cost: gameState.marketplace.pointOrbCost,
+      cost: currentPointPrice,
       icon: '',
       color: 'text-white',
       borderColor: 'border-white hover:border-gray-300',

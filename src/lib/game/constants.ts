@@ -1,12 +1,20 @@
 import type { GameConfig } from './types.js';
+import { 
+  LINEAR_PRICING, 
+  EXPONENTIAL_PRICING, 
+  FIBONACCI_PRICING, 
+  QUADRATIC_PRICING,
+  SIMPLE_INCREMENT_PRICING,
+  type PricingConfig 
+} from './pricing.js';
 
 export const GAME_CONFIG: GameConfig = {
   initialMoonrocks: 0,
   levelMilestones: [12, 18, 28, 44, 66],
   levelCosts: [10, 3, 5, 7, 9],
   orbCosts: {
-    health: 2,
-    point: 2,
+    health: 9,
+    point: 5,
   },
   defaultOrbAmounts: {
     health: 1,
@@ -28,3 +36,16 @@ export const GAME_CONFIG: GameConfig = {
 };
 
 export const LEVEL_COUNT = 5;
+
+export const PRICING_CONFIG: PricingConfig = {
+  defaultStrategy: SIMPLE_INCREMENT_PRICING,
+  // Example: Different strategies for different orb types
+  // To enable different pricing for different orbs, uncomment and modify:
+  // orbStrategies: {
+  //   health: EXPONENTIAL_PRICING,  // Health orbs get exponentially more expensive
+  //   point: FIBONACCI_PRICING,     // Point orbs follow Fibonacci sequence
+  // }
+  //
+  // Available strategies: LINEAR_PRICING, EXPONENTIAL_PRICING, 
+  // FIBONACCI_PRICING, QUADRATIC_PRICING, FLAT_PRICING, SIMPLE_INCREMENT_PRICING
+};

@@ -48,6 +48,14 @@ function createInitialMarketplaceState(): MarketplaceState {
     available: false,
     healthOrbCost: GAME_CONFIG.orbCosts.health,
     pointOrbCost: GAME_CONFIG.orbCosts.point,
+    purchaseCounts: {
+      health: 0,
+      point: 0,
+      bomb: 0,
+      points_per_anyorb: 0,
+      points_per_bombpulled: 0,
+      multiplier: 0,
+    },
   };
 }
 

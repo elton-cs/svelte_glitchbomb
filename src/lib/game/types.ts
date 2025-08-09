@@ -53,6 +53,7 @@ export interface MarketplaceState {
   available: boolean;
   healthOrbCost: number;
   pointOrbCost: number;
+  purchaseCounts: Record<OrbType, number>;
 }
 
 export interface GameState {
