@@ -162,24 +162,33 @@ export function getAvailableShopItems(level: number): ShopItem[] {
   const availableTiers = SHOP_TIER_AVAILABILITY[level] || SHOP_TIER_AVAILABILITY[1];
   const items: ShopItem[] = [];
   
+  console.log(`[SHOP] Level ${level} - Available tiers:`, availableTiers);
+  
   // Always try to get 3 common items
   if (availableTiers.includes('common')) {
     const shuffledCommon = shuffleArray(COMMON_SHOP_ITEMS);
-    items.push(...shuffledCommon.slice(0, 3));
+    const commonItems = shuffledCommon.slice(0, 3);
+    items.push(...commonItems);
+    console.log(`[SHOP] Added ${commonItems.length} common items:`, commonItems.map(i => i.name));
   }
   
   // Try to get 2 rare items (if available at this level)
   if (availableTiers.includes('rare')) {
     const shuffledRare = shuffleArray(RARE_SHOP_ITEMS);
-    items.push(...shuffledRare.slice(0, 2));
+    const rareItems = shuffledRare.slice(0, 2);
+    items.push(...rareItems);
+    console.log(`[SHOP] Added ${rareItems.length} rare items:`, rareItems.map(i => i.name));
   }
   
   // Try to get 1 cosmic item (if available at this level)
   if (availableTiers.includes('cosmic')) {
     const shuffledCosmic = shuffleArray(COSMIC_SHOP_ITEMS);
-    items.push(...shuffledCosmic.slice(0, 1));
+    const cosmicItems = shuffledCosmic.slice(0, 1);
+    items.push(...cosmicItems);
+    console.log(`[SHOP] Added ${cosmicItems.length} cosmic items:`, cosmicItems.map(i => i.name));
   }
   
+  console.log(`[SHOP] Total items generated: ${items.length}`);
   return items;
 }
 

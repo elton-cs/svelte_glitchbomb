@@ -125,6 +125,7 @@
 
   const shopInventory = $derived.by(() => {
     const availableShopItems = getAvailableShopItems(gameState.currentLevel);
+    console.log(`[UI] Received ${availableShopItems.length} shop items from backend`);
     const items = availableShopItems.map(shopItem => {
       // Determine tier and colors based on item ID
       let tierColor = 'text-white';
@@ -164,6 +165,7 @@
     // Always maintain exactly 6 slots - fill remaining with locked placeholders
     const totalSlots = 6;
     const remainingSlots = totalSlots - items.length;
+    console.log(`[UI] Adding ${remainingSlots} locked slots to reach ${totalSlots} total`);
     
     for (let i = 0; i < remainingSlots; i++) {
       items.push({
@@ -172,14 +174,15 @@
         description: '???',
         cost: 0,
         icon: '',
-        color: 'text-gray-600',
-        borderColor: 'border-gray-700',
+        color: 'text-gray-400',
+        borderColor: 'border-gray-500',
         available: false,
         canPurchase: false,
         isShopItem: false
       });
     }
     
+    console.log(`[UI] Final inventory: ${items.length} items - ${items.map(i => i.name).join(', ')}`);
     return items;
   });
 </script>
@@ -202,7 +205,7 @@
         class="p-2 rounded font-medium transition-colors select-none flex items-center gap-2 text-left border-2
                {item.available && item.canPurchase && gameState.phase === 'marketplace' && gameState.marketplace.available
                  ? `${item.borderColor} bg-black active:scale-95` 
-                 : 'bg-gray-900 text-gray-600 cursor-not-allowed border-gray-700'}"
+                 : `${item.borderColor} bg-gray-900 ${item.color} cursor-not-allowed`}"
       >
         {#if item.icon}<div class="text-lg {item.color}">{item.icon}</div>{/if}
         <div class="flex-1 min-w-0">
@@ -210,6 +213,8 @@
           <div class="text-xs opacity-75 truncate">{item.description}</div>
           {#if item.available && item.cost > 0}
             <div class="text-xs opacity-90">{item.cost} cheddah</div>
+          {:else if !item.available}
+            <div class="text-xs opacity-60">LOCKED</div>
           {/if}
         </div>
       </button>
