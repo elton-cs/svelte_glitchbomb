@@ -132,19 +132,19 @@
       
       if (shopItem.id.startsWith('common_')) {
         tierColor = 'text-gray-300';
-        tierBorder = 'border-gray-400 hover:border-gray-300';
+        tierBorder = 'border-gray-400 hover:border-gray-200';
       } else if (shopItem.id.startsWith('rare_')) {
-        tierColor = 'text-blue-400';
-        tierBorder = 'border-blue-400 hover:border-blue-300';
+        tierColor = 'text-blue-300';
+        tierBorder = 'border-blue-500 hover:border-blue-300';
       } else if (shopItem.id.startsWith('cosmic_')) {
-        tierColor = 'text-purple-400';
-        tierBorder = 'border-purple-400 hover:border-purple-300';
+        tierColor = 'text-purple-300';
+        tierBorder = 'border-purple-500 hover:border-purple-300';
       }
       
-      // Override with specific orb type colors for health
+      // Override text color for health orbs but keep tier border
       if (shopItem.type === 'health') {
         tierColor = 'text-red-400';
-        tierBorder = 'border-red-400 hover:border-red-300';
+        // Keep the tier-based border color, don't override
       }
       
       return {
@@ -182,7 +182,7 @@
       <button
         disabled={!item.available || !item.canPurchase || gameState.phase !== 'marketplace' || !gameState.marketplace.available}
         onclick={item.available && item.canPurchase && gameState.phase === 'marketplace' && gameState.marketplace.available && item.isShopItem ? () => handleShopItemPurchase(item.id) : undefined}
-        class="p-2 rounded font-medium transition-colors select-none flex items-center gap-2 text-left border-2
+        class="p-2 rounded font-medium transition-colors select-none flex items-center gap-2 text-left border-4
                {item.available && item.canPurchase && gameState.phase === 'marketplace' && gameState.marketplace.available
                  ? `${item.borderColor} bg-black active:scale-95` 
                  : `${item.borderColor} bg-gray-900 ${item.color} cursor-not-allowed`}"
