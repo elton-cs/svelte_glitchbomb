@@ -91,78 +91,72 @@
       </div>
     {/if}
 
-    <!-- Stats - Compact horizontal layout - Only show when game started -->
-    {#if gameState.gameStarted}
-      <div class="bg-white p-3 rounded-lg shadow-sm border">
-        <div class="grid grid-cols-3 gap-2 text-center text-xs mb-2">
-          <div>
-            <div class="text-lg font-bold text-green-600">{gameState.playerStats.cheddah}</div>
-            <div class="text-gray-600">CHEDDAH</div>
-          </div>
-          <div>
-            <div class="text-lg font-bold text-blue-600">{gameState.currentLevel}</div>
-            <div class="text-gray-600">LEVEL</div>
-          </div>
-          <div>
-            <div class="text-lg font-bold text-purple-600">{gameState.playerStats.points}</div>
-            <div class="text-gray-600">POINTS</div>
-          </div>
+    <!-- Stats - Compact horizontal layout -->
+    <div class="p-3 rounded-lg shadow-sm border transition-colors duration-300 {gameState.gameStarted ? 'bg-white' : 'bg-gray-300'}">
+      <div class="grid grid-cols-3 gap-2 text-center text-xs mb-2">
+        <div>
+          <div class="text-lg font-bold text-green-600">{gameState.playerStats.cheddah}</div>
+          <div class="text-gray-600">CHEDDAH</div>
         </div>
-        <div class="grid grid-cols-3 gap-2 text-center text-xs">
-          <div>
-            <div class="text-lg font-bold text-red-600">{gameState.playerStats.health}</div>
-            <div class="text-gray-600">HEALTH</div>
-          </div>
-          <div>
-            <div class="text-lg font-bold text-orange-600">{gameState.playerStats.levelMultiplier}×</div>
-            <div class="text-gray-600">MULT</div>
-          </div>
-          <div>
-            <div class="text-lg font-bold text-gray-600">{getLevelMilestone(gameState.currentLevel)}</div>
-            <div class="text-gray-600">MILESTONE</div>
-          </div>
+        <div>
+          <div class="text-lg font-bold text-blue-600">{gameState.currentLevel}</div>
+          <div class="text-gray-600">LEVEL</div>
+        </div>
+        <div>
+          <div class="text-lg font-bold text-purple-600">{gameState.playerStats.points}</div>
+          <div class="text-gray-600">POINTS</div>
         </div>
       </div>
-    {/if}
+      <div class="grid grid-cols-3 gap-2 text-center text-xs">
+        <div>
+          <div class="text-lg font-bold text-red-600">{gameState.playerStats.health}</div>
+          <div class="text-gray-600">HEALTH</div>
+        </div>
+        <div>
+          <div class="text-lg font-bold text-orange-600">{gameState.playerStats.levelMultiplier}×</div>
+          <div class="text-gray-600">MULT</div>
+        </div>
+        <div>
+          <div class="text-lg font-bold text-gray-600">{getLevelMilestone(gameState.currentLevel)}</div>
+          <div class="text-gray-600">MILESTONE</div>
+        </div>
+      </div>
+    </div>
 
-    <!-- Health Status - Show when game started -->
-    {#if gameState.gameStarted}
-      <div class="bg-white p-3 rounded-lg shadow-sm border">
-        <div class="flex justify-between items-center text-sm">
-          <span class="text-sm font-bold">HEALTH</span>
-          <span class="text-gray-600">{gameState.playerStats.health}/5</span>
-        </div>
-        <div class="mt-1">
-          <div class="bg-gray-200 rounded-full h-2">
-            <div 
-              class="h-2 rounded-full transition-all duration-300 {gameState.playerStats.health <= 2 ? 'bg-red-500' : 'bg-green-500'}"
-              style="width: {(gameState.playerStats.health / 5) * 100}%"
-            ></div>
-          </div>
-        </div>
-        {#if gameState.playerStats.health <= 2}
-          <p class="text-red-600 font-medium text-xs mt-1">⚠️ LOW HEALTH!</p>
-        {/if}
+    <!-- Health Status -->
+    <div class="p-3 rounded-lg shadow-sm border transition-colors duration-300 {gameState.gameStarted ? 'bg-white' : 'bg-gray-300'}">
+      <div class="flex justify-between items-center text-sm">
+        <span class="text-sm font-bold">HEALTH</span>
+        <span class="text-gray-600">{gameState.playerStats.health}/5</span>
       </div>
-    {/if}
+      <div class="mt-1">
+        <div class="bg-gray-200 rounded-full h-2">
+          <div 
+            class="h-2 rounded-full transition-all duration-300 {gameState.playerStats.health <= 2 ? 'bg-red-500' : 'bg-green-500'}"
+            style="width: {(gameState.playerStats.health / 5) * 100}%"
+          ></div>
+        </div>
+      </div>
+      {#if gameState.playerStats.health <= 2}
+        <p class="text-red-600 font-medium text-xs mt-1">⚠️ LOW HEALTH!</p>
+      {/if}
+    </div>
 
     <!-- Milestone Progress -->
-    {#if gameState.gameStarted}
-      <div class="bg-white p-3 rounded-lg shadow-sm border">
-        <div class="flex justify-between items-center text-sm">
-          <span class="text-sm font-bold">POINTS</span>
-          <span class="text-gray-600">{gameState.playerStats.points}/{getLevelMilestone(gameState.currentLevel)}</span>
-        </div>
-        <div class="mt-1">
-          <div class="bg-gray-200 rounded-full h-2">
-            <div 
-              class="bg-purple-500 h-2 rounded-full transition-all duration-300"
-              style="width: {Math.min(100, (gameState.playerStats.points / getLevelMilestone(gameState.currentLevel)) * 100)}%"
-            ></div>
-          </div>
+    <div class="p-3 rounded-lg shadow-sm border transition-colors duration-300 {gameState.gameStarted ? 'bg-white' : 'bg-gray-300'}">
+      <div class="flex justify-between items-center text-sm">
+        <span class="text-sm font-bold">POINTS</span>
+        <span class="text-gray-600">{gameState.playerStats.points}/{getLevelMilestone(gameState.currentLevel)}</span>
+      </div>
+      <div class="mt-1">
+        <div class="bg-gray-200 rounded-full h-2">
+          <div 
+            class="bg-purple-500 h-2 rounded-full transition-all duration-300"
+            style="width: {Math.min(100, (gameState.playerStats.points / getLevelMilestone(gameState.currentLevel)) * 100)}%"
+          ></div>
         </div>
       </div>
-    {/if}
+    </div>
 
     <!-- Actions Panel - Prominent placement -->
     <ActionsPanel {gameState} />
@@ -170,9 +164,8 @@
     <!-- Marketplace -->
     <MarketplaceView {gameState} />
 
-    <!-- Orb Bag - Compact design - Only show when game started -->
-    {#if gameState.gameStarted}
-    <div class="bg-white p-3 rounded-lg shadow-sm border">
+    <!-- Orb Bag - Compact design -->
+    <div class="p-3 rounded-lg shadow-sm border transition-colors duration-300 {gameState.gameStarted ? 'bg-white' : 'bg-gray-300'}">
       <div class="mb-2">
         <h3 class="text-sm font-bold">ORB BAG ({totalAvailableOrbs})</h3>
       </div>
@@ -257,18 +250,15 @@
         {/if}
       </div>
     </div>
-    {/if}
 
-    <!-- How to Play - Only show on menu, compact -->
-    {#if gameState.phase === 'menu'}
-      <div class="bg-blue-50 p-3 rounded-lg border border-blue-200">
-        <h3 class="font-medium text-blue-800 mb-1 text-sm">HOW TO PLAY</h3>
-        <div class="text-xs text-blue-700 space-y-0.5">
-          <p>• PULL ORBS: HEALTH (+1), POINTS (+5), AVOID BOMBS (-2 HP)</p>
-          <p>• REACH MILESTONES: 12→18→28→44→66 POINTS</p>
-          <p>• BUY ORBS BETWEEN LEVELS, CASH OUT ANYTIME</p>
-        </div>
+    <!-- How to Play - Always visible -->
+    <div class="p-3 rounded-lg border transition-colors duration-300 {gameState.phase === 'menu' ? 'bg-blue-50 border-blue-200' : 'bg-gray-300 border-gray-400'}">
+      <h3 class="font-medium mb-1 text-sm {gameState.phase === 'menu' ? 'text-blue-800' : 'text-gray-700'}">HOW TO PLAY</h3>
+      <div class="text-xs space-y-0.5 {gameState.phase === 'menu' ? 'text-blue-700' : 'text-gray-600'}">
+        <p>• PULL ORBS: HEALTH (+1), POINTS (+5), AVOID BOMBS (-2 HP)</p>
+        <p>• REACH MILESTONES: 12→18→28→44→66 POINTS</p>
+        <p>• BUY ORBS BETWEEN LEVELS, CASH OUT ANYTIME</p>
       </div>
-    {/if}
+    </div>
   </div>
 </div>

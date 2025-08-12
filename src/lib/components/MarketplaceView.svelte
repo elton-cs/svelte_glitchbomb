@@ -192,52 +192,54 @@
   ]);
 </script>
 
-{#if gameState.phase === 'marketplace' && gameState.marketplace.available}
-  <div class="bg-black p-3 rounded-lg shadow-sm border border-white">
-    <div class="flex justify-between items-center mb-3">
-      <h2 class="text-sm font-bold text-white">MARKETPLACE</h2>
-      <div class="text-right">
-        <div class="text-lg font-bold text-white">{gameState.playerStats.cheddah}</div>
-        <div class="text-xs text-gray-400">CHEDDAH</div>
-      </div>
+<div class="p-3 rounded-lg shadow-sm border transition-colors duration-300 {gameState.phase === 'marketplace' && gameState.marketplace.available ? 'bg-black border-white' : 'bg-gray-800 border-gray-600'}">
+  <div class="flex justify-between items-center mb-3">
+    <h2 class="text-sm font-bold text-white">MARKETPLACE</h2>
+    <div class="text-right">
+      <div class="text-lg font-bold text-white">{gameState.playerStats.cheddah}</div>
+      <div class="text-xs text-gray-400">CHEDDAH</div>
     </div>
-    
-    <!-- 2x3 Grid Layout -->
-    <div class="grid grid-cols-2 gap-2">
-      {#each marketItems as item}
-        <button
-          disabled={!item.available || !item.canPurchase}
-          onmousedown={item.available ? (e) => handleMouseDown(e, item.id as 'health' | 'point') : undefined}
-          onmouseup={item.available ? () => handleMouseUp(item.id as 'health' | 'point') : undefined}
-          onmouseleave={item.available ? () => handleMouseLeave(item.id as 'health' | 'point') : undefined}
-          class="p-2 rounded font-medium transition-colors select-none flex items-center gap-2 text-left border-2
-                 {item.available && item.canPurchase
-                   ? `${item.borderColor} bg-black active:scale-95` 
-                   : 'bg-gray-900 text-gray-600 cursor-not-allowed border-gray-700'}"
-        >
-          {#if item.icon}<div class="text-lg {item.color}">{item.icon}</div>{/if}
-          <div class="flex-1 min-w-0">
-            <div class="text-sm font-medium truncate">{item.name}</div>
-            <div class="text-xs opacity-75 truncate">{item.description}</div>
-            {#if item.available}
-              <div class="text-xs opacity-90">{item.cost} cheddah</div>
-            {/if}
-          </div>
-        </button>
-      {/each}
-    </div>
-    
-    <div class="mt-3 text-xs text-gray-400 text-center">
+  </div>
+  
+  <!-- 2x3 Grid Layout -->
+  <div class="grid grid-cols-2 gap-2">
+    {#each marketItems as item}
+      <button
+        disabled={!item.available || !item.canPurchase || gameState.phase !== 'marketplace' || !gameState.marketplace.available}
+        onmousedown={item.available && gameState.phase === 'marketplace' && gameState.marketplace.available ? (e) => handleMouseDown(e, item.id as 'health' | 'point') : undefined}
+        onmouseup={item.available && gameState.phase === 'marketplace' && gameState.marketplace.available ? () => handleMouseUp(item.id as 'health' | 'point') : undefined}
+        onmouseleave={item.available && gameState.phase === 'marketplace' && gameState.marketplace.available ? () => handleMouseLeave(item.id as 'health' | 'point') : undefined}
+        class="p-2 rounded font-medium transition-colors select-none flex items-center gap-2 text-left border-2
+               {item.available && item.canPurchase && gameState.phase === 'marketplace' && gameState.marketplace.available
+                 ? `${item.borderColor} bg-black active:scale-95` 
+                 : 'bg-gray-900 text-gray-600 cursor-not-allowed border-gray-700'}"
+      >
+        {#if item.icon}<div class="text-lg {item.color}">{item.icon}</div>{/if}
+        <div class="flex-1 min-w-0">
+          <div class="text-sm font-medium truncate">{item.name}</div>
+          <div class="text-xs opacity-75 truncate">{item.description}</div>
+          {#if item.available}
+            <div class="text-xs opacity-90">{item.cost} cheddah</div>
+          {/if}
+        </div>
+      </button>
+    {/each}
+  </div>
+  
+  <div class="mt-3 text-xs text-center {gameState.phase === 'marketplace' && gameState.marketplace.available ? 'text-gray-400' : 'text-gray-600'}">
+    {#if gameState.phase === 'marketplace' && gameState.marketplace.available}
       CLICK TO BUY ONE • HOLD 1S TO BUY MAX
-    </div>
-    
-    {#if gameState.playerStats.cheddah === 0}
-      <p class="text-xs text-gray-400 text-center mt-2">
-        NO CHEDDAH REMAINING
-      </p>
+    {:else}
+      MARKETPLACE UNAVAILABLE
     {/if}
   </div>
-{/if}
+  
+  {#if gameState.playerStats.cheddah === 0 && gameState.phase === 'marketplace' && gameState.marketplace.available}
+    <p class="text-xs text-gray-400 text-center mt-2">
+      NO CHEDDAH REMAINING
+    </p>
+  {/if}
+</div>
 
 <!-- Circular Progress Indicator -->
 {#if activeHold}
