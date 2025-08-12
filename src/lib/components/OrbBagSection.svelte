@@ -16,7 +16,7 @@
 </script>
 
 <!-- Orb Bag - Compact design -->
-<div class="bg-white p-3 rounded-lg shadow-sm border h-full flex flex-col {gameState.phase === 'level' ? '' : 'opacity-60 pointer-events-none'}">
+<div class="bg-black p-3 rounded-lg shadow-sm border border-white h-full flex flex-col {gameState.phase === 'level' ? '' : 'opacity-60 pointer-events-none'}">
   <h2 class="text-sm font-bold mb-3 text-white">ORB BAG ({totalAvailableOrbs}) {gameState.phase === 'level' ? '' : '(INACTIVE)'}</h2>
   
   <div class="space-y-2 text-xs flex-1 overflow-y-auto">
@@ -26,9 +26,9 @@
       <div class="text-right">
         <span class="font-bold">{gameState.orbBag.health.available.length}</span>
         {#if gameState.orbBag.health.available.length > 0}
-          <span class="text-gray-400">({gameState.orbBag.health.available.map(orb => `+${orb.amount}`).join(', ')})</span>
+          <span class="text-white">({gameState.orbBag.health.available.map(orb => `+${orb.amount}`).join(', ')})</span>
         {/if}
-        <span class="text-gray-500">/ {gameState.orbBag.health.total.length}</span>
+        <span class="text-white">/ {gameState.orbBag.health.total.length}</span>
       </div>
     </div>
     
@@ -38,9 +38,9 @@
       <div class="text-right">
         <span class="font-bold">{gameState.orbBag.point.available.length}</span>
         {#if gameState.orbBag.point.available.length > 0}
-          <span class="text-gray-400">({gameState.orbBag.point.available.map(orb => `+${orb.amount}`).join(', ')})</span>
+          <span class="text-white">({gameState.orbBag.point.available.map(orb => `+${orb.amount}`).join(', ')})</span>
         {/if}
-        <span class="text-gray-500">/ {gameState.orbBag.point.total.length}</span>
+        <span class="text-white">/ {gameState.orbBag.point.total.length}</span>
       </div>
     </div>
     
@@ -50,9 +50,9 @@
       <div class="text-right">
         <span class="font-bold">{gameState.orbBag.bomb.available.length}</span>
         {#if gameState.orbBag.bomb.available.length > 0}
-          <span class="text-gray-400">({gameState.orbBag.bomb.available.map(orb => `-${orb.amount}`).join(', ')})</span>
+          <span class="text-white">({gameState.orbBag.bomb.available.map(orb => `-${orb.amount}`).join(', ')})</span>
         {/if}
-        <span class="text-gray-500">/ {gameState.orbBag.bomb.total.length}</span>
+        <span class="text-white">/ {gameState.orbBag.bomb.total.length}</span>
       </div>
     </div>
     
@@ -63,9 +63,9 @@
         <div class="text-right">
           <span class="font-bold">{gameState.orbBag.points_per_anyorb.available.length}</span>
           {#if gameState.orbBag.points_per_anyorb.available.length > 0}
-            <span class="text-gray-400">({gameState.orbBag.points_per_anyorb.available[0].amount}×{totalAvailableOrbs - 1} = {gameState.orbBag.points_per_anyorb.available[0].amount * (totalAvailableOrbs - 1)} pts)</span>
+            <span class="text-white">({gameState.orbBag.points_per_anyorb.available[0].amount}×{totalAvailableOrbs - 1} = {gameState.orbBag.points_per_anyorb.available[0].amount * (totalAvailableOrbs - 1)} pts)</span>
           {/if}
-          <span class="text-gray-500">/ {gameState.orbBag.points_per_anyorb.total.length}</span>
+          <span class="text-white">/ {gameState.orbBag.points_per_anyorb.total.length}</span>
         </div>
       </div>
     {/if}
@@ -77,9 +77,9 @@
         <div class="text-right">
           <span class="font-bold">{gameState.orbBag.points_per_bombpulled.available.length}</span>
           {#if gameState.orbBag.points_per_bombpulled.available.length > 0}
-            <span class="text-gray-400">({gameState.orbBag.points_per_bombpulled.available[0].amount}×{gameState.playerStats.bombsPulledThisLevel} = {gameState.orbBag.points_per_bombpulled.available[0].amount * gameState.playerStats.bombsPulledThisLevel} pts)</span>
+            <span class="text-white">({gameState.orbBag.points_per_bombpulled.available[0].amount}×{gameState.playerStats.bombsPulledThisLevel} = {gameState.orbBag.points_per_bombpulled.available[0].amount * gameState.playerStats.bombsPulledThisLevel} pts)</span>
           {/if}
-          <span class="text-gray-500">/ {gameState.orbBag.points_per_bombpulled.total.length}</span>
+          <span class="text-white">/ {gameState.orbBag.points_per_bombpulled.total.length}</span>
         </div>
       </div>
     {/if}
@@ -91,9 +91,9 @@
         <div class="text-right">
           <span class="font-bold">{gameState.orbBag.multiplier.available.length}</span>
           {#if gameState.orbBag.multiplier.available.length > 0}
-            <span class="text-gray-400">(+{gameState.orbBag.multiplier.available[0].amount}× boost)</span>
+            <span class="text-white">(+{gameState.orbBag.multiplier.available[0].amount}× boost)</span>
           {/if}
-          <span class="text-gray-500">/ {gameState.orbBag.multiplier.total.length}</span>
+          <span class="text-white">/ {gameState.orbBag.multiplier.total.length}</span>
         </div>
       </div>
     {/if}

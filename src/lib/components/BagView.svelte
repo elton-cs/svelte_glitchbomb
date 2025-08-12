@@ -16,8 +16,8 @@
   const canPullOrb = $derived(gameState.phase === 'level' && getTotalAvailableOrbs(gameState.orbBag) > 0);
 </script>
 
-<div class="bg-gray-100 p-4 rounded border">
-  <h2 class="text-sm font-bold mb-3">Orb Bag</h2>
+<div class="bg-black p-4 rounded border border-white">
+  <h2 class="text-sm font-bold mb-3 text-white">Orb Bag</h2>
   
   <div class="space-y-3 mb-4">
     <div class="flex justify-between items-center {getAvailableOrbCount(gameState.orbBag, 'health') === 0 ? 'opacity-50' : ''}">
@@ -25,7 +25,7 @@
       <div class="text-right">
         <span class="text-lg font-bold">{getAvailableOrbCount(gameState.orbBag, 'health')}</span>
         {#if gameState.orbBag.health.available.length > 0}
-          <span class="text-sm text-gray-400">({gameState.orbBag.health.available.map(orb => `+${orb.amount}`).join(', ')})</span>
+          <span class="text-sm text-white">({gameState.orbBag.health.available.map(orb => `+${orb.amount}`).join(', ')})</span>
         {/if}
         <span class="text-gray-500">/ {getTotalOrbCount(gameState.orbBag, 'health')}</span>
       </div>
@@ -36,7 +36,7 @@
       <div class="text-right">
         <span class="text-lg font-bold">{getAvailableOrbCount(gameState.orbBag, 'point')}</span>
         {#if gameState.orbBag.point.available.length > 0}
-          <span class="text-sm text-gray-400">({gameState.orbBag.point.available.map(orb => `+${orb.amount}`).join(', ')})</span>
+          <span class="text-sm text-white">({gameState.orbBag.point.available.map(orb => `+${orb.amount}`).join(', ')})</span>
         {/if}
         <span class="text-gray-500">/ {getTotalOrbCount(gameState.orbBag, 'point')}</span>
       </div>
@@ -47,7 +47,7 @@
       <div class="text-right">
         <span class="text-lg font-bold">{getAvailableOrbCount(gameState.orbBag, 'bomb')}</span>
         {#if gameState.orbBag.bomb.available.length > 0}
-          <span class="text-sm text-gray-400">({gameState.orbBag.bomb.available.map(orb => `-${orb.amount}`).join(', ')})</span>
+          <span class="text-sm text-white">({gameState.orbBag.bomb.available.map(orb => `-${orb.amount}`).join(', ')})</span>
         {/if}
         <span class="text-gray-500">/ {getTotalOrbCount(gameState.orbBag, 'bomb')}</span>
       </div>
@@ -58,7 +58,7 @@
       <div class="text-right">
         <span class="text-lg font-bold">{getAvailableOrbCount(gameState.orbBag, 'points_per_anyorb')}</span>
         {#if gameState.orbBag.points_per_anyorb.available.length > 0}
-          <span class="text-sm text-gray-400">({gameState.orbBag.points_per_anyorb.available[0].amount}×{getTotalAvailableOrbs(gameState.orbBag) - 1} = {gameState.orbBag.points_per_anyorb.available[0].amount * (getTotalAvailableOrbs(gameState.orbBag) - 1)} pts)</span>
+          <span class="text-sm text-white">({gameState.orbBag.points_per_anyorb.available[0].amount}×{getTotalAvailableOrbs(gameState.orbBag) - 1} = {gameState.orbBag.points_per_anyorb.available[0].amount * (getTotalAvailableOrbs(gameState.orbBag) - 1)} pts)</span>
         {/if}
         <span class="text-gray-500">/ {getTotalOrbCount(gameState.orbBag, 'points_per_anyorb')}</span>
       </div>
@@ -69,7 +69,7 @@
       <div class="text-right">
         <span class="text-lg font-bold">{getAvailableOrbCount(gameState.orbBag, 'points_per_bombpulled')}</span>
         {#if gameState.orbBag.points_per_bombpulled.available.length > 0}
-          <span class="text-sm text-gray-400">({gameState.orbBag.points_per_bombpulled.available[0].amount}×{gameState.playerStats.bombsPulledThisLevel} = {gameState.orbBag.points_per_bombpulled.available[0].amount * gameState.playerStats.bombsPulledThisLevel} pts)</span>
+          <span class="text-sm text-white">({gameState.orbBag.points_per_bombpulled.available[0].amount}×{gameState.playerStats.bombsPulledThisLevel} = {gameState.orbBag.points_per_bombpulled.available[0].amount * gameState.playerStats.bombsPulledThisLevel} pts)</span>
         {/if}
         <span class="text-gray-500">/ {getTotalOrbCount(gameState.orbBag, 'points_per_bombpulled')}</span>
       </div>
@@ -80,14 +80,14 @@
       <div class="text-right">
         <span class="text-lg font-bold">{getAvailableOrbCount(gameState.orbBag, 'multiplier')}</span>
         {#if gameState.orbBag.multiplier.available.length > 0}
-          <span class="text-sm text-gray-400">(+{gameState.orbBag.multiplier.available[0].amount}× boost)</span>
+          <span class="text-sm text-white">(+{gameState.orbBag.multiplier.available[0].amount}× boost)</span>
         {/if}
         <span class="text-gray-500">/ {getTotalOrbCount(gameState.orbBag, 'multiplier')}</span>
       </div>
     </div>
   </div>
   
-  <div class="border-t pt-3">
+  <div class="border border-white-t pt-3">
     <div class="flex justify-between items-center mb-3">
       <span class="font-medium">Total Available:</span>
       <span class="text-lg font-bold">{getTotalAvailableOrbs(gameState.orbBag)}</span>

@@ -38,12 +38,12 @@
     <!-- Header -->
     <header class="text-center mb-6 relative">
       <h1 class="text-2xl font-bold text-white">GLITCH BOMB</h1>
-      <p class="text-sm text-gray-400">BAG-BUILDING LUCK-BASED GAME</p>
+      <p class="text-sm text-white">BAG-BUILDING LUCK-BASED GAME</p>
       
       <!-- Dev Mode Toggle - positioned in top right -->
       <button 
         onclick={toggleDevMode}
-        class="absolute top-0 right-0 text-xs px-2 py-1 rounded border {devMode ? 'bg-gray-900 text-red-400 border-gray-700' : 'bg-black text-gray-400 border-white'} hover:opacity-80 transition-colors"
+        class="absolute top-0 right-0 text-xs px-2 py-1 rounded border {devMode ? 'bg-black text-white border-white' : 'bg-black text-white border-white'} hover:opacity-80 transition-colors"
       >
         {devMode ? 'DEV ON' : 'DEV'}
       </button>
@@ -52,16 +52,16 @@
     <!-- Top Row: Moonrocks and Dev Tools -->
     <div class="flex flex-wrap gap-4 mb-6">
       <!-- Moonrocks - Separate section -->
-      <div class="bg-white p-3 rounded-lg shadow-sm border flex-1 min-w-64">
+      <div class="bg-black p-3 rounded-lg shadow-sm border border-white flex-1 min-w-64">
         <div class="flex justify-between items-center">
           <div class="text-sm font-bold text-white">MOONROCKS</div>
           <div class="text-xl font-bold text-white">{gameState.playerStats.moonrocks}</div>
         </div>
         {#if canClaimRocks}
-          <div class="mt-2 pt-2 border-t border-gray-200">
+          <div class="mt-2 pt-2 border-t border-white">
             <button 
               onclick={handleClaimRocks}
-              class="w-full bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium py-2 px-3 rounded-lg transition-colors"
+              class="w-full bg-black hover:bg-white hover:text-black border border-white text-white text-sm font-medium py-2 px-3 rounded-lg transition-colors"
             >
               CLAIM 1000 FREE ROCKS!
             </button>
@@ -71,16 +71,16 @@
 
       <!-- Dev Mode Panel -->
       {#if devMode}
-        <div class="bg-gray-900 p-3 rounded-lg shadow-sm border border-gray-700 flex-1 min-w-64">
+        <div class="bg-black p-3 rounded-lg shadow-sm border border-white flex-1 min-w-64">
           <div class="flex justify-between items-center mb-2">
-            <h3 class="font-medium text-red-400 text-sm">🔧 DEVELOPER TOOLS</h3>
-            <span class="text-xs text-red-400">DEBUG MODE</span>
+            <h3 class="font-medium text-white text-sm">🔧 DEVELOPER TOOLS</h3>
+            <span class="text-xs text-white">DEBUG MODE</span>
           </div>
           
           <div class="space-y-2">
             <button 
               onclick={resetMoonrocks}
-              class="w-full bg-red-600 hover:bg-red-700 text-white text-sm font-medium py-2 px-3 rounded-lg transition-colors"
+              class="w-full bg-black hover:bg-white hover:text-black border border-white text-white text-sm font-medium py-2 px-3 rounded-lg transition-colors"
             >
               RESET MOONROCKS TO 0
             </button>

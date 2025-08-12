@@ -131,19 +131,19 @@
       let tierBorder = 'border-white';
       
       if (shopItem.id.startsWith('common_')) {
-        tierColor = 'text-gray-300';
+        tierColor = 'text-white';
         tierBorder = 'border-gray-400';
       } else if (shopItem.id.startsWith('rare_')) {
-        tierColor = 'text-blue-300';
+        tierColor = 'text-white';
         tierBorder = 'border-blue-500';
       } else if (shopItem.id.startsWith('cosmic_')) {
-        tierColor = 'text-purple-300';
+        tierColor = 'text-white';
         tierBorder = 'border-purple-500';
       }
       
-      // Override text color for health orbs but keep tier border
+      // Keep red color for health orbs and preserve tier borders
       if (shopItem.type === 'health') {
-        tierColor = 'text-red-400';
+        tierColor = 'text-white';
         // Keep the tier-based border color, don't override
       }
       
@@ -172,7 +172,7 @@
     <h2 class="text-sm font-bold text-white">SHOP {gameState.phase === 'marketplace' && gameState.marketplace.available ? '' : '(CLOSED)'}</h2>
     <div class="text-right">
       <div class="text-lg font-bold text-white">{gameState.playerStats.cheddah}</div>
-      <div class="text-xs text-gray-400">CHEDDAH</div>
+      <div class="text-xs text-white">CHEDDAH</div>
     </div>
   </div>
   
@@ -201,7 +201,7 @@
     {/each}
   </div>
   
-  <div class="mt-3 text-xs text-center {gameState.phase === 'marketplace' && gameState.marketplace.available ? 'text-gray-400' : 'text-gray-600'}">
+  <div class="mt-3 text-xs text-center text-white">
     {#if gameState.phase === 'marketplace' && gameState.marketplace.available}
       CLICK TO BUY
     {:else}
@@ -210,7 +210,7 @@
   </div>
   
   {#if gameState.playerStats.cheddah === 0 && gameState.phase === 'marketplace' && gameState.marketplace.available}
-    <p class="text-xs text-gray-400 text-center mt-2">
+    <p class="text-xs text-white text-center mt-2">
       NO CHEDDAH TO SPEND
     </p>
   {/if}
