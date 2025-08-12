@@ -92,7 +92,7 @@
     {/if}
 
     <!-- Stats - Compact horizontal layout -->
-    <div class="p-3 rounded-lg shadow-sm border transition-colors duration-300 {gameState.gameStarted ? 'bg-white' : 'bg-gray-300'}">
+    <div class="bg-white p-3 rounded-lg shadow-sm border">
       <div class="grid grid-cols-3 gap-2 text-center text-xs mb-2">
         <div>
           <div class="text-lg font-bold text-green-600">{gameState.playerStats.cheddah}</div>
@@ -124,7 +124,7 @@
     </div>
 
     <!-- Health Status -->
-    <div class="p-3 rounded-lg shadow-sm border transition-colors duration-300 {gameState.gameStarted ? 'bg-white' : 'bg-gray-300'}">
+    <div class="bg-white p-3 rounded-lg shadow-sm border">
       <div class="flex justify-between items-center text-sm">
         <span class="text-sm font-bold">HEALTH</span>
         <span class="text-gray-600">{gameState.playerStats.health}/5</span>
@@ -143,7 +143,7 @@
     </div>
 
     <!-- Milestone Progress -->
-    <div class="p-3 rounded-lg shadow-sm border transition-colors duration-300 {gameState.gameStarted ? 'bg-white' : 'bg-gray-300'}">
+    <div class="bg-white p-3 rounded-lg shadow-sm border">
       <div class="flex justify-between items-center text-sm">
         <span class="text-sm font-bold">POINTS</span>
         <span class="text-gray-600">{gameState.playerStats.points}/{getLevelMilestone(gameState.currentLevel)}</span>
@@ -165,9 +165,9 @@
     <MarketplaceView {gameState} />
 
     <!-- Orb Bag - Compact design -->
-    <div class="p-3 rounded-lg shadow-sm border transition-colors duration-300 {gameState.gameStarted ? 'bg-white' : 'bg-gray-300'}">
+    <div class="bg-white p-3 rounded-lg shadow-sm border {gameState.phase === 'level' ? '' : 'opacity-60 pointer-events-none'}">
       <div class="mb-2">
-        <h3 class="text-sm font-bold">ORB BAG ({totalAvailableOrbs})</h3>
+        <h3 class="text-sm font-bold">ORB BAG ({totalAvailableOrbs}) {gameState.phase === 'level' ? '' : '(INACTIVE)'}</h3>
       </div>
       
       <div class="space-y-2 text-xs">
@@ -252,9 +252,9 @@
     </div>
 
     <!-- How to Play - Always visible -->
-    <div class="p-3 rounded-lg border transition-colors duration-300 {gameState.phase === 'menu' ? 'bg-blue-50 border-blue-200' : 'bg-gray-300 border-gray-400'}">
-      <h3 class="font-medium mb-1 text-sm {gameState.phase === 'menu' ? 'text-blue-800' : 'text-gray-700'}">HOW TO PLAY</h3>
-      <div class="text-xs space-y-0.5 {gameState.phase === 'menu' ? 'text-blue-700' : 'text-gray-600'}">
+    <div class="bg-blue-50 p-3 rounded-lg border border-blue-200">
+      <h3 class="font-medium text-blue-800 mb-1 text-sm">HOW TO PLAY</h3>
+      <div class="text-xs text-blue-700 space-y-0.5">
         <p>• PULL ORBS: HEALTH (+1), POINTS (+5), AVOID BOMBS (-2 HP)</p>
         <p>• REACH MILESTONES: 12→18→28→44→66 POINTS</p>
         <p>• BUY ORBS BETWEEN LEVELS, CASH OUT ANYTIME</p>

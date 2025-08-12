@@ -192,9 +192,9 @@
   ]);
 </script>
 
-<div class="p-3 rounded-lg shadow-sm border transition-colors duration-300 {gameState.phase === 'marketplace' && gameState.marketplace.available ? 'bg-black border-white' : 'bg-gray-800 border-gray-600'}">
+<div class="bg-black p-3 rounded-lg shadow-sm border border-white {gameState.phase === 'marketplace' && gameState.marketplace.available ? '' : 'opacity-60'}">
   <div class="flex justify-between items-center mb-3">
-    <h2 class="text-sm font-bold text-white">MARKETPLACE</h2>
+    <h2 class="text-sm font-bold text-white">MARKETPLACE {gameState.phase === 'marketplace' && gameState.marketplace.available ? '' : '(INACTIVE)'}</h2>
     <div class="text-right">
       <div class="text-lg font-bold text-white">{gameState.playerStats.cheddah}</div>
       <div class="text-xs text-gray-400">CHEDDAH</div>

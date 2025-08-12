@@ -64,12 +64,18 @@
   const canPullOrb = $derived(gameState.phase === 'level' && totalAvailableOrbs > 0);
 </script>
 
-<div class="p-4 rounded border transition-colors duration-300 {gameState.phase === 'menu' || gameState.phase === 'level' || gameState.phase === 'marketplace' || gameState.phase === 'gameover' || gameState.phase === 'victory' ? 'bg-black border-white' : 'bg-gray-800 border-gray-600'}">
+<div class="bg-black p-4 rounded border border-white">
   <h2 class="text-sm font-bold mb-3 text-white">ACTIONS</h2>
   
-  <div class="space-y-2">
-    <!-- Start Game Action -->
-    <div class="space-y-1">
+  <div class="space-y-3">
+    <!-- Current Phase Indicator -->
+    <div class="text-center text-xs text-gray-400 uppercase tracking-wide">
+      Current Phase: <span class="text-white font-medium">{gameState.phase}</span>
+    </div>
+    
+    <!-- Menu Actions -->
+    <div class="space-y-1 {gameState.phase === 'menu' ? '' : 'opacity-50'}">
+      <div class="text-xs text-gray-400 mb-1">MENU ACTIONS</div>
       <button 
         onclick={handleStartGame}
         disabled={!canStartGame || gameState.phase !== 'menu'}
@@ -89,7 +95,8 @@
     </div>
     
     <!-- Level Actions -->
-    <div class="space-y-1">
+    <div class="space-y-1 {gameState.phase === 'level' ? '' : 'opacity-50'}">
+      <div class="text-xs text-gray-400 mb-1">LEVEL ACTIONS</div>
       <button 
         onclick={handlePullOrb}
         disabled={!canPullOrb || gameState.phase !== 'level'}
@@ -98,7 +105,7 @@
                  ? 'bg-white text-black hover:bg-gray-200 border-white' 
                  : 'bg-transparent text-gray-600 border-gray-600 cursor-not-allowed'}"
       >
-        {canPullOrb && gameState.phase === 'level' ? 'PULL ORB' : 'PULL ORB (UNAVAILABLE)'}
+        PULL ORB {gameState.phase === 'level' && totalAvailableOrbs === 0 ? '(NO ORBS)' : ''}
       </button>
       
       <button 
@@ -114,7 +121,8 @@
     </div>
     
     <!-- Marketplace Actions -->
-    <div class="space-y-1">
+    <div class="space-y-1 {gameState.phase === 'marketplace' ? '' : 'opacity-50'}">
+      <div class="text-xs text-gray-400 mb-1">MARKETPLACE ACTIONS</div>
       <button 
         onclick={handleCashOutPostLevel}
         disabled={!canCashOutPost || gameState.phase !== 'marketplace'}
@@ -146,12 +154,21 @@
       {/if}
     </div>
     
-    <!-- Game Over Actions -->
-    <div class="space-y-1">
+    <!-- End Game Actions -->
+    <div class="space-y-1 {gameState.phase === 'gameover' || gameState.phase === 'victory' ? '' : 'opacity-50'}">
+      <div class="text-xs text-gray-400 mb-1">END GAME ACTIONS</div>
+      
       {#if gameState.phase === 'gameover'}
         <div class="text-center mb-3">
           <h3 class="text-xl font-bold text-red-400">GAME OVER!</h3>
           <p class="text-gray-400">BETTER LUCK NEXT TIME</p>
+        </div>
+      {/if}
+      
+      {#if gameState.phase === 'victory'}
+        <div class="text-center mb-3">
+          <h3 class="text-xl font-bold text-white">VICTORY!</h3>
+          <p class="text-gray-400">YOU COMPLETED ALL LEVELS!</p>
         </div>
       {/if}
       
@@ -165,16 +182,6 @@
       >
         RETURN TO MENU
       </button>
-    </div>
-    
-    <!-- Victory Actions -->
-    <div class="space-y-1">
-      {#if gameState.phase === 'victory'}
-        <div class="text-center mb-3">
-          <h3 class="text-xl font-bold text-white">VICTORY!</h3>
-          <p class="text-gray-400">YOU COMPLETED ALL LEVELS!</p>
-        </div>
-      {/if}
     </div>
   </div>
 </div>
