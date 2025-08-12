@@ -142,7 +142,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
 // Configuration for which tiers are available at each level
 export const SHOP_TIER_AVAILABILITY: Record<number, ('common' | 'rare' | 'cosmic')[]> = {
   1: ['common'],
-  2: ['common'],
+  2: ['common', 'rare'],
   3: ['common', 'rare'],
   4: ['common', 'rare'],
   5: ['common', 'rare', 'cosmic']

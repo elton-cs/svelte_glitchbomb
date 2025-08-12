@@ -123,7 +123,7 @@
     holdProgress[orbType] = 0;
   }
 
-  const marketItems = $derived.by(() => {
+  const shopInventory = $derived.by(() => {
     const availableShopItems = getAvailableShopItems(gameState.currentLevel);
     const items = availableShopItems.map(shopItem => {
       // Determine tier and colors based on item ID
