@@ -1,10 +1,12 @@
 <script lang="ts">
   import { createInitialGameState, claimFreeRocks, saveMoonrocks } from '../game/state.js';
-  import { getLevelMilestone } from '../game/levels.js';
   import StatsDisplay from './StatsDisplay.svelte';
   import BagView from './BagView.svelte';
   import ActionsPanel from './ActionsPanel.svelte';
   import MarketplaceView from './MarketplaceView.svelte';
+  import PlayerStatsSection from './PlayerStatsSection.svelte';
+  import OrbBagSection from './OrbBagSection.svelte';
+  import HowToPlaySection from './HowToPlaySection.svelte';
 
   let gameState = $state(createInitialGameState());
   let devMode = $state(false);
@@ -26,13 +28,6 @@
   $effect(() => {
     saveMoonrocks(gameState.playerStats.moonrocks);
   });
-  
-  const totalAvailableOrbs = $derived(gameState.orbBag.health.available.length + 
-                                      gameState.orbBag.point.available.length + 
-                                      gameState.orbBag.bomb.available.length + 
-                                      gameState.orbBag.points_per_anyorb.available.length + 
-                                      gameState.orbBag.points_per_bombpulled.available.length + 
-                                      gameState.orbBag.multiplier.available.length);
   
   const canClaimRocks = $derived(gameState.playerStats.moonrocks < 100);
   
@@ -91,71 +86,8 @@
       </div>
     {/if}
 
-    <!-- Stats - Compact horizontal layout -->
-    <div class="bg-white p-3 rounded-lg shadow-sm border">
-      <div class="grid grid-cols-3 gap-2 text-center text-xs mb-3">
-        <div>
-          <div class="text-lg font-bold text-green-600">{gameState.playerStats.cheddah}</div>
-          <div class="text-gray-600">CHEDDAH</div>
-        </div>
-        <div>
-          <div class="text-lg font-bold text-blue-600">{gameState.currentLevel}</div>
-          <div class="text-gray-600">LEVEL</div>
-        </div>
-        <div>
-          <div class="text-lg font-bold text-purple-600">{gameState.playerStats.points}</div>
-          <div class="text-gray-600">POINTS</div>
-        </div>
-      </div>
-      <div class="grid grid-cols-3 gap-2 text-center text-xs mb-3">
-        <div>
-          <div class="text-lg font-bold text-red-600">{gameState.playerStats.health}</div>
-          <div class="text-gray-600">HEALTH</div>
-        </div>
-        <div>
-          <div class="text-lg font-bold text-orange-600">{gameState.playerStats.levelMultiplier}×</div>
-          <div class="text-gray-600">MULT</div>
-        </div>
-        <div>
-          <div class="text-lg font-bold text-gray-600">{getLevelMilestone(gameState.currentLevel)}</div>
-          <div class="text-gray-600">MILESTONE</div>
-        </div>
-      </div>
-      
-      <!-- Progress Bars Section -->
-      <div class="space-y-2">
-        <!-- Health Progress Bar -->
-        <div>
-          <div class="flex justify-between items-center text-xs mb-1">
-            <span class="text-gray-600">HEALTH</span>
-            <span class="text-gray-600">{gameState.playerStats.health}/5</span>
-          </div>
-          <div class="bg-gray-200 rounded-full h-2">
-            <div 
-              class="h-2 rounded-full transition-all duration-300 {gameState.playerStats.health <= 2 ? 'bg-red-500' : 'bg-green-500'}"
-              style="width: {(gameState.playerStats.health / 5) * 100}%"
-            ></div>
-          </div>
-          {#if gameState.playerStats.health <= 2}
-            <p class="text-red-600 font-medium text-xs mt-1">⚠️ LOW HEALTH!</p>
-          {/if}
-        </div>
-        
-        <!-- Points Progress Bar -->
-        <div>
-          <div class="flex justify-between items-center text-xs mb-1">
-            <span class="text-gray-600">POINTS</span>
-            <span class="text-gray-600">{gameState.playerStats.points}/{getLevelMilestone(gameState.currentLevel)}</span>
-          </div>
-          <div class="bg-gray-200 rounded-full h-2">
-            <div 
-              class="bg-purple-500 h-2 rounded-full transition-all duration-300"
-              style="width: {Math.min(100, (gameState.playerStats.points / getLevelMilestone(gameState.currentLevel)) * 100)}%"
-            ></div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <!-- Player Stats Section -->
+    <PlayerStatsSection {gameState} />
 
 
     <!-- Actions Panel - Prominent placement -->
@@ -164,101 +96,10 @@
     <!-- Marketplace -->
     <MarketplaceView {gameState} />
 
-    <!-- Orb Bag - Compact design -->
-    <div class="bg-white p-3 rounded-lg shadow-sm border {gameState.phase === 'level' ? '' : 'opacity-60 pointer-events-none'}">
-      <div class="mb-2">
-        <h3 class="text-sm font-bold">ORB BAG ({totalAvailableOrbs}) {gameState.phase === 'level' ? '' : '(INACTIVE)'}</h3>
-      </div>
-      
-      <div class="space-y-2 text-xs">
-        <!-- Health Orbs -->
-        <div class="flex justify-between items-center {gameState.orbBag.health.available.length === 0 ? 'opacity-50' : ''}">
-          <span class="font-medium text-red-500">♥ HEALTH ORBS:</span>
-          <div class="text-right">
-            <span class="font-bold">{gameState.orbBag.health.available.length}</span>
-            {#if gameState.orbBag.health.available.length > 0}
-              <span class="text-gray-600">({gameState.orbBag.health.available.map(orb => `+${orb.amount}`).join(', ')})</span>
-            {/if}
-            <span class="text-gray-500">/ {gameState.orbBag.health.total.length}</span>
-          </div>
-        </div>
-        
-        <!-- Point Orbs -->
-        <div class="flex justify-between items-center {gameState.orbBag.point.available.length === 0 ? 'opacity-50' : ''}">
-          <span class="font-medium text-purple-500">★ POINT ORBS:</span>
-          <div class="text-right">
-            <span class="font-bold">{gameState.orbBag.point.available.length}</span>
-            {#if gameState.orbBag.point.available.length > 0}
-              <span class="text-gray-600">({gameState.orbBag.point.available.map(orb => `+${orb.amount}`).join(', ')})</span>
-            {/if}
-            <span class="text-gray-500">/ {gameState.orbBag.point.total.length}</span>
-          </div>
-        </div>
-        
-        <!-- Bomb Orbs -->
-        <div class="flex justify-between items-center {gameState.orbBag.bomb.available.length === 0 ? 'opacity-50' : ''}">
-          <span class="font-medium text-orange-500">💥 BOMB ORBS:</span>
-          <div class="text-right">
-            <span class="font-bold">{gameState.orbBag.bomb.available.length}</span>
-            {#if gameState.orbBag.bomb.available.length > 0}
-              <span class="text-gray-600">({gameState.orbBag.bomb.available.map(orb => `-${orb.amount}`).join(', ')})</span>
-            {/if}
-            <span class="text-gray-500">/ {gameState.orbBag.bomb.total.length}</span>
-          </div>
-        </div>
-        
-        <!-- Points Per Any Orb -->
-        {#if gameState.orbBag.points_per_anyorb.total.length > 0}
-          <div class="flex justify-between items-center {gameState.orbBag.points_per_anyorb.available.length === 0 ? 'opacity-50' : ''}">
-            <span class="font-medium text-blue-500">⚡ POINTS PER ANY ORB:</span>
-            <div class="text-right">
-              <span class="font-bold">{gameState.orbBag.points_per_anyorb.available.length}</span>
-              {#if gameState.orbBag.points_per_anyorb.available.length > 0}
-                <span class="text-gray-600">({gameState.orbBag.points_per_anyorb.available[0].amount}×{totalAvailableOrbs - 1} = {gameState.orbBag.points_per_anyorb.available[0].amount * (totalAvailableOrbs - 1)} pts)</span>
-              {/if}
-              <span class="text-gray-500">/ {gameState.orbBag.points_per_anyorb.total.length}</span>
-            </div>
-          </div>
-        {/if}
-        
-        <!-- Points Per Bomb Pulled -->
-        {#if gameState.orbBag.points_per_bombpulled.total.length > 0}
-          <div class="flex justify-between items-center {gameState.orbBag.points_per_bombpulled.available.length === 0 ? 'opacity-50' : ''}">
-            <span class="font-medium text-yellow-500">🎯 POINTS PER BOMB PULLED:</span>
-            <div class="text-right">
-              <span class="font-bold">{gameState.orbBag.points_per_bombpulled.available.length}</span>
-              {#if gameState.orbBag.points_per_bombpulled.available.length > 0}
-                <span class="text-gray-600">({gameState.orbBag.points_per_bombpulled.available[0].amount}×{gameState.playerStats.bombsPulledThisLevel} = {gameState.orbBag.points_per_bombpulled.available[0].amount * gameState.playerStats.bombsPulledThisLevel} pts)</span>
-              {/if}
-              <span class="text-gray-500">/ {gameState.orbBag.points_per_bombpulled.total.length}</span>
-            </div>
-          </div>
-        {/if}
-        
-        <!-- Multiplier Orbs -->
-        {#if gameState.orbBag.multiplier.total.length > 0}
-          <div class="flex justify-between items-center {gameState.orbBag.multiplier.available.length === 0 ? 'opacity-50' : ''}">
-            <span class="font-medium text-orange-500">⭐ MULTIPLIER ORBS:</span>
-            <div class="text-right">
-              <span class="font-bold">{gameState.orbBag.multiplier.available.length}</span>
-              {#if gameState.orbBag.multiplier.available.length > 0}
-                <span class="text-gray-600">(+{gameState.orbBag.multiplier.available[0].amount}× boost)</span>
-              {/if}
-              <span class="text-gray-500">/ {gameState.orbBag.multiplier.total.length}</span>
-            </div>
-          </div>
-        {/if}
-      </div>
-    </div>
+    <!-- Orb Bag Section -->
+    <OrbBagSection {gameState} />
 
-    <!-- How to Play - Always visible -->
-    <div class="bg-blue-50 p-3 rounded-lg border border-blue-200">
-      <h3 class="font-medium text-blue-800 mb-1 text-sm">HOW TO PLAY</h3>
-      <div class="text-xs text-blue-700 space-y-0.5">
-        <p>• PULL ORBS: HEALTH (+1), POINTS (+5), AVOID BOMBS (-2 HP)</p>
-        <p>• REACH MILESTONES: 12→18→28→44→66 POINTS</p>
-        <p>• BUY ORBS BETWEEN LEVELS, CASH OUT ANYTIME</p>
-      </div>
-    </div>
+    <!-- How to Play Section -->
+    <HowToPlaySection />
   </div>
 </div>
