@@ -64,7 +64,7 @@
   const canPullOrb = $derived(gameState.phase === 'level' && totalAvailableOrbs > 0);
 </script>
 
-<div class="bg-black p-4 rounded border border-white h-full flex flex-col">
+<div class="bg-black p-3 rounded-lg shadow-sm border border-white h-full flex flex-col">
   <h2 class="text-sm font-bold mb-3 text-white">ACTIONS</h2>
   
   <div class="flex-1 flex flex-col space-y-3">

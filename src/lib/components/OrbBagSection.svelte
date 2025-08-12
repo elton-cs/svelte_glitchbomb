@@ -17,9 +17,7 @@
 
 <!-- Orb Bag - Compact design -->
 <div class="bg-white p-3 rounded-lg shadow-sm border h-full flex flex-col {gameState.phase === 'level' ? '' : 'opacity-60 pointer-events-none'}">
-  <div class="mb-2">
-    <h3 class="text-sm font-bold">ORB BAG ({totalAvailableOrbs}) {gameState.phase === 'level' ? '' : '(INACTIVE)'}</h3>
-  </div>
+  <h2 class="text-sm font-bold mb-3 text-gray-800">ORB BAG ({totalAvailableOrbs}) {gameState.phase === 'level' ? '' : '(INACTIVE)'}</h2>
   
   <div class="space-y-2 text-xs flex-1 overflow-y-auto">
     <!-- Health Orbs -->
