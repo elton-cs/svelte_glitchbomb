@@ -123,10 +123,8 @@
     holdProgress[orbType] = 0;
   }
 
-  const availableShopItems = $derived(getAvailableShopItems(gameState.currentLevel));
-  
-  // Create market items array with shop items + locked slots to fill 6 total slots
-  const marketItems = $derived(() => {
+  const marketItems = $derived.by(() => {
+    const availableShopItems = getAvailableShopItems(gameState.currentLevel);
     const items = availableShopItems.map(shopItem => ({
       id: shopItem.id,
       name: shopItem.name,
