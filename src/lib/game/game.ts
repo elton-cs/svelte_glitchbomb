@@ -17,6 +17,7 @@ import {
 } from './levels.js';
 import { GAME_CONFIG } from './constants.js';
 import type { OrbType } from './types.js';
+import { getShopItem } from './shopItems.js';
 
 function applyPointsWithMultiplier(gameState: GameState, basePoints: number): void {
   const multipliedPoints = Math.floor(basePoints * gameState.playerStats.levelMultiplier);
@@ -196,6 +197,29 @@ export function purchaseOrb(gameState: GameState, type: OrbType, quantity: numbe
 
   gameState.playerStats.cheddah -= cost;
   addOrbsToBag(gameState.orbBag, type, quantity);
+  
+  return true;
+}
+
+export function purchaseShopItem(gameState: GameState, shopItemId: string, quantity: number = 1): boolean {
+  if (gameState.phase !== 'marketplace' || !gameState.marketplace.available) {
+    return false;
+  }
+
+  const shopItem = getShopItem(shopItemId);
+  
+  if (!shopItem) {
+    return false;
+  }
+
+  const totalCost = shopItem.cost * quantity;
+  
+  if (gameState.playerStats.cheddah < totalCost) {
+    return false;
+  }
+
+  gameState.playerStats.cheddah -= totalCost;
+  addOrbsToBag(gameState.orbBag, shopItem.orb.type, quantity, shopItem.orb.amount);
   
   return true;
 }

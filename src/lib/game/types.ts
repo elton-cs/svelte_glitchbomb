@@ -65,6 +65,17 @@ export interface GameState {
   levelCompleted: boolean;
 }
 
+export interface ShopItem {
+  id: string;
+  name: string;
+  description: string;
+  orb: {
+    type: OrbType;
+    amount: number;
+  };
+  cost: number;
+}
+
 export interface GameConfig {
   initialMoonrocks: number;
   levelMilestones: number[];

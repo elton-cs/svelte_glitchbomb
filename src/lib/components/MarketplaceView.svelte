@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { purchaseOrb } from '../game/game.js';
+  import { purchaseOrb, purchaseShopItem } from '../game/game.js';
+  import { getAvailableShopItems } from '../game/shopItems.js';
   import type { GameState } from '../game/types.js';
 
   interface Props {
@@ -16,6 +17,10 @@
 
   function handleSinglePurchase(orbType: 'health' | 'point') {
     purchaseOrb(gameState, orbType, 1);
+  }
+
+  function handleShopItemPurchase(shopItemId: string) {
+    purchaseShopItem(gameState, shopItemId, 1);
   }
 
   function handleMouseDown(event: MouseEvent, orbType: 'health' | 'point') {
@@ -118,78 +123,44 @@
     holdProgress[orbType] = 0;
   }
 
-  const canPurchaseHealth = $derived(gameState.playerStats.cheddah >= gameState.marketplace.healthOrbCost);
-  const canPurchasePoint = $derived(gameState.playerStats.cheddah >= gameState.marketplace.pointOrbCost);
-
-  // Market items - 2 available, 4 locked placeholders
-  const marketItems = $derived([
-    {
-      id: 'health',
-      name: 'HEALTH',
-      description: '+1 HP',
-      cost: gameState.marketplace.healthOrbCost,
+  const availableShopItems = $derived(getAvailableShopItems(gameState.currentLevel));
+  
+  // Create market items array with shop items + locked slots to fill 6 total slots
+  const marketItems = $derived(() => {
+    const items = availableShopItems.map(shopItem => ({
+      id: shopItem.id,
+      name: shopItem.name,
+      description: shopItem.description,
+      cost: shopItem.cost,
       icon: '',
-      color: 'text-red-400',
-      borderColor: 'border-red-400 hover:border-red-500',
+      color: shopItem.orb.type === 'health' ? 'text-red-400' : 'text-white',
+      borderColor: shopItem.orb.type === 'health' ? 'border-red-400 hover:border-red-500' : 'border-white hover:border-gray-300',
       available: true,
-      canPurchase: canPurchaseHealth
-    },
-    {
-      id: 'point',
-      name: 'POINT',
-      description: '+5 PTS',
-      cost: gameState.marketplace.pointOrbCost,
-      icon: '',
-      color: 'text-white',
-      borderColor: 'border-white hover:border-gray-300',
-      available: true,
-      canPurchase: canPurchasePoint
-    },
-    {
-      id: 'locked1',
-      name: 'LOCKED',
-      description: '???',
-      cost: 0,
-      icon: '',
-      color: 'text-gray-600',
-      bgColor: 'bg-gray-900',
-      available: false,
-      canPurchase: false
-    },
-    {
-      id: 'locked2',
-      name: 'LOCKED',
-      description: '???',
-      cost: 0,
-      icon: '',
-      color: 'text-gray-600',
-      bgColor: 'bg-gray-900',
-      available: false,
-      canPurchase: false
-    },
-    {
-      id: 'locked3',
-      name: 'LOCKED',
-      description: '???',
-      cost: 0,
-      icon: '',
-      color: 'text-gray-600',
-      bgColor: 'bg-gray-900',
-      available: false,
-      canPurchase: false
-    },
-    {
-      id: 'locked4',
-      name: 'LOCKED',
-      description: '???',
-      cost: 0,
-      icon: '',
-      color: 'text-gray-600',
-      bgColor: 'bg-gray-900',
-      available: false,
-      canPurchase: false
+      canPurchase: gameState.playerStats.cheddah >= shopItem.cost,
+      isShopItem: true
+    }));
+    
+    // Fill remaining slots with locked placeholders
+    const totalSlots = 6;
+    const remainingSlots = totalSlots - items.length;
+    
+    for (let i = 0; i < remainingSlots; i++) {
+      items.push({
+        id: `locked${i + 1}`,
+        name: 'LOCKED',
+        description: '???',
+        cost: 0,
+        icon: '',
+        color: 'text-gray-600',
+        borderColor: 'border-gray-700',
+        available: false,
+        canPurchase: false,
+        isShopItem: false
+      });
     }
-  ]);
+    
+    return items;
+  });
 </script>
 
 <div class="bg-black p-3 rounded-lg shadow-sm border border-white h-full flex flex-col {gameState.phase === 'marketplace' && gameState.marketplace.available ? '' : 'opacity-60'}">
@@ -206,9 +177,7 @@
     {#each marketItems as item}
       <button
         disabled={!item.available || !item.canPurchase || gameState.phase !== 'marketplace' || !gameState.marketplace.available}
-        onmousedown={item.available && gameState.phase === 'marketplace' && gameState.marketplace.available ? (e) => handleMouseDown(e, item.id as 'health' | 'point') : undefined}
-        onmouseup={item.available && gameState.phase === 'marketplace' && gameState.marketplace.available ? () => handleMouseUp(item.id as 'health' | 'point') : undefined}
-        onmouseleave={item.available && gameState.phase === 'marketplace' && gameState.marketplace.available ? () => handleMouseLeave(item.id as 'health' | 'point') : undefined}
+        onclick={item.available && item.canPurchase && gameState.phase === 'marketplace' && gameState.marketplace.available && item.isShopItem ? () => handleShopItemPurchase(item.id) : undefined}
         class="p-2 rounded font-medium transition-colors select-none flex items-center gap-2 text-left border-2
                {item.available && item.canPurchase && gameState.phase === 'marketplace' && gameState.marketplace.available
                  ? `${item.borderColor} bg-black active:scale-95` 
@@ -218,7 +187,7 @@
         <div class="flex-1 min-w-0">
           <div class="text-sm font-medium truncate">{item.name}</div>
           <div class="text-xs opacity-75 truncate">{item.description}</div>
-          {#if item.available}
+          {#if item.available && item.cost > 0}
             <div class="text-xs opacity-90">{item.cost} cheddah</div>
           {/if}
         </div>
@@ -228,7 +197,7 @@
   
   <div class="mt-3 text-xs text-center {gameState.phase === 'marketplace' && gameState.marketplace.available ? 'text-gray-400' : 'text-gray-600'}">
     {#if gameState.phase === 'marketplace' && gameState.marketplace.available}
-      CLICK TO BUY ONE • HOLD 1S TO BUY MAX
+      CLICK TO PURCHASE
     {:else}
       MARKETPLACE UNAVAILABLE
     {/if}
