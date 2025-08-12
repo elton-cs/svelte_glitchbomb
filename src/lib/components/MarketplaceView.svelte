@@ -125,20 +125,43 @@
 
   const marketItems = $derived.by(() => {
     const availableShopItems = getAvailableShopItems(gameState.currentLevel);
-    const items = availableShopItems.map(shopItem => ({
-      id: shopItem.id,
-      name: shopItem.name,
-      description: shopItem.description,
-      cost: shopItem.cost,
-      icon: '',
-      color: shopItem.type === 'health' ? 'text-red-400' : 'text-white',
-      borderColor: shopItem.type === 'health' ? 'border-red-400 hover:border-red-500' : 'border-white hover:border-gray-300',
-      available: true,
-      canPurchase: gameState.playerStats.cheddah >= shopItem.cost,
-      isShopItem: true
-    }));
+    const items = availableShopItems.map(shopItem => {
+      // Determine tier and colors based on item ID
+      let tierColor = 'text-white';
+      let tierBorder = 'border-white hover:border-gray-300';
+      
+      if (shopItem.id.startsWith('common_')) {
+        tierColor = 'text-gray-300';
+        tierBorder = 'border-gray-400 hover:border-gray-300';
+      } else if (shopItem.id.startsWith('rare_')) {
+        tierColor = 'text-blue-400';
+        tierBorder = 'border-blue-400 hover:border-blue-300';
+      } else if (shopItem.id.startsWith('cosmic_')) {
+        tierColor = 'text-purple-400';
+        tierBorder = 'border-purple-400 hover:border-purple-300';
+      }
+      
+      // Override with specific orb type colors for health
+      if (shopItem.type === 'health') {
+        tierColor = 'text-red-400';
+        tierBorder = 'border-red-400 hover:border-red-300';
+      }
+      
+      return {
+        id: shopItem.id,
+        name: shopItem.name,
+        description: shopItem.description,
+        cost: shopItem.cost,
+        icon: '',
+        color: tierColor,
+        borderColor: tierBorder,
+        available: true,
+        canPurchase: gameState.playerStats.cheddah >= shopItem.cost,
+        isShopItem: true
+      };
+    });
     
-    // Fill remaining slots with locked placeholders
+    // Always maintain exactly 6 slots - fill remaining with locked placeholders
     const totalSlots = 6;
     const remainingSlots = totalSlots - items.length;
     

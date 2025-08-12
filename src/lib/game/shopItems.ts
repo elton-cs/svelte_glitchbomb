@@ -148,18 +148,36 @@ export const SHOP_TIER_AVAILABILITY: Record<number, ('common' | 'rare' | 'cosmic
   5: ['common', 'rare', 'cosmic']
 };
 
+// Utility function to shuffle array
+function shuffleArray<T>(array: T[]): T[] {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
+
 export function getAvailableShopItems(level: number): ShopItem[] {
   const availableTiers = SHOP_TIER_AVAILABILITY[level] || SHOP_TIER_AVAILABILITY[1];
   const items: ShopItem[] = [];
   
+  // Always try to get 3 common items
   if (availableTiers.includes('common')) {
-    items.push(...COMMON_SHOP_ITEMS);
+    const shuffledCommon = shuffleArray(COMMON_SHOP_ITEMS);
+    items.push(...shuffledCommon.slice(0, 3));
   }
+  
+  // Try to get 2 rare items (if available at this level)
   if (availableTiers.includes('rare')) {
-    items.push(...RARE_SHOP_ITEMS);
+    const shuffledRare = shuffleArray(RARE_SHOP_ITEMS);
+    items.push(...shuffledRare.slice(0, 2));
   }
+  
+  // Try to get 1 cosmic item (if available at this level)
   if (availableTiers.includes('cosmic')) {
-    items.push(...COSMIC_SHOP_ITEMS);
+    const shuffledCosmic = shuffleArray(COSMIC_SHOP_ITEMS);
+    items.push(...shuffledCosmic.slice(0, 1));
   }
   
   return items;
