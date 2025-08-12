@@ -141,10 +141,10 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
 
 // Configuration for which tiers are available at each level
 export const SHOP_TIER_AVAILABILITY: Record<number, ('common' | 'rare' | 'cosmic')[]> = {
-  1: ['common'],
-  2: ['common', 'rare'],
-  3: ['common', 'rare'],
-  4: ['common', 'rare'],
+  1: ['common', 'rare', 'cosmic'],
+  2: ['common', 'rare', 'cosmic'],
+  3: ['common', 'rare', 'cosmic'],
+  4: ['common', 'rare', 'cosmic'],
   5: ['common', 'rare', 'cosmic']
 };
 
@@ -162,33 +162,24 @@ export function getAvailableShopItems(level: number): ShopItem[] {
   const availableTiers = SHOP_TIER_AVAILABILITY[level] || SHOP_TIER_AVAILABILITY[1];
   const items: ShopItem[] = [];
   
-  console.log(`[SHOP] Level ${level} - Available tiers:`, availableTiers);
-  
-  // Always try to get 3 common items
+  // Always get 3 common items
   if (availableTiers.includes('common')) {
     const shuffledCommon = shuffleArray(COMMON_SHOP_ITEMS);
-    const commonItems = shuffledCommon.slice(0, 3);
-    items.push(...commonItems);
-    console.log(`[SHOP] Added ${commonItems.length} common items:`, commonItems.map(i => i.name));
+    items.push(...shuffledCommon.slice(0, 3));
   }
   
-  // Try to get 2 rare items (if available at this level)
+  // Always get 2 rare items
   if (availableTiers.includes('rare')) {
     const shuffledRare = shuffleArray(RARE_SHOP_ITEMS);
-    const rareItems = shuffledRare.slice(0, 2);
-    items.push(...rareItems);
-    console.log(`[SHOP] Added ${rareItems.length} rare items:`, rareItems.map(i => i.name));
+    items.push(...shuffledRare.slice(0, 2));
   }
   
-  // Try to get 1 cosmic item (if available at this level)
+  // Always get 1 cosmic item
   if (availableTiers.includes('cosmic')) {
     const shuffledCosmic = shuffleArray(COSMIC_SHOP_ITEMS);
-    const cosmicItems = shuffledCosmic.slice(0, 1);
-    items.push(...cosmicItems);
-    console.log(`[SHOP] Added ${cosmicItems.length} cosmic items:`, cosmicItems.map(i => i.name));
+    items.push(...shuffledCosmic.slice(0, 1));
   }
   
-  console.log(`[SHOP] Total items generated: ${items.length}`);
   return items;
 }
 

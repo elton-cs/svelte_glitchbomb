@@ -125,7 +125,6 @@
 
   const shopInventory = $derived.by(() => {
     const availableShopItems = getAvailableShopItems(gameState.currentLevel);
-    console.log(`[UI] Received ${availableShopItems.length} shop items from backend`);
     const items = availableShopItems.map(shopItem => {
       // Determine tier and colors based on item ID
       let tierColor = 'text-white';
@@ -162,27 +161,8 @@
       };
     });
     
-    // Always maintain exactly 6 slots - fill remaining with locked placeholders
-    const totalSlots = 6;
-    const remainingSlots = totalSlots - items.length;
-    console.log(`[UI] Adding ${remainingSlots} locked slots to reach ${totalSlots} total`);
-    
-    for (let i = 0; i < remainingSlots; i++) {
-      items.push({
-        id: `locked${i + 1}`,
-        name: 'LOCKED',
-        description: '???',
-        cost: 0,
-        icon: '',
-        color: 'text-gray-400',
-        borderColor: 'border-gray-500',
-        available: false,
-        canPurchase: false,
-        isShopItem: false
-      });
-    }
-    
-    console.log(`[UI] Final inventory: ${items.length} items - ${items.map(i => i.name).join(', ')}`);
+    // With all tiers available, we should have exactly 6 items (3+2+1)
+    // No locked slots needed anymore
     return items;
   });
 </script>
