@@ -129,20 +129,16 @@
       // Determine tier and colors based on item ID
       let tierColor = 'text-white';
       let tierBorder = 'border-white';
-      let borderStyle = 'border-color: #ffffff;';
       
       if (shopItem.id.startsWith('common_')) {
         tierColor = 'text-gray-300';
         tierBorder = 'border-gray-400';
-        borderStyle = 'border-color: #9ca3af;';
       } else if (shopItem.id.startsWith('rare_')) {
         tierColor = 'text-blue-300';
         tierBorder = 'border-blue-500';
-        borderStyle = 'border-color: #3b82f6;';
       } else if (shopItem.id.startsWith('cosmic_')) {
         tierColor = 'text-purple-300';
         tierBorder = 'border-purple-500';
-        borderStyle = 'border-color: #8b5cf6;';
       }
       
       // Override text color for health orbs but keep tier border
@@ -159,7 +155,6 @@
         icon: '',
         color: tierColor,
         borderColor: tierBorder,
-        borderStyle: borderStyle,
         available: true,
         canPurchase: gameState.playerStats.cheddah >= shopItem.cost,
         isShopItem: true
@@ -187,11 +182,10 @@
       <button
         disabled={!item.available || !item.canPurchase || gameState.phase !== 'marketplace' || !gameState.marketplace.available}
         onclick={item.available && item.canPurchase && gameState.phase === 'marketplace' && gameState.marketplace.available && item.isShopItem ? () => handleShopItemPurchase(item.id) : undefined}
-        class="p-2 rounded font-medium transition-colors select-none flex items-center gap-2 text-left border-4
+        class="p-2 rounded font-medium transition-colors select-none flex items-center gap-2 text-left border-4 {item.borderColor}
                {item.available && item.canPurchase && gameState.phase === 'marketplace' && gameState.marketplace.available
                  ? 'bg-black hover:bg-gray-900 active:scale-95' 
                  : 'bg-gray-900 cursor-not-allowed'}"
-        style="{item.borderStyle}"
       >
         {#if item.icon}<div class="text-lg {item.color}">{item.icon}</div>{/if}
         <div class="flex-1 min-w-0">
