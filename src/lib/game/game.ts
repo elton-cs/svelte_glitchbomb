@@ -219,7 +219,7 @@ export function purchaseShopItem(gameState: GameState, shopItemId: string, quant
   }
 
   gameState.playerStats.cheddah -= totalCost;
-  addOrbsToBag(gameState.orbBag, shopItem.orb.type, quantity, shopItem.orb.amount);
+  addOrbsToBag(gameState.orbBag, shopItem.type, quantity, shopItem.amount);
   
   return true;
 }

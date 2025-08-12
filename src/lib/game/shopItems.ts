@@ -6,10 +6,8 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: 'minor_health',
     name: 'MINOR HEALTH',
     description: '+1 HP',
-    orb: {
-      type: 'health',
-      amount: 1
-    },
+    type: 'health',
+    amount: 1,
     cost: 2
   },
   
@@ -17,10 +15,8 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: 'minor_points',
     name: 'MINOR POINTS',
     description: '+5 PTS',
-    orb: {
-      type: 'point',
-      amount: 5
-    },
+    type: 'point',
+    amount: 5,
     cost: 2
   },
 
@@ -29,10 +25,8 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: 'major_health',
     name: 'MAJOR HEALTH',
     description: '+3 HP',
-    orb: {
-      type: 'health',
-      amount: 3
-    },
+    type: 'health',
+    amount: 3,
     cost: 5
   },
 
@@ -40,10 +34,8 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: 'major_points',
     name: 'MAJOR POINTS',
     description: '+12 PTS',
-    orb: {
-      type: 'point',
-      amount: 12
-    },
+    type: 'point',
+    amount: 12,
     cost: 6
   },
 
@@ -52,10 +44,8 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: 'mega_health',
     name: 'MEGA HEALTH',
     description: '+5 HP',
-    orb: {
-      type: 'health',
-      amount: 5
-    },
+    type: 'health',
+    amount: 5,
     cost: 8
   },
 
@@ -63,10 +53,8 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: 'mega_points',
     name: 'MEGA POINTS',
     description: '+20 PTS',
-    orb: {
-      type: 'point',
-      amount: 20
-    },
+    type: 'point',
+    amount: 20,
     cost: 10
   }
 };

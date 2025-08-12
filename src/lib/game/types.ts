@@ -65,14 +65,10 @@ export interface GameState {
   levelCompleted: boolean;
 }
 
-export interface ShopItem {
+export interface ShopItem extends Orb {
   id: string;
   name: string;
   description: string;
-  orb: {
-    type: OrbType;
-    amount: number;
-  };
   cost: number;
 }
 

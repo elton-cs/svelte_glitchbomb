@@ -131,8 +131,8 @@
       description: shopItem.description,
       cost: shopItem.cost,
       icon: '',
-      color: shopItem.orb.type === 'health' ? 'text-red-400' : 'text-white',
-      borderColor: shopItem.orb.type === 'health' ? 'border-red-400 hover:border-red-500' : 'border-white hover:border-gray-300',
+      color: shopItem.type === 'health' ? 'text-red-400' : 'text-white',
+      borderColor: shopItem.type === 'health' ? 'border-red-400 hover:border-red-500' : 'border-white hover:border-gray-300',
       available: true,
       canPurchase: gameState.playerStats.cheddah >= shopItem.cost,
       isShopItem: true
