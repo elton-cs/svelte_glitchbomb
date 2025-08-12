@@ -34,9 +34,9 @@
 </script>
 
 <div class="min-h-screen bg-black p-3">
-  <div class="max-w-md mx-auto space-y-4">
+  <div class="max-w-7xl mx-auto">
     <!-- Header -->
-    <header class="text-center mb-4 relative">
+    <header class="text-center mb-6 relative">
       <h1 class="text-2xl font-bold text-gray-800">GLITCH BOMB</h1>
       <p class="text-sm text-gray-600">BAG-BUILDING LUCK GAME</p>
       
@@ -49,57 +49,72 @@
       </button>
     </header>
     
-    <!-- Moonrocks - Separate section -->
-    <div class="bg-white p-3 rounded-lg shadow-sm border">
-      <div class="flex justify-between items-center">
-        <div class="text-sm font-bold text-white">MOONROCKS</div>
-        <div class="text-xl font-bold text-white">{gameState.playerStats.moonrocks}</div>
+    <!-- Top Row: Moonrocks and Dev Tools -->
+    <div class="flex flex-wrap gap-4 mb-6">
+      <!-- Moonrocks - Separate section -->
+      <div class="bg-white p-3 rounded-lg shadow-sm border flex-1 min-w-64">
+        <div class="flex justify-between items-center">
+          <div class="text-sm font-bold text-white">MOONROCKS</div>
+          <div class="text-xl font-bold text-white">{gameState.playerStats.moonrocks}</div>
+        </div>
+        {#if canClaimRocks}
+          <div class="mt-2 pt-2 border-t border-gray-200">
+            <button 
+              onclick={handleClaimRocks}
+              class="w-full bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium py-2 px-3 rounded-lg transition-colors"
+            >
+              CLAIM 1000 FREE ROCKS!
+            </button>
+          </div>
+        {/if}
       </div>
-      {#if canClaimRocks}
-        <div class="mt-2 pt-2 border-t border-gray-200">
-          <button 
-            onclick={handleClaimRocks}
-            class="w-full bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium py-2 px-3 rounded-lg transition-colors"
-          >
-            CLAIM 1000 FREE ROCKS!
-          </button>
+
+      <!-- Dev Mode Panel -->
+      {#if devMode}
+        <div class="bg-red-50 p-3 rounded-lg shadow-sm border border-red-200 flex-1 min-w-64">
+          <div class="flex justify-between items-center mb-2">
+            <h3 class="font-medium text-red-800 text-sm">🔧 DEVELOPER TOOLS</h3>
+            <span class="text-xs text-red-600">DEBUG MODE</span>
+          </div>
+          
+          <div class="space-y-2">
+            <button 
+              onclick={resetMoonrocks}
+              class="w-full bg-red-600 hover:bg-red-700 text-white text-sm font-medium py-2 px-3 rounded-lg transition-colors"
+            >
+              RESET MOONROCKS TO 0
+            </button>
+          </div>
         </div>
       {/if}
     </div>
 
-    <!-- Dev Mode Panel -->
-    {#if devMode}
-      <div class="bg-red-50 p-3 rounded-lg shadow-sm border border-red-200">
-        <div class="flex justify-between items-center mb-2">
-          <h3 class="font-medium text-red-800 text-sm">🔧 DEVELOPER TOOLS</h3>
-          <span class="text-xs text-red-600">DEBUG MODE</span>
-        </div>
-        
-        <div class="space-y-2">
-          <button 
-            onclick={resetMoonrocks}
-            class="w-full bg-red-600 hover:bg-red-700 text-white text-sm font-medium py-2 px-3 rounded-lg transition-colors"
-          >
-            RESET MOONROCKS TO 0
-          </button>
-        </div>
+    <!-- Main Game UI Flex Container -->
+    <div class="flex flex-wrap gap-4 items-start">
+      <!-- Player Stats Section -->
+      <div class="flex-1 min-w-80">
+        <PlayerStatsSection {gameState} />
       </div>
-    {/if}
 
-    <!-- Player Stats Section -->
-    <PlayerStatsSection {gameState} />
+      <!-- Actions Panel - Prominent placement -->
+      <div class="flex-1 min-w-80">
+        <ActionsPanel {gameState} />
+      </div>
 
+      <!-- Marketplace -->
+      <div class="flex-1 min-w-80">
+        <MarketplaceView {gameState} />
+      </div>
 
-    <!-- Actions Panel - Prominent placement -->
-    <ActionsPanel {gameState} />
+      <!-- Orb Bag Section -->
+      <div class="flex-1 min-w-80">
+        <OrbBagSection {gameState} />
+      </div>
 
-    <!-- Marketplace -->
-    <MarketplaceView {gameState} />
-
-    <!-- Orb Bag Section -->
-    <OrbBagSection {gameState} />
-
-    <!-- How to Play Section -->
-    <HowToPlaySection />
+      <!-- How to Play Section -->
+      <div class="flex-1 min-w-80">
+        <HowToPlaySection />
+      </div>
+    </div>
   </div>
 </div>
