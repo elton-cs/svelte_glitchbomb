@@ -37,8 +37,8 @@
   <div class="max-w-7xl mx-auto">
     <!-- Header -->
     <header class="text-center mb-6 relative">
-      <h1 class="text-2xl font-bold text-gray-800">GLITCH BOMB</h1>
-      <p class="text-sm text-gray-600">BAG-BUILDING LUCK GAME</p>
+      <h1 class="text-2xl font-bold text-white">GLITCH BOMB</h1>
+      <p class="text-sm text-gray-400">BAG-BUILDING LUCK-BASED GAME</p>
       
       <!-- Dev Mode Toggle - positioned in top right -->
       <button 
@@ -71,10 +71,10 @@
 
       <!-- Dev Mode Panel -->
       {#if devMode}
-        <div class="bg-red-50 p-3 rounded-lg shadow-sm border border-red-200 flex-1 min-w-64">
+        <div class="bg-gray-900 p-3 rounded-lg shadow-sm border border-gray-700 flex-1 min-w-64">
           <div class="flex justify-between items-center mb-2">
-            <h3 class="font-medium text-red-800 text-sm">🔧 DEVELOPER TOOLS</h3>
-            <span class="text-xs text-red-600">DEBUG MODE</span>
+            <h3 class="font-medium text-red-400 text-sm">🔧 DEVELOPER TOOLS</h3>
+            <span class="text-xs text-red-400">DEBUG MODE</span>
           </div>
           
           <div class="space-y-2">

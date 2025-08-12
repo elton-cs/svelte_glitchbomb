@@ -16,27 +16,27 @@
   <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-4">
     <div class="text-center">
       <div class="text-2xl font-bold text-blue-600">{gameState.playerStats.moonrocks}</div>
-      <div class="text-sm text-gray-600">MOONROCKS</div>
+      <div class="text-sm text-gray-400">MOONROCKS</div>
     </div>
     
     <div class="text-center">
       <div class="text-2xl font-bold text-green-600">{gameState.playerStats.cheddah}</div>
-      <div class="text-sm text-gray-600">CHEDDAH</div>
+      <div class="text-sm text-gray-400">CHEDDAH</div>
     </div>
     
     <div class="text-center">
       <div class="text-2xl font-bold text-red-600">{gameState.playerStats.health}</div>
-      <div class="text-sm text-gray-600">HEALTH</div>
+      <div class="text-sm text-gray-400">HEALTH</div>
     </div>
     
     <div class="text-center">
       <div class="text-2xl font-bold text-purple-600">{gameState.playerStats.points}</div>
-      <div class="text-sm text-gray-600">POINTS</div>
+      <div class="text-sm text-gray-400">POINTS</div>
     </div>
     
     <div class="text-center">
       <div class="text-2xl font-bold text-orange-600">{gameState.playerStats.levelMultiplier}×</div>
-      <div class="text-sm text-gray-600">MULTIPLIER</div>
+      <div class="text-sm text-gray-400">MULTIPLIER</div>
     </div>
   </div>
   
@@ -60,7 +60,7 @@
       </div>
       
       <div class="mt-2">
-        <div class="bg-gray-200 rounded-full h-2">
+        <div class="bg-gray-800 rounded-full h-2">
           <div 
             class="bg-purple-600 h-2 rounded-full transition-all duration-300"
             style="width: {Math.min(100, (gameState.playerStats.points / getLevelMilestone(gameState.currentLevel)) * 100)}%"
