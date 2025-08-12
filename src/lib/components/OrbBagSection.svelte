@@ -16,12 +16,12 @@
 </script>
 
 <!-- Orb Bag - Compact design -->
-<div class="bg-white p-3 rounded-lg shadow-sm border {gameState.phase === 'level' ? '' : 'opacity-60 pointer-events-none'}">
+<div class="bg-white p-3 rounded-lg shadow-sm border h-full flex flex-col {gameState.phase === 'level' ? '' : 'opacity-60 pointer-events-none'}">
   <div class="mb-2">
     <h3 class="text-sm font-bold">ORB BAG ({totalAvailableOrbs}) {gameState.phase === 'level' ? '' : '(INACTIVE)'}</h3>
   </div>
   
-  <div class="space-y-2 text-xs">
+  <div class="space-y-2 text-xs flex-1 overflow-y-auto">
     <!-- Health Orbs -->
     <div class="flex justify-between items-center {gameState.orbBag.health.available.length === 0 ? 'opacity-50' : ''}">
       <span class="font-medium text-red-500">♥ HEALTH ORBS:</span>

@@ -90,30 +90,40 @@
     </div>
 
     <!-- Main Game UI Flex Container -->
-    <div class="flex flex-wrap gap-4 items-start">
+    <div class="flex flex-wrap gap-4 items-stretch">
       <!-- Player Stats Section -->
-      <div class="flex-1 min-w-80">
-        <PlayerStatsSection {gameState} />
+      <div class="flex-1 min-w-80 h-96">
+        <div class="h-full">
+          <PlayerStatsSection {gameState} />
+        </div>
       </div>
 
       <!-- Actions Panel - Prominent placement -->
-      <div class="flex-1 min-w-80">
-        <ActionsPanel {gameState} />
-      </div>
-
-      <!-- Orb Bag Section -->
-      <div class="flex-1 min-w-80">
-        <OrbBagSection {gameState} />
+      <div class="flex-1 min-w-80 h-96">
+        <div class="h-full">
+          <ActionsPanel {gameState} />
+        </div>
       </div>
 
       <!-- Marketplace -->
-      <div class="flex-1 min-w-80">
-        <MarketplaceView {gameState} />
+      <div class="flex-1 min-w-80 h-96">
+        <div class="h-full">
+          <MarketplaceView {gameState} />
+        </div>
+      </div>
+
+      <!-- Orb Bag Section -->
+      <div class="flex-1 min-w-80 h-96">
+        <div class="h-full">
+          <OrbBagSection {gameState} />
+        </div>
       </div>
 
       <!-- How to Play Section -->
-      <div class="flex-1 min-w-80">
-        <HowToPlaySection />
+      <div class="flex-1 min-w-80 h-96">
+        <div class="h-full">
+          <HowToPlaySection />
+        </div>
       </div>
     </div>
   </div>

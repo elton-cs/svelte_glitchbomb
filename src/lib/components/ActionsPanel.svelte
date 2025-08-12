@@ -64,17 +64,17 @@
   const canPullOrb = $derived(gameState.phase === 'level' && totalAvailableOrbs > 0);
 </script>
 
-<div class="bg-black p-4 rounded border border-white">
+<div class="bg-black p-4 rounded border border-white h-full flex flex-col">
   <h2 class="text-sm font-bold mb-3 text-white">ACTIONS</h2>
   
-  <div class="space-y-3">
+  <div class="flex-1 flex flex-col space-y-3">
     <!-- Current Phase Indicator -->
     <div class="text-center text-xs text-gray-400 uppercase tracking-wide">
       Current Phase: <span class="text-white font-medium">{gameState.phase}</span>
     </div>
     
     <!-- 2x3 Button Grid -->
-    <div class="grid grid-cols-2 gap-2">
+    <div class="grid grid-cols-2 gap-2 flex-1">
       <!-- Row 1: Start Game & Pull Orb -->
       <button 
         onclick={handleStartGame}

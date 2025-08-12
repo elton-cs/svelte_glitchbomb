@@ -10,7 +10,7 @@
 </script>
 
 <!-- Stats - Compact horizontal layout -->
-<div class="bg-white p-3 rounded-lg shadow-sm border">
+<div class="bg-white p-3 rounded-lg shadow-sm border h-full flex flex-col">
   <div class="grid grid-cols-3 gap-2 text-center text-xs mb-3">
     <div>
       <div class="text-lg font-bold text-green-600">{gameState.playerStats.cheddah}</div>
