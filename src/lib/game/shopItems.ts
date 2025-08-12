@@ -1,76 +1,168 @@
 import type { ShopItem } from './types.js';
 
-export const SHOP_ITEMS: Record<string, ShopItem> = {
-  // Basic Items (always available)
-  minor_health: {
-    id: 'minor_health',
-    name: 'MINOR HEALTH',
+// Common tier - basic amounts, affordable prices
+export const COMMON_SHOP_ITEMS: ShopItem[] = [
+  {
+    id: 'common_health',
+    name: 'BASIC HEALTH',
     description: '+1 HP',
     type: 'health',
     amount: 1,
     cost: 2
   },
-  
-  minor_points: {
-    id: 'minor_points',
-    name: 'MINOR POINTS',
-    description: '+5 PTS',
+  {
+    id: 'common_point',
+    name: 'BASIC POINTS',
+    description: '+3 PTS',
     type: 'point',
-    amount: 5,
+    amount: 3,
     cost: 2
   },
+  {
+    id: 'common_points_per_anyorb',
+    name: 'BASIC COMBO',
+    description: '+1 per orb',
+    type: 'points_per_anyorb',
+    amount: 1,
+    cost: 3
+  },
+  {
+    id: 'common_points_per_bombpulled',
+    name: 'BASIC DANGER',
+    description: '+2 per bomb',
+    type: 'points_per_bombpulled',
+    amount: 2,
+    cost: 3
+  },
+  {
+    id: 'common_multiplier',
+    name: 'BASIC BOOST',
+    description: '+0.2x mult',
+    type: 'multiplier',
+    amount: 0.2,
+    cost: 4
+  }
+];
 
-  // Enhanced Items (better value, higher cost)
-  major_health: {
-    id: 'major_health',
-    name: 'MAJOR HEALTH',
+// Rare tier - enhanced amounts, moderate prices
+export const RARE_SHOP_ITEMS: ShopItem[] = [
+  {
+    id: 'rare_health',
+    name: 'ENHANCED HEALTH',
+    description: '+2 HP',
+    type: 'health',
+    amount: 2,
+    cost: 4
+  },
+  {
+    id: 'rare_point',
+    name: 'ENHANCED POINTS',
+    description: '+8 PTS',
+    type: 'point',
+    amount: 8,
+    cost: 4
+  },
+  {
+    id: 'rare_points_per_anyorb',
+    name: 'ENHANCED COMBO',
+    description: '+2 per orb',
+    type: 'points_per_anyorb',
+    amount: 2,
+    cost: 6
+  },
+  {
+    id: 'rare_points_per_bombpulled',
+    name: 'ENHANCED DANGER',
+    description: '+4 per bomb',
+    type: 'points_per_bombpulled',
+    amount: 4,
+    cost: 6
+  },
+  {
+    id: 'rare_multiplier',
+    name: 'ENHANCED BOOST',
+    description: '+0.4x mult',
+    type: 'multiplier',
+    amount: 0.4,
+    cost: 8
+  }
+];
+
+// Cosmic tier - maximum amounts, premium prices
+export const COSMIC_SHOP_ITEMS: ShopItem[] = [
+  {
+    id: 'cosmic_health',
+    name: 'COSMIC HEALTH',
     description: '+3 HP',
     type: 'health',
     amount: 3,
-    cost: 5
-  },
-
-  major_points: {
-    id: 'major_points',
-    name: 'MAJOR POINTS',
-    description: '+12 PTS',
-    type: 'point',
-    amount: 12,
-    cost: 6
-  },
-
-  // Premium Items (maximum efficiency)
-  mega_health: {
-    id: 'mega_health',
-    name: 'MEGA HEALTH',
-    description: '+5 HP',
-    type: 'health',
-    amount: 5,
     cost: 8
   },
-
-  mega_points: {
-    id: 'mega_points',
-    name: 'MEGA POINTS',
-    description: '+20 PTS',
+  {
+    id: 'cosmic_point',
+    name: 'COSMIC POINTS',
+    description: '+15 PTS',
     type: 'point',
-    amount: 20,
-    cost: 10
+    amount: 15,
+    cost: 8
+  },
+  {
+    id: 'cosmic_points_per_anyorb',
+    name: 'COSMIC COMBO',
+    description: '+3 per orb',
+    type: 'points_per_anyorb',
+    amount: 3,
+    cost: 12
+  },
+  {
+    id: 'cosmic_points_per_bombpulled',
+    name: 'COSMIC DANGER',
+    description: '+8 per bomb',
+    type: 'points_per_bombpulled',
+    amount: 8,
+    cost: 12
+  },
+  {
+    id: 'cosmic_multiplier',
+    name: 'COSMIC BOOST',
+    description: '+0.8x mult',
+    type: 'multiplier',
+    amount: 0.8,
+    cost: 15
   }
+];
+
+// Legacy shop items object for backwards compatibility
+export const SHOP_ITEMS: Record<string, ShopItem> = {
+  ...Object.fromEntries(COMMON_SHOP_ITEMS.map(item => [item.id, item])),
+  ...Object.fromEntries(RARE_SHOP_ITEMS.map(item => [item.id, item])),
+  ...Object.fromEntries(COSMIC_SHOP_ITEMS.map(item => [item.id, item]))
 };
 
-// Configuration for which items are available at each level
-export const SHOP_AVAILABILITY: Record<number, string[]> = {
-  1: ['minor_health', 'minor_points'],
-  2: ['minor_health', 'minor_points'],
-  3: ['minor_health', 'minor_points', 'major_health', 'major_points'],
-  4: ['minor_health', 'minor_points', 'major_health', 'major_points'],
-  5: ['minor_health', 'minor_points', 'major_health', 'major_points', 'mega_health', 'mega_points']
+// Configuration for which tiers are available at each level
+export const SHOP_TIER_AVAILABILITY: Record<number, ('common' | 'rare' | 'cosmic')[]> = {
+  1: ['common'],
+  2: ['common'],
+  3: ['common', 'rare'],
+  4: ['common', 'rare'],
+  5: ['common', 'rare', 'cosmic']
 };
 
 export function getAvailableShopItems(level: number): ShopItem[] {
-  const availableIds = SHOP_AVAILABILITY[level] || SHOP_AVAILABILITY[1];
-  return availableIds.map(id => SHOP_ITEMS[id]);
+  const availableTiers = SHOP_TIER_AVAILABILITY[level] || SHOP_TIER_AVAILABILITY[1];
+  const items: ShopItem[] = [];
+  
+  if (availableTiers.includes('common')) {
+    items.push(...COMMON_SHOP_ITEMS);
+  }
+  if (availableTiers.includes('rare')) {
+    items.push(...RARE_SHOP_ITEMS);
+  }
+  if (availableTiers.includes('cosmic')) {
+    items.push(...COSMIC_SHOP_ITEMS);
+  }
+  
+  return items;
 }
 
 export function getShopItem(id: string): ShopItem | undefined {
