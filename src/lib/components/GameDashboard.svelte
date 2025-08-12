@@ -127,7 +127,7 @@
         <!-- Health Progress Bar -->
         <div>
           <div class="flex justify-between items-center text-xs mb-1">
-            <span class="font-bold text-red-600">HEALTH</span>
+            <span class="text-gray-600">HEALTH</span>
             <span class="text-gray-600">{gameState.playerStats.health}/5</span>
           </div>
           <div class="bg-gray-200 rounded-full h-2">
@@ -144,7 +144,7 @@
         <!-- Points Progress Bar -->
         <div>
           <div class="flex justify-between items-center text-xs mb-1">
-            <span class="font-bold text-purple-600">POINTS</span>
+            <span class="text-gray-600">POINTS</span>
             <span class="text-gray-600">{gameState.playerStats.points}/{getLevelMilestone(gameState.currentLevel)}</span>
           </div>
           <div class="bg-gray-200 rounded-full h-2">
