@@ -107,7 +107,7 @@
                  ? 'bg-white text-black hover:bg-gray-200 border-white'
                  : 'bg-transparent text-gray-600 border-gray-600 cursor-not-allowed'}"
       >
-        CASH OUT
+        QUIT LEVEL
       </button>
       
       <button 
@@ -118,10 +118,10 @@
                  ? 'bg-white text-black hover:bg-gray-200 border-white'
                  : 'bg-transparent text-gray-600 border-gray-600 cursor-not-allowed'}"
       >
-        CASH OUT
+        COLLECT
       </button>
       
-      <!-- Row 3: Continue & Return -->
+      <!-- Row 3: Navigation Actions -->
       <button 
         onclick={handleProceedToNext}
         disabled={!canProceed || gameState.phase !== 'marketplace'}
@@ -130,7 +130,7 @@
                  ? 'bg-white text-black hover:bg-gray-200 border-white' 
                  : 'bg-transparent text-gray-600 border-gray-600 cursor-not-allowed'}"
       >
-        CONTINUE
+        NEXT LEVEL
       </button>
       
       <button 
@@ -141,7 +141,7 @@
                  ? 'bg-white text-black hover:bg-gray-200 border-white'
                  : 'bg-transparent text-gray-600 border-gray-600 cursor-not-allowed'}"
       >
-        RETURN
+        MAIN MENU
       </button>
     </div>
     
