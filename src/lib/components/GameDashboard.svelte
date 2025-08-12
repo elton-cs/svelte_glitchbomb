@@ -101,14 +101,14 @@
         <ActionsPanel {gameState} />
       </div>
 
-      <!-- Marketplace -->
-      <div class="flex-1 min-w-80">
-        <MarketplaceView {gameState} />
-      </div>
-
       <!-- Orb Bag Section -->
       <div class="flex-1 min-w-80">
         <OrbBagSection {gameState} />
+      </div>
+
+      <!-- Marketplace -->
+      <div class="flex-1 min-w-80">
+        <MarketplaceView {gameState} />
       </div>
 
       <!-- How to Play Section -->
