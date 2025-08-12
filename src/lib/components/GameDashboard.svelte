@@ -93,7 +93,7 @@
 
     <!-- Stats - Compact horizontal layout -->
     <div class="bg-white p-3 rounded-lg shadow-sm border">
-      <div class="grid grid-cols-3 gap-2 text-center text-xs mb-2">
+      <div class="grid grid-cols-3 gap-2 text-center text-xs mb-3">
         <div>
           <div class="text-lg font-bold text-green-600">{gameState.playerStats.cheddah}</div>
           <div class="text-gray-600">CHEDDAH</div>
@@ -107,7 +107,7 @@
           <div class="text-gray-600">POINTS</div>
         </div>
       </div>
-      <div class="grid grid-cols-3 gap-2 text-center text-xs">
+      <div class="grid grid-cols-3 gap-2 text-center text-xs mb-3">
         <div>
           <div class="text-lg font-bold text-red-600">{gameState.playerStats.health}</div>
           <div class="text-gray-600">HEALTH</div>
@@ -121,42 +121,42 @@
           <div class="text-gray-600">MILESTONE</div>
         </div>
       </div>
-    </div>
-
-    <!-- Health Status -->
-    <div class="bg-white p-3 rounded-lg shadow-sm border">
-      <div class="flex justify-between items-center text-sm">
-        <span class="text-sm font-bold">HEALTH</span>
-        <span class="text-gray-600">{gameState.playerStats.health}/5</span>
-      </div>
-      <div class="mt-1">
-        <div class="bg-gray-200 rounded-full h-2">
-          <div 
-            class="h-2 rounded-full transition-all duration-300 {gameState.playerStats.health <= 2 ? 'bg-red-500' : 'bg-green-500'}"
-            style="width: {(gameState.playerStats.health / 5) * 100}%"
-          ></div>
+      
+      <!-- Progress Bars Section -->
+      <div class="space-y-2">
+        <!-- Health Progress Bar -->
+        <div>
+          <div class="flex justify-between items-center text-xs mb-1">
+            <span class="font-bold text-red-600">HEALTH</span>
+            <span class="text-gray-600">{gameState.playerStats.health}/5</span>
+          </div>
+          <div class="bg-gray-200 rounded-full h-2">
+            <div 
+              class="h-2 rounded-full transition-all duration-300 {gameState.playerStats.health <= 2 ? 'bg-red-500' : 'bg-green-500'}"
+              style="width: {(gameState.playerStats.health / 5) * 100}%"
+            ></div>
+          </div>
+          {#if gameState.playerStats.health <= 2}
+            <p class="text-red-600 font-medium text-xs mt-1">⚠️ LOW HEALTH!</p>
+          {/if}
+        </div>
+        
+        <!-- Points Progress Bar -->
+        <div>
+          <div class="flex justify-between items-center text-xs mb-1">
+            <span class="font-bold text-purple-600">POINTS</span>
+            <span class="text-gray-600">{gameState.playerStats.points}/{getLevelMilestone(gameState.currentLevel)}</span>
+          </div>
+          <div class="bg-gray-200 rounded-full h-2">
+            <div 
+              class="bg-purple-500 h-2 rounded-full transition-all duration-300"
+              style="width: {Math.min(100, (gameState.playerStats.points / getLevelMilestone(gameState.currentLevel)) * 100)}%"
+            ></div>
+          </div>
         </div>
       </div>
-      {#if gameState.playerStats.health <= 2}
-        <p class="text-red-600 font-medium text-xs mt-1">⚠️ LOW HEALTH!</p>
-      {/if}
     </div>
 
-    <!-- Milestone Progress -->
-    <div class="bg-white p-3 rounded-lg shadow-sm border">
-      <div class="flex justify-between items-center text-sm">
-        <span class="text-sm font-bold">POINTS</span>
-        <span class="text-gray-600">{gameState.playerStats.points}/{getLevelMilestone(gameState.currentLevel)}</span>
-      </div>
-      <div class="mt-1">
-        <div class="bg-gray-200 rounded-full h-2">
-          <div 
-            class="bg-purple-500 h-2 rounded-full transition-all duration-300"
-            style="width: {Math.min(100, (gameState.playerStats.points / getLevelMilestone(gameState.currentLevel)) * 100)}%"
-          ></div>
-        </div>
-      </div>
-    </div>
 
     <!-- Actions Panel - Prominent placement -->
     <ActionsPanel {gameState} />
