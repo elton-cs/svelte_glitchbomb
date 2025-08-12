@@ -186,16 +186,16 @@
 
 <div class="bg-black p-3 rounded-lg shadow-sm border border-white h-full flex flex-col {gameState.phase === 'marketplace' && gameState.marketplace.available ? '' : 'opacity-60'}">
   <div class="flex justify-between items-center mb-3">
-    <h2 class="text-sm font-bold text-white">MARKETPLACE {gameState.phase === 'marketplace' && gameState.marketplace.available ? '' : '(INACTIVE)'}</h2>
+    <h2 class="text-sm font-bold text-white">SHOP {gameState.phase === 'marketplace' && gameState.marketplace.available ? '' : '(CLOSED)'}</h2>
     <div class="text-right">
       <div class="text-lg font-bold text-white">{gameState.playerStats.cheddah}</div>
       <div class="text-xs text-gray-400">CHEDDAH</div>
     </div>
   </div>
   
-  <!-- 2x3 Grid Layout -->
+  <!-- 2x3 Shop Grid -->
   <div class="grid grid-cols-2 gap-2 flex-1">
-    {#each marketItems as item}
+    {#each shopInventory as item}
       <button
         disabled={!item.available || !item.canPurchase || gameState.phase !== 'marketplace' || !gameState.marketplace.available}
         onclick={item.available && item.canPurchase && gameState.phase === 'marketplace' && gameState.marketplace.available && item.isShopItem ? () => handleShopItemPurchase(item.id) : undefined}
@@ -218,15 +218,15 @@
   
   <div class="mt-3 text-xs text-center {gameState.phase === 'marketplace' && gameState.marketplace.available ? 'text-gray-400' : 'text-gray-600'}">
     {#if gameState.phase === 'marketplace' && gameState.marketplace.available}
-      CLICK TO PURCHASE
+      CLICK TO BUY
     {:else}
-      MARKETPLACE UNAVAILABLE
+      SHOP CLOSED
     {/if}
   </div>
   
   {#if gameState.playerStats.cheddah === 0 && gameState.phase === 'marketplace' && gameState.marketplace.available}
     <p class="text-xs text-gray-400 text-center mt-2">
-      NO CHEDDAH REMAINING
+      NO CHEDDAH TO SPEND
     </p>
   {/if}
 </div>
