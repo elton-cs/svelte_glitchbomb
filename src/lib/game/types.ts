@@ -1,4 +1,4 @@
-export type OrbType = 'health' | 'point' | 'bomb' | 'points_per_anyorb' | 'points_per_bombpulled' | 'multiplier';
+export type OrbType = 'health' | 'point' | 'bomb' | 'points_per_anyorb' | 'points_per_bombpulled' | 'multiplier' | 'cheddah' | 'moonrocks';
 
 export type GamePhase = 'menu' | 'level' | 'marketplace' | 'gameover' | 'victory';
 
@@ -29,6 +29,14 @@ export interface OrbBag {
     total: Orb[];
   };
   multiplier: {
+    available: Orb[];
+    total: Orb[];
+  };
+  cheddah: {
+    available: Orb[];
+    total: Orb[];
+  };
+  moonrocks: {
     available: Orb[];
     total: Orb[];
   };
@@ -110,6 +118,8 @@ export interface GameConfig {
     points_per_anyorb: number;
     points_per_bombpulled: number;
     multiplier: number;
+    cheddah: number;
+    moonrocks: number;
   };
   maxHealth: number;
   startingOrbs: {
@@ -119,5 +129,7 @@ export interface GameConfig {
     points_per_anyorb: number;
     points_per_bombpulled: number;
     multiplier: number;
+    cheddah: number;
+    moonrocks: number;
   };
 }

@@ -127,6 +127,14 @@ export function pullOrb(gameState: GameState): boolean {
         gameState.playerStats.levelMultiplier += orb.amount;
         addLogEntry(gameState, `Pulled multiplier orb (+${orb.amount}x boost)`);
         break;
+      case 'cheddah':
+        gameState.playerStats.cheddah += orb.amount;
+        addLogEntry(gameState, `Pulled cheddah orb (+${orb.amount} cheddah)`);
+        break;
+      case 'moonrocks':
+        gameState.playerStats.moonrocks += orb.amount;
+        addLogEntry(gameState, `Pulled moonrocks orb (+${orb.amount} moonrocks)`);
+        break;
     }
 
     if (checkGameOver(gameState.playerStats.health, gameState.orbBag)) {

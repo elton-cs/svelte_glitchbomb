@@ -12,7 +12,9 @@
                                       gameState.orbBag.bomb.available.length + 
                                       gameState.orbBag.points_per_anyorb.available.length + 
                                       gameState.orbBag.points_per_bombpulled.available.length + 
-                                      gameState.orbBag.multiplier.available.length);
+                                      gameState.orbBag.multiplier.available.length +
+                                      gameState.orbBag.cheddah.available.length +
+                                      gameState.orbBag.moonrocks.available.length);
 </script>
 
 <!-- Orb Bag - Compact design -->
@@ -89,6 +91,30 @@
           <span class="text-white">(+{gameState.orbBag.multiplier.available[0].amount}× boost)</span>
         {/if}
         <span class="text-white">/ {gameState.orbBag.multiplier.total.length}</span>
+      </div>
+    </div>
+    
+    <!-- Cheddah Orbs -->
+    <div class="flex justify-between items-center {gameState.orbBag.cheddah.available.length === 0 ? 'opacity-50' : ''}">
+      <span class="font-medium text-yellow-400">🧀 CHEDDAH ORBS:</span>
+      <div class="text-right">
+        <span class="font-bold text-white">{gameState.orbBag.cheddah.available.length}</span>
+        {#if gameState.orbBag.cheddah.available.length > 0}
+          <span class="text-white">({gameState.orbBag.cheddah.available.map(orb => `+${orb.amount}`).join(', ')})</span>
+        {/if}
+        <span class="text-white">/ {gameState.orbBag.cheddah.total.length}</span>
+      </div>
+    </div>
+    
+    <!-- Moonrocks Orbs -->
+    <div class="flex justify-between items-center {gameState.orbBag.moonrocks.available.length === 0 ? 'opacity-50' : ''}">
+      <span class="font-medium text-gray-300">🌙 MOONROCKS ORBS:</span>
+      <div class="text-right">
+        <span class="font-bold text-white">{gameState.orbBag.moonrocks.available.length}</span>
+        {#if gameState.orbBag.moonrocks.available.length > 0}
+          <span class="text-white">({gameState.orbBag.moonrocks.available.map(orb => `+${orb.amount}`).join(', ')})</span>
+        {/if}
+        <span class="text-white">/ {gameState.orbBag.moonrocks.total.length}</span>
       </div>
     </div>
   </div>
