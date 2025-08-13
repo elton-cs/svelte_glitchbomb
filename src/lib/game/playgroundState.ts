@@ -55,8 +55,15 @@ export function resetPlaygroundStats(state: PlaygroundState): void {
   state.playerStats.levelMultiplier = 1.0;
   state.currentOrbIndex = 0;
   state.pulledOrbs = [];
-  state.isActive = true;
-  addPlaygroundLog(state, 'Stats reset, orb bag preserved');
+  
+  // Only set active if there are orbs to pull
+  state.isActive = state.orbQueue.length > 0;
+  
+  if (state.orbQueue.length > 0) {
+    addPlaygroundLog(state, 'Stats reset, orb bag preserved - ready to pull');
+  } else {
+    addPlaygroundLog(state, 'Stats reset, orb bag empty - add orbs to continue');
+  }
 }
 
 export function restartPlayground(state: PlaygroundState): void {
@@ -121,4 +128,9 @@ export function startPlayground(state: PlaygroundState): void {
   
   state.isActive = true;
   addPlaygroundLog(state, `Playground started with ${state.orbQueue.length} orbs`);
+}
+
+export function canResetStats(state: PlaygroundState): boolean {
+  // Can reset if there are orbs to re-test OR if orbs have been pulled previously
+  return state.orbQueue.length > 0 || state.pulledOrbs.length > 0;
 }

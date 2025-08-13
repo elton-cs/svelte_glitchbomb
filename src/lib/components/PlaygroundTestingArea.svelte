@@ -7,7 +7,8 @@
     restartPlayground, 
     startPlayground,
     getRemainingOrbs,
-    removeOrbFromPlayground 
+    removeOrbFromPlayground,
+    canResetStats
   } from '../game/playgroundState.js';
 
   interface Props {
@@ -42,6 +43,7 @@
 
   const remainingOrbs = $derived(getRemainingOrbs(playgroundState));
   const canPull = $derived(canPullOrb(playgroundState));
+  const canReset = $derived(canResetStats(playgroundState));
 </script>
 
 <div class="bg-black p-3 rounded-lg shadow-sm border border-white h-full flex flex-col space-y-4">
@@ -104,7 +106,11 @@
     </button>
     <button 
       onclick={handleReset}
-      class="py-2 px-3 rounded text-sm font-medium transition-colors border bg-black text-white border-white hover:bg-white hover:text-black"
+      disabled={!canReset}
+      class="py-2 px-3 rounded text-sm font-medium transition-colors border
+             {canReset
+               ? 'bg-black text-white border-white hover:bg-white hover:text-black'
+               : 'bg-black text-gray-500 border-gray-500 cursor-not-allowed'}"
     >
       RESET STATS
     </button>
