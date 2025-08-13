@@ -52,7 +52,7 @@
   <!-- Stats Display -->
   <div class="bg-black border border-gray-500 rounded p-3">
     <h3 class="text-xs font-bold mb-2 text-white">PLAYER STATS</h3>
-    <div class="grid grid-cols-4 gap-2 text-center text-xs">
+    <div class="grid grid-cols-3 gap-2 text-center text-xs">
       <div>
         <div class="text-lg font-bold text-white">{playgroundState.playerStats.health}</div>
         <div class="text-white">HEALTH</div>
@@ -69,15 +69,13 @@
         <div class="text-sm font-bold text-white">{playgroundState.playerStats.moonrocks}</div>
         <div class="text-white">MOONROCKS</div>
       </div>
-    </div>
-    <div class="grid grid-cols-2 gap-2 text-center text-xs mt-2">
+      <div>
+        <div class="text-sm font-bold text-white">{playgroundState.playerStats.cheddah}</div>
+        <div class="text-white">CHEDDAH</div>
+      </div>
       <div>
         <div class="text-sm font-bold text-white">{playgroundState.playerStats.bombsPulledThisLevel}</div>
         <div class="text-white">BOMBS PULLED</div>
-      </div>
-      <div>
-        <div class="text-sm font-bold text-white">{remainingOrbs.length}</div>
-        <div class="text-white">ORBS LEFT</div>
       </div>
     </div>
   </div>
