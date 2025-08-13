@@ -1,6 +1,5 @@
 <script lang="ts">
   import { purchaseOrb, purchaseShopItem } from '../game/game.js';
-  import { getAvailableShopItems } from '../game/shopItems.js';
   import type { GameState } from '../game/types.js';
 
   interface Props {
@@ -124,7 +123,7 @@
   }
 
   const shopInventory = $derived.by(() => {
-    const availableShopItems = getAvailableShopItems(gameState.currentLevel);
+    const availableShopItems = gameState.marketplace.currentShopItems;
     const items = availableShopItems.map(shopItem => {
       // Determine tier and colors based on item ID
       let tierColor = 'text-white';

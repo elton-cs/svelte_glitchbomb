@@ -48,6 +48,7 @@ function createInitialMarketplaceState(): MarketplaceState {
     available: false,
     healthOrbCost: GAME_CONFIG.orbCosts.health,
     pointOrbCost: GAME_CONFIG.orbCosts.point,
+    currentShopItems: [],
   };
 }
 

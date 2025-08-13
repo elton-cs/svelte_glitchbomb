@@ -17,7 +17,7 @@ import {
 } from './levels.js';
 import { GAME_CONFIG } from './constants.js';
 import type { OrbType } from './types.js';
-import { getShopItem } from './shopItems.js';
+import { getShopItem, getAvailableShopItems } from './shopItems.js';
 
 function applyPointsWithMultiplier(gameState: GameState, basePoints: number): void {
   const multipliedPoints = Math.floor(basePoints * gameState.playerStats.levelMultiplier);
@@ -140,6 +140,7 @@ export function completeLevel(gameState: GameState): void {
   } else {
     gameState.phase = 'marketplace';
     gameState.marketplace.available = true;
+    gameState.marketplace.currentShopItems = getAvailableShopItems(gameState.currentLevel);
     // Reset consumed orbs so players can see their full collection in marketplace
     resetConsumedOrbs(gameState.orbBag);
   }
@@ -175,6 +176,7 @@ export function enterMarketplace(gameState: GameState): void {
   if (gameState.levelCompleted) {
     gameState.phase = 'marketplace';
     gameState.marketplace.available = true;
+    gameState.marketplace.currentShopItems = getAvailableShopItems(gameState.currentLevel);
   }
 }
 
