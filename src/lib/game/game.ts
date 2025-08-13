@@ -17,7 +17,7 @@ import {
 } from './levels.js';
 import { GAME_CONFIG } from './constants.js';
 import type { OrbType } from './types.js';
-import { getShopItem, getAvailableShopItemsFromDeck, findDeckItem, updateDeckItemPrice } from './shopItems.js';
+import { getShopItem, getAvailableShopItemsFromDeck, findDeckItem, updateDeckItemPrice, initializeShopDeck } from './shopItems.js';
 
 function applyPointsWithMultiplier(gameState: GameState, basePoints: number): void {
   const multipliedPoints = Math.floor(basePoints * gameState.playerStats.levelMultiplier);
@@ -26,6 +26,9 @@ function applyPointsWithMultiplier(gameState: GameState, basePoints: number): vo
 
 export function startNewGame(gameState: GameState): boolean {
   try {
+    // Reset shop deck to initial prices (new game session)
+    gameState.shopDeck = initializeShopDeck();
+    
     return enterLevel(gameState, 1);
   } catch (error) {
     console.error('Error starting new game:', error);
@@ -157,6 +160,9 @@ export function cashOutMidLevel(gameState: GameState): number {
   // Reset orb bag to initial state (lose all purchased orbs)
   gameState.orbBag = createInitialBag();
   
+  // Reset shop deck to initial prices (new game session)
+  gameState.shopDeck = initializeShopDeck();
+  
   return cashOut;
 }
 
@@ -168,6 +174,9 @@ export function cashOutPostLevel(gameState: GameState): number {
   
   // Reset orb bag to initial state (lose all purchased orbs)
   gameState.orbBag = createInitialBag();
+  
+  // Reset shop deck to initial prices (new game session)
+  gameState.shopDeck = initializeShopDeck();
   
   return points;
 }
@@ -251,4 +260,7 @@ export function returnToMenu(gameState: GameState): void {
   
   // Reset orb bag to initial state (lose all purchased orbs)
   gameState.orbBag = createInitialBag();
+  
+  // Reset shop deck to initial prices (new game session)
+  gameState.shopDeck = initializeShopDeck();
 }
