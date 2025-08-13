@@ -4,7 +4,7 @@ import type { ShopItem } from './types.js';
 export const COMMON_SHOP_ITEMS: ShopItem[] = [
   {
     id: 'common_health',
-    name: 'BASIC HEALTH',
+    name: 'COMMON HEALTH',
     description: '+1 HP',
     type: 'health',
     amount: 1,
@@ -12,7 +12,7 @@ export const COMMON_SHOP_ITEMS: ShopItem[] = [
   },
   {
     id: 'common_point',
-    name: 'BASIC POINTS',
+    name: 'COMMON POINTS',
     description: '+3 PTS',
     type: 'point',
     amount: 3,
@@ -20,7 +20,7 @@ export const COMMON_SHOP_ITEMS: ShopItem[] = [
   },
   {
     id: 'common_points_per_anyorb',
-    name: 'BASIC COMBO',
+    name: 'COMMON COMBO',
     description: '+1 per orb',
     type: 'points_per_anyorb',
     amount: 1,
@@ -28,7 +28,7 @@ export const COMMON_SHOP_ITEMS: ShopItem[] = [
   },
   {
     id: 'common_points_per_bombpulled',
-    name: 'BASIC DANGER',
+    name: 'COMMON DANGER',
     description: '+2 per bomb',
     type: 'points_per_bombpulled',
     amount: 2,
@@ -36,7 +36,7 @@ export const COMMON_SHOP_ITEMS: ShopItem[] = [
   },
   {
     id: 'common_multiplier',
-    name: 'BASIC BOOST',
+    name: 'COMMON BOOST',
     description: '+0.2x mult',
     type: 'multiplier',
     amount: 0.2,
@@ -48,7 +48,7 @@ export const COMMON_SHOP_ITEMS: ShopItem[] = [
 export const RARE_SHOP_ITEMS: ShopItem[] = [
   {
     id: 'rare_health',
-    name: 'ENHANCED HEALTH',
+    name: 'RARE HEALTH',
     description: '+2 HP',
     type: 'health',
     amount: 2,
@@ -56,7 +56,7 @@ export const RARE_SHOP_ITEMS: ShopItem[] = [
   },
   {
     id: 'rare_point',
-    name: 'ENHANCED POINTS',
+    name: 'RARE POINTS',
     description: '+8 PTS',
     type: 'point',
     amount: 8,
@@ -64,7 +64,7 @@ export const RARE_SHOP_ITEMS: ShopItem[] = [
   },
   {
     id: 'rare_points_per_anyorb',
-    name: 'ENHANCED COMBO',
+    name: 'RARE COMBO',
     description: '+2 per orb',
     type: 'points_per_anyorb',
     amount: 2,
@@ -72,7 +72,7 @@ export const RARE_SHOP_ITEMS: ShopItem[] = [
   },
   {
     id: 'rare_points_per_bombpulled',
-    name: 'ENHANCED DANGER',
+    name: 'RARE DANGER',
     description: '+4 per bomb',
     type: 'points_per_bombpulled',
     amount: 4,
@@ -80,7 +80,7 @@ export const RARE_SHOP_ITEMS: ShopItem[] = [
   },
   {
     id: 'rare_multiplier',
-    name: 'ENHANCED BOOST',
+    name: 'RARE BOOST',
     description: '+0.4x mult',
     type: 'multiplier',
     amount: 0.4,
