@@ -123,48 +123,107 @@
   }
 
   const shopInventory = $derived.by(() => {
-    const availableShopItems = gameState.marketplace.currentShopItems;
-    const items = availableShopItems.map(shopItem => {
-      // Determine tier and colors based on item ID
-      let tierColor = 'text-white';
-      let tierBorder = 'border-white';
-      
-      if (shopItem.id.startsWith('common_')) {
-        tierColor = 'text-white';
-        tierBorder = 'border-gray-400';
-      } else if (shopItem.id.startsWith('rare_')) {
-        tierColor = 'text-white';
-        tierBorder = 'border-blue-500';
-      } else if (shopItem.id.startsWith('cosmic_')) {
-        tierColor = 'text-white';
-        tierBorder = 'border-purple-500';
-      }
-      
-      // Keep red color for health orbs and preserve tier borders
-      if (shopItem.type === 'health') {
-        tierColor = 'text-white';
-        // Keep the tier-based border color, don't override
-      }
-      
-      return {
-        id: shopItem.id,
-        name: shopItem.name,
-        description: shopItem.description,
-        cost: shopItem.currentCost,
-        baseCost: shopItem.baseCost,
-        purchaseCount: shopItem.purchaseCount,
-        icon: '',
-        color: tierColor,
-        borderColor: tierBorder,
-        available: true,
-        canPurchase: gameState.playerStats.cheddah >= shopItem.currentCost,
-        isShopItem: true
-      };
-    });
+    const isShopOpen = gameState.phase === 'marketplace' && gameState.marketplace.available;
     
-    // With all tiers available, we should have exactly 6 items (3+2+1)
-    // No locked slots needed anymore
-    return items;
+    if (isShopOpen) {
+      // Shop is open - show actual items
+      const availableShopItems = gameState.marketplace.currentShopItems;
+      return availableShopItems.map(shopItem => {
+        // Determine tier and colors based on item ID
+        let tierColor = 'text-white';
+        let tierBorder = 'border-white';
+        
+        if (shopItem.id.startsWith('common_')) {
+          tierColor = 'text-white';
+          tierBorder = 'border-gray-400';
+        } else if (shopItem.id.startsWith('rare_')) {
+          tierColor = 'text-white';
+          tierBorder = 'border-blue-500';
+        } else if (shopItem.id.startsWith('cosmic_')) {
+          tierColor = 'text-white';
+          tierBorder = 'border-purple-500';
+        }
+        
+        // Keep red color for health orbs and preserve tier borders
+        if (shopItem.type === 'health') {
+          tierColor = 'text-white';
+          // Keep the tier-based border color, don't override
+        }
+        
+        return {
+          id: shopItem.id,
+          name: shopItem.name,
+          description: shopItem.description,
+          cost: shopItem.currentCost,
+          baseCost: shopItem.baseCost,
+          purchaseCount: shopItem.purchaseCount,
+          icon: '',
+          color: tierColor,
+          borderColor: tierBorder,
+          available: true,
+          canPurchase: gameState.playerStats.cheddah >= shopItem.currentCost,
+          isShopItem: true
+        };
+      });
+    } else {
+      // Shop is closed - show 6 placeholder items with X marks
+      // Create placeholders that match expected tier distribution (3 common, 2 rare, 1 cosmic)
+      const placeholders = [];
+      
+      // 3 common placeholders
+      for (let i = 0; i < 3; i++) {
+        placeholders.push({
+          id: `placeholder_common_${i}`,
+          name: 'SHOP CLOSED',
+          description: 'Complete level to open shop',
+          cost: 0,
+          baseCost: 0,
+          purchaseCount: 0,
+          icon: '✗',
+          color: 'text-gray-500',
+          borderColor: 'border-gray-400',
+          available: false,
+          canPurchase: false,
+          isShopItem: false
+        });
+      }
+      
+      // 2 rare placeholders
+      for (let i = 0; i < 2; i++) {
+        placeholders.push({
+          id: `placeholder_rare_${i}`,
+          name: 'SHOP CLOSED',
+          description: 'Complete level to open shop',
+          cost: 0,
+          baseCost: 0,
+          purchaseCount: 0,
+          icon: '✗',
+          color: 'text-gray-500',
+          borderColor: 'border-blue-500',
+          available: false,
+          canPurchase: false,
+          isShopItem: false
+        });
+      }
+      
+      // 1 cosmic placeholder
+      placeholders.push({
+        id: 'placeholder_cosmic_0',
+        name: 'SHOP CLOSED',
+        description: 'Complete level to open shop',
+        cost: 0,
+        baseCost: 0,
+        purchaseCount: 0,
+        icon: '✗',
+        color: 'text-gray-500',
+        borderColor: 'border-purple-500',
+        available: false,
+        canPurchase: false,
+        isShopItem: false
+      });
+      
+      return placeholders;
+    }
   });
 </script>
 
@@ -189,8 +248,11 @@
                  : 'bg-black text-gray-500 cursor-not-allowed'}"
       >
         <div class="text-center w-full">
-          <div class="font-medium uppercase">{item.name}</div>
-          <div class="text-xs opacity-75">{item.description}</div>
+          {#if item.icon}
+            <div class="text-2xl mb-1 {item.color}">{item.icon}</div>
+          {/if}
+          <div class="font-medium uppercase {item.color}">{item.name}</div>
+          <div class="text-xs opacity-75 {item.color}">{item.description}</div>
           {#if item.available && item.cost > 0}
             <div class="text-xs opacity-90">
               {item.cost} CHEDDAH
@@ -200,6 +262,8 @@
                 </div>
               {/if}
             </div>
+          {:else if !item.available && item.cost === 0}
+            <div class="text-xs opacity-60 {item.color}">SHOP CLOSED</div>
           {:else if !item.available}
             <div class="text-xs opacity-60">LOCKED</div>
           {/if}
