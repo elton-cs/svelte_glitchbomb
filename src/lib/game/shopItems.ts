@@ -63,44 +63,36 @@ export const COMMON_SHOP_ITEMS: ShopItem[] = [
 // Rare tier - enhanced amounts, moderate prices
 export const RARE_SHOP_ITEMS: ShopItem[] = [
   {
-    id: 'rare_health',
-    name: 'RARE HEALTH',
-    description: '+2 HP',
-    type: 'health',
-    amount: 2,
-    cost: 4
-  },
-  {
-    id: 'rare_point',
-    name: 'RARE POINTS',
+    id: 'rare_point_8',
+    name: 'POINTS 8',
     description: '+8 PTS',
     type: 'point',
     amount: 8,
-    cost: 4
+    cost: 11
   },
   {
-    id: 'rare_points_per_anyorb',
-    name: 'RARE COMBO',
-    description: '+2 per orb',
-    type: 'points_per_anyorb',
-    amount: 2,
-    cost: 6
+    id: 'rare_point_9',
+    name: 'POINTS 9',
+    description: '+9 PTS',
+    type: 'point',
+    amount: 9,
+    cost: 13
   },
   {
-    id: 'rare_points_per_bombpulled',
-    name: 'RARE DANGER',
-    description: '+4 per bomb',
-    type: 'points_per_bombpulled',
-    amount: 4,
-    cost: 6
-  },
-  {
-    id: 'rare_multiplier',
-    name: 'RARE BOOST',
-    description: '+0.4x mult',
+    id: 'rare_multiplier_next_point',
+    name: '+1X NEXT POINT ORB',
+    description: '+1x your next Points orb',
     type: 'multiplier',
-    amount: 0.4,
-    cost: 8
+    amount: 1.0,
+    cost: 14
+  },
+  {
+    id: 'rare_multiplier_15',
+    name: '1.5X MULTIPLIER',
+    description: '+1.5x mult',
+    type: 'multiplier',
+    amount: 1.5,
+    cost: 16
   }
 ];
 
