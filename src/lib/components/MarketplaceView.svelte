@@ -249,13 +249,15 @@
       >
         <div class="text-center w-full">
           {#if item.icon}
+            <!-- Placeholder X mark - always gray -->
             <div class="text-3xl {item.color}">{item.icon}</div>
           {:else}
+            <!-- Actual shop item - no color classes so hover works -->
             {#if item.name}
-              <div class="font-medium uppercase {item.color}">{item.name}</div>
+              <div class="font-medium uppercase">{item.name}</div>
             {/if}
             {#if item.description}
-              <div class="text-xs opacity-75 {item.color}">{item.description}</div>
+              <div class="text-xs opacity-75">{item.description}</div>
             {/if}
             {#if item.available && item.cost > 0}
               <div class="text-xs opacity-90">
