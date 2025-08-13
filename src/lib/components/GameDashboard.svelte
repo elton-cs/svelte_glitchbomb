@@ -1,7 +1,6 @@
 <script lang="ts">
   import { createInitialGameState, claimFreeRocks, saveMoonrocks } from '../game/state.js';
   import StatsDisplay from './StatsDisplay.svelte';
-  import BagView from './BagView.svelte';
   import ActionsPanel from './ActionsPanel.svelte';
   import MarketplaceView from './MarketplaceView.svelte';
   import PlayerStatsSection from './PlayerStatsSection.svelte';
