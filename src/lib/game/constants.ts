@@ -23,6 +23,8 @@ export const GAME_CONFIG: GameConfig = {
     points_per_anyorb: 1,
     points_per_bombpulled: 1,
     multiplier: 0.5,
+    cheddah: 10,
+    moonrocks: 5,
   },
   maxHealth: 5,
   startingOrbs: {
@@ -32,6 +34,8 @@ export const GAME_CONFIG: GameConfig = {
     points_per_anyorb: 1,
     points_per_bombpulled: 1,
     multiplier: 1,
+    cheddah: 0,
+    moonrocks: 0,
   },
 };
 

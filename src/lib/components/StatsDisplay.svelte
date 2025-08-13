@@ -10,37 +10,37 @@
   let { gameState }: Props = $props();
 </script>
 
-<div class="bg-gray-100 p-4 rounded border">
+<div class="bg-black p-4 rounded border border-white">
   <h2 class="text-sm font-bold mb-3">GAME STATS</h2>
   
   <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-4">
     <div class="text-center">
-      <div class="text-2xl font-bold text-blue-600">{gameState.playerStats.moonrocks}</div>
-      <div class="text-sm text-gray-600">MOONROCKS</div>
+      <div class="text-2xl font-bold text-white">{gameState.playerStats.moonrocks}</div>
+      <div class="text-sm text-white">MOONROCKS</div>
     </div>
     
     <div class="text-center">
-      <div class="text-2xl font-bold text-green-600">{gameState.playerStats.cheddah}</div>
-      <div class="text-sm text-gray-600">CHEDDAH</div>
+      <div class="text-2xl font-bold text-white">{gameState.playerStats.cheddah}</div>
+      <div class="text-sm text-white">CHEDDAH</div>
     </div>
     
     <div class="text-center">
-      <div class="text-2xl font-bold text-red-600">{gameState.playerStats.health}</div>
-      <div class="text-sm text-gray-600">HEALTH</div>
+      <div class="text-2xl font-bold text-white">{gameState.playerStats.health}</div>
+      <div class="text-sm text-white">HEALTH</div>
     </div>
     
     <div class="text-center">
-      <div class="text-2xl font-bold text-purple-600">{gameState.playerStats.points}</div>
-      <div class="text-sm text-gray-600">POINTS</div>
+      <div class="text-2xl font-bold text-white">{gameState.playerStats.points}</div>
+      <div class="text-sm text-white">POINTS</div>
     </div>
     
     <div class="text-center">
-      <div class="text-2xl font-bold text-orange-600">{gameState.playerStats.levelMultiplier}×</div>
-      <div class="text-sm text-gray-600">MULTIPLIER</div>
+      <div class="text-2xl font-bold text-white">{gameState.playerStats.levelMultiplier}×</div>
+      <div class="text-sm text-white">MULTIPLIER</div>
     </div>
   </div>
   
-  <div class="border-t pt-3">
+  <div class="border border-white-t pt-3">
     <div class="flex justify-between items-center mb-2">
       <span class="font-medium">STATUS:</span>
       <span class="text-gray-700">{getPhaseDisplayName(gameState.phase)}</span>
@@ -60,9 +60,9 @@
       </div>
       
       <div class="mt-2">
-        <div class="bg-gray-200 rounded-full h-2">
+        <div class="bg-gray-800 rounded-full h-2">
           <div 
-            class="bg-purple-600 h-2 rounded-full transition-all duration-300"
+            class="bg-white h-2 rounded-full transition-all duration-300"
             style="width: {Math.min(100, (gameState.playerStats.points / getLevelMilestone(gameState.currentLevel)) * 100)}%"
           ></div>
         </div>
