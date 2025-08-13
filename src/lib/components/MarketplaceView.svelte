@@ -182,17 +182,16 @@
       <button
         disabled={!item.available || !item.canPurchase || gameState.phase !== 'marketplace' || !gameState.marketplace.available}
         onclick={item.available && item.canPurchase && gameState.phase === 'marketplace' && gameState.marketplace.available && item.isShopItem ? () => handleShopItemPurchase(item.id) : undefined}
-        class="p-2 rounded font-medium transition-colors select-none flex items-center gap-2 text-left border-4 {item.borderColor}
+        class="py-2 px-3 rounded text-sm font-medium transition-colors border-4 {item.borderColor}
                {item.available && item.canPurchase && gameState.phase === 'marketplace' && gameState.marketplace.available
-                 ? 'bg-black hover:bg-gray-900 active:scale-95' 
-                 : 'bg-gray-900 cursor-not-allowed'}"
+                 ? 'bg-black text-white hover:bg-white hover:text-black' 
+                 : 'bg-black text-gray-500 cursor-not-allowed'}"
       >
-        {#if item.icon}<div class="text-lg {item.color}">{item.icon}</div>{/if}
-        <div class="flex-1 min-w-0">
-          <div class="text-sm font-medium truncate">{item.name}</div>
-          <div class="text-xs opacity-75 truncate">{item.description}</div>
+        <div class="text-center w-full">
+          <div class="font-medium uppercase">{item.name}</div>
+          <div class="text-xs opacity-75">{item.description}</div>
           {#if item.available && item.cost > 0}
-            <div class="text-xs opacity-90">{item.cost} cheddah</div>
+            <div class="text-xs opacity-90">{item.cost} CHEDDAH</div>
           {:else if !item.available}
             <div class="text-xs opacity-60">LOCKED</div>
           {/if}
