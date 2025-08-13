@@ -3,44 +3,60 @@ import type { ShopItem, ShopDeck, ShopDeckItem } from './types.js';
 // Common tier - basic amounts, affordable prices
 export const COMMON_SHOP_ITEMS: ShopItem[] = [
   {
-    id: 'common_health',
-    name: 'COMMON HEALTH',
+    id: 'common_point_5',
+    name: 'POINT 5',
+    description: '+5 PTS',
+    type: 'point',
+    amount: 5,
+    cost: 5
+  },
+  {
+    id: 'common_point_7',
+    name: 'POINT 7',
+    description: '+7 PTS',
+    type: 'point',
+    amount: 7,
+    cost: 8
+  },
+  {
+    id: 'common_cheddah_15',
+    name: 'CHEDDAH 15',
+    description: '+15 cheddah',
+    type: 'cheddah',
+    amount: 15,
+    cost: 5
+  },
+  {
+    id: 'common_moonrocks_15',
+    name: 'MOONROCKS 15',
+    description: '+15 moonrocks',
+    type: 'moonrocks',
+    amount: 15,
+    cost: 8
+  },
+  {
+    id: 'common_points_per_bombpulled_4',
+    name: '4 PTS PER BOMB',
+    description: '+4 per bomb',
+    type: 'points_per_bombpulled',
+    amount: 4,
+    cost: 6
+  },
+  {
+    id: 'common_health_1',
+    name: 'HEALTH 1',
     description: '+1 HP',
     type: 'health',
     amount: 1,
-    cost: 2
+    cost: 9
   },
   {
-    id: 'common_point',
-    name: 'COMMON POINTS',
-    description: '+3 PTS',
-    type: 'point',
-    amount: 3,
-    cost: 2
-  },
-  {
-    id: 'common_points_per_anyorb',
-    name: 'COMMON COMBO',
-    description: '+1 per orb',
-    type: 'points_per_anyorb',
-    amount: 1,
-    cost: 3
-  },
-  {
-    id: 'common_points_per_bombpulled',
-    name: 'COMMON DANGER',
-    description: '+2 per bomb',
-    type: 'points_per_bombpulled',
-    amount: 2,
-    cost: 3
-  },
-  {
-    id: 'common_multiplier',
-    name: 'COMMON BOOST',
-    description: '+0.2x mult',
+    id: 'common_multiplier_05',
+    name: '+0.5X MULTIPLIER',
+    description: '+0.5x mult',
     type: 'multiplier',
-    amount: 0.2,
-    cost: 4
+    amount: 0.5,
+    cost: 9
   }
 ];
 
