@@ -99,44 +99,20 @@ export const RARE_SHOP_ITEMS: ShopItem[] = [
 // Cosmic tier - maximum amounts, premium prices
 export const COSMIC_SHOP_ITEMS: ShopItem[] = [
   {
-    id: 'cosmic_health',
+    id: 'cosmic_health_3',
     name: 'COSMIC HEALTH',
-    description: '+3 HP',
+    description: 'Gain 3 Health',
     type: 'health',
     amount: 3,
-    cost: 8
+    cost: 21
   },
   {
-    id: 'cosmic_point',
-    name: 'COSMIC POINTS',
-    description: '+15 PTS',
-    type: 'point',
-    amount: 15,
-    cost: 8
-  },
-  {
-    id: 'cosmic_points_per_anyorb',
-    name: 'COSMIC COMBO',
-    description: '+3 per orb',
-    type: 'points_per_anyorb',
-    amount: 3,
-    cost: 12
-  },
-  {
-    id: 'cosmic_points_per_bombpulled',
-    name: 'COSMIC DANGER',
-    description: '+8 per bomb',
-    type: 'points_per_bombpulled',
-    amount: 8,
-    cost: 12
-  },
-  {
-    id: 'cosmic_multiplier',
-    name: 'COSMIC BOOST',
-    description: '+0.8x mult',
-    type: 'multiplier',
-    amount: 0.8,
-    cost: 15
+    id: 'cosmic_moonrocks_40',
+    name: 'COSMIC MOON',
+    description: 'Gain 40 Moon Rocks',
+    type: 'moonrocks',
+    amount: 40,
+    cost: 23
   }
 ];
 
