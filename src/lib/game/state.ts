@@ -1,4 +1,4 @@
-import type { GameState, OrbBag, PlayerStats, MarketplaceState } from './types.js';
+import type { GameState, OrbBag, PlayerStats, MarketplaceState, GameLogEntry } from './types.js';
 import { GAME_CONFIG } from './constants.js';
 import { createInitialBag } from './orbs.js';
 import { initializeShopDeck } from './shopItems.js';
@@ -61,6 +61,7 @@ export function createInitialGameState(moonrocks: number = loadMoonrocks()): Gam
     orbBag: createInitialOrbBag(),
     marketplace: createInitialMarketplaceState(),
     shopDeck: initializeShopDeck(),
+    gameLog: [],
     gameStarted: false,
     levelCompleted: false,
   };
@@ -76,6 +77,33 @@ export function resetLevelStats(state: GameState): void {
 export function resetGameSession(state: GameState, moonrocks: number): void {
   const newState = createInitialGameState(moonrocks);
   Object.assign(state, newState);
+}
+
+// Game Log Utility Functions
+export function addLogEntry(gameState: GameState, action: string, details?: string): void {
+  const timestamp = new Date().toLocaleTimeString('en-US', { 
+    hour12: false, 
+    hour: '2-digit', 
+    minute: '2-digit', 
+    second: '2-digit' 
+  });
+  
+  const logEntry: GameLogEntry = {
+    timestamp,
+    action,
+    details
+  };
+  
+  gameState.gameLog.push(logEntry);
+  
+  // Keep only the last 30 log entries to prevent memory issues
+  if (gameState.gameLog.length > 30) {
+    gameState.gameLog = gameState.gameLog.slice(-30);
+  }
+}
+
+export function clearGameLog(gameState: GameState): void {
+  gameState.gameLog = [];
 }
 
 // Global game state - will be initialized in GameDashboard component

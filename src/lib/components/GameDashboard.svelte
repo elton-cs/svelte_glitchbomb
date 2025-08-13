@@ -5,7 +5,7 @@
   import MarketplaceView from './MarketplaceView.svelte';
   import PlayerStatsSection from './PlayerStatsSection.svelte';
   import OrbBagSection from './OrbBagSection.svelte';
-  import HowToPlaySection from './HowToPlaySection.svelte';
+  import GameLogSection from './GameLogSection.svelte';
 
   let gameState = $state(createInitialGameState());
   let devMode = $state(false);
@@ -118,10 +118,10 @@
         </div>
       </div>
 
-      <!-- How to Play Section -->
+      <!-- Game Log Section -->
       <div class="flex-1 min-w-80 h-96">
         <div class="h-full">
-          <HowToPlaySection />
+          <GameLogSection {gameState} />
         </div>
       </div>
     </div>

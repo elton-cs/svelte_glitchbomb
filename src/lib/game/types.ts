@@ -63,6 +63,7 @@ export interface GameState {
   orbBag: OrbBag;
   marketplace: MarketplaceState;
   shopDeck: ShopDeck;
+  gameLog: GameLog;
   gameStarted: boolean;
   levelCompleted: boolean;
 }
@@ -85,6 +86,14 @@ export interface ShopDeck {
   rare: ShopDeckItem[];
   cosmic: ShopDeckItem[];
 }
+
+export interface GameLogEntry {
+  timestamp: string;
+  action: string;
+  details?: string;
+}
+
+export type GameLog = GameLogEntry[];
 
 export interface GameConfig {
   initialMoonrocks: number;
