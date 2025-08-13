@@ -28,38 +28,39 @@
   
   <div class="flex-1 space-y-3 overflow-y-auto">
     {#each PLAYGROUND_ORB_TEMPLATES as template}
-      <div class="border border-gray-500 rounded p-3 space-y-2">
-        <!-- Orb Header -->
-        <div class="flex items-center justify-between">
-          <div class="flex items-center space-x-2">
-            <span class="{template.color} text-lg">{template.emoji}</span>
-            <div>
-              <div class="text-white font-medium text-sm">{template.name}</div>
-              <div class="text-gray-400 text-xs">{template.description}</div>
-            </div>
-          </div>
-        </div>
-        
-        <!-- Amount Input -->
+      <div class="border border-gray-500 rounded p-2">
+        <!-- Compact Single Row Layout -->
         <div class="flex items-center space-x-2">
-          <label for="amount-{template.type}" class="text-white text-xs flex-shrink-0">Amount:</label>
-          <input 
-            id="amount-{template.type}"
-            type="number" 
-            bind:value={customAmounts[template.type]}
-            min="0.1"
-            step={template.type === 'multiplier' ? '0.1' : '1'}
-            class="bg-black border border-white text-white text-xs px-2 py-1 rounded w-20"
-          />
+          <!-- Orb Info -->
+          <span class="{template.color} text-lg">{template.emoji}</span>
+          <div class="flex-1 min-w-0">
+            <div class="text-white font-medium text-sm">{template.name}</div>
+            <div class="text-gray-400 text-xs">{template.description}</div>
+          </div>
+          
+          <!-- Amount Input -->
+          <div class="flex items-center space-x-1">
+            <label for="amount-{template.type}" class="text-white text-xs">Amt:</label>
+            <input 
+              id="amount-{template.type}"
+              type="number" 
+              bind:value={customAmounts[template.type]}
+              min="0.1"
+              step={template.type === 'multiplier' ? '0.1' : '1'}
+              class="bg-black border border-white text-white text-xs px-1 py-1 rounded w-16"
+            />
+          </div>
+          
+          <!-- Add Button -->
           <button 
             onclick={() => handleAddOrb(template)}
             disabled={playgroundState.isActive}
-            class="flex-1 py-1 px-2 rounded text-xs font-medium transition-colors border
+            class="py-1 px-2 rounded text-xs font-medium transition-colors border whitespace-nowrap
                    {playgroundState.isActive 
                      ? 'bg-black text-gray-500 border-gray-500 cursor-not-allowed' 
                      : 'bg-black text-white border-white hover:bg-white hover:text-black'}"
           >
-            ADD TO BAG
+            ADD
           </button>
         </div>
       </div>
