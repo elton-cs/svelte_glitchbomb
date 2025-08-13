@@ -81,8 +81,8 @@
         disabled={!canStartGame || gameState.phase !== 'menu'}
         class="py-2 px-3 rounded text-sm font-medium transition-colors border
                {canStartGame && gameState.phase === 'menu'
-                 ? 'bg-white text-black hover:bg-black hover:text-white border-white' 
-                 : 'bg-transparent text-white border-white cursor-not-allowed'}"
+                 ? 'bg-black text-white border-white hover:bg-white hover:text-black' 
+                 : 'bg-black text-gray-500 border-gray-500 cursor-not-allowed'}"
       >
         START GAME
       </button>
@@ -92,8 +92,8 @@
         disabled={!canPullOrb || gameState.phase !== 'level'}
         class="py-2 px-3 rounded text-sm font-medium transition-colors border
                {canPullOrb && gameState.phase === 'level'
-                 ? 'bg-white text-black hover:bg-black hover:text-white border-white' 
-                 : 'bg-transparent text-white border-white cursor-not-allowed'}"
+                 ? 'bg-black text-white border-white hover:bg-white hover:text-black' 
+                 : 'bg-black text-gray-500 border-gray-500 cursor-not-allowed'}"
       >
         PULL ORB
       </button>
@@ -104,8 +104,8 @@
         disabled={!canCashOutMid || gameState.phase !== 'level'}
         class="py-2 px-3 rounded text-sm font-medium transition-colors border
                {canCashOutMid && gameState.phase === 'level'
-                 ? 'bg-white text-black hover:bg-black hover:text-white border-white'
-                 : 'bg-transparent text-white border-white cursor-not-allowed'}"
+                 ? 'bg-black text-white border-white hover:bg-white hover:text-black'
+                 : 'bg-black text-gray-500 border-gray-500 cursor-not-allowed'}"
       >
         QUIT LEVEL
       </button>
@@ -115,8 +115,8 @@
         disabled={!canCashOutPost || gameState.phase !== 'marketplace'}
         class="py-2 px-3 rounded text-sm font-medium transition-colors border
                {canCashOutPost && gameState.phase === 'marketplace'
-                 ? 'bg-white text-black hover:bg-black hover:text-white border-white'
-                 : 'bg-transparent text-white border-white cursor-not-allowed'}"
+                 ? 'bg-black text-white border-white hover:bg-white hover:text-black'
+                 : 'bg-black text-gray-500 border-gray-500 cursor-not-allowed'}"
       >
         COLLECT
       </button>
@@ -127,8 +127,8 @@
         disabled={!canProceed || gameState.phase !== 'marketplace'}
         class="py-2 px-3 rounded text-sm font-medium transition-colors border
                {canProceed && gameState.phase === 'marketplace'
-                 ? 'bg-white text-black hover:bg-black hover:text-white border-white' 
-                 : 'bg-transparent text-white border-white cursor-not-allowed'}"
+                 ? 'bg-black text-white border-white hover:bg-white hover:text-black' 
+                 : 'bg-black text-gray-500 border-gray-500 cursor-not-allowed'}"
       >
         NEXT LEVEL
       </button>
@@ -138,8 +138,8 @@
         disabled={gameState.phase !== 'gameover' && gameState.phase !== 'victory'}
         class="py-2 px-3 rounded text-sm font-medium transition-colors border
                {gameState.phase === 'gameover' || gameState.phase === 'victory'
-                 ? 'bg-white text-black hover:bg-black hover:text-white border-white'
-                 : 'bg-transparent text-white border-white cursor-not-allowed'}"
+                 ? 'bg-black text-white border-white hover:bg-white hover:text-black'
+                 : 'bg-black text-gray-500 border-gray-500 cursor-not-allowed'}"
       >
         MAIN MENU
       </button>

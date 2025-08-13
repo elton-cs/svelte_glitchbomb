@@ -96,10 +96,10 @@
     <button 
       onclick={handlePullOrb}
       disabled={!canPullOrb}
-      class="w-full py-2 px-4 rounded font-medium transition-colors
+      class="w-full py-2 px-4 rounded font-medium transition-colors border
              {canPullOrb 
-               ? 'bg-blue-600 text-white hover:bg-blue-700' 
-               : 'bg-gray-300 text-gray-500 cursor-not-allowed'}"
+               ? 'bg-black text-white border-white hover:bg-white hover:text-black' 
+               : 'bg-black text-gray-500 border-gray-500 cursor-not-allowed'}"
     >
       {canPullOrb ? 'PULL ORB' : 'CANNOT PULL ORB'}
     </button>
