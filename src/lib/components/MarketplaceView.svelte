@@ -174,8 +174,8 @@
       for (let i = 0; i < 3; i++) {
         placeholders.push({
           id: `placeholder_common_${i}`,
-          name: 'SHOP CLOSED',
-          description: 'Complete level to open shop',
+          name: '',
+          description: '',
           cost: 0,
           baseCost: 0,
           purchaseCount: 0,
@@ -192,8 +192,8 @@
       for (let i = 0; i < 2; i++) {
         placeholders.push({
           id: `placeholder_rare_${i}`,
-          name: 'SHOP CLOSED',
-          description: 'Complete level to open shop',
+          name: '',
+          description: '',
           cost: 0,
           baseCost: 0,
           purchaseCount: 0,
@@ -209,8 +209,8 @@
       // 1 cosmic placeholder
       placeholders.push({
         id: 'placeholder_cosmic_0',
-        name: 'SHOP CLOSED',
-        description: 'Complete level to open shop',
+        name: '',
+        description: '',
         cost: 0,
         baseCost: 0,
         purchaseCount: 0,
@@ -249,23 +249,28 @@
       >
         <div class="text-center w-full">
           {#if item.icon}
-            <div class="text-2xl mb-1 {item.color}">{item.icon}</div>
-          {/if}
-          <div class="font-medium uppercase {item.color}">{item.name}</div>
-          <div class="text-xs opacity-75 {item.color}">{item.description}</div>
-          {#if item.available && item.cost > 0}
-            <div class="text-xs opacity-90">
-              {item.cost} CHEDDAH
-              {#if item.purchaseCount > 0}
-                <div class="text-xs opacity-70">
-                  (was {item.baseCost}, bought {item.purchaseCount}x)
-                </div>
-              {/if}
-            </div>
-          {:else if !item.available && item.cost === 0}
-            <div class="text-xs opacity-60 {item.color}">SHOP CLOSED</div>
-          {:else if !item.available}
-            <div class="text-xs opacity-60">LOCKED</div>
+            <div class="text-3xl {item.color}">{item.icon}</div>
+          {:else}
+            {#if item.name}
+              <div class="font-medium uppercase {item.color}">{item.name}</div>
+            {/if}
+            {#if item.description}
+              <div class="text-xs opacity-75 {item.color}">{item.description}</div>
+            {/if}
+            {#if item.available && item.cost > 0}
+              <div class="text-xs opacity-90">
+                {item.cost} CHEDDAH
+                {#if item.purchaseCount > 0}
+                  <div class="text-xs opacity-70">
+                    (was {item.baseCost}, bought {item.purchaseCount}x)
+                  </div>
+                {/if}
+              </div>
+            {:else if !item.available && item.cost === 0}
+              <div class="text-xs opacity-60 {item.color}">CLOSED</div>
+            {:else if !item.available}
+              <div class="text-xs opacity-60">LOCKED</div>
+            {/if}
           {/if}
         </div>
       </button>
