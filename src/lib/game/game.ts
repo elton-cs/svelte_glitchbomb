@@ -17,7 +17,7 @@ import {
 } from './levels.js';
 import { GAME_CONFIG } from './constants.js';
 import type { OrbType } from './types.js';
-import { getShopItem, getAvailableShopItems } from './shopItems.js';
+import { getShopItem, getAvailableShopItemsFromDeck, findDeckItem, updateDeckItemPrice } from './shopItems.js';
 
 function applyPointsWithMultiplier(gameState: GameState, basePoints: number): void {
   const multipliedPoints = Math.floor(basePoints * gameState.playerStats.levelMultiplier);
@@ -140,7 +140,7 @@ export function completeLevel(gameState: GameState): void {
   } else {
     gameState.phase = 'marketplace';
     gameState.marketplace.available = true;
-    gameState.marketplace.currentShopItems = getAvailableShopItems(gameState.currentLevel);
+    gameState.marketplace.currentShopItems = getAvailableShopItemsFromDeck(gameState.shopDeck, gameState.currentLevel);
     // Reset consumed orbs so players can see their full collection in marketplace
     resetConsumedOrbs(gameState.orbBag);
   }
@@ -176,7 +176,7 @@ export function enterMarketplace(gameState: GameState): void {
   if (gameState.levelCompleted) {
     gameState.phase = 'marketplace';
     gameState.marketplace.available = true;
-    gameState.marketplace.currentShopItems = getAvailableShopItems(gameState.currentLevel);
+    gameState.marketplace.currentShopItems = getAvailableShopItemsFromDeck(gameState.shopDeck, gameState.currentLevel);
   }
 }
 
@@ -208,20 +208,25 @@ export function purchaseShopItem(gameState: GameState, shopItemId: string, quant
     return false;
   }
 
-  const shopItem = getShopItem(shopItemId);
+  const deckItem = findDeckItem(gameState.shopDeck, shopItemId);
   
-  if (!shopItem) {
+  if (!deckItem) {
     return false;
   }
 
-  const totalCost = shopItem.cost * quantity;
+  const totalCost = deckItem.currentCost * quantity;
   
   if (gameState.playerStats.cheddah < totalCost) {
     return false;
   }
 
   gameState.playerStats.cheddah -= totalCost;
-  addOrbsToBag(gameState.orbBag, shopItem.type, quantity, shopItem.amount);
+  addOrbsToBag(gameState.orbBag, deckItem.type, quantity, deckItem.amount);
+  
+  // Update deck item price for future purchases
+  for (let i = 0; i < quantity; i++) {
+    updateDeckItemPrice(deckItem);
+  }
   
   return true;
 }

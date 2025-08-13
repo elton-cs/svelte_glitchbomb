@@ -150,12 +150,14 @@
         id: shopItem.id,
         name: shopItem.name,
         description: shopItem.description,
-        cost: shopItem.cost,
+        cost: shopItem.currentCost,
+        baseCost: shopItem.baseCost,
+        purchaseCount: shopItem.purchaseCount,
         icon: '',
         color: tierColor,
         borderColor: tierBorder,
         available: true,
-        canPurchase: gameState.playerStats.cheddah >= shopItem.cost,
+        canPurchase: gameState.playerStats.cheddah >= shopItem.currentCost,
         isShopItem: true
       };
     });
@@ -190,7 +192,14 @@
           <div class="font-medium uppercase">{item.name}</div>
           <div class="text-xs opacity-75">{item.description}</div>
           {#if item.available && item.cost > 0}
-            <div class="text-xs opacity-90">{item.cost} CHEDDAH</div>
+            <div class="text-xs opacity-90">
+              {item.cost} CHEDDAH
+              {#if item.purchaseCount > 0}
+                <div class="text-xs opacity-70">
+                  (was {item.baseCost}, bought {item.purchaseCount}x)
+                </div>
+              {/if}
+            </div>
           {:else if !item.available}
             <div class="text-xs opacity-60">LOCKED</div>
           {/if}

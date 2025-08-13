@@ -1,6 +1,7 @@
 import type { GameState, OrbBag, PlayerStats, MarketplaceState } from './types.js';
 import { GAME_CONFIG } from './constants.js';
 import { createInitialBag } from './orbs.js';
+import { initializeShopDeck } from './shopItems.js';
 
 // LocalStorage utilities for moonrocks persistence
 const MOONROCKS_STORAGE_KEY = 'glitchbomb_moonrocks';
@@ -59,6 +60,7 @@ export function createInitialGameState(moonrocks: number = loadMoonrocks()): Gam
     playerStats: createInitialPlayerStats(moonrocks),
     orbBag: createInitialOrbBag(),
     marketplace: createInitialMarketplaceState(),
+    shopDeck: initializeShopDeck(),
     gameStarted: false,
     levelCompleted: false,
   };

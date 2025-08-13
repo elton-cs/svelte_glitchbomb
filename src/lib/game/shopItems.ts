@@ -1,4 +1,4 @@
-import type { ShopItem } from './types.js';
+import type { ShopItem, ShopDeck, ShopDeckItem } from './types.js';
 
 // Common tier - basic amounts, affordable prices
 export const COMMON_SHOP_ITEMS: ShopItem[] = [
@@ -185,4 +185,80 @@ export function getAvailableShopItems(level: number): ShopItem[] {
 
 export function getShopItem(id: string): ShopItem | undefined {
   return SHOP_ITEMS[id];
+}
+
+// ShopDeck Management Functions
+
+/**
+ * Calculate dynamic price based on purchase count with 20% increase per purchase
+ */
+export function calculateDynamicPrice(baseCost: number, purchaseCount: number): number {
+  return Math.ceil(baseCost * Math.pow(1.2, purchaseCount));
+}
+
+/**
+ * Convert a ShopItem to ShopDeckItem with initial pricing
+ */
+function createShopDeckItem(shopItem: ShopItem): ShopDeckItem {
+  return {
+    ...shopItem,
+    baseCost: shopItem.cost,
+    currentCost: shopItem.cost,
+    purchaseCount: 0
+  };
+}
+
+/**
+ * Initialize a complete ShopDeck from static item arrays
+ */
+export function initializeShopDeck(): ShopDeck {
+  return {
+    common: COMMON_SHOP_ITEMS.map(createShopDeckItem),
+    rare: RARE_SHOP_ITEMS.map(createShopDeckItem),
+    cosmic: COSMIC_SHOP_ITEMS.map(createShopDeckItem)
+  };
+}
+
+/**
+ * Find a deck item by ID across all tiers
+ */
+export function findDeckItem(shopDeck: ShopDeck, itemId: string): ShopDeckItem | undefined {
+  const allItems = [...shopDeck.common, ...shopDeck.rare, ...shopDeck.cosmic];
+  return allItems.find(item => item.id === itemId);
+}
+
+/**
+ * Update deck item price after purchase
+ */
+export function updateDeckItemPrice(deckItem: ShopDeckItem): void {
+  deckItem.purchaseCount += 1;
+  deckItem.currentCost = calculateDynamicPrice(deckItem.baseCost, deckItem.purchaseCount);
+}
+
+/**
+ * Get available shop items from deck (replaces old function)
+ */
+export function getAvailableShopItemsFromDeck(shopDeck: ShopDeck, level: number): ShopDeckItem[] {
+  const availableTiers = SHOP_TIER_AVAILABILITY[level] || SHOP_TIER_AVAILABILITY[1];
+  const items: ShopDeckItem[] = [];
+  
+  // Always get 3 common items
+  if (availableTiers.includes('common')) {
+    const shuffledCommon = shuffleArray(shopDeck.common);
+    items.push(...shuffledCommon.slice(0, 3));
+  }
+  
+  // Always get 2 rare items
+  if (availableTiers.includes('rare')) {
+    const shuffledRare = shuffleArray(shopDeck.rare);
+    items.push(...shuffledRare.slice(0, 2));
+  }
+  
+  // Always get 1 cosmic item
+  if (availableTiers.includes('cosmic')) {
+    const shuffledCosmic = shuffleArray(shopDeck.cosmic);
+    items.push(...shuffledCosmic.slice(0, 1));
+  }
+  
+  return items;
 }

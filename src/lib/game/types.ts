@@ -53,7 +53,7 @@ export interface MarketplaceState {
   available: boolean;
   healthOrbCost: number;
   pointOrbCost: number;
-  currentShopItems: ShopItem[];
+  currentShopItems: ShopDeckItem[];
 }
 
 export interface GameState {
@@ -62,6 +62,7 @@ export interface GameState {
   playerStats: PlayerStats;
   orbBag: OrbBag;
   marketplace: MarketplaceState;
+  shopDeck: ShopDeck;
   gameStarted: boolean;
   levelCompleted: boolean;
 }
@@ -71,6 +72,18 @@ export interface ShopItem extends Orb {
   name: string;
   description: string;
   cost: number;
+}
+
+export interface ShopDeckItem extends ShopItem {
+  baseCost: number;      // Original cost (never changes)
+  currentCost: number;   // Current price after increases
+  purchaseCount: number; // Total times purchased this game
+}
+
+export interface ShopDeck {
+  common: ShopDeckItem[];
+  rare: ShopDeckItem[];
+  cosmic: ShopDeckItem[];
 }
 
 export interface GameConfig {
