@@ -80,8 +80,8 @@ export const RARE_SHOP_ITEMS: ShopItem[] = [
   },
   {
     id: 'rare_multiplier_next_point',
-    name: '+1X NEXT POINT ORB',
-    description: '+1x your next Points orb',
+    name: '+1.0X MULTIPLIER',
+    description: '+1.0x mult',
     type: 'multiplier',
     amount: 1.0,
     cost: 14
