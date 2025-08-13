@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { purchaseOrb } from '../game/game.js';
+  import { purchaseOrb, purchaseShopItem } from '../game/game.js';
   import type { GameState } from '../game/types.js';
 
   interface Props {
@@ -16,6 +16,10 @@
 
   function handleSinglePurchase(orbType: 'health' | 'point') {
     purchaseOrb(gameState, orbType, 1);
+  }
+
+  function handleShopItemPurchase(shopItemId: string) {
+    purchaseShopItem(gameState, shopItemId, 1);
   }
 
   function handleMouseDown(event: MouseEvent, orbType: 'health' | 'point') {
@@ -118,126 +122,177 @@
     holdProgress[orbType] = 0;
   }
 
-  const canPurchaseHealth = $derived(gameState.playerStats.cheddah >= gameState.marketplace.healthOrbCost);
-  const canPurchasePoint = $derived(gameState.playerStats.cheddah >= gameState.marketplace.pointOrbCost);
-
-  // Market items - 2 available, 4 locked placeholders
-  const marketItems = $derived([
-    {
-      id: 'health',
-      name: 'HEALTH',
-      description: '+1 HP',
-      cost: gameState.marketplace.healthOrbCost,
-      icon: '',
-      color: 'text-red-400',
-      borderColor: 'border-red-400 hover:border-red-500',
-      available: true,
-      canPurchase: canPurchaseHealth
-    },
-    {
-      id: 'point',
-      name: 'POINT',
-      description: '+5 PTS',
-      cost: gameState.marketplace.pointOrbCost,
-      icon: '',
-      color: 'text-white',
-      borderColor: 'border-white hover:border-gray-300',
-      available: true,
-      canPurchase: canPurchasePoint
-    },
-    {
-      id: 'locked1',
-      name: 'LOCKED',
-      description: '???',
-      cost: 0,
-      icon: '',
-      color: 'text-gray-600',
-      bgColor: 'bg-gray-900',
-      available: false,
-      canPurchase: false
-    },
-    {
-      id: 'locked2',
-      name: 'LOCKED',
-      description: '???',
-      cost: 0,
-      icon: '',
-      color: 'text-gray-600',
-      bgColor: 'bg-gray-900',
-      available: false,
-      canPurchase: false
-    },
-    {
-      id: 'locked3',
-      name: 'LOCKED',
-      description: '???',
-      cost: 0,
-      icon: '',
-      color: 'text-gray-600',
-      bgColor: 'bg-gray-900',
-      available: false,
-      canPurchase: false
-    },
-    {
-      id: 'locked4',
-      name: 'LOCKED',
-      description: '???',
-      cost: 0,
-      icon: '',
-      color: 'text-gray-600',
-      bgColor: 'bg-gray-900',
-      available: false,
-      canPurchase: false
+  const shopInventory = $derived.by(() => {
+    const isShopOpen = gameState.phase === 'marketplace' && gameState.marketplace.available;
+    
+    if (isShopOpen) {
+      // Shop is open - show actual items
+      const availableShopItems = gameState.marketplace.currentShopItems;
+      return availableShopItems.map(shopItem => {
+        // Determine tier and colors based on item ID
+        let tierColor = 'text-white';
+        let tierBorder = 'border-white';
+        
+        if (shopItem.id.startsWith('common_')) {
+          tierColor = 'text-white';
+          tierBorder = 'border-gray-400';
+        } else if (shopItem.id.startsWith('rare_')) {
+          tierColor = 'text-white';
+          tierBorder = 'border-blue-500';
+        } else if (shopItem.id.startsWith('cosmic_')) {
+          tierColor = 'text-white';
+          tierBorder = 'border-purple-500';
+        }
+        
+        // Keep red color for health orbs and preserve tier borders
+        if (shopItem.type === 'health') {
+          tierColor = 'text-white';
+          // Keep the tier-based border color, don't override
+        }
+        
+        return {
+          id: shopItem.id,
+          name: shopItem.name,
+          description: shopItem.description,
+          cost: shopItem.currentCost,
+          baseCost: shopItem.baseCost,
+          purchaseCount: shopItem.purchaseCount,
+          icon: '',
+          color: tierColor,
+          borderColor: tierBorder,
+          available: true,
+          canPurchase: gameState.playerStats.cheddah >= shopItem.currentCost,
+          isShopItem: true
+        };
+      });
+    } else {
+      // Shop is closed - show 6 placeholder items with X marks
+      // Create placeholders that match expected tier distribution (3 common, 2 rare, 1 cosmic)
+      const placeholders = [];
+      
+      // 3 common placeholders
+      for (let i = 0; i < 3; i++) {
+        placeholders.push({
+          id: `placeholder_common_${i}`,
+          name: '',
+          description: '',
+          cost: 0,
+          baseCost: 0,
+          purchaseCount: 0,
+          icon: '✗',
+          color: 'text-gray-500',
+          borderColor: 'border-gray-400',
+          available: false,
+          canPurchase: false,
+          isShopItem: false
+        });
+      }
+      
+      // 2 rare placeholders
+      for (let i = 0; i < 2; i++) {
+        placeholders.push({
+          id: `placeholder_rare_${i}`,
+          name: '',
+          description: '',
+          cost: 0,
+          baseCost: 0,
+          purchaseCount: 0,
+          icon: '✗',
+          color: 'text-gray-500',
+          borderColor: 'border-blue-500',
+          available: false,
+          canPurchase: false,
+          isShopItem: false
+        });
+      }
+      
+      // 1 cosmic placeholder
+      placeholders.push({
+        id: 'placeholder_cosmic_0',
+        name: '',
+        description: '',
+        cost: 0,
+        baseCost: 0,
+        purchaseCount: 0,
+        icon: '✗',
+        color: 'text-gray-500',
+        borderColor: 'border-purple-500',
+        available: false,
+        canPurchase: false,
+        isShopItem: false
+      });
+      
+      return placeholders;
     }
-  ]);
+  });
 </script>
 
-{#if gameState.phase === 'marketplace' && gameState.marketplace.available}
-  <div class="bg-black p-3 rounded-lg shadow-sm border border-white">
-    <div class="flex justify-between items-center mb-3">
-      <h2 class="text-sm font-bold text-white">MARKETPLACE</h2>
-      <div class="text-right">
-        <div class="text-lg font-bold text-white">{gameState.playerStats.cheddah}</div>
-        <div class="text-xs text-gray-400">CHEDDAH</div>
-      </div>
+<div class="bg-black p-3 rounded-lg shadow-sm border border-white h-full flex flex-col {gameState.phase === 'marketplace' && gameState.marketplace.available ? '' : 'opacity-60'}">
+  <div class="flex justify-between items-center mb-3">
+    <h2 class="text-sm font-bold text-white">SHOP {gameState.phase === 'marketplace' && gameState.marketplace.available ? '' : '(CLOSED)'}</h2>
+    <div class="text-right">
+      <div class="text-lg font-bold text-white">{gameState.playerStats.cheddah}</div>
+      <div class="text-xs text-white">CHEDDAH</div>
     </div>
-    
-    <!-- 2x3 Grid Layout -->
-    <div class="grid grid-cols-2 gap-2">
-      {#each marketItems as item}
-        <button
-          disabled={!item.available || !item.canPurchase}
-          onmousedown={item.available ? (e) => handleMouseDown(e, item.id as 'health' | 'point') : undefined}
-          onmouseup={item.available ? () => handleMouseUp(item.id as 'health' | 'point') : undefined}
-          onmouseleave={item.available ? () => handleMouseLeave(item.id as 'health' | 'point') : undefined}
-          class="p-2 rounded font-medium transition-colors select-none flex items-center gap-2 text-left border-2
-                 {item.available && item.canPurchase
-                   ? `${item.borderColor} bg-black active:scale-95` 
-                   : 'bg-gray-900 text-gray-600 cursor-not-allowed border-gray-700'}"
-        >
-          {#if item.icon}<div class="text-lg {item.color}">{item.icon}</div>{/if}
-          <div class="flex-1 min-w-0">
-            <div class="text-sm font-medium truncate">{item.name}</div>
-            <div class="text-xs opacity-75 truncate">{item.description}</div>
-            {#if item.available}
-              <div class="text-xs opacity-90">{item.cost} cheddah</div>
+  </div>
+  
+  <!-- 2x3 Shop Grid -->
+  <div class="grid grid-cols-2 gap-2 flex-1">
+    {#each shopInventory as item}
+      <button
+        disabled={!item.available || !item.canPurchase || gameState.phase !== 'marketplace' || !gameState.marketplace.available}
+        onclick={item.available && item.canPurchase && gameState.phase === 'marketplace' && gameState.marketplace.available && item.isShopItem ? () => handleShopItemPurchase(item.id) : undefined}
+        class="py-2 px-3 rounded text-sm font-medium transition-colors border {item.borderColor}
+               {item.available && item.canPurchase && gameState.phase === 'marketplace' && gameState.marketplace.available
+                 ? 'bg-black text-white hover:bg-white hover:text-black' 
+                 : 'bg-black text-gray-500 cursor-not-allowed'}"
+      >
+        <div class="text-center w-full">
+          {#if item.icon}
+            <!-- Placeholder X mark - always gray -->
+            <div class="text-3xl {item.color}">{item.icon}</div>
+          {:else}
+            <!-- Actual shop item - no color classes so hover works -->
+            {#if item.name}
+              <div class="font-medium uppercase">{item.name}</div>
             {/if}
-          </div>
-        </button>
-      {/each}
-    </div>
-    
-    <div class="mt-3 text-xs text-gray-400 text-center">
-      CLICK TO BUY ONE • HOLD 1S TO BUY MAX
-    </div>
-    
-    {#if gameState.playerStats.cheddah === 0}
-      <p class="text-xs text-gray-400 text-center mt-2">
-        NO CHEDDAH REMAINING
-      </p>
+            {#if item.description}
+              <div class="text-xs opacity-75">{item.description}</div>
+            {/if}
+            {#if item.available && item.cost > 0}
+              <div class="text-xs opacity-90">
+                {item.cost} CHEDDAH
+                {#if item.purchaseCount > 0}
+                  <div class="text-xs opacity-70">
+                    (was {item.baseCost}, bought {item.purchaseCount}x)
+                  </div>
+                {/if}
+              </div>
+            {:else if !item.available && item.cost === 0}
+              <div class="text-xs opacity-60 {item.color}">CLOSED</div>
+            {:else if !item.available}
+              <div class="text-xs opacity-60">LOCKED</div>
+            {/if}
+          {/if}
+        </div>
+      </button>
+    {/each}
+  </div>
+  
+  <div class="mt-3 text-xs text-center text-white">
+    {#if gameState.phase === 'marketplace' && gameState.marketplace.available}
+      CLICK TO BUY
+    {:else}
+      SHOP CLOSED
     {/if}
   </div>
-{/if}
+  
+  {#if gameState.playerStats.cheddah === 0 && gameState.phase === 'marketplace' && gameState.marketplace.available}
+    <p class="text-xs text-white text-center mt-2">
+      NO CHEDDAH TO SPEND
+    </p>
+  {/if}
+</div>
 
 <!-- Circular Progress Indicator -->
 {#if activeHold}

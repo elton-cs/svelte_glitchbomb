@@ -1,4 +1,4 @@
-export type OrbType = 'health' | 'point' | 'bomb' | 'points_per_anyorb' | 'points_per_bombpulled' | 'multiplier';
+export type OrbType = 'health' | 'point' | 'bomb' | 'points_per_anyorb' | 'points_per_bombpulled' | 'multiplier' | 'cheddah' | 'moonrocks';
 
 export type GamePhase = 'menu' | 'level' | 'marketplace' | 'gameover' | 'victory';
 
@@ -32,6 +32,14 @@ export interface OrbBag {
     available: Orb[];
     total: Orb[];
   };
+  cheddah: {
+    available: Orb[];
+    total: Orb[];
+  };
+  moonrocks: {
+    available: Orb[];
+    total: Orb[];
+  };
 }
 
 export interface PlayerStats {
@@ -53,6 +61,7 @@ export interface MarketplaceState {
   available: boolean;
   healthOrbCost: number;
   pointOrbCost: number;
+  currentShopItems: ShopDeckItem[];
 }
 
 export interface GameState {
@@ -61,9 +70,38 @@ export interface GameState {
   playerStats: PlayerStats;
   orbBag: OrbBag;
   marketplace: MarketplaceState;
+  shopDeck: ShopDeck;
+  gameLog: GameLog;
   gameStarted: boolean;
   levelCompleted: boolean;
 }
+
+export interface ShopItem extends Orb {
+  id: string;
+  name: string;
+  description: string;
+  cost: number;
+}
+
+export interface ShopDeckItem extends ShopItem {
+  baseCost: number;      // Original cost (never changes)
+  currentCost: number;   // Current price after increases
+  purchaseCount: number; // Total times purchased this game
+}
+
+export interface ShopDeck {
+  common: ShopDeckItem[];
+  rare: ShopDeckItem[];
+  cosmic: ShopDeckItem[];
+}
+
+export interface GameLogEntry {
+  timestamp: string;
+  action: string;
+  details?: string;
+}
+
+export type GameLog = GameLogEntry[];
 
 export interface GameConfig {
   initialMoonrocks: number;
@@ -80,6 +118,8 @@ export interface GameConfig {
     points_per_anyorb: number;
     points_per_bombpulled: number;
     multiplier: number;
+    cheddah: number;
+    moonrocks: number;
   };
   maxHealth: number;
   startingOrbs: {
@@ -89,5 +129,7 @@ export interface GameConfig {
     points_per_anyorb: number;
     points_per_bombpulled: number;
     multiplier: number;
+    cheddah: number;
+    moonrocks: number;
   };
 }

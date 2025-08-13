@@ -17,6 +17,8 @@ import {
 } from './levels.js';
 import { GAME_CONFIG } from './constants.js';
 import type { OrbType } from './types.js';
+import { getShopItem, getAvailableShopItemsFromDeck, findDeckItem, updateDeckItemPrice, initializeShopDeck } from './shopItems.js';
+import { addLogEntry, clearGameLog } from './state.js';
 
 function applyPointsWithMultiplier(gameState: GameState, basePoints: number): void {
   const multipliedPoints = Math.floor(basePoints * gameState.playerStats.levelMultiplier);
@@ -25,7 +27,17 @@ function applyPointsWithMultiplier(gameState: GameState, basePoints: number): vo
 
 export function startNewGame(gameState: GameState): boolean {
   try {
-    return enterLevel(gameState, 1);
+    // Clear game log for new session
+    clearGameLog(gameState);
+    
+    // Reset shop deck to initial prices (new game session)
+    gameState.shopDeck = initializeShopDeck();
+    
+    const success = enterLevel(gameState, 1);
+    if (success) {
+      addLogEntry(gameState, 'Game started');
+    }
+    return success;
   } catch (error) {
     console.error('Error starting new game:', error);
     return false;
@@ -90,30 +102,45 @@ export function pullOrb(gameState: GameState): boolean {
           gameState.playerStats.health + orb.amount,
           GAME_CONFIG.maxHealth
         );
+        addLogEntry(gameState, `Pulled health orb (+${orb.amount} HP)`);
         break;
       case 'point':
         applyPointsWithMultiplier(gameState, orb.amount);
+        addLogEntry(gameState, `Pulled point orb (+${orb.amount} points)`);
         break;
       case 'bomb':
         gameState.playerStats.health = Math.max(0, gameState.playerStats.health - orb.amount);
         gameState.playerStats.bombsPulledThisLevel += 1;
+        addLogEntry(gameState, `Pulled bomb orb (-${orb.amount} HP)`);
         break;
       case 'points_per_anyorb':
         const pointsPerAnyOrbPoints = calculatePointsPerAnyOrbPoints(gameState.orbBag, orb.amount);
         applyPointsWithMultiplier(gameState, pointsPerAnyOrbPoints);
+        addLogEntry(gameState, `Pulled combo orb (+${pointsPerAnyOrbPoints} points from ${orb.amount} per orb)`);
         break;
       case 'points_per_bombpulled':
         const bombPoints = gameState.playerStats.bombsPulledThisLevel * orb.amount;
         applyPointsWithMultiplier(gameState, bombPoints);
+        addLogEntry(gameState, `Pulled danger orb (+${bombPoints} points from ${orb.amount} per bomb)`);
         break;
       case 'multiplier':
         gameState.playerStats.levelMultiplier += orb.amount;
+        addLogEntry(gameState, `Pulled multiplier orb (+${orb.amount}x boost)`);
+        break;
+      case 'cheddah':
+        gameState.playerStats.cheddah += orb.amount;
+        addLogEntry(gameState, `Pulled cheddah orb (+${orb.amount} cheddah)`);
+        break;
+      case 'moonrocks':
+        gameState.playerStats.moonrocks += orb.amount;
+        addLogEntry(gameState, `Pulled moonrocks orb (+${orb.amount} moonrocks)`);
         break;
     }
 
     if (checkGameOver(gameState.playerStats.health, gameState.orbBag)) {
       if (!checkLevelComplete(gameState.playerStats.points, gameState.currentLevel)) {
         gameState.phase = 'gameover';
+        addLogEntry(gameState, 'Game over! No health or orbs remaining');
         return true;
       }
     }
@@ -135,10 +162,14 @@ export function completeLevel(gameState: GameState): void {
 
   if (isLastLevel(gameState.currentLevel)) {
     gameState.phase = 'victory';
-    gameState.playerStats.moonrocks += calculateVictoryReward(gameState.playerStats.points);
+    const victoryReward = calculateVictoryReward(gameState.playerStats.points);
+    gameState.playerStats.moonrocks += victoryReward;
+    addLogEntry(gameState, `Victory! Level ${gameState.currentLevel} completed (+${victoryReward} moonrocks)`);
   } else {
     gameState.phase = 'marketplace';
     gameState.marketplace.available = true;
+    gameState.marketplace.currentShopItems = getAvailableShopItemsFromDeck(gameState.shopDeck, gameState.currentLevel);
+    addLogEntry(gameState, `Level ${gameState.currentLevel} completed! (+${gameState.playerStats.cheddah} cheddah)`);
     // Reset consumed orbs so players can see their full collection in marketplace
     resetConsumedOrbs(gameState.orbBag);
   }
@@ -152,8 +183,13 @@ export function cashOutMidLevel(gameState: GameState): number {
   gameState.phase = 'menu';
   gameState.gameStarted = false;
   
+  addLogEntry(gameState, `Cashed out mid-level: ${gameState.playerStats.points} points for ${cashOut} moonrocks`);
+  
   // Reset orb bag to initial state (lose all purchased orbs)
   gameState.orbBag = createInitialBag();
+  
+  // Reset shop deck to initial prices (new game session)
+  gameState.shopDeck = initializeShopDeck();
   
   return cashOut;
 }
@@ -164,8 +200,13 @@ export function cashOutPostLevel(gameState: GameState): number {
   gameState.phase = 'menu';
   gameState.gameStarted = false;
   
+  addLogEntry(gameState, `Cashed out post-level: ${points} points for ${points} moonrocks`);
+  
   // Reset orb bag to initial state (lose all purchased orbs)
   gameState.orbBag = createInitialBag();
+  
+  // Reset shop deck to initial prices (new game session)
+  gameState.shopDeck = initializeShopDeck();
   
   return points;
 }
@@ -174,6 +215,7 @@ export function enterMarketplace(gameState: GameState): void {
   if (gameState.levelCompleted) {
     gameState.phase = 'marketplace';
     gameState.marketplace.available = true;
+    gameState.marketplace.currentShopItems = getAvailableShopItemsFromDeck(gameState.shopDeck, gameState.currentLevel);
   }
 }
 
@@ -200,19 +242,54 @@ export function purchaseOrb(gameState: GameState, type: OrbType, quantity: numbe
   return true;
 }
 
+export function purchaseShopItem(gameState: GameState, shopItemId: string, quantity: number = 1): boolean {
+  if (gameState.phase !== 'marketplace' || !gameState.marketplace.available) {
+    return false;
+  }
+
+  const deckItem = findDeckItem(gameState.shopDeck, shopItemId);
+  
+  if (!deckItem) {
+    return false;
+  }
+
+  const totalCost = deckItem.currentCost * quantity;
+  
+  if (gameState.playerStats.cheddah < totalCost) {
+    return false;
+  }
+
+  gameState.playerStats.cheddah -= totalCost;
+  addOrbsToBag(gameState.orbBag, deckItem.type, quantity, deckItem.amount);
+  
+  addLogEntry(gameState, `Bought ${deckItem.name} for ${totalCost} cheddah`);
+  
+  // Update deck item price for future purchases
+  for (let i = 0; i < quantity; i++) {
+    updateDeckItemPrice(deckItem);
+  }
+  
+  return true;
+}
+
 export function proceedToNextLevel(gameState: GameState): boolean {
   if (gameState.phase !== 'marketplace') {
     return false;
   }
 
   const nextLevel = getNextLevel(gameState.currentLevel);
+  const levelCost = getLevelEntryCost(nextLevel);
   gameState.playerStats.cheddah = 0;
   gameState.marketplace.available = false;
+  
+  addLogEntry(gameState, `Advanced to level ${nextLevel} (-${levelCost} moonrocks)`);
   
   return enterLevel(gameState, nextLevel);
 }
 
 export function returnToMenu(gameState: GameState): void {
+  addLogEntry(gameState, 'Returned to main menu');
+  
   gameState.phase = 'menu';
   gameState.gameStarted = false;
   gameState.levelCompleted = false;
@@ -220,4 +297,7 @@ export function returnToMenu(gameState: GameState): void {
   
   // Reset orb bag to initial state (lose all purchased orbs)
   gameState.orbBag = createInitialBag();
+  
+  // Reset shop deck to initial prices (new game session)
+  gameState.shopDeck = initializeShopDeck();
 }

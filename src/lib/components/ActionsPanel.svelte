@@ -64,105 +64,114 @@
   const canPullOrb = $derived(gameState.phase === 'level' && totalAvailableOrbs > 0);
 </script>
 
-<div class="bg-black p-4 rounded border border-white">
+<div class="bg-black p-3 rounded-lg shadow-sm border border-white h-full flex flex-col">
   <h2 class="text-sm font-bold mb-3 text-white">ACTIONS</h2>
   
-  <div class="space-y-2">
-    {#if gameState.phase === 'menu'}
+  <div class="flex-1 flex flex-col space-y-3">
+    <!-- Current Phase Indicator -->
+    <div class="text-center text-xs text-white uppercase tracking-wide">
+      Current Phase: <span class="text-white font-medium">{gameState.phase}</span>
+    </div>
+    
+    <!-- 2x3 Button Grid -->
+    <div class="grid grid-cols-2 gap-2 flex-1">
+      <!-- Row 1: Start Game & Pull Orb -->
       <button 
         onclick={handleStartGame}
-        disabled={!canStartGame}
-        class="w-full py-2 px-4 rounded font-medium transition-colors border
-               {canStartGame 
-                 ? 'bg-white text-black hover:bg-gray-200 border-white' 
-                 : 'bg-transparent text-gray-600 border-gray-600 cursor-not-allowed'}"
+        disabled={!canStartGame || gameState.phase !== 'menu'}
+        class="py-2 px-3 rounded text-sm font-medium transition-colors border
+               {canStartGame && gameState.phase === 'menu'
+                 ? 'bg-black text-white border-white hover:bg-white hover:text-black' 
+                 : 'bg-black text-gray-500 border-gray-500 cursor-not-allowed'}"
       >
-        START GAME (-{getLevelEntryCost(1)} MOONROCKS)
+        START GAME
       </button>
       
-      {#if !canStartGame}
-        <p class="text-sm text-red-400 text-center">
-          NEED {getLevelEntryCost(1)} MOONROCKS TO START
-        </p>
-      {/if}
-    {/if}
-    
-    {#if gameState.phase === 'level'}
       <button 
         onclick={handlePullOrb}
-        disabled={!canPullOrb}
-        class="w-full py-2 px-4 rounded font-medium transition-colors border
-               {canPullOrb 
-                 ? 'bg-white text-black hover:bg-gray-200 border-white' 
-                 : 'bg-transparent text-gray-600 border-gray-600 cursor-not-allowed'}"
+        disabled={!canPullOrb || gameState.phase !== 'level'}
+        class="py-2 px-3 rounded text-sm font-medium transition-colors border
+               {canPullOrb && gameState.phase === 'level'
+                 ? 'bg-black text-white border-white hover:bg-white hover:text-black' 
+                 : 'bg-black text-gray-500 border-gray-500 cursor-not-allowed'}"
       >
-        {canPullOrb ? 'PULL ORB' : 'CANNOT PULL ORB'}
+        PULL ORB
       </button>
       
+      <!-- Row 2: Cash Out Actions -->
       <button 
         onclick={handleCashOutMidLevel}
-        disabled={!canCashOutMid}
-        class="w-full py-2 px-4 rounded font-medium bg-white text-black hover:bg-gray-200 transition-colors border border-white"
+        disabled={!canCashOutMid || gameState.phase !== 'level'}
+        class="py-2 px-3 rounded text-sm font-medium transition-colors border
+               {canCashOutMid && gameState.phase === 'level'
+                 ? 'bg-black text-white border-white hover:bg-white hover:text-black'
+                 : 'bg-black text-gray-500 border-gray-500 cursor-not-allowed'}"
       >
-        CASH OUT ({gameState.playerStats.points} POINTS → MOONROCKS)
+        QUIT LEVEL
       </button>
-    {/if}
-    
-    {#if gameState.phase === 'marketplace'}
+      
       <button 
         onclick={handleCashOutPostLevel}
-        disabled={!canCashOutPost}
-        class="w-full py-2 px-4 rounded font-medium bg-white text-black hover:bg-gray-200 transition-colors border border-white"
+        disabled={!canCashOutPost || gameState.phase !== 'marketplace'}
+        class="py-2 px-3 rounded text-sm font-medium transition-colors border
+               {canCashOutPost && gameState.phase === 'marketplace'
+                 ? 'bg-black text-white border-white hover:bg-white hover:text-black'
+                 : 'bg-black text-gray-500 border-gray-500 cursor-not-allowed'}"
       >
-        CASH OUT ({gameState.playerStats.points} POINTS → MOONROCKS)
+        COLLECT
       </button>
       
-      {#if !isLastLevel(gameState.currentLevel)}
-        <button 
-          onclick={handleProceedToNext}
-          disabled={!canProceed}
-          class="w-full py-2 px-4 rounded font-medium transition-colors border
-                 {canProceed 
-                   ? 'bg-white text-black hover:bg-gray-200 border-white' 
-                   : 'bg-transparent text-gray-600 border-gray-600 cursor-not-allowed'}"
-        >
-          CONTINUE TO LEVEL {getNextLevel(gameState.currentLevel)} (-{nextLevelCost} MOONROCKS)
-        </button>
-        
-        {#if !canProceed}
-          <p class="text-sm text-red-400 text-center">
-            NEED {nextLevelCost} MOONROCKS FOR NEXT LEVEL
-          </p>
-        {/if}
+      <!-- Row 3: Navigation Actions -->
+      <button 
+        onclick={handleProceedToNext}
+        disabled={!canProceed || gameState.phase !== 'marketplace'}
+        class="py-2 px-3 rounded text-sm font-medium transition-colors border
+               {canProceed && gameState.phase === 'marketplace'
+                 ? 'bg-black text-white border-white hover:bg-white hover:text-black' 
+                 : 'bg-black text-gray-500 border-gray-500 cursor-not-allowed'}"
+      >
+        NEXT LEVEL
+      </button>
+      
+      <button 
+        onclick={handleReturnToMenu}
+        disabled={gameState.phase !== 'gameover' && gameState.phase !== 'victory'}
+        class="py-2 px-3 rounded text-sm font-medium transition-colors border
+               {gameState.phase === 'gameover' || gameState.phase === 'victory'
+                 ? 'bg-black text-white border-white hover:bg-white hover:text-black'
+                 : 'bg-black text-gray-500 border-gray-500 cursor-not-allowed'}"
+      >
+        MAIN MENU
+      </button>
+    </div>
+    
+    <!-- Status Messages -->
+    <div class="text-xs text-center space-y-1">
+      {#if gameState.phase === 'menu' && !canStartGame}
+        <p class="text-red-400">NEED {getLevelEntryCost(1)} MOONROCKS TO START</p>
       {/if}
-    {/if}
-    
-    {#if gameState.phase === 'gameover'}
-      <div class="text-center mb-3">
-        <h3 class="text-xl font-bold text-red-400">GAME OVER!</h3>
-        <p class="text-gray-400">BETTER LUCK NEXT TIME</p>
-      </div>
       
-      <button 
-        onclick={handleReturnToMenu}
-        class="w-full py-2 px-4 rounded font-medium bg-white text-black hover:bg-gray-200 transition-colors border border-white"
-      >
-        RETURN TO MENU
-      </button>
-    {/if}
-    
-    {#if gameState.phase === 'victory'}
-      <div class="text-center mb-3">
-        <h3 class="text-xl font-bold text-white">VICTORY!</h3>
-        <p class="text-gray-400">YOU COMPLETED ALL LEVELS!</p>
-      </div>
+      {#if gameState.phase === 'level' && totalAvailableOrbs === 0}
+        <p class="text-red-400">NO ORBS AVAILABLE</p>
+      {/if}
       
-      <button 
-        onclick={handleReturnToMenu}
-        class="w-full py-2 px-4 rounded font-medium bg-white text-black hover:bg-gray-200 transition-colors border border-white"
-      >
-        RETURN TO MENU
-      </button>
-    {/if}
+      {#if gameState.phase === 'marketplace' && !canProceed && !isLastLevel(gameState.currentLevel)}
+        <p class="text-red-400">NEED {nextLevelCost} MOONROCKS FOR NEXT LEVEL</p>
+      {/if}
+      
+      {#if gameState.phase === 'gameover'}
+        <div class="text-center">
+          <p class="text-red-400 font-bold">GAME OVER!</p>
+          <p class="text-gray-400">BETTER LUCK NEXT TIME</p>
+        </div>
+      {/if}
+      
+      {#if gameState.phase === 'victory'}
+        <div class="text-center">
+          <p class="text-white font-bold">VICTORY!</p>
+          <p class="text-gray-400">YOU COMPLETED ALL LEVELS!</p>
+        </div>
+      {/if}
+    </div>
   </div>
 </div>
