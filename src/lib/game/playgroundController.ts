@@ -21,11 +21,7 @@ export function pullNextOrb(state: PlaygroundState): boolean {
     return false;
   }
 
-  // Move to next orb and track pulled orb
-  state.pulledOrbs.push(orb);
-  state.currentOrbIndex++;
-
-  // Apply orb effects (reused from main game logic)
+  // Apply orb effects BEFORE moving to next orb (to match main game logic)
   switch (orb.type) {
     case 'health':
       state.playerStats.health = Math.min(
@@ -44,7 +40,8 @@ export function pullNextOrb(state: PlaygroundState): boolean {
       addPlaygroundLog(state, `Pulled bomb orb (-${orb.amount} HP)`);
       break;
     case 'points_per_anyorb':
-      const remainingOrbs = getRemainingOrbCount(state);
+      // Calculate BEFORE consuming the orb (includes the combo orb itself)
+      const remainingOrbs = getRemainingOrbCount(state) - 1; // -1 for the combo orb itself
       const pointsPerAnyOrbPoints = remainingOrbs * orb.amount;
       applyPointsWithMultiplier(state, pointsPerAnyOrbPoints);
       addPlaygroundLog(state, `Pulled combo orb (+${pointsPerAnyOrbPoints} points from ${orb.amount} per orb)`);
@@ -67,6 +64,10 @@ export function pullNextOrb(state: PlaygroundState): boolean {
       addPlaygroundLog(state, `Pulled moonrocks orb (+${orb.amount} moonrocks)`);
       break;
   }
+
+  // NOW move to next orb and track pulled orb (after effects are applied)
+  state.pulledOrbs.push(orb);
+  state.currentOrbIndex++;
 
   // Check if playground should end (no health or no orbs left)
   if (state.playerStats.health <= 0) {
