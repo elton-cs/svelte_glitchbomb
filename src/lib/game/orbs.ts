@@ -29,11 +29,11 @@ export function createInitialBag(): OrbBag {
   ];
   
   const pointsPerAnyOrbOrbs = [
-    createOrb('points_per_anyorb', 2), // 2 Points Per Any Orb
+    createOrb('points_per_anyorb', 1), // 2 Points Per Any Orb
   ];
   
   const pointsPerBombPulledOrbs = [
-    createOrb('points_per_bombpulled', 3), // 3 Points Per Bomb Pulled
+    createOrb('points_per_bombpulled', 1), // 3 Points Per Bomb Pulled
   ];
   
   const multiplierOrbs = [

@@ -18,9 +18,11 @@
         <!-- Left side: Tabs -->
         <div class="flex space-x-2">
           <button 
-            class="px-4 py-2 rounded font-medium text-sm transition-colors border uppercase tracking-wide bg-black"
-            class:text-white={activeTab === 'game'}
+            class="px-4 py-2 rounded font-medium text-sm transition-colors border uppercase tracking-wide"
+            class:bg-white={activeTab === 'game'}
+            class:text-black={activeTab === 'game'}
             class:border-white={activeTab === 'game'}
+            class:bg-black={activeTab !== 'game'}
             class:text-gray-500={activeTab !== 'game'}
             class:border-gray-500={activeTab !== 'game'}
             class:hover:bg-white={activeTab !== 'game'}
@@ -32,9 +34,11 @@
             <span class="sm:hidden">G</span>
           </button>
           <button 
-            class="px-4 py-2 rounded font-medium text-sm transition-colors border uppercase tracking-wide bg-black"
-            class:text-white={activeTab === 'playground'}
+            class="px-4 py-2 rounded font-medium text-sm transition-colors border uppercase tracking-wide"
+            class:bg-white={activeTab === 'playground'}
+            class:text-black={activeTab === 'playground'}
             class:border-white={activeTab === 'playground'}
+            class:bg-black={activeTab !== 'playground'}
             class:text-gray-500={activeTab !== 'playground'}
             class:border-gray-500={activeTab !== 'playground'}
             class:hover:bg-white={activeTab !== 'playground'}
@@ -56,9 +60,11 @@
         <div class="ml-auto">
           <button 
             onclick={toggleDevMode}
-            class="px-4 py-2 rounded font-medium text-sm transition-colors border uppercase tracking-wide bg-black"
-            class:text-white={devMode}
+            class="px-4 py-2 rounded font-medium text-sm transition-colors border uppercase tracking-wide"
+            class:bg-white={devMode}
+            class:text-black={devMode}
             class:border-white={devMode}
+            class:bg-black={!devMode}
             class:text-gray-500={!devMode}
             class:border-gray-500={!devMode}
             class:hover:bg-white={!devMode}
