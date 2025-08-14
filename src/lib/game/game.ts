@@ -191,6 +191,9 @@ export function cashOutMidLevel(gameState: GameState): number {
   // Reset shop deck to initial prices (new game session)
   gameState.shopDeck = initializeShopDeck();
   
+  // Reset commitment flag
+  gameState.committedToNextLevel = false;
+  
   return cashOut;
 }
 
@@ -207,6 +210,9 @@ export function cashOutPostLevel(gameState: GameState): number {
   
   // Reset shop deck to initial prices (new game session)
   gameState.shopDeck = initializeShopDeck();
+  
+  // Reset commitment flag
+  gameState.committedToNextLevel = false;
   
   return points;
 }
@@ -274,6 +280,8 @@ export function purchaseShopItem(gameState: GameState, shopItemId: string, quant
 
 export function continueToMarketplace(gameState: GameState): void {
   gameState.phase = 'marketplace';
+  gameState.committedToNextLevel = true;
+  addLogEntry(gameState, 'Committed to next level - shopping enabled');
 }
 
 export function proceedToNextLevel(gameState: GameState): boolean {
@@ -285,6 +293,7 @@ export function proceedToNextLevel(gameState: GameState): boolean {
   const levelCost = getLevelEntryCost(nextLevel);
   gameState.playerStats.cheddah = 0;
   gameState.marketplace.available = false;
+  gameState.committedToNextLevel = false; // Reset for next level cycle
   
   addLogEntry(gameState, `Advanced to level ${nextLevel} (-${levelCost} moonrocks)`);
   
@@ -304,4 +313,7 @@ export function returnToMenu(gameState: GameState): void {
   
   // Reset shop deck to initial prices (new game session)
   gameState.shopDeck = initializeShopDeck();
+  
+  // Reset commitment flag
+  gameState.committedToNextLevel = false;
 }

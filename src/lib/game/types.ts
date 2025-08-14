@@ -74,6 +74,7 @@ export interface GameState {
   gameLog: GameLog;
   gameStarted: boolean;
   levelCompleted: boolean;
+  committedToNextLevel: boolean;
 }
 
 export interface ShopItem extends Orb {

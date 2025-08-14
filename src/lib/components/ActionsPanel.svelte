@@ -57,7 +57,7 @@
 
   const canStartGame = $derived(gameState.phase === 'menu' && canAffordLevel(gameState.playerStats.moonrocks, 1));
   const canCashOut = $derived((gameState.phase === 'level' && gameState.gameStarted) || 
-    (gameState.phase === 'marketplace' && gameState.levelCompleted) ||
+    (gameState.phase === 'marketplace' && gameState.levelCompleted && !gameState.committedToNextLevel) ||
     gameState.phase === 'confirmation');
   const canContinue = $derived(gameState.phase === 'confirmation');
   const canProceed = $derived(gameState.phase === 'marketplace' && 
@@ -151,8 +151,12 @@
       <p class="text-red-400">NEED {getLevelEntryCost(1)} MOONROCKS TO START</p>
     {:else if gameState.phase === 'level' && totalAvailableOrbs === 0}
       <p class="text-red-400">NO ORBS AVAILABLE</p>
+    {:else if gameState.phase === 'marketplace' && gameState.committedToNextLevel}
+      <p class="text-white font-bold">COMMITTED TO NEXT LEVEL</p>
     {:else if gameState.phase === 'marketplace' && !canProceed && !isLastLevel(gameState.currentLevel)}
       <p class="text-red-400">NEED {nextLevelCost} MOONROCKS FOR NEXT LEVEL</p>
+    {:else if gameState.phase === 'confirmation'}
+      <p class="text-white font-bold">CHOOSE YOUR PATH</p>
     {:else if gameState.phase === 'gameover'}
       <p class="text-red-400 font-bold">GAME OVER!</p>
     {:else if gameState.phase === 'victory'}
