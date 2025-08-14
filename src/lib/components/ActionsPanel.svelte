@@ -82,7 +82,7 @@
   const midLevelCashOut = $derived(gameState.phase === 'level' ? 
     calculateCashOut(gameState.playerStats.points, getLevelEntryCost(gameState.currentLevel)) : 0);
   
-  const canRestart = $derived(gameState.phase === 'gameover' && gameState.playerStats.moonrocks >= 10);
+  const canRestart = $derived(gameState.phase === 'gameover' && canAffordLevel(gameState.playerStats.moonrocks, 1));
 </script>
 
 <div class="bg-black p-3 rounded-lg shadow-sm border border-white h-full flex flex-col">
@@ -167,7 +167,7 @@
       >
         <div class="text-center">
           <div class="font-medium">RESTART</div>
-          <div class="text-xs opacity-75">(-10 moonrocks)</div>
+          <div class="text-xs opacity-75">(-{getLevelEntryCost(1)} moonrocks)</div>
         </div>
       </button>
       
@@ -202,7 +202,7 @@
     {:else if gameState.phase === 'confirmation'}
       <p class="text-white font-bold">MOONROCKS OR CHEDDAH?</p>
     {:else if gameState.phase === 'gameover' && !canRestart}
-      <p class="text-red-400">NEED 10 MOONROCKS TO RESTART</p>
+      <p class="text-red-400">NEED {getLevelEntryCost(1)} MOONROCKS TO RESTART</p>
     {:else if gameState.phase === 'gameover'}
       <p class="text-red-400 font-bold">GAME OVER!</p>
     {:else if gameState.phase === 'victory'}
