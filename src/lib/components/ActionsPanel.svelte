@@ -8,7 +8,7 @@
     returnToMenu,
     pullOrb 
   } from '../game/game.js';
-  import { canAffordLevel, getLevelEntryCost } from '../game/economics.js';
+  import { canAffordLevel, getLevelEntryCost, calculateCashOut } from '../game/economics.js';
   import { GAME_CONFIG } from '../game/constants.js';
   import { isLastLevel, getNextLevel } from '../game/levels.js';
   import type { GameState } from '../game/types.js';
@@ -73,6 +73,9 @@
                                       gameState.orbBag.multiplier.available.length);
   
   const canPullOrb = $derived(gameState.phase === 'level' && totalAvailableOrbs > 0);
+  
+  const midLevelCashOut = $derived(gameState.phase === 'level' ? 
+    calculateCashOut(gameState.playerStats.points, getLevelEntryCost(gameState.currentLevel)) : 0);
 </script>
 
 <div class="bg-black p-3 rounded-lg shadow-sm border border-white h-full flex flex-col">
@@ -117,6 +120,10 @@
           {#if gameState.phase === 'confirmation'}
             <div class="text-xs opacity-75">
               (+{gameState.playerStats.points} moonrocks)
+            </div>
+          {:else if gameState.phase === 'level'}
+            <div class="text-xs opacity-75">
+              (+{midLevelCashOut} moonrocks)
             </div>
           {/if}
         </div>
