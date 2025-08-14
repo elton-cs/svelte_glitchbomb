@@ -302,6 +302,20 @@ export function proceedToNextLevel(gameState: GameState): boolean {
   return enterLevel(gameState, nextLevel);
 }
 
+export function restartGame(gameState: GameState): boolean {
+  const restartCost = 10;
+  
+  if (gameState.playerStats.moonrocks < restartCost) {
+    console.warn('Cannot restart - insufficient moonrocks');
+    return false;
+  }
+  
+  gameState.playerStats.moonrocks -= restartCost;
+  addLogEntry(gameState, `Restarted game (-${restartCost} moonrocks)`);
+  
+  return startNewGame(gameState);
+}
+
 export function returnToMenu(gameState: GameState): void {
   addLogEntry(gameState, 'Returned to main menu');
   

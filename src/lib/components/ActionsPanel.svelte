@@ -6,6 +6,7 @@
     continueToMarketplace,
     proceedToNextLevel, 
     returnToMenu,
+    restartGame,
     pullOrb 
   } from '../game/game.js';
   import { canAffordLevel, getLevelEntryCost, calculateCashOut } from '../game/economics.js';
@@ -51,6 +52,10 @@
     returnToMenu(gameState);
   }
 
+  function handleRestart() {
+    restartGame(gameState);
+  }
+
   function handlePullOrb() {
     pullOrb(gameState);
   }
@@ -76,6 +81,8 @@
   
   const midLevelCashOut = $derived(gameState.phase === 'level' ? 
     calculateCashOut(gameState.playerStats.points, getLevelEntryCost(gameState.currentLevel)) : 0);
+  
+  const canRestart = $derived(gameState.phase === 'gameover' && gameState.playerStats.moonrocks >= 10);
 </script>
 
 <div class="bg-black p-3 rounded-lg shadow-sm border border-white h-full flex flex-col">
@@ -149,11 +156,25 @@
         </div>
       </button>
       
-      <!-- Row 3: Main Menu (spans both columns) -->
+      <!-- Row 3: Restart & Main Menu -->
+      <button 
+        onclick={handleRestart}
+        disabled={!canRestart || gameState.phase !== 'gameover'}
+        class="py-2 px-3 rounded text-sm font-medium transition-colors border
+               {canRestart && gameState.phase === 'gameover'
+                 ? 'bg-black text-white border-white hover:bg-white hover:text-black'
+                 : 'bg-black text-gray-500 border-gray-500 cursor-not-allowed'}"
+      >
+        <div class="text-center">
+          <div class="font-medium">RESTART</div>
+          <div class="text-xs opacity-75">(-10 moonrocks)</div>
+        </div>
+      </button>
+      
       <button 
         onclick={handleReturnToMenu}
         disabled={gameState.phase !== 'gameover' && gameState.phase !== 'victory'}
-        class="py-2 px-3 rounded text-sm font-medium transition-colors border col-span-2
+        class="py-2 px-3 rounded text-sm font-medium transition-colors border
                {gameState.phase === 'gameover' || gameState.phase === 'victory'
                  ? 'bg-black text-white border-white hover:bg-white hover:text-black'
                  : 'bg-black text-gray-500 border-gray-500 cursor-not-allowed'}"
@@ -180,6 +201,8 @@
       <p class="text-red-400">NEED {nextLevelCost} MOONROCKS FOR NEXT LEVEL</p>
     {:else if gameState.phase === 'confirmation'}
       <p class="text-white font-bold">MOONROCKS OR CHEDDAH?</p>
+    {:else if gameState.phase === 'gameover' && !canRestart}
+      <p class="text-red-400">NEED 10 MOONROCKS TO RESTART</p>
     {:else if gameState.phase === 'gameover'}
       <p class="text-red-400 font-bold">GAME OVER!</p>
     {:else if gameState.phase === 'victory'}
