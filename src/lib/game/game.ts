@@ -166,8 +166,8 @@ export function completeLevel(gameState: GameState): void {
     addLogEntry(gameState, `Victory! Level ${gameState.currentLevel} completed (+${victoryReward} moonrocks)`);
   } else {
     gameState.phase = 'confirmation';
-    gameState.marketplace.available = true;
-    gameState.marketplace.currentShopItems = getAvailableShopItemsFromDeck(gameState.shopDeck, gameState.currentLevel);
+    gameState.marketplace.available = false;
+    gameState.marketplace.currentShopItems = [];
     addLogEntry(gameState, `Level ${gameState.currentLevel} completed! Choose: cash out or continue?`);
     // Reset consumed orbs so players can see their full collection in confirmation
     resetConsumedOrbs(gameState.orbBag);
@@ -281,6 +281,8 @@ export function continueToMarketplace(gameState: GameState): void {
   gameState.phase = 'marketplace';
   gameState.committedToNextLevel = true;
   gameState.playerStats.cheddah = processLevelReward(gameState.playerStats.points);
+  gameState.marketplace.available = true;
+  gameState.marketplace.currentShopItems = getAvailableShopItemsFromDeck(gameState.shopDeck, gameState.currentLevel);
   addLogEntry(gameState, `Converted ${gameState.playerStats.points} points to ${gameState.playerStats.cheddah} cheddah - shopping enabled`);
 }
 

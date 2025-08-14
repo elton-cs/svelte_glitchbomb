@@ -18,7 +18,7 @@
 
 
   const shopInventory = $derived.by(() => {
-    const isShopOpen = (gameState.phase === 'marketplace' || gameState.phase === 'confirmation') && gameState.marketplace.available;
+    const isShopOpen = gameState.phase === 'marketplace' && gameState.marketplace.available;
     
     if (isShopOpen) {
       // Shop is open - show actual items
