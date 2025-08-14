@@ -22,15 +22,15 @@
     startNewGame(gameState);
   }
 
-  function handleCashOutMidLevel() {
-    if (confirm(`Cash out ${gameState.playerStats.points} points for moonrocks? You'll lose progress and moonrocks spent on this level.`)) {
-      const amount = cashOutMidLevel(gameState);
-    }
-  }
-
-  function handleCashOutPostLevel() {
-    if (confirm(`Cash out ${gameState.playerStats.points} points for moonrocks and end the game?`)) {
-      const amount = cashOutPostLevel(gameState);
+  function handleCashOut() {
+    if (gameState.phase === 'level') {
+      if (confirm(`Cash out ${gameState.playerStats.points} points for moonrocks? You'll lose progress and moonrocks spent on this level.`)) {
+        cashOutMidLevel(gameState);
+      }
+    } else if (gameState.phase === 'marketplace') {
+      if (confirm(`Cash out ${gameState.playerStats.points} points for moonrocks and end the run?`)) {
+        cashOutPostLevel(gameState);
+      }
     }
   }
 
@@ -47,8 +47,8 @@
   }
 
   const canStartGame = $derived(gameState.phase === 'menu' && canAffordLevel(gameState.playerStats.moonrocks, 1));
-  const canCashOutMid = $derived(gameState.phase === 'level' && gameState.gameStarted);
-  const canCashOutPost = $derived(gameState.phase === 'marketplace' && gameState.levelCompleted);
+  const canCashOut = $derived((gameState.phase === 'level' && gameState.gameStarted) || 
+    (gameState.phase === 'marketplace' && gameState.levelCompleted));
   const canProceed = $derived(gameState.phase === 'marketplace' && 
     !isLastLevel(gameState.currentLevel) && 
     canAffordLevel(gameState.playerStats.moonrocks, getNextLevel(gameState.currentLevel)));
@@ -92,30 +92,18 @@
         PULL ORB
       </button>
       
-      <!-- Row 2: Cash Out Actions -->
+      <!-- Row 2: Cash Out & Next Level -->
       <button 
-        onclick={handleCashOutMidLevel}
-        disabled={!canCashOutMid || gameState.phase !== 'level'}
+        onclick={handleCashOut}
+        disabled={!canCashOut}
         class="py-2 px-3 rounded text-sm font-medium transition-colors border
-               {canCashOutMid && gameState.phase === 'level'
+               {canCashOut
                  ? 'bg-black text-white border-white hover:bg-white hover:text-black'
                  : 'bg-black text-gray-500 border-gray-500 cursor-not-allowed'}"
       >
-        QUIT LEVEL
+        {gameState.phase === 'level' ? 'QUIT LEVEL' : 'CASH OUT'}
       </button>
       
-      <button 
-        onclick={handleCashOutPostLevel}
-        disabled={!canCashOutPost || gameState.phase !== 'marketplace'}
-        class="py-2 px-3 rounded text-sm font-medium transition-colors border
-               {canCashOutPost && gameState.phase === 'marketplace'
-                 ? 'bg-black text-white border-white hover:bg-white hover:text-black'
-                 : 'bg-black text-gray-500 border-gray-500 cursor-not-allowed'}"
-      >
-        COLLECT
-      </button>
-      
-      <!-- Row 3: Navigation Actions -->
       <button 
         onclick={handleProceedToNext}
         disabled={!canProceed || gameState.phase !== 'marketplace'}
@@ -127,10 +115,11 @@
         NEXT LEVEL
       </button>
       
+      <!-- Row 3: Main Menu (spans both columns) -->
       <button 
         onclick={handleReturnToMenu}
         disabled={gameState.phase !== 'gameover' && gameState.phase !== 'victory'}
-        class="py-2 px-3 rounded text-sm font-medium transition-colors border
+        class="py-2 px-3 rounded text-sm font-medium transition-colors border col-span-2
                {gameState.phase === 'gameover' || gameState.phase === 'victory'
                  ? 'bg-black text-white border-white hover:bg-white hover:text-black'
                  : 'bg-black text-gray-500 border-gray-500 cursor-not-allowed'}"
