@@ -3,7 +3,7 @@
   import Playground from './lib/components/Playground.svelte'
   import PlayerView from './lib/components/PlayerView.svelte'
   
-  let activeTab = $state('player')
+  let activeTab = $state('data')
   let devMode = $state(false)
   
   function toggleDevMode() {
@@ -20,19 +20,6 @@
         <div class="flex space-x-2">
           <button 
             class="px-4 py-2 rounded font-medium text-sm transition-colors border border-white uppercase tracking-wide"
-            class:bg-white={activeTab === 'player'}
-            class:text-black={activeTab === 'player'}
-            class:bg-black={activeTab !== 'player'}
-            class:text-white={activeTab !== 'player'}
-            class:hover:bg-white={activeTab !== 'player'}
-            class:hover:text-black={activeTab !== 'player'}
-            onclick={() => activeTab = 'player'}
-          >
-            <span class="hidden sm:inline">Player View</span>
-            <span class="sm:hidden">P</span>
-          </button>
-          <button 
-            class="px-4 py-2 rounded font-medium text-sm transition-colors border border-white uppercase tracking-wide"
             class:bg-white={activeTab === 'data'}
             class:text-black={activeTab === 'data'}
             class:bg-black={activeTab !== 'data'}
@@ -43,6 +30,19 @@
           >
             <span class="hidden sm:inline">Data View</span>
             <span class="sm:hidden">D</span>
+          </button>
+          <button 
+            class="px-4 py-2 rounded font-medium text-sm transition-colors border border-white uppercase tracking-wide"
+            class:bg-white={activeTab === 'player'}
+            class:text-black={activeTab === 'player'}
+            class:bg-black={activeTab !== 'player'}
+            class:text-white={activeTab !== 'player'}
+            class:hover:bg-white={activeTab !== 'player'}
+            class:hover:text-black={activeTab !== 'player'}
+            onclick={() => activeTab = 'player'}
+          >
+            <span class="hidden sm:inline">Player View</span>
+            <span class="sm:hidden">P</span>
           </button>
           <button 
             class="px-4 py-2 rounded font-medium text-sm transition-colors border border-white uppercase tracking-wide"
