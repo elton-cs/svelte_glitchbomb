@@ -158,7 +158,6 @@ export function pullOrb(gameState: GameState): boolean {
 
 export function completeLevel(gameState: GameState): void {
   gameState.levelCompleted = true;
-  gameState.playerStats.cheddah = processLevelReward(gameState.playerStats.points);
 
   if (isLastLevel(gameState.currentLevel)) {
     gameState.phase = 'victory';
@@ -169,7 +168,7 @@ export function completeLevel(gameState: GameState): void {
     gameState.phase = 'confirmation';
     gameState.marketplace.available = true;
     gameState.marketplace.currentShopItems = getAvailableShopItemsFromDeck(gameState.shopDeck, gameState.currentLevel);
-    addLogEntry(gameState, `Level ${gameState.currentLevel} completed! (+${gameState.playerStats.cheddah} cheddah)`);
+    addLogEntry(gameState, `Level ${gameState.currentLevel} completed! Choose: cash out or continue?`);
     // Reset consumed orbs so players can see their full collection in confirmation
     resetConsumedOrbs(gameState.orbBag);
   }
@@ -281,7 +280,8 @@ export function purchaseShopItem(gameState: GameState, shopItemId: string, quant
 export function continueToMarketplace(gameState: GameState): void {
   gameState.phase = 'marketplace';
   gameState.committedToNextLevel = true;
-  addLogEntry(gameState, 'Committed to next level - shopping enabled');
+  gameState.playerStats.cheddah = processLevelReward(gameState.playerStats.points);
+  addLogEntry(gameState, `Converted ${gameState.playerStats.points} points to ${gameState.playerStats.cheddah} cheddah - shopping enabled`);
 }
 
 export function proceedToNextLevel(gameState: GameState): boolean {

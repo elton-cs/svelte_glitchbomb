@@ -282,7 +282,7 @@
   
   <div class="mt-1 text-xs text-center h-4">
     {#if gameState.phase === 'confirmation'}
-      <p class="text-white font-bold">LEVEL {gameState.currentLevel} COMPLETE!</p>
+      <p class="text-white font-bold">CONVERT {gameState.playerStats.points} POINTS?</p>
     {:else if gameState.phase === 'marketplace' && gameState.marketplace.available && gameState.playerStats.cheddah === 0}
       <p class="text-red-400">NO CHEDDAH TO SPEND</p>
     {:else if gameState.phase === 'marketplace' && gameState.marketplace.available}

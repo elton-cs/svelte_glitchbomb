@@ -112,7 +112,14 @@
                  ? 'bg-black text-white border-white hover:bg-white hover:text-black'
                  : 'bg-black text-gray-500 border-gray-500 cursor-not-allowed'}"
       >
-        CASH OUT
+        <div class="text-center">
+          <div class="font-medium">CASH OUT</div>
+          {#if gameState.phase === 'confirmation'}
+            <div class="text-xs opacity-75">
+              (+{gameState.playerStats.points} moonrocks)
+            </div>
+          {/if}
+        </div>
       </button>
       
       <button 
@@ -123,7 +130,16 @@
                  ? 'bg-black text-white border-white hover:bg-white hover:text-black' 
                  : 'bg-black text-gray-500 border-gray-500 cursor-not-allowed'}"
       >
-        {canContinue ? 'CONTINUE' : 'NEXT LEVEL'}
+        <div class="text-center">
+          <div class="font-medium">
+            {canContinue ? 'CONTINUE' : 'NEXT LEVEL'}
+          </div>
+          {#if canContinue}
+            <div class="text-xs opacity-75">
+              (+{gameState.playerStats.points} cheddah)
+            </div>
+          {/if}
+        </div>
       </button>
       
       <!-- Row 3: Main Menu (spans both columns) -->
@@ -156,7 +172,7 @@
     {:else if gameState.phase === 'marketplace' && !canProceed && !isLastLevel(gameState.currentLevel)}
       <p class="text-red-400">NEED {nextLevelCost} MOONROCKS FOR NEXT LEVEL</p>
     {:else if gameState.phase === 'confirmation'}
-      <p class="text-white font-bold">CHOOSE YOUR PATH</p>
+      <p class="text-white font-bold">MOONROCKS OR CHEDDAH?</p>
     {:else if gameState.phase === 'gameover'}
       <p class="text-red-400 font-bold">GAME OVER!</p>
     {:else if gameState.phase === 'victory'}
