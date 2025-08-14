@@ -101,7 +101,7 @@
                  ? 'bg-black text-white border-white hover:bg-white hover:text-black'
                  : 'bg-black text-gray-500 border-gray-500 cursor-not-allowed'}"
       >
-        {gameState.phase === 'level' ? 'QUIT LEVEL' : 'CASH OUT'}
+        CASH OUT
       </button>
       
       <button 
