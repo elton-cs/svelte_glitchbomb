@@ -1,8 +1,9 @@
 <script lang="ts">
   import GameDashboard from './lib/components/GameDashboard.svelte'
   import Playground from './lib/components/Playground.svelte'
+  import PlayerView from './lib/components/PlayerView.svelte'
   
-  let activeTab = $state('game')
+  let activeTab = $state('player')
   let devMode = $state(false)
   
   function toggleDevMode() {
@@ -19,16 +20,29 @@
         <div class="flex space-x-2">
           <button 
             class="px-4 py-2 rounded font-medium text-sm transition-colors border border-white uppercase tracking-wide"
-            class:bg-white={activeTab === 'game'}
-            class:text-black={activeTab === 'game'}
-            class:bg-black={activeTab !== 'game'}
-            class:text-white={activeTab !== 'game'}
-            class:hover:bg-white={activeTab !== 'game'}
-            class:hover:text-black={activeTab !== 'game'}
-            onclick={() => activeTab = 'game'}
+            class:bg-white={activeTab === 'player'}
+            class:text-black={activeTab === 'player'}
+            class:bg-black={activeTab !== 'player'}
+            class:text-white={activeTab !== 'player'}
+            class:hover:bg-white={activeTab !== 'player'}
+            class:hover:text-black={activeTab !== 'player'}
+            onclick={() => activeTab = 'player'}
           >
-            <span class="hidden sm:inline">Game</span>
-            <span class="sm:hidden">G</span>
+            <span class="hidden sm:inline">Player View</span>
+            <span class="sm:hidden">P</span>
+          </button>
+          <button 
+            class="px-4 py-2 rounded font-medium text-sm transition-colors border border-white uppercase tracking-wide"
+            class:bg-white={activeTab === 'data'}
+            class:text-black={activeTab === 'data'}
+            class:bg-black={activeTab !== 'data'}
+            class:text-white={activeTab !== 'data'}
+            class:hover:bg-white={activeTab !== 'data'}
+            class:hover:text-black={activeTab !== 'data'}
+            onclick={() => activeTab = 'data'}
+          >
+            <span class="hidden sm:inline">Data View</span>
+            <span class="sm:hidden">D</span>
           </button>
           <button 
             class="px-4 py-2 rounded font-medium text-sm transition-colors border border-white uppercase tracking-wide"
@@ -41,7 +55,7 @@
             onclick={() => activeTab = 'playground'}
           >
             <span class="hidden sm:inline">Playground</span>
-            <span class="sm:hidden">P</span>
+            <span class="sm:hidden">PG</span>
           </button>
         </div>
 
@@ -72,7 +86,9 @@
 
   <!-- Tab Content -->
   <div class="flex-1">
-    {#if activeTab === 'game'}
+    {#if activeTab === 'player'}
+      <PlayerView />
+    {:else if activeTab === 'data'}
       <GameDashboard {devMode} />
     {:else if activeTab === 'playground'}
       <Playground />
