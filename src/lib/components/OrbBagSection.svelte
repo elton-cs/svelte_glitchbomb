@@ -159,60 +159,59 @@
 <div class="bg-black p-3 rounded-lg shadow-sm border border-white h-full flex flex-col {gameState.phase === 'level' ? '' : 'opacity-60 pointer-events-none'}">
   <h2 class="text-sm font-bold mb-3 text-white">ORB BAG ({totalAvailableOrbs}) {gameState.phase === 'level' ? '' : '(INACTIVE)'}</h2>
   
-  <div class="space-y-3 text-xs flex-1 overflow-y-auto">
+  <div class="space-y-2 text-xs flex-1 overflow-y-auto">
     {#each orbDisplays as orb}
-      <div class="space-y-1 {orb.totalAvailable === 0 ? 'opacity-50' : ''}">
-        <!-- Orb Type Header -->
-        <div class="flex justify-between items-center">
-          <span class="font-medium {orb.color}">{orb.icon} {orb.name}:</span>
-          <span class="text-white text-xs">{orb.totalAvailable} / {orb.totalOwned}</span>
+      <div class="flex items-center justify-between gap-2 {orb.totalAvailable === 0 ? 'opacity-50' : ''}">
+        <!-- Orb Type Label -->
+        <div class="font-medium {orb.color} min-w-0 flex-shrink-0">
+          {orb.icon} {orb.name}:
         </div>
         
-        <!-- Available Orbs (Squares) -->
-        {#if orb.available.length > 0}
-          <div class="flex flex-wrap gap-1">
-            {#each orb.available as group}
-              <!-- Group of orbs with same amount -->
-              {#each Array(group.count) as _, i}
-                <div class="relative group">
-                  <div class="w-6 h-6 border border-white bg-black hover:bg-white hover:text-black flex items-center justify-center text-xs font-bold transition-colors {orb.color}">
-                    {group.amount}
-                  </div>
-                  <!-- Tooltip with calculation -->
-                  {#if group.calculation}
-                    <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-1 px-2 py-1 bg-gray-900 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10 pointer-events-none">
-                      {group.calculation}
-                    </div>
-                  {/if}
-                </div>
-              {/each}
-            {/each}
-          </div>
-        {/if}
-        
-        <!-- Consumed Orbs (Grayed Out Squares) -->
-        {#if orb.totalOwned > orb.totalAvailable}
-          <div class="flex flex-wrap gap-1 mt-1">
-            {#each orb.total as group}
-              {#each Array(Math.max(0, group.count - (orb.available.find(a => a.amount === group.amount)?.count || 0))) as _, i}
-                <div class="w-6 h-6 border border-gray-600 bg-gray-800 text-gray-500 flex items-center justify-center text-xs">
+        <!-- Orb Squares (Available + Consumed) -->
+        <div class="flex items-center gap-1 min-w-0 flex-shrink">
+          <!-- Available Orbs -->
+          {#each orb.available as group}
+            {#each Array(group.count) as _, i}
+              <div class="relative group">
+                <div class="w-5 h-5 border border-white bg-black hover:bg-white hover:text-black flex items-center justify-center text-xs font-bold transition-colors {orb.color}">
                   {group.amount}
                 </div>
-              {/each}
+                <!-- Tooltip with calculation -->
+                {#if group.calculation}
+                  <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-1 px-2 py-1 bg-gray-900 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10 pointer-events-none">
+                    {group.calculation}
+                  </div>
+                {/if}
+              </div>
             {/each}
-          </div>
-        {/if}
+          {/each}
+          
+          <!-- Consumed Orbs -->
+          {#each orb.total as group}
+            {#each Array(Math.max(0, group.count - (orb.available.find(a => a.amount === group.amount)?.count || 0))) as _, i}
+              <div class="w-5 h-5 border border-gray-600 bg-gray-800 text-gray-500 flex items-center justify-center text-xs">
+                {group.amount}
+              </div>
+            {/each}
+          {/each}
+        </div>
         
-        <!-- Calculation Summary (for complex orbs) -->
-        {#if orb.available.length > 0 && (orb.type === 'points_per_anyorb' || orb.type === 'points_per_bombpulled')}
-          <div class="text-xs text-white opacity-75 mt-1">
-            {#each orb.available as group}
-              {#if group.calculation}
-                <div>{group.count}× {group.calculation}</div>
-              {/if}
-            {/each}
+        <!-- Count and Calculation Summary -->
+        <div class="text-right text-white flex-shrink-0 min-w-0">
+          <div class="text-xs">
+            {orb.totalAvailable}/{orb.totalOwned}
           </div>
-        {/if}
+          <!-- Show calculation for special orbs -->
+          {#if orb.available.length > 0 && (orb.type === 'points_per_anyorb' || orb.type === 'points_per_bombpulled' || orb.type === 'multiplier')}
+            <div class="text-xs opacity-75">
+              {#each orb.available as group}
+                {#if group.calculation}
+                  ({group.calculation})
+                {/if}
+              {/each}
+            </div>
+          {/if}
+        </div>
       </div>
     {/each}
   </div>
