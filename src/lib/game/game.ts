@@ -173,8 +173,7 @@ export function completeLevel(gameState: GameState): void {
 }
 
 export function cashOutMidLevel(gameState: GameState): number {
-  const levelCost = getLevelEntryCost(gameState.currentLevel);
-  const cashOut = calculateCashOut(gameState.playerStats.points, levelCost);
+  const cashOut = gameState.playerStats.points;
   
   gameState.playerStats.moonrocks += cashOut;
   gameState.phase = 'menu';

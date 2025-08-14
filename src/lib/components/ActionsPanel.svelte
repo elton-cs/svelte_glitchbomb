@@ -80,7 +80,7 @@
   const canPullOrb = $derived(gameState.phase === 'level' && totalAvailableOrbs > 0);
   
   const midLevelCashOut = $derived(gameState.phase === 'level' ? 
-    calculateCashOut(gameState.playerStats.points, getLevelEntryCost(gameState.currentLevel)) : 0);
+    gameState.playerStats.points : 0);
   
   const canRestart = $derived(gameState.phase === 'gameover' && canAffordLevel(gameState.playerStats.moonrocks, 1));
 </script>
