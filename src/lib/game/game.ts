@@ -280,10 +280,11 @@ export function purchaseShopItem(gameState: GameState, shopItemId: string, quant
 export function continueToMarketplace(gameState: GameState): void {
   gameState.phase = 'marketplace';
   gameState.committedToNextLevel = true;
-  gameState.playerStats.cheddah = processLevelReward(gameState.playerStats.points);
+  const newCheddah = processLevelReward(gameState.playerStats.points);
+  gameState.playerStats.cheddah += newCheddah;
   gameState.marketplace.available = true;
   gameState.marketplace.currentShopItems = getAvailableShopItemsFromDeck(gameState.shopDeck, gameState.currentLevel);
-  addLogEntry(gameState, `Converted ${gameState.playerStats.points} points to ${gameState.playerStats.cheddah} cheddah - shopping enabled`);
+  addLogEntry(gameState, `Converted ${gameState.playerStats.points} points to ${newCheddah} cheddah (+${newCheddah} total: ${gameState.playerStats.cheddah})`);
 }
 
 export function proceedToNextLevel(gameState: GameState): boolean {
