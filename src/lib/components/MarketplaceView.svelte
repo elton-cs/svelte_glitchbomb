@@ -7,9 +7,9 @@
   }
 
   let { gameState }: Props = $props();
-  let holdTimeouts: { [key: string]: NodeJS.Timeout | null } = {};
-  let progressIntervals: { [key: string]: NodeJS.Timeout | null } = {};
-  let progressDelayTimeouts: { [key: string]: NodeJS.Timeout | null } = {};
+  let holdTimeouts: { [key: string]: number | null } = {};
+  let progressIntervals: { [key: string]: number | null } = {};
+  let progressDelayTimeouts: { [key: string]: number | null } = {};
   let holdProgress: { [key: string]: number } = $state({});
   let mousePosition = $state({ x: 0, y: 0 });
   let activeHold: string | null = $state(null);
@@ -179,7 +179,7 @@
           cost: 0,
           baseCost: 0,
           purchaseCount: 0,
-          icon: '✗',
+          icon: '×',
           color: 'text-gray-500',
           borderColor: 'border-gray-400',
           available: false,
@@ -197,7 +197,7 @@
           cost: 0,
           baseCost: 0,
           purchaseCount: 0,
-          icon: '✗',
+          icon: '×',
           color: 'text-gray-500',
           borderColor: 'border-blue-500',
           available: false,
@@ -214,7 +214,7 @@
         cost: 0,
         baseCost: 0,
         purchaseCount: 0,
-        icon: '✗',
+        icon: '×',
         color: 'text-gray-500',
         borderColor: 'border-purple-500',
         available: false,
@@ -228,13 +228,7 @@
 </script>
 
 <div class="bg-black p-3 rounded-lg shadow-sm border border-white h-full flex flex-col {gameState.phase === 'marketplace' && gameState.marketplace.available ? '' : 'opacity-60'}">
-  <div class="flex justify-between items-center mb-3">
-    <h2 class="text-sm font-bold text-white">SHOP {gameState.phase === 'marketplace' && gameState.marketplace.available ? '' : '(CLOSED)'}</h2>
-    <div class="text-right">
-      <div class="text-lg font-bold text-white">{gameState.playerStats.cheddah}</div>
-      <div class="text-xs text-white">CHEDDAH</div>
-    </div>
-  </div>
+  <h2 class="text-sm font-bold mb-3 text-white">SHOP {gameState.phase === 'marketplace' && gameState.marketplace.available ? '' : '(CLOSED)'}</h2>
   
   <!-- 2x3 Shop Grid -->
   <div class="grid grid-cols-2 gap-2 flex-1">
@@ -279,19 +273,22 @@
     {/each}
   </div>
   
-  <div class="mt-3 text-xs text-center text-white">
-    {#if gameState.phase === 'marketplace' && gameState.marketplace.available}
-      CLICK TO BUY
-    {:else}
-      SHOP CLOSED
-    {/if}
+  <!-- Footer -->
+  <div class="mt-3 text-xs text-center h-4">
+    <p class="text-white uppercase tracking-wide">
+      CHEDDAH: <span class="font-medium">{gameState.playerStats.cheddah}</span>
+    </p>
   </div>
   
-  {#if gameState.playerStats.cheddah === 0 && gameState.phase === 'marketplace' && gameState.marketplace.available}
-    <p class="text-xs text-white text-center mt-2">
-      NO CHEDDAH TO SPEND
-    </p>
-  {/if}
+  <div class="mt-1 text-xs text-center h-4">
+    {#if gameState.phase === 'marketplace' && gameState.marketplace.available && gameState.playerStats.cheddah === 0}
+      <p class="text-red-400">NO CHEDDAH TO SPEND</p>
+    {:else if gameState.phase === 'marketplace' && gameState.marketplace.available}
+      <p class="text-white">CLICK TO BUY</p>
+    {:else}
+      <p>&nbsp;</p>
+    {/if}
+  </div>
 </div>
 
 <!-- Circular Progress Indicator -->

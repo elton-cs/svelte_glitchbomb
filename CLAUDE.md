@@ -76,7 +76,7 @@ src/lib/
 ### Testing & Development
 
 - **Type Checking**: Run `npm run check` before commits to catch TypeScript errors
-- **Git Workflow**: Commit after every codebase change with concise one-line messages
+- **MANDATORY Git Workflow**: YOU MUST COMMIT AFTER EVERY CODEBASE CHANGE. This is not optional - it is a strict requirement. Use concise one-line messages and DO NOT sign commits as authored by Claude Code
 - **Game Balance**: Configuration values are centralized in constants.ts
 - **Playground Components**: Development/testing components available for isolated testing
 - **Logging**: Game actions are logged with timestamps (max 30 entries)

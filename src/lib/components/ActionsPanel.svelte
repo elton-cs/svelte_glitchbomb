@@ -67,14 +67,8 @@
 <div class="bg-black p-3 rounded-lg shadow-sm border border-white h-full flex flex-col">
   <h2 class="text-sm font-bold mb-3 text-white">ACTIONS</h2>
   
-  <div class="flex-1 flex flex-col space-y-3">
-    <!-- Current Phase Indicator -->
-    <div class="text-center text-xs text-white uppercase tracking-wide">
-      Current Phase: <span class="text-white font-medium">{gameState.phase}</span>
-    </div>
-    
-    <!-- 2x3 Button Grid -->
-    <div class="grid grid-cols-2 gap-2 flex-1">
+  <!-- 2x3 Button Grid -->
+  <div class="grid grid-cols-2 gap-2 flex-1">
       <!-- Row 1: Start Game & Pull Orb -->
       <button 
         onclick={handleStartGame}
@@ -144,34 +138,27 @@
         MAIN MENU
       </button>
     </div>
-    
-    <!-- Status Messages -->
-    <div class="text-xs text-center space-y-1">
-      {#if gameState.phase === 'menu' && !canStartGame}
-        <p class="text-red-400">NEED {getLevelEntryCost(1)} MOONROCKS TO START</p>
-      {/if}
-      
-      {#if gameState.phase === 'level' && totalAvailableOrbs === 0}
-        <p class="text-red-400">NO ORBS AVAILABLE</p>
-      {/if}
-      
-      {#if gameState.phase === 'marketplace' && !canProceed && !isLastLevel(gameState.currentLevel)}
-        <p class="text-red-400">NEED {nextLevelCost} MOONROCKS FOR NEXT LEVEL</p>
-      {/if}
-      
-      {#if gameState.phase === 'gameover'}
-        <div class="text-center">
-          <p class="text-red-400 font-bold">GAME OVER!</p>
-          <p class="text-gray-400">BETTER LUCK NEXT TIME</p>
-        </div>
-      {/if}
-      
-      {#if gameState.phase === 'victory'}
-        <div class="text-center">
-          <p class="text-white font-bold">VICTORY!</p>
-          <p class="text-gray-400">YOU COMPLETED ALL LEVELS!</p>
-        </div>
-      {/if}
-    </div>
+  
+  <!-- Footer -->
+  <div class="mt-3 text-xs text-center h-4">
+    <p class="text-white uppercase tracking-wide">
+      PHASE: <span class="font-medium">{gameState.phase}</span>
+    </p>
+  </div>
+  
+  <div class="mt-1 text-xs text-center h-4">
+    {#if gameState.phase === 'menu' && !canStartGame}
+      <p class="text-red-400">NEED {getLevelEntryCost(1)} MOONROCKS TO START</p>
+    {:else if gameState.phase === 'level' && totalAvailableOrbs === 0}
+      <p class="text-red-400">NO ORBS AVAILABLE</p>
+    {:else if gameState.phase === 'marketplace' && !canProceed && !isLastLevel(gameState.currentLevel)}
+      <p class="text-red-400">NEED {nextLevelCost} MOONROCKS FOR NEXT LEVEL</p>
+    {:else if gameState.phase === 'gameover'}
+      <p class="text-red-400 font-bold">GAME OVER!</p>
+    {:else if gameState.phase === 'victory'}
+      <p class="text-white font-bold">VICTORY!</p>
+    {:else}
+      <p>&nbsp;</p>
+    {/if}
   </div>
 </div>
