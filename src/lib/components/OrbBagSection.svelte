@@ -156,8 +156,8 @@
 </script>
 
 <!-- Orb Bag - Visual Square Design -->
-<div class="bg-black p-3 rounded-lg shadow-sm border border-white h-full flex flex-col {gameState.phase === 'level' ? '' : 'opacity-60 pointer-events-none'}">
-  <h2 class="text-sm font-bold mb-3 text-white">ORB BAG ({totalAvailableOrbs}) {gameState.phase === 'level' ? '' : '(INACTIVE)'}</h2>
+<div class="bg-black p-3 rounded-lg shadow-sm border border-white h-full flex flex-col {gameState.phase === 'level' || gameState.phase === 'confirmation' ? '' : 'opacity-60 pointer-events-none'}">
+  <h2 class="text-sm font-bold mb-3 text-white">ORB BAG ({totalAvailableOrbs}) {gameState.phase === 'level' || gameState.phase === 'confirmation' ? '' : '(INACTIVE)'}</h2>
   
   <div class="space-y-2 text-xs flex-1 overflow-y-auto">
     {#each orbDisplays as orb}

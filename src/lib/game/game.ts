@@ -169,8 +169,6 @@ export function completeLevel(gameState: GameState): void {
     gameState.marketplace.available = false;
     gameState.marketplace.currentShopItems = [];
     addLogEntry(gameState, `Level ${gameState.currentLevel} completed! Choose: cash out or continue?`);
-    // Reset consumed orbs so players can see their full collection in confirmation
-    resetConsumedOrbs(gameState.orbBag);
   }
 }
 
@@ -284,6 +282,10 @@ export function continueToMarketplace(gameState: GameState): void {
   gameState.playerStats.cheddah += newCheddah;
   gameState.marketplace.available = true;
   gameState.marketplace.currentShopItems = getAvailableShopItemsFromDeck(gameState.shopDeck, gameState.currentLevel);
+  
+  // Reset consumed orbs so players can purchase more orbs with their cheddah
+  resetConsumedOrbs(gameState.orbBag);
+  
   addLogEntry(gameState, `Converted ${gameState.playerStats.points} points to ${newCheddah} cheddah (+${newCheddah} total: ${gameState.playerStats.cheddah})`);
 }
 
