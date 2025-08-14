@@ -63,13 +63,13 @@ export function enterLevel(gameState: GameState, level: number): boolean {
     gameState.phase = 'level';
     gameState.levelCompleted = false;
     gameState.gameStarted = true;
-    gameState.playerStats.cheddah = 0;
     
     resetLevelStats(gameState);
     
-    // Only reset consumed orbs when starting a new game (level 1)
+    // Only reset consumed orbs and cheddah when starting a new game (level 1)
     if (level === 1) {
       resetConsumedOrbs(gameState.orbBag);
+      gameState.playerStats.cheddah = 0;
     }
     
     return true;
@@ -293,7 +293,6 @@ export function proceedToNextLevel(gameState: GameState): boolean {
 
   const nextLevel = getNextLevel(gameState.currentLevel);
   const levelCost = getLevelEntryCost(nextLevel);
-  gameState.playerStats.cheddah = 0;
   gameState.marketplace.available = false;
   gameState.committedToNextLevel = false; // Reset for next level cycle
   
