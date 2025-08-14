@@ -303,15 +303,15 @@ export function proceedToNextLevel(gameState: GameState): boolean {
 }
 
 export function restartGame(gameState: GameState): boolean {
-  const restartCost = 10;
+  const restartCost = 10; // This should be the total cost, same as level 1 entry cost
   
   if (gameState.playerStats.moonrocks < restartCost) {
     console.warn('Cannot restart - insufficient moonrocks');
     return false;
   }
   
-  gameState.playerStats.moonrocks -= restartCost;
-  addLogEntry(gameState, `Restarted game (-${restartCost} moonrocks)`);
+  // Don't deduct here - let startNewGame -> enterLevel handle the deduction
+  addLogEntry(gameState, `Restarted game`);
   
   return startNewGame(gameState);
 }
