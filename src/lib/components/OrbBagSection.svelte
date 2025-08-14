@@ -161,14 +161,17 @@
   
   <div class="space-y-2 text-xs flex-1 overflow-y-auto">
     {#each orbDisplays as orb}
-      <div class="flex items-center justify-between gap-2 {orb.totalAvailable === 0 ? 'opacity-50' : ''}">
+      <div class="flex items-center {orb.totalAvailable === 0 ? 'opacity-50' : ''}">
         <!-- Orb Type Label -->
-        <div class="font-medium {orb.color} min-w-0 flex-shrink-0">
+        <div class="font-medium {orb.color} w-24 flex-shrink-0">
           {orb.icon} {orb.name}:
         </div>
         
+        <!-- Spacer to push squares and info to the right -->
+        <div class="flex-1"></div>
+        
         <!-- Orb Squares (Available + Consumed) -->
-        <div class="flex items-center gap-1 min-w-0 flex-shrink">
+        <div class="flex items-center gap-1 justify-end">
           <!-- Available Orbs -->
           {#each orb.available as group}
             {#each Array(group.count) as _, i}
@@ -197,7 +200,7 @@
         </div>
         
         <!-- Count and Calculation Summary -->
-        <div class="text-right text-white flex-shrink-0 min-w-0">
+        <div class="text-right text-white flex-shrink-0 w-20 ml-2">
           <div class="text-xs">
             {orb.totalAvailable}/{orb.totalOwned}
           </div>
