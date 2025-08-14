@@ -137,7 +137,7 @@ export function addOrbsToBag(bag: OrbBag, orbType: OrbType, quantity: number, am
 }
 
 export function calculatePointsPerAnyOrbPoints(bag: OrbBag, multiplier: number): number {
-  // Count all remaining orbs (excluding the points_per_anyorb orb that's about to be consumed)
-  const remainingOrbs = getTotalAvailableOrbs(bag) - 1; // -1 for the points_per_anyorb orb itself
+  // Count all remaining orbs (the points_per_anyorb orb has already been removed by pullRandomOrb)
+  const remainingOrbs = getTotalAvailableOrbs(bag);
   return remainingOrbs * multiplier;
 }
