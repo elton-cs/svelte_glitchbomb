@@ -18,32 +18,26 @@
         <!-- Left side: Tabs -->
         <div class="flex space-x-2">
           <button 
-            class="px-4 py-2 rounded font-medium text-sm transition-colors border uppercase tracking-wide"
+            class="px-4 py-2 rounded font-medium text-sm transition-colors border border-white uppercase tracking-wide"
             class:bg-white={activeTab === 'game'}
             class:text-black={activeTab === 'game'}
-            class:border-white={activeTab === 'game'}
             class:bg-black={activeTab !== 'game'}
-            class:text-gray-500={activeTab !== 'game'}
-            class:border-gray-500={activeTab !== 'game'}
+            class:text-white={activeTab !== 'game'}
             class:hover:bg-white={activeTab !== 'game'}
             class:hover:text-black={activeTab !== 'game'}
-            class:hover:border-white={activeTab !== 'game'}
             onclick={() => activeTab = 'game'}
           >
             <span class="hidden sm:inline">Game</span>
             <span class="sm:hidden">G</span>
           </button>
           <button 
-            class="px-4 py-2 rounded font-medium text-sm transition-colors border uppercase tracking-wide"
+            class="px-4 py-2 rounded font-medium text-sm transition-colors border border-white uppercase tracking-wide"
             class:bg-white={activeTab === 'playground'}
             class:text-black={activeTab === 'playground'}
-            class:border-white={activeTab === 'playground'}
             class:bg-black={activeTab !== 'playground'}
-            class:text-gray-500={activeTab !== 'playground'}
-            class:border-gray-500={activeTab !== 'playground'}
+            class:text-white={activeTab !== 'playground'}
             class:hover:bg-white={activeTab !== 'playground'}
             class:hover:text-black={activeTab !== 'playground'}
-            class:hover:border-white={activeTab !== 'playground'}
             onclick={() => activeTab = 'playground'}
           >
             <span class="hidden sm:inline">Playground</span>
@@ -60,18 +54,15 @@
         <div class="ml-auto">
           <button 
             onclick={toggleDevMode}
-            class="px-4 py-2 rounded font-medium text-sm transition-colors border uppercase tracking-wide"
+            class="px-4 py-2 rounded font-medium text-sm transition-colors border border-white uppercase tracking-wide"
             class:bg-white={devMode}
             class:text-black={devMode}
-            class:border-white={devMode}
             class:bg-black={!devMode}
-            class:text-gray-500={!devMode}
-            class:border-gray-500={!devMode}
+            class:text-white={!devMode}
             class:hover:bg-white={!devMode}
             class:hover:text-black={!devMode}
-            class:hover:border-white={!devMode}
           >
-            <span class="hidden sm:inline">{devMode ? 'DEV ON' : 'DEV'}</span>
+            <span class="hidden sm:inline">DEV</span>
             <span class="sm:hidden">D</span>
           </button>
         </div>
