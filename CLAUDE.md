@@ -77,6 +77,7 @@ src/lib/
 
 - **Type Checking**: Run `npm run check` before commits to catch TypeScript errors
 - **MANDATORY Git Workflow**: YOU MUST COMMIT AFTER EVERY CODEBASE CHANGE. This is not optional - it is a strict requirement. Use concise one-line messages and DO NOT sign commits as authored by Claude Code
+- **Commit Message Format**: ALWAYS use conventional commit prefixes: `feat:` (new features), `fix:` (bug fixes), `refactor:` (code restructuring), `chore:` (maintenance), `docs:` (documentation), `style:` (formatting), `test:` (testing)
 - **Game Balance**: Configuration values are centralized in constants.ts
 - **Playground Components**: Development/testing components available for isolated testing
 - **Logging**: Game actions are logged with timestamps (max 30 entries)

@@ -7,12 +7,6 @@
   }
 
   let { gameState }: Props = $props();
-  let holdTimeouts: { [key: string]: number | null } = {};
-  let progressIntervals: { [key: string]: number | null } = {};
-  let progressDelayTimeouts: { [key: string]: number | null } = {};
-  let holdProgress: { [key: string]: number } = $state({});
-  let mousePosition = $state({ x: 0, y: 0 });
-  let activeHold: string | null = $state(null);
 
   function handleSinglePurchase(orbType: 'health' | 'point') {
     purchaseOrb(gameState, orbType, 1);
@@ -22,105 +16,6 @@
     purchaseShopItem(gameState, shopItemId, 1);
   }
 
-  function handleMouseDown(event: MouseEvent, orbType: 'health' | 'point') {
-    // Clear any existing timeouts/intervals
-    if (holdTimeouts[orbType]) {
-      clearTimeout(holdTimeouts[orbType]);
-    }
-    if (progressIntervals[orbType]) {
-      clearInterval(progressIntervals[orbType]);
-    }
-    if (progressDelayTimeouts[orbType]) {
-      clearTimeout(progressDelayTimeouts[orbType]);
-    }
-    
-    // Track mouse position
-    mousePosition.x = event.clientX;
-    mousePosition.y = event.clientY;
-    holdProgress[orbType] = 0;
-    activeHold = null; // Clear any existing progress bar
-    
-    const startTime = Date.now();
-    const duration = 1000; // 1 second
-    const progressDelay = 300; // 0.3 second delay before showing progress
-    
-    // Delay before showing progress bar and starting progress
-    progressDelayTimeouts[orbType] = setTimeout(() => {
-      // Only start if we're still holding (timeout hasn't been cleared)
-      if (holdTimeouts[orbType]) {
-        activeHold = orbType;
-        
-        // Update progress every 16ms (~60fps)
-        progressIntervals[orbType] = setInterval(() => {
-          const elapsed = Date.now() - startTime;
-          const adjustedElapsed = Math.max(0, elapsed - progressDelay);
-          holdProgress[orbType] = Math.min((adjustedElapsed / duration) * 100, 100);
-          
-          if (elapsed >= duration + progressDelay) {
-            clearInterval(progressIntervals[orbType]!);
-            progressIntervals[orbType] = null;
-          }
-        }, 16);
-      }
-      progressDelayTimeouts[orbType] = null;
-    }, progressDelay);
-    
-    // Set timeout for hold-to-buy-all (1 second + delay)
-    holdTimeouts[orbType] = setTimeout(() => {
-      const cost = orbType === 'health' ? gameState.marketplace.healthOrbCost : gameState.marketplace.pointOrbCost;
-      const maxQuantity = Math.floor(gameState.playerStats.cheddah / cost);
-      if (maxQuantity > 0) {
-        purchaseOrb(gameState, orbType, maxQuantity);
-      }
-      holdTimeouts[orbType] = null;
-      activeHold = null;
-      holdProgress[orbType] = 0;
-    }, 1000 + progressDelay);
-  }
-
-  function handleMouseUp(orbType: 'health' | 'point') {
-    if (holdTimeouts[orbType]) {
-      clearTimeout(holdTimeouts[orbType]);
-      holdTimeouts[orbType] = null;
-      
-      // Only execute single purchase if progress is minimal (< 10%)
-      // This prevents accidental purchases when someone starts holding but releases early
-      if ((holdProgress[orbType] || 0) < 10) {
-        handleSinglePurchase(orbType);
-      }
-    }
-    
-    // Clean up all timers and progress
-    if (progressIntervals[orbType]) {
-      clearInterval(progressIntervals[orbType]);
-      progressIntervals[orbType] = null;
-    }
-    if (progressDelayTimeouts[orbType]) {
-      clearTimeout(progressDelayTimeouts[orbType]);
-      progressDelayTimeouts[orbType] = null;
-    }
-    activeHold = null;
-    holdProgress[orbType] = 0;
-  }
-
-  function handleMouseLeave(orbType: 'health' | 'point') {
-    if (holdTimeouts[orbType]) {
-      clearTimeout(holdTimeouts[orbType]);
-      holdTimeouts[orbType] = null;
-    }
-    
-    // Clean up all timers and progress
-    if (progressIntervals[orbType]) {
-      clearInterval(progressIntervals[orbType]);
-      progressIntervals[orbType] = null;
-    }
-    if (progressDelayTimeouts[orbType]) {
-      clearTimeout(progressDelayTimeouts[orbType]);
-      progressDelayTimeouts[orbType] = null;
-    }
-    activeHold = null;
-    holdProgress[orbType] = 0;
-  }
 
   const shopInventory = $derived.by(() => {
     const isShopOpen = (gameState.phase === 'marketplace' || gameState.phase === 'confirmation') && gameState.marketplace.available;
@@ -255,11 +150,10 @@
             {/if}
             {#if item.available && item.cost > 0}
               <div class="text-xs opacity-90">
-                {item.cost} CHEDDAH
                 {#if item.purchaseCount > 0}
-                  <div class="text-xs opacity-70">
-                    (was {item.baseCost}, bought {item.purchaseCount}x)
-                  </div>
+                  <span class="line-through opacity-60">{item.baseCost} </span> {item.cost} 🧀 ({item.purchaseCount}x)
+                {:else}
+                  {item.cost} 🧀
                 {/if}
               </div>
             {:else if !item.available && item.cost === 0}
@@ -293,34 +187,3 @@
   </div>
 </div>
 
-<!-- Circular Progress Indicator -->
-{#if activeHold}
-  <div 
-    class="fixed pointer-events-none z-50"
-    style="left: {mousePosition.x - 25}px; top: {mousePosition.y - 25}px;"
-  >
-    <div class="relative w-12 h-12">
-      <!-- White background circle -->
-      <div class="absolute inset-0 bg-black rounded-full border-2 border-white"></div>
-      
-      <!-- Progress SVG -->
-      <svg class="w-12 h-12 -rotate-90 absolute inset-0" viewBox="0 0 36 36">
-        <!-- Progress circle -->
-        <path
-          d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-          fill="none"
-          stroke="{activeHold === 'health' ? '#f87171' : '#ffffff'}"
-          stroke-width="3"
-          stroke-dasharray="{holdProgress[activeHold] || 0}, 100"
-          stroke-linecap="round"
-          class="transition-all duration-75 ease-linear"
-        />
-      </svg>
-      
-      <!-- Center icon -->
-      <div class="absolute inset-0 flex items-center justify-center text-lg {activeHold === 'health' ? 'text-red-400' : 'text-white'}">
-        {activeHold === 'health' ? 'H' : 'P'}
-      </div>
-    </div>
-  </div>
-{/if}
