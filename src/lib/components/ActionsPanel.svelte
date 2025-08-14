@@ -3,6 +3,7 @@
     startNewGame, 
     cashOutMidLevel, 
     cashOutPostLevel, 
+    continueToMarketplace,
     proceedToNextLevel, 
     returnToMenu,
     pullOrb 
@@ -31,7 +32,15 @@
       if (confirm(`Cash out ${gameState.playerStats.points} points for moonrocks and end the run?`)) {
         cashOutPostLevel(gameState);
       }
+    } else if (gameState.phase === 'confirmation') {
+      if (confirm(`Cash out ${gameState.playerStats.points} points for moonrocks and end the run?`)) {
+        cashOutPostLevel(gameState);
+      }
     }
+  }
+
+  function handleContinue() {
+    continueToMarketplace(gameState);
   }
 
   function handleProceedToNext() {
@@ -48,7 +57,9 @@
 
   const canStartGame = $derived(gameState.phase === 'menu' && canAffordLevel(gameState.playerStats.moonrocks, 1));
   const canCashOut = $derived((gameState.phase === 'level' && gameState.gameStarted) || 
-    (gameState.phase === 'marketplace' && gameState.levelCompleted));
+    (gameState.phase === 'marketplace' && gameState.levelCompleted) ||
+    gameState.phase === 'confirmation');
+  const canContinue = $derived(gameState.phase === 'confirmation');
   const canProceed = $derived(gameState.phase === 'marketplace' && 
     !isLastLevel(gameState.currentLevel) && 
     canAffordLevel(gameState.playerStats.moonrocks, getNextLevel(gameState.currentLevel)));
@@ -92,7 +103,7 @@
         PULL ORB
       </button>
       
-      <!-- Row 2: Cash Out & Next Level -->
+      <!-- Row 2: Cash Out & Continue/Next Level -->
       <button 
         onclick={handleCashOut}
         disabled={!canCashOut}
@@ -105,14 +116,14 @@
       </button>
       
       <button 
-        onclick={handleProceedToNext}
-        disabled={!canProceed || gameState.phase !== 'marketplace'}
+        onclick={canContinue ? handleContinue : handleProceedToNext}
+        disabled={!canContinue && (!canProceed || gameState.phase !== 'marketplace')}
         class="py-2 px-3 rounded text-sm font-medium transition-colors border
-               {canProceed && gameState.phase === 'marketplace'
+               {(canContinue || (canProceed && gameState.phase === 'marketplace'))
                  ? 'bg-black text-white border-white hover:bg-white hover:text-black' 
                  : 'bg-black text-gray-500 border-gray-500 cursor-not-allowed'}"
       >
-        NEXT LEVEL
+        {canContinue ? 'CONTINUE' : 'NEXT LEVEL'}
       </button>
       
       <!-- Row 3: Main Menu (spans both columns) -->

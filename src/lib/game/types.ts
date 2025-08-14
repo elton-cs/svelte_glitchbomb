@@ -1,6 +1,6 @@
 export type OrbType = 'health' | 'point' | 'bomb' | 'points_per_anyorb' | 'points_per_bombpulled' | 'multiplier' | 'cheddah' | 'moonrocks';
 
-export type GamePhase = 'menu' | 'level' | 'marketplace' | 'gameover' | 'victory';
+export type GamePhase = 'menu' | 'level' | 'confirmation' | 'marketplace' | 'gameover' | 'victory';
 
 export interface Orb {
   type: OrbType;

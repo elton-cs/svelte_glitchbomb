@@ -166,11 +166,11 @@ export function completeLevel(gameState: GameState): void {
     gameState.playerStats.moonrocks += victoryReward;
     addLogEntry(gameState, `Victory! Level ${gameState.currentLevel} completed (+${victoryReward} moonrocks)`);
   } else {
-    gameState.phase = 'marketplace';
+    gameState.phase = 'confirmation';
     gameState.marketplace.available = true;
     gameState.marketplace.currentShopItems = getAvailableShopItemsFromDeck(gameState.shopDeck, gameState.currentLevel);
     addLogEntry(gameState, `Level ${gameState.currentLevel} completed! (+${gameState.playerStats.cheddah} cheddah)`);
-    // Reset consumed orbs so players can see their full collection in marketplace
+    // Reset consumed orbs so players can see their full collection in confirmation
     resetConsumedOrbs(gameState.orbBag);
   }
 }
@@ -270,6 +270,10 @@ export function purchaseShopItem(gameState: GameState, shopItemId: string, quant
   }
   
   return true;
+}
+
+export function continueToMarketplace(gameState: GameState): void {
+  gameState.phase = 'marketplace';
 }
 
 export function proceedToNextLevel(gameState: GameState): boolean {

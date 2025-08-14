@@ -123,7 +123,7 @@
   }
 
   const shopInventory = $derived.by(() => {
-    const isShopOpen = gameState.phase === 'marketplace' && gameState.marketplace.available;
+    const isShopOpen = (gameState.phase === 'marketplace' || gameState.phase === 'confirmation') && gameState.marketplace.available;
     
     if (isShopOpen) {
       // Shop is open - show actual items
@@ -227,8 +227,8 @@
   });
 </script>
 
-<div class="bg-black p-3 rounded-lg shadow-sm border border-white h-full flex flex-col {gameState.phase === 'marketplace' && gameState.marketplace.available ? '' : 'opacity-60'}">
-  <h2 class="text-sm font-bold mb-3 text-white">SHOP {gameState.phase === 'marketplace' && gameState.marketplace.available ? '' : '(CLOSED)'}</h2>
+<div class="bg-black p-3 rounded-lg shadow-sm border border-white h-full flex flex-col {(gameState.phase === 'marketplace' || gameState.phase === 'confirmation') && gameState.marketplace.available ? '' : 'opacity-60'}">
+  <h2 class="text-sm font-bold mb-3 text-white">{gameState.phase === 'confirmation' ? 'LEVEL COMPLETE!' : 'SHOP'} {(gameState.phase === 'marketplace' || gameState.phase === 'confirmation') && gameState.marketplace.available ? '' : '(CLOSED)'}</h2>
   
   <!-- 2x3 Shop Grid -->
   <div class="grid grid-cols-2 gap-2 flex-1">
@@ -281,7 +281,9 @@
   </div>
   
   <div class="mt-1 text-xs text-center h-4">
-    {#if gameState.phase === 'marketplace' && gameState.marketplace.available && gameState.playerStats.cheddah === 0}
+    {#if gameState.phase === 'confirmation'}
+      <p class="text-white font-bold">LEVEL {gameState.currentLevel} COMPLETE!</p>
+    {:else if gameState.phase === 'marketplace' && gameState.marketplace.available && gameState.playerStats.cheddah === 0}
       <p class="text-red-400">NO CHEDDAH TO SPEND</p>
     {:else if gameState.phase === 'marketplace' && gameState.marketplace.available}
       <p class="text-white">CLICK TO BUY</p>
