@@ -131,17 +131,17 @@
       <button
         disabled={!item.available || !item.canPurchase || gameState.phase !== 'marketplace' || !gameState.marketplace.available}
         onclick={item.available && item.canPurchase && gameState.phase === 'marketplace' && gameState.marketplace.available && item.isShopItem ? () => handleShopItemPurchase(item.id) : undefined}
-        class="relative py-1 px-1 rounded font-medium transition-colors border {item.borderColor}
+        class="group relative py-1 px-1 rounded font-medium transition-colors border {item.borderColor}
                {item.available && item.canPurchase && gameState.phase === 'marketplace' && gameState.marketplace.available
                  ? 'bg-black text-white hover:bg-white hover:text-black' 
                  : 'bg-black text-gray-500 cursor-not-allowed'}"
       >
         <!-- Purchase count badge -->
         {#if item.purchaseCount > 0}
-          <div class="absolute top-1 left-1 bg-black text-xs font-bold px-1.5 py-0.5 rounded-full min-w-5 text-center z-10 border
+          <div class="absolute top-1 left-1 text-xs font-bold px-1.5 py-0.5 rounded-full min-w-5 text-center z-10 border transition-colors
                       {item.available && item.canPurchase && gameState.phase === 'marketplace' && gameState.marketplace.available
-                        ? 'text-white border-white' 
-                        : 'text-gray-500 border-gray-500'}">
+                        ? 'bg-black text-white border-white group-hover:bg-white group-hover:text-black group-hover:border-black' 
+                        : 'bg-black text-gray-500 border-gray-500'}">
             {item.purchaseCount}x
           </div>
         {/if}
