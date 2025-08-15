@@ -78,7 +78,7 @@
       {#each availableGroups as group}
         {#each Array(group.count) as _, i}
           <div class="relative group">
-            <div class="w-6 h-6 border border-white bg-black hover:bg-white hover:text-black flex items-center justify-center text-xs font-bold transition-colors {color}">
+            <div class="min-w-8 h-8 px-1 border border-white bg-black hover:bg-white hover:text-black flex items-center justify-center text-xs font-bold transition-colors {color}">
               {group.amount}
             </div>
             <!-- Tooltip with calculation -->
@@ -94,7 +94,7 @@
       <!-- Consumed Orbs (grayed out) -->
       {#each totalGroups as group}
         {#each Array(Math.max(0, group.count - (availableGroups.find(a => a.amount === group.amount)?.count || 0))) as _, i}
-          <div class="w-6 h-6 border border-gray-600 bg-gray-800 text-gray-500 flex items-center justify-center text-xs">
+          <div class="min-w-8 h-8 px-1 border border-gray-600 bg-gray-800 text-gray-500 flex items-center justify-center text-xs">
             {group.amount}
           </div>
         {/each}
