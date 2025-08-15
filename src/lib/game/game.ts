@@ -79,6 +79,11 @@ export function enterLevel(gameState: GameState, level: number): boolean {
       gameState.playerStats.cheddah = 0;
     }
     
+    // Track P/L change from entering new level (points reset to 0, moonrocks spent)
+    if (level > 1) {
+      addPointHistoryEntry(gameState, 0, `Entered Level ${level} (-${cost} moonrocks)`);
+    }
+    
     return true;
   } catch (error) {
     console.error('Error entering level:', error);
