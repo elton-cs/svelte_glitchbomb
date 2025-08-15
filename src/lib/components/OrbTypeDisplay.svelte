@@ -10,6 +10,7 @@
     totalOrbs: Orb[];
     totalAvailableOrbs: number; // For calculation purposes
     bombsPulledThisLevel: number; // For danger orb calculations
+    levelMultiplier: number; // For point orb calculations
   }
 
   let { 
@@ -20,7 +21,8 @@
     availableOrbs, 
     totalOrbs, 
     totalAvailableOrbs, 
-    bombsPulledThisLevel 
+    bombsPulledThisLevel,
+    levelMultiplier 
   }: Props = $props();
 
   interface OrbGroup {
@@ -43,13 +45,30 @@
   // Calculate potential points for special orbs
   function getCalculation(type: OrbType, amount: number): string | undefined {
     switch (type) {
+      case 'point':
+        const multipliedPoints = Math.floor(amount * levelMultiplier);
+        return levelMultiplier > 1 ? `${amount}×${levelMultiplier} = ${multipliedPoints} pts` : `${amount} pts`;
       case 'points_per_anyorb':
         const remaining = totalAvailableOrbs - 1;
-        return `${amount}×${remaining} = ${amount * remaining} pts`;
+        const comboPoints = Math.floor(amount * remaining * levelMultiplier);
+        if (levelMultiplier > 1) {
+          return `${amount}×${remaining}×${levelMultiplier} = ${comboPoints} pts`;
+        } else {
+          return `${amount}×${remaining} = ${comboPoints} pts`;
+        }
       case 'points_per_bombpulled':
-        return `${amount}×${bombsPulledThisLevel} = ${amount * bombsPulledThisLevel} pts`;
+        const dangerPoints = Math.floor(amount * bombsPulledThisLevel * levelMultiplier);
+        if (levelMultiplier > 1) {
+          return `${amount}×${bombsPulledThisLevel}×${levelMultiplier} = ${dangerPoints} pts`;
+        } else {
+          return `${amount}×${bombsPulledThisLevel} = ${dangerPoints} pts`;
+        }
       case 'multiplier':
         return `+${amount}× boost`;
+      case 'cheddah':
+        return `+${amount} cheddah`;
+      case 'moonrocks':
+        return `+${amount} moonrocks`;
       default:
         return undefined;
     }

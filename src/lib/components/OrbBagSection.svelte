@@ -84,6 +84,7 @@
         totalOrbs={gameState.orbBag[orbTypeInfo.type].total}
         totalAvailableOrbs={totalAvailableOrbs}
         bombsPulledThisLevel={gameState.playerStats.bombsPulledThisLevel}
+        levelMultiplier={gameState.playerStats.levelMultiplier}
       />
     {/each}
   </div>
