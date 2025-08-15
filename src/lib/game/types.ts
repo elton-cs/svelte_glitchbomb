@@ -51,6 +51,12 @@ export interface PlayerStats {
   levelMultiplier: number;
 }
 
+export interface PointHistoryEntry {
+  timestamp: number;
+  points: number;
+  action: string;
+}
+
 export interface LevelConfig {
   level: number;
   milestone: number;
@@ -72,6 +78,7 @@ export interface GameState {
   marketplace: MarketplaceState;
   shopDeck: ShopDeck;
   gameLog: GameLog;
+  pointHistory: PointHistoryEntry[];
   gameStarted: boolean;
   levelCompleted: boolean;
   committedToNextLevel: boolean;

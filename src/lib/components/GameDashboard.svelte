@@ -6,6 +6,7 @@
   import PlayerStatsSection from './PlayerStatsSection.svelte';
   import OrbBagSection from './OrbBagSection.svelte';
   import GameLogSection from './GameLogSection.svelte';
+  import ProfitLossPanel from './ProfitLossPanel.svelte';
 
   interface Props {
     devMode: boolean;
@@ -108,6 +109,13 @@
       <div class="flex-1 min-w-80 h-96">
         <div class="h-full">
           <GameLogSection {gameState} />
+        </div>
+      </div>
+
+      <!-- Profit/Loss Panel -->
+      <div class="flex-1 min-w-80 h-96">
+        <div class="h-full">
+          <ProfitLossPanel {gameState} />
         </div>
       </div>
     </div>

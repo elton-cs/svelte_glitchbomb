@@ -18,17 +18,24 @@ import {
 import { GAME_CONFIG } from './constants.js';
 import type { OrbType } from './types.js';
 import { getShopItem, getAvailableShopItemsFromDeck, findDeckItem, updateDeckItemPrice, initializeShopDeck } from './shopItems.js';
-import { addLogEntry, clearGameLog } from './state.js';
+import { addLogEntry, clearGameLog, addPointHistoryEntry, clearPointHistory } from './state.js';
 
-function applyPointsWithMultiplier(gameState: GameState, basePoints: number): void {
+function applyPointsWithMultiplier(gameState: GameState, basePoints: number, action: string = 'Points gained'): void {
   const multipliedPoints = Math.floor(basePoints * gameState.playerStats.levelMultiplier);
   gameState.playerStats.points += multipliedPoints;
+  addPointHistoryEntry(gameState, gameState.playerStats.points, action);
 }
 
 export function startNewGame(gameState: GameState): boolean {
   try {
     // Clear game log for new session
     clearGameLog(gameState);
+    
+    // Clear point history for new session
+    clearPointHistory(gameState);
+    
+    // Add initial point history entry
+    addPointHistoryEntry(gameState, 0, 'Game started');
     
     // Reset shop deck to initial prices (new game session)
     gameState.shopDeck = initializeShopDeck();
@@ -105,7 +112,7 @@ export function pullOrb(gameState: GameState): boolean {
         addLogEntry(gameState, `Pulled health orb (+${orb.amount} HP)`);
         break;
       case 'point':
-        applyPointsWithMultiplier(gameState, orb.amount);
+        applyPointsWithMultiplier(gameState, orb.amount, `Point orb (+${orb.amount})`);
         addLogEntry(gameState, `Pulled point orb (+${orb.amount} points)`);
         break;
       case 'bomb':
@@ -115,12 +122,12 @@ export function pullOrb(gameState: GameState): boolean {
         break;
       case 'points_per_anyorb':
         const pointsPerAnyOrbPoints = calculatePointsPerAnyOrbPoints(gameState.orbBag, orb.amount);
-        applyPointsWithMultiplier(gameState, pointsPerAnyOrbPoints);
+        applyPointsWithMultiplier(gameState, pointsPerAnyOrbPoints, `Combo orb (+${pointsPerAnyOrbPoints})`);
         addLogEntry(gameState, `Pulled combo orb (+${pointsPerAnyOrbPoints} points from ${orb.amount} per orb)`);
         break;
       case 'points_per_bombpulled':
         const bombPoints = gameState.playerStats.bombsPulledThisLevel * orb.amount;
-        applyPointsWithMultiplier(gameState, bombPoints);
+        applyPointsWithMultiplier(gameState, bombPoints, `Danger orb (+${bombPoints})`);
         addLogEntry(gameState, `Pulled danger orb (+${bombPoints} points from ${orb.amount} per bomb)`);
         break;
       case 'multiplier':
