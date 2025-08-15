@@ -8,9 +8,8 @@
     color: string;
     availableOrbs: Orb[];
     totalOrbs: Orb[];
-    totalAvailableOrbs: number; // For calculation purposes
-    bombsPulledThisLevel: number; // For danger orb calculations
-    levelMultiplier: number; // For point orb calculations
+    onOrbHover: (orbType: OrbType, amount: number) => void;
+    onOrbLeave: () => void;
   }
 
   let { 
@@ -19,16 +18,14 @@
     name, 
     color, 
     availableOrbs, 
-    totalOrbs, 
-    totalAvailableOrbs, 
-    bombsPulledThisLevel,
-    levelMultiplier 
+    totalOrbs,
+    onOrbHover,
+    onOrbLeave
   }: Props = $props();
 
   interface OrbGroup {
     amount: number;
     count: number;
-    calculation?: string;
   }
 
   // Group orbs by amount
@@ -42,42 +39,7 @@
       .sort((a, b) => a.amount - b.amount);
   }
 
-  // Calculate potential points for special orbs
-  function getCalculation(type: OrbType, amount: number): string | undefined {
-    switch (type) {
-      case 'point':
-        const multipliedPoints = Math.floor(amount * levelMultiplier);
-        return levelMultiplier > 1 ? `${amount}×${levelMultiplier} = ${multipliedPoints} pts` : `${amount} pts`;
-      case 'points_per_anyorb':
-        const remaining = totalAvailableOrbs - 1;
-        const comboPoints = Math.floor(amount * remaining * levelMultiplier);
-        if (levelMultiplier > 1) {
-          return `${amount}×${remaining}×${levelMultiplier} = ${comboPoints} pts`;
-        } else {
-          return `${amount}×${remaining} = ${amount * remaining} pts`;
-        }
-      case 'points_per_bombpulled':
-        const dangerPoints = Math.floor(amount * bombsPulledThisLevel * levelMultiplier);
-        if (levelMultiplier > 1) {
-          return `${amount}×${bombsPulledThisLevel}×${levelMultiplier} = ${dangerPoints} pts`;
-        } else {
-          return `${amount}×${bombsPulledThisLevel} = ${dangerPoints} pts`;
-        }
-      case 'multiplier':
-        return `+${amount}× boost`;
-      case 'cheddah':
-        return `+${amount} cheddah`;
-      case 'moonrocks':
-        return `+${amount} moonrocks`;
-      default:
-        return undefined;
-    }
-  }
-
-  const availableGroups = $derived(groupOrbs(availableOrbs).map(group => ({
-    ...group,
-    calculation: getCalculation(orbType, group.amount)
-  })));
+  const availableGroups = $derived(groupOrbs(availableOrbs));
 
   const totalGroups = $derived(groupOrbs(totalOrbs));
   const totalAvailable = $derived(availableOrbs.length);
@@ -97,15 +59,15 @@
       {#each availableGroups as group}
         {#each Array(group.count) as _, i}
           <div class="relative group">
-            <div class="min-w-8 h-8 px-1 border border-white bg-black hover:bg-white hover:text-black flex items-center justify-center text-xs font-bold transition-colors {color}">
+            <div 
+              class="min-w-8 h-8 px-1 border border-white bg-black hover:bg-white hover:text-black flex items-center justify-center text-xs font-bold transition-colors {color}"
+              role="button"
+              tabindex="0"
+              onmouseenter={() => onOrbHover(orbType, group.amount)}
+              onmouseleave={onOrbLeave}
+            >
               {group.amount}
             </div>
-            <!-- Tooltip with calculation -->
-            {#if group.calculation}
-              <div class="absolute top-1/2 left-full transform -translate-y-1/2 ml-2 px-2 py-1 bg-gray-900 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10 pointer-events-none">
-                {group.calculation}
-              </div>
-            {/if}
           </div>
         {/each}
       {/each}
