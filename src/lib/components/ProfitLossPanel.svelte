@@ -21,9 +21,8 @@
       range: getLevelMilestone(gameState.currentLevel) + getCumulativeLevelCost(gameState.currentLevel)
     };
     
-    // Convert point history to profit/loss values
-    const cumulativeLevelCost = getCumulativeLevelCost(gameState.currentLevel);
-    const profitLossValues = history.map(h => h.points - cumulativeLevelCost);
+    // Convert point history to profit/loss values using stored cumulative costs
+    const profitLossValues = history.map(h => h.points - h.cumulativeCost);
     
     // Use current level milestone as baseline, but extend if player exceeds it
     const currentMilestone = getLevelMilestone(gameState.currentLevel);
@@ -32,7 +31,7 @@
     
     // Use cumulative cost as baseline minimum, but extend if player goes further negative  
     const minPoints = Math.min(...profitLossValues);
-    const minValue = Math.min(minPoints, -cumulativeLevelCost); // Use -cost as minimum, extend if needed
+    const minValue = Math.min(minPoints, -getCumulativeLevelCost(gameState.currentLevel)); // Use -cost as minimum, extend if needed
     const range = maxValue - minValue;
     const zeroY = (maxValue / range) * 100; // Y position of zero line as percentage
     

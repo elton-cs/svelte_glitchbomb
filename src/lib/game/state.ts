@@ -109,11 +109,12 @@ export function clearGameLog(gameState: GameState): void {
 }
 
 // Point History Utility Functions
-export function addPointHistoryEntry(gameState: GameState, points: number, action: string): void {
+export function addPointHistoryEntry(gameState: GameState, points: number, action: string, cumulativeCost: number): void {
   const historyEntry: PointHistoryEntry = {
     timestamp: Date.now(),
     points,
-    action
+    action,
+    cumulativeCost
   };
   
   gameState.pointHistory.push(historyEntry);

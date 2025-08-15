@@ -55,6 +55,7 @@ export interface PointHistoryEntry {
   timestamp: number;
   points: number;
   action: string;
+  cumulativeCost: number;
 }
 
 export interface LevelConfig {
