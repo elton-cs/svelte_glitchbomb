@@ -126,11 +126,11 @@
           <div class="font-medium">CASH OUT</div>
           {#if gameState.phase === 'confirmation'}
             <div class="text-xs opacity-75">
-              (+{gameState.playerStats.points} 🌙 moonrocks)
+              (+{gameState.playerStats.points} 🌙)
             </div>
           {:else if gameState.phase === 'level'}
             <div class="text-xs opacity-75">
-              (+{midLevelCashOut} 🌙 moonrocks)
+              (+{midLevelCashOut} 🌙)
             </div>
           {/if}
         </div>
@@ -168,7 +168,7 @@
         <div class="text-center">
           <div class="font-medium">RESTART</div>
           {#if canRestart && gameState.phase === 'gameover'}
-            <div class="text-xs opacity-75">(-{getLevelEntryCost(1)} 🌙 moonrocks)</div>
+            <div class="text-xs opacity-75">(-{getLevelEntryCost(1)} 🌙)</div>
           {/if}
         </div>
       </button>

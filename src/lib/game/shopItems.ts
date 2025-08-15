@@ -29,7 +29,7 @@ export const COMMON_SHOP_ITEMS: ShopItem[] = [
   {
     id: 'common_moonrocks_15',
     name: 'MOONROCKS 15',
-    description: '+15 moonrocks',
+    description: '+15 🌙',
     type: 'moonrocks',
     amount: 15,
     cost: 8
@@ -108,8 +108,8 @@ export const COSMIC_SHOP_ITEMS: ShopItem[] = [
   },
   {
     id: 'cosmic_moonrocks_40',
-    name: 'COSMIC MOON',
-    description: 'Gain 40 Moon Rocks',
+    name: 'MOONROCKS 40',
+    description: '+40 🌙',
     type: 'moonrocks',
     amount: 40,
     cost: 23
