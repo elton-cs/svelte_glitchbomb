@@ -115,11 +115,11 @@
   </div>
 
   <!-- Profit/Loss Chart -->
-  <div class="flex-1 flex flex-col">
+  <div class="flex-1 flex flex-col min-h-0">
     
     {#if chartData().points.length > 0}
-      <div class="flex-1 bg-black rounded border border-white p-2">
-        <svg width="100%" height="100%" viewBox="0 0 300 220" class="overflow-hidden">
+      <div class="flex-1 bg-black rounded border border-white p-2 overflow-hidden">
+        <svg width="100%" height="100%" viewBox="0 0 300 220" class="w-full h-full" preserveAspectRatio="xMidYMid meet">
           <!-- Grid lines -->
           <defs>
             <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
