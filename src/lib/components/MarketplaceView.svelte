@@ -136,40 +136,39 @@
                  ? 'bg-black text-white hover:bg-white hover:text-black' 
                  : 'bg-black text-gray-500 cursor-not-allowed'}"
       >
-        <div class="h-full w-full flex flex-col justify-between p-1">
+        <div class="h-full w-full flex items-center p-2">
           {#if item.icon}
             <!-- Placeholder X mark - always gray -->
             <div class="flex-1 flex items-center justify-center">
               <div class="text-4xl {item.color}">{item.icon}</div>
             </div>
           {:else}
-            <!-- Actual shop item - no color classes so hover works -->
-            <div class="flex-1 flex flex-col justify-center min-h-0">
+            <!-- Two column layout: Content | Price -->
+            <div class="flex-1 flex flex-col justify-center min-w-0 pr-2">
               {#if item.name}
-                <div class="font-bold uppercase text-sm leading-tight mb-1 truncate">{item.name}</div>
+                <div class="font-medium uppercase text-lg leading-tight truncate">{item.name}</div>
               {/if}
               {#if item.description}
-                <div class="text-xs opacity-75 leading-tight truncate">{item.description}</div>
+                <div class="text-sm opacity-75 leading-tight truncate">{item.description}</div>
               {/if}
             </div>
             
-            <!-- Price section at bottom -->
-            <div class="mt-1 flex-shrink-0">
+            <!-- Vertical price column on right -->
+            <div class="flex flex-col items-center justify-center text-center w-12">
               {#if item.available && item.cost > 0}
-                <div class="text-sm font-bold">
-                  {#if item.purchaseCount > 0}
-                    <div class="text-xs">
-                      <span class="line-through opacity-60">{item.baseCost}</span> → {item.cost} 🧀
-                    </div>
-                    <div class="text-xs opacity-75">({item.purchaseCount}x bought)</div>
-                  {:else}
-                    {item.cost} 🧀
-                  {/if}
-                </div>
+                {#if item.purchaseCount > 0}
+                  <div class="text-xs opacity-60 line-through">{item.baseCost}</div>
+                  <div class="text-lg font-bold">{item.cost}</div>
+                  <div class="text-lg">🧀</div>
+                  <div class="text-xs opacity-75">({item.purchaseCount}x)</div>
+                {:else}
+                  <div class="text-lg font-bold">{item.cost}</div>
+                  <div class="text-lg">🧀</div>
+                {/if}
               {:else if !item.available && item.cost === 0}
-                <div class="text-xs opacity-60 {item.color}">CLOSED</div>
+                <div class="text-sm opacity-60 {item.color} transform rotate-90">CLOSED</div>
               {:else if !item.available}
-                <div class="text-xs opacity-60">LOCKED</div>
+                <div class="text-sm opacity-60 transform rotate-90">LOCKED</div>
               {/if}
             </div>
           {/if}
