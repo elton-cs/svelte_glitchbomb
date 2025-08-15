@@ -123,15 +123,4 @@
     <!-- No orbs available -->
     <div class="text-gray-500 text-xs">No orbs available</div>
   {/if}
-  
-  <!-- Calculation Summary for special orbs -->
-  {#if availableGroups.length > 0 && (orbType === 'points_per_anyorb' || orbType === 'points_per_bombpulled')}
-    <div class="text-xs text-white opacity-75">
-      {#each availableGroups as group}
-        {#if group.calculation}
-          <div>{group.count}× {group.calculation}</div>
-        {/if}
-      {/each}
-    </div>
-  {/if}
 </div>
