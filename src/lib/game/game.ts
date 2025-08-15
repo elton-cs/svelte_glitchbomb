@@ -304,6 +304,15 @@ export function proceedToNextLevel(gameState: GameState): boolean {
 }
 
 export function restartGame(gameState: GameState): boolean {
+  // Reset orb bag to initial state (same as going to main menu then starting)
+  gameState.orbBag = createInitialBag();
+  
+  // Reset other game state
+  gameState.gameStarted = false;
+  gameState.levelCompleted = false;
+  gameState.marketplace.available = false;
+  gameState.committedToNextLevel = false;
+  
   return startNewGame(gameState);
 }
 
