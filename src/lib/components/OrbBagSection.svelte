@@ -115,7 +115,7 @@
 <div class="bg-black p-3 rounded-lg shadow-sm border border-white h-full flex flex-col {gameState.phase === 'level' || gameState.phase === 'confirmation' ? '' : 'opacity-60 pointer-events-none'}">
   <div class="flex justify-between items-center mb-3">
     <h2 class="text-sm font-bold text-white">ORB BAG ({totalAvailableOrbs}) {gameState.phase === 'level' || gameState.phase === 'confirmation' ? '' : '(INACTIVE)'}</h2>
-    <div class="text-xs text-white font-mono min-h-4">{calculationDisplay || ''}</div>
+    <div class="text-xs text-white font-mono min-h-4">{calculationDisplay || 'hover for point calculation preview'}</div>
   </div>
   
   <div class="grid grid-cols-1 gap-4 text-xs flex-1 overflow-y-auto">
