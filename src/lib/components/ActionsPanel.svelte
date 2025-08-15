@@ -167,7 +167,9 @@
       >
         <div class="text-center">
           <div class="font-medium">RESTART</div>
-          <div class="text-xs opacity-75">(-{getLevelEntryCost(1)} moonrocks)</div>
+          {#if canRestart && gameState.phase === 'gameover'}
+            <div class="text-xs opacity-75">(-{getLevelEntryCost(1)} moonrocks)</div>
+          {/if}
         </div>
       </button>
       
