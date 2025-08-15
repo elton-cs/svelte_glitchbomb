@@ -40,7 +40,7 @@
       <!-- Moonrocks - Separate section -->
       <div class="bg-black p-3 rounded-lg shadow-sm border border-white flex-1 min-w-64">
         <div class="flex justify-between items-center">
-          <div class="text-sm font-bold text-white">MOONROCKS</div>
+          <div class="text-sm font-bold text-white">🌙 MOONROCKS</div>
           <div class="text-xl font-bold text-white">{gameState.playerStats.moonrocks}</div>
         </div>
         {#if canClaimRocks}
@@ -68,7 +68,7 @@
               onclick={resetMoonrocks}
               class="w-full bg-black hover:bg-white hover:text-black border border-white text-white text-sm font-medium py-2 px-3 rounded-lg transition-colors"
             >
-              RESET MOONROCKS TO 0
+              RESET 🌙 MOONROCKS TO 0
             </button>
           </div>
         </div>
