@@ -138,8 +138,8 @@
       >
         <!-- Purchase count badge -->
         {#if item.purchaseCount > 0}
-          <div class="absolute top-1 left-1 bg-white text-black text-xs font-bold px-1.5 py-0.5 rounded-full min-w-5 text-center z-10">
-            {item.purchaseCount}
+          <div class="absolute top-1 left-1 bg-black text-white border border-white text-xs font-bold px-1.5 py-0.5 rounded-full min-w-5 text-center z-10">
+            {item.purchaseCount}x
           </div>
         {/if}
         
