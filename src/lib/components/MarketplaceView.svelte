@@ -131,12 +131,12 @@
       <button
         disabled={!item.available || !item.canPurchase || gameState.phase !== 'marketplace' || !gameState.marketplace.available}
         onclick={item.available && item.canPurchase && gameState.phase === 'marketplace' && gameState.marketplace.available && item.isShopItem ? () => handleShopItemPurchase(item.id) : undefined}
-        class="py-2 px-2 rounded font-medium transition-colors border {item.borderColor}
+        class="py-1 px-1 rounded font-medium transition-colors border {item.borderColor}
                {item.available && item.canPurchase && gameState.phase === 'marketplace' && gameState.marketplace.available
                  ? 'bg-black text-white hover:bg-white hover:text-black' 
                  : 'bg-black text-gray-500 cursor-not-allowed'}"
       >
-        <div class="h-full w-full flex items-center p-2">
+        <div class="h-full w-full flex items-center p-1">
           {#if item.icon}
             <!-- Placeholder X mark - always gray -->
             <div class="flex-1 flex items-center justify-center">
@@ -144,7 +144,7 @@
             </div>
           {:else}
             <!-- Two column layout: Content | Price -->
-            <div class="flex-1 flex flex-col justify-center min-w-0 pr-2">
+            <div class="flex-1 flex flex-col justify-center min-w-0 pr-1">
               {#if item.name}
                 <div class="font-medium uppercase text-lg leading-tight truncate">{item.name}</div>
               {/if}
@@ -154,7 +154,7 @@
             </div>
             
             <!-- Vertical price column on right -->
-            <div class="flex flex-col items-center justify-center text-center w-12">
+            <div class="flex flex-col items-center justify-center text-center w-10">
               {#if item.available && item.cost > 0}
                 {#if item.purchaseCount > 0}
                   <div class="text-xs opacity-60 line-through">{item.baseCost}</div>
