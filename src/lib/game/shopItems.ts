@@ -244,5 +244,5 @@ export function getAvailableShopItemsFromDeck(shopDeck: ShopDeck, level: number)
     items.push(...shuffledCosmic.slice(0, 1));
   }
   
-  return items;
+  return items.sort((a, b) => a.currentCost - b.currentCost);
 }

@@ -64,6 +64,7 @@ export function createInitialGameState(moonrocks: number = loadMoonrocks()): Gam
     gameLog: [],
     gameStarted: false,
     levelCompleted: false,
+    committedToNextLevel: false,
   };
 }
 

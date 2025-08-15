@@ -63,13 +63,13 @@ export function enterLevel(gameState: GameState, level: number): boolean {
     gameState.phase = 'level';
     gameState.levelCompleted = false;
     gameState.gameStarted = true;
-    gameState.playerStats.cheddah = 0;
     
     resetLevelStats(gameState);
     
-    // Only reset consumed orbs when starting a new game (level 1)
+    // Only reset consumed orbs and cheddah when starting a new game (level 1)
     if (level === 1) {
       resetConsumedOrbs(gameState.orbBag);
+      gameState.playerStats.cheddah = 0;
     }
     
     return true;
@@ -158,7 +158,6 @@ export function pullOrb(gameState: GameState): boolean {
 
 export function completeLevel(gameState: GameState): void {
   gameState.levelCompleted = true;
-  gameState.playerStats.cheddah = processLevelReward(gameState.playerStats.points);
 
   if (isLastLevel(gameState.currentLevel)) {
     gameState.phase = 'victory';
@@ -166,18 +165,15 @@ export function completeLevel(gameState: GameState): void {
     gameState.playerStats.moonrocks += victoryReward;
     addLogEntry(gameState, `Victory! Level ${gameState.currentLevel} completed (+${victoryReward} moonrocks)`);
   } else {
-    gameState.phase = 'marketplace';
-    gameState.marketplace.available = true;
-    gameState.marketplace.currentShopItems = getAvailableShopItemsFromDeck(gameState.shopDeck, gameState.currentLevel);
-    addLogEntry(gameState, `Level ${gameState.currentLevel} completed! (+${gameState.playerStats.cheddah} cheddah)`);
-    // Reset consumed orbs so players can see their full collection in marketplace
-    resetConsumedOrbs(gameState.orbBag);
+    gameState.phase = 'confirmation';
+    gameState.marketplace.available = false;
+    gameState.marketplace.currentShopItems = [];
+    addLogEntry(gameState, `Level ${gameState.currentLevel} completed! Choose: cash out or continue?`);
   }
 }
 
 export function cashOutMidLevel(gameState: GameState): number {
-  const levelCost = getLevelEntryCost(gameState.currentLevel);
-  const cashOut = calculateCashOut(gameState.playerStats.points, levelCost);
+  const cashOut = gameState.playerStats.points;
   
   gameState.playerStats.moonrocks += cashOut;
   gameState.phase = 'menu';
@@ -190,6 +186,9 @@ export function cashOutMidLevel(gameState: GameState): number {
   
   // Reset shop deck to initial prices (new game session)
   gameState.shopDeck = initializeShopDeck();
+  
+  // Reset commitment flag
+  gameState.committedToNextLevel = false;
   
   return cashOut;
 }
@@ -207,6 +206,9 @@ export function cashOutPostLevel(gameState: GameState): number {
   
   // Reset shop deck to initial prices (new game session)
   gameState.shopDeck = initializeShopDeck();
+  
+  // Reset commitment flag
+  gameState.committedToNextLevel = false;
   
   return points;
 }
@@ -272,6 +274,20 @@ export function purchaseShopItem(gameState: GameState, shopItemId: string, quant
   return true;
 }
 
+export function continueToMarketplace(gameState: GameState): void {
+  gameState.phase = 'marketplace';
+  gameState.committedToNextLevel = true;
+  const newCheddah = processLevelReward(gameState.playerStats.points);
+  gameState.playerStats.cheddah += newCheddah;
+  gameState.marketplace.available = true;
+  gameState.marketplace.currentShopItems = getAvailableShopItemsFromDeck(gameState.shopDeck, gameState.currentLevel);
+  
+  // Reset consumed orbs so players can purchase more orbs with their cheddah
+  resetConsumedOrbs(gameState.orbBag);
+  
+  addLogEntry(gameState, `Converted ${gameState.playerStats.points} points to ${newCheddah} cheddah (+${newCheddah} total: ${gameState.playerStats.cheddah})`);
+}
+
 export function proceedToNextLevel(gameState: GameState): boolean {
   if (gameState.phase !== 'marketplace') {
     return false;
@@ -279,12 +295,16 @@ export function proceedToNextLevel(gameState: GameState): boolean {
 
   const nextLevel = getNextLevel(gameState.currentLevel);
   const levelCost = getLevelEntryCost(nextLevel);
-  gameState.playerStats.cheddah = 0;
   gameState.marketplace.available = false;
+  gameState.committedToNextLevel = false; // Reset for next level cycle
   
   addLogEntry(gameState, `Advanced to level ${nextLevel} (-${levelCost} moonrocks)`);
   
   return enterLevel(gameState, nextLevel);
+}
+
+export function restartGame(gameState: GameState): boolean {
+  return startNewGame(gameState);
 }
 
 export function returnToMenu(gameState: GameState): void {
@@ -300,4 +320,7 @@ export function returnToMenu(gameState: GameState): void {
   
   // Reset shop deck to initial prices (new game session)
   gameState.shopDeck = initializeShopDeck();
+  
+  // Reset commitment flag
+  gameState.committedToNextLevel = false;
 }

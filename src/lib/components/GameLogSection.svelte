@@ -16,7 +16,7 @@
       {#if gameState.gameLog.length === 0}
         <p class="text-gray-500 italic">No actions yet...</p>
       {:else}
-        {#each gameState.gameLog.toReversed() as entry}
+        {#each [...gameState.gameLog].reverse() as entry}
           <div class="flex gap-2">
             <span class="text-gray-400 font-mono">{entry.timestamp}</span>
             <span class="flex-1">{entry.action}{entry.details ? ` ${entry.details}` : ''}</span>

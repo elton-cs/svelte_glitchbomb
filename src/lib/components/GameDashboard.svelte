@@ -7,8 +7,12 @@
   import OrbBagSection from './OrbBagSection.svelte';
   import GameLogSection from './GameLogSection.svelte';
 
+  interface Props {
+    devMode: boolean;
+  }
+
+  let { devMode }: Props = $props();
   let gameState = $state(createInitialGameState());
-  let devMode = $state(false);
   
   function handleClaimRocks() {
     const newAmount = claimFreeRocks(gameState.playerStats.moonrocks);
@@ -17,10 +21,6 @@
   
   function resetMoonrocks() {
     gameState.playerStats.moonrocks = 0;
-  }
-  
-  function toggleDevMode() {
-    devMode = !devMode;
   }
   
   // Save moonrocks whenever they change
@@ -32,22 +32,8 @@
   
 </script>
 
-<div class="min-h-screen bg-black p-3">
+<div class="bg-black p-3">
   <div class="max-w-7xl mx-auto">
-    <!-- Header -->
-    <header class="text-center mb-6 relative">
-      <h1 class="text-2xl font-bold text-white">GLITCH BOMB</h1>
-      <p class="text-sm text-white">BAG-BUILDING LUCK-BASED GAME</p>
-      
-      <!-- Dev Mode Toggle - positioned in top right -->
-      <button 
-        onclick={toggleDevMode}
-        class="absolute top-0 right-0 text-xs px-2 py-1 rounded border {devMode ? 'bg-black text-white border-white' : 'bg-black text-white border-white'} hover:opacity-80 transition-colors"
-      >
-        {devMode ? 'DEV ON' : 'DEV'}
-      </button>
-    </header>
-    
     <!-- Top Row: Moonrocks and Dev Tools -->
     <div class="flex flex-wrap gap-4 mb-6">
       <!-- Moonrocks - Separate section -->

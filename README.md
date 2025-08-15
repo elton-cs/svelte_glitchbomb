@@ -9,22 +9,24 @@ Glitch Bomb is a strategic luck game where you pull orbs from a bag to score poi
 ## Core Game Features
 
 ### 🎯 **Enhanced Orb Bag System**
-- Start with 15 orbs (5 Health, 5 Point, 5 Bomb)
+- Start with 12 orbs (1 Health, 3 Point, 5 Bomb, 3 Special)
 - Pull random orbs with different effects
-- Track available vs consumed orbs
+- **NEW**: Visual square representation with hover tooltips
 - **NEW**: 8 different orb types with unique mechanics
 
 ### 🏆 **Level Progression** 
 - 5 levels with increasing difficulty
 - Progressive point milestones: 10 → 20 → 30 → 40 → 50
-- Entry costs increase per level [0, 15, 25, 35, 45 moonrocks]
+- Entry costs increase per level [10, 15, 25, 35, 45 moonrocks]
 - Level multipliers affect scoring
+- **NEW**: Confirmation phase with cash out vs continue choice
 
 ### 💰 **Economic System**
-- Start with 1000 moonrocks (session-based)
-- Game entry costs 5 moonrocks
-- Cash out mid-level or after completion
-- Victory rewards up to 150 total moonrocks
+- Start with 1000 moonrocks (persistent across sessions)
+- Level entry costs: 10, 15, 25, 35, 45 moonrocks
+- Cash out mid-level or after completion (1:1 points to moonrocks)
+- **NEW**: Cheddah currency accumulates across levels within same game
+- **NEW**: 10 moonrocks restart option from game over screen
 
 ### 🛒 **Advanced Shop System** *(NEW in v0.1.2)*
 - **Tier-based Items**: Common (7 items), Rare (4 items), Cosmic (2 items)
@@ -32,11 +34,13 @@ Glitch Bomb is a strategic luck game where you pull orbs from a bag to score poi
 - **Strategic Selection**: 3 Common + 2 Rare + 1 Cosmic per level
 - **Persistent Pricing**: Price increases persist across levels within same game
 
-### 📊 **Game Dashboard & Logging** *(NEW in v0.1.2)*
-- **Horizontal Layout**: Responsive 5-section dashboard design
+### 📊 **Multi-View Interface** *(ENHANCED in v0.1.3)*
+- **Data View**: Complete 5-section dashboard with all game stats and controls
+- **Player View**: Simplified interface (coming soon)
+- **Playground**: Development/testing environment with orb selection
 - **Real-time Game Log**: Track all actions with timestamps
-- **Visual Status**: Clear enable/disable states with opacity
-- **Consistent Styling**: Black/white theme with tier-based accent colors
+- **Visual Orb Bag**: Square-based representation with calculation tooltips
+- **Responsive Design**: Mobile-friendly tab navigation and layouts
 
 ## Complete Orb Types
 
@@ -99,6 +103,41 @@ src/
 │   └── utils/         # Utility functions
 └── assets/            # Static assets
 ```
+
+## What's New in v0.1.3
+
+### 🎮 **Game Flow & Player Experience**
+- **Confirmation Phase System**: New phase between level completion and marketplace with choice to cash out or continue
+- **Player Commitment Logic**: Once committed to next level, cash out is disabled in marketplace
+- **Restart Button**: Quick restart from game over screen for 10 moonrocks (no menu navigation needed)
+- **Enhanced Cash Out**: Removed double penalty - mid-level cash out now gives full points value
+
+### 💰 **Economic System Improvements**
+- **Cheddah Accumulation**: Cheddah now properly accumulates across levels instead of resetting
+- **Point Conversion Choice**: Players choose when to convert points to cheddah (on CONTINUE action)
+- **Fair Cash Out Logic**: Consistent 1:1 points-to-moonrocks conversion for all cash out methods
+- **Moonrocks Preview**: Mid-level cash out button shows accurate moonrocks gain
+
+### 🎨 **Visual & UI Enhancements**
+- **Orb Bag Redesign**: Visual square representation with hover tooltips for calculations
+- **Right-aligned Orb Display**: Clean column layout with proper visual hierarchy
+- **Tab Navigation**: Three-tab system (Data View, Player View, Playground) with highlighted selection
+- **Button Styling**: Consistent white styling for all clickable elements, inverted colors for active states
+- **Shop Display**: Compact single-line pricing with strikethrough for original costs
+
+### 🔧 **Technical Fixes & Improvements**
+- **Combo Orb Calculation**: Fixed off-by-one error in points calculation
+- **Orb Bag State**: Delayed reset until player commits to marketplace (better decision visibility)
+- **Shop Item Sorting**: Items now sorted by cost for better UX
+- **Playground Mode**: Complete testing environment with orb selection and stat tracking
+- **State Persistence**: Proper cheddah and moonrocks persistence across game sessions
+
+### 🎯 **Quality of Life**
+- **Visual Orb Grouping**: Orbs grouped by type and amount with distinct squares for each variant
+- **Calculation Tooltips**: Hover over special orbs to see point calculations
+- **Consumed Orb Visualization**: Grayed-out squares show used orbs vs available ones
+- **Phase-specific Actions**: Context-aware button availability based on game phase
+- **Responsive Tab Design**: Mobile-friendly abbreviations (D, P, PG) for smaller screens
 
 ## What's New in v0.1.2
 

@@ -2,94 +2,96 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Project Overview
-
-This is a Svelte + TypeScript + Vite project for implementing **Glitch Bomb**, a bag-building, luck-based game. The game specifications are detailed in `specs.md`.
-
 ## Development Commands
 
-- `npm run dev` - Start development server with hot reload
-- `npm run build` - Build for production
-- `npm run preview` - Preview production build
-- `npm run check` - Run type checking with svelte-check and TypeScript compiler
+```bash
+npm run dev      # Start development server (Vite + HMR)
+npm run build    # Build for production
+npm run preview  # Preview production build
+npm run check    # Type checking with svelte-check and TypeScript
+```
 
 ## Project Architecture
 
-### Core Stack
-- **Frontend**: Svelte 5 with TypeScript
-- **Styling**: Tailwind CSS v4 with @tailwindcss/vite plugin
-- **Build Tool**: Vite with @sveltejs/vite-plugin-svelte
-- **Type Checking**: TypeScript with svelte-check
+This is **Glitch Bomb**, a bag-building luck-based game built with Svelte 5, TypeScript, and Tailwind CSS v4. The game features orb collection mechanics, level progression, and an economic system with moonrocks currency.
 
-### Project Structure
+### Core Architecture
+
+- **Framework**: Svelte 5 with runes-based reactivity
+- **Styling**: Tailwind CSS v4 (via @tailwindcss/vite plugin)
+- **Build Tool**: Vite with TypeScript support
+- **State Management**: Reactive state using Svelte runes ($state, $derived, etc.)
+
+### Key Directory Structure
+
 ```
-src/
-├── main.ts                      # Application entry point
-├── App.svelte                   # Root component - renders GameDashboard
-├── app.css                      # Global styles
-├── lib/
-│   ├── components/              # UI Components
-│   │   ├── GameDashboard.svelte # Main dashboard layout
-│   │   ├── StatsDisplay.svelte  # Player stats and progress
-│   │   ├── BagView.svelte       # Orb bag interface
-│   │   ├── ActionsPanel.svelte  # Game control buttons
-│   │   └── MarketplaceView.svelte # Orb purchasing interface
-│   ├── game/                    # Core Game Logic
-│   │   ├── types.ts            # TypeScript interfaces
-│   │   ├── constants.ts        # Game configuration
-│   │   ├── state.ts            # Reactive state management
-│   │   ├── orbs.ts             # Orb bag system
-│   │   ├── economics.ts        # Economic calculations
-│   │   ├── levels.ts           # Level management
-│   │   ├── gameStates.ts       # Game state machine
-│   │   └── game.ts             # Main game controller
-│   └── utils/                   # Utility Functions
-│       ├── random.ts           # Random number generation
-│       └── validation.ts       # Input validation
-└── assets/                      # Static assets
+src/lib/
+├── components/          # Svelte UI components (10 components)
+│   ├── GameDashboard.svelte    # Main game container (5-section horizontal layout)
+│   ├── ActionsPanel.svelte     # Game action buttons
+│   ├── PlayerStatsSection.svelte
+│   ├── OrbBagSection.svelte
+│   ├── GameLogSection.svelte
+│   ├── MarketplaceView.svelte  # Shop system
+│   └── Playground*.svelte      # Testing/dev components
+├── game/               # Core game logic (TypeScript)
+│   ├── types.ts       # All game types and interfaces
+│   ├── state.ts       # Game state management and persistence
+│   ├── constants.ts   # Game configuration
+│   ├── orbs.ts        # Orb system logic
+│   ├── economics.ts   # Economic calculations
+│   ├── levels.ts      # Level progression
+│   ├── shopItems.ts   # Shop/marketplace system
+│   └── game.ts        # Main game orchestration
+└── utils/             # Shared utilities
+    ├── random.ts      # Random number utilities
+    └── validation.ts  # Input validation
 ```
 
-### Implemented Game Systems
+### Game Systems Overview
 
-All systems from `specs.md` have been implemented:
+1. **Orb System**: 8 orb types (health, point, bomb, points_per_anyorb, points_per_bombpulled, multiplier, cheddah, moonrocks)
+2. **Level Progression**: 5 levels with increasing difficulty and entry costs
+3. **Economic System**: Moonrocks (persistent currency), Cheddah (session currency)
+4. **Shop System**: Tier-based items (Common/Rare/Cosmic) with dynamic pricing
+5. **State Persistence**: Moonrocks persist in localStorage, game state is session-based
 
-1. **State Management** ✅: 
-   - Session-only moonrocks (resets to 1000 on refresh)
-   - Reactive game state with Svelte 5 runes
-   - Proper state transitions and validation
+### Important Implementation Details
 
-2. **Core Game Systems** ✅:
-   - Full orb bag system (15 starting orbs: 5/5/5)
-   - Random orb pulling with consumption tracking
-   - 5-level progression (10→20→30→40→50 points)
-   - Complete marketplace system
+- **State Management**: Uses Svelte 5 runes ($state, $derived) for reactive state
+- **Persistence**: Only moonrocks persist across sessions via localStorage (state.ts:6-22)
+- **Component Architecture**: Main dashboard has 5-section horizontal layout
+- **Game Phases**: menu → level → marketplace → (gameover|victory)
+- **Type Safety**: Comprehensive TypeScript types in types.ts
+- **Immutable Updates**: State mutations follow immutable patterns
 
-3. **Economic Systems** ✅:
-   - Game entry cost (5 moonrocks)
-   - Level entry costs [0,15,25,35,45]
-   - Cash-out mechanics (mid-level and post-level)
-   - Victory reward (150 moonrocks total)
+### Key Files to Understand
 
-4. **UI Components** ✅:
-   - Single-page dashboard with all information visible
-   - Real-time stats display with progress bars
-   - Visual orb bag with availability indicators
-   - Marketplace with purchase controls
-   - Confirmation dialogs for cash-out actions
+- `src/lib/game/types.ts` - Complete type definitions for the entire game
+- `src/lib/game/state.ts` - State initialization, persistence, and game log utilities  
+- `src/lib/components/GameDashboard.svelte` - Main UI container and game orchestration
+- `src/lib/game/game.ts` - Core game logic and state transitions
+- `src/lib/game/constants.ts` - All game configuration values
 
-### Current State
-The project is now a fully functional Glitch Bomb game. All core mechanics have been implemented and tested according to the specifications. The game uses a simple, data-heavy UI with minimal styling focused on functionality.
+### Testing & Development
 
-### TypeScript Configuration
-- Uses TypeScript project references with separate configs for app and node
-- Svelte 5 syntax and APIs
-- Vite client types included
+- **Type Checking**: Run `npm run check` before commits to catch TypeScript errors
+- **MANDATORY Git Workflow**: YOU MUST COMMIT AFTER EVERY CODEBASE CHANGE. This is not optional - it is a strict requirement. Use concise one-line messages and DO NOT sign commits as authored by Claude Code
+- **Commit Message Format**: ALWAYS use conventional commit prefixes: `feat:` (new features), `fix:` (bug fixes), `refactor:` (code restructuring), `chore:` (maintenance), `docs:` (documentation), `style:` (formatting), `test:` (testing)
+- **Game Balance**: Configuration values are centralized in constants.ts
+- **Playground Components**: Development/testing components available for isolated testing
+- **Logging**: Game actions are logged with timestamps (max 30 entries)
 
-## Development Workflow
+### Shop System Architecture
 
-**Development Guidelines**: 
-1. NEVER use `npm run dev` during development - only use `npm run build` for testing
-2. Always run `npm run build` to check for errors before committing any changes
-3. Create a simple, one-line commit message and commit immediately after completing any feature or making code changes
-4. Use descriptive but concise messages that explain what was changed, not why
-5. Follow the existing commit message style - single line only, no multi-line messages
+The shop uses a "ShopDeck" system where:
+- Items are pre-generated with base costs
+- Prices increase 20% per purchase (persistent within game session)
+- 3 Common + 2 Rare + 1 Cosmic items available per level
+- Purchase counts and price increases persist across levels within the same game
+
+### Performance Considerations
+
+- Game log is capped at 30 entries to prevent memory growth
+- State updates use reactive patterns optimized for Svelte 5
+- Build uses Vite's optimized bundling and tree-shaking
