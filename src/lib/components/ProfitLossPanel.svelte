@@ -90,6 +90,11 @@
 
   // Current profit/loss calculation
   const currentProfitLoss = $derived(() => {
+    // In menu phase, show 0 since no game cost has been incurred
+    if (gameState.phase === 'menu') {
+      return 0;
+    }
+    
     const totalPointsGained = gameState.playerStats.points;
     const cumulativeLevelCost = getCumulativeLevelCost(gameState.currentLevel);
     return totalPointsGained - cumulativeLevelCost;
@@ -108,7 +113,7 @@
   
   <!-- Compact P/L Header -->
   <div class="mb-2 flex justify-between items-center">
-    <div class="text-xs text-gray-400">P/L: {gameState.playerStats.points} vs {getCumulativeLevelCost(gameState.currentLevel)}</div>
+    <div class="text-xs text-gray-400">P/L: {gameState.playerStats.points}/{gameState.phase === 'menu' ? 0 : getCumulativeLevelCost(gameState.currentLevel)}</div>
     <div class="text-sm font-bold {profitLossClass()}">
       {currentProfitLoss() >= 0 ? '+' : ''}{currentProfitLoss()}
     </div>
