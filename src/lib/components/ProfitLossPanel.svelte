@@ -118,12 +118,12 @@
   <div class="flex-1 flex flex-col">
     
     {#if chartData().points.length > 0}
-      <div class="flex-1 bg-gray-900 rounded border border-gray-700 p-2">
+      <div class="flex-1 bg-black rounded border border-white p-2">
         <svg width="100%" height="100%" viewBox="0 0 300 220" class="overflow-hidden">
           <!-- Grid lines -->
           <defs>
             <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
-              <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#374151" stroke-width="0.5"/>
+              <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#4b5563" stroke-width="0.5"/>
             </pattern>
           </defs>
           <rect x="25" y="5" width="250" height="170" fill="url(#grid)" opacity="0.3"/>
@@ -174,18 +174,18 @@
           </g>
           
           <!-- Y-axis -->
-          <line x1="25" y1="5" x2="25" y2="175" stroke="#9ca3af" stroke-width="1"/>
+          <line x1="25" y1="5" x2="25" y2="175" stroke="white" stroke-width="1"/>
           <!-- X-axis -->
-          <line x1="25" y1="175" x2="275" y2="175" stroke="#9ca3af" stroke-width="1"/>
+          <line x1="25" y1="175" x2="275" y2="175" stroke="white" stroke-width="1"/>
           
           <!-- Y-axis labels -->
-          <text x="20" y="10" fill="#9ca3af" font-size="8" text-anchor="end">{chartData().maxValue}</text>
-          <text x="20" y="180" fill="#9ca3af" font-size="8" text-anchor="end">{chartData().minValue}</text>
+          <text x="20" y="10" fill="white" font-size="8" text-anchor="end">{chartData().maxValue}</text>
+          <text x="20" y="180" fill="white" font-size="8" text-anchor="end">{chartData().minValue}</text>
           <text x="20" y={175 - ((0 - chartData().minValue) / chartData().range) * 170 + 3} fill="white" font-size="8" text-anchor="end" font-weight="bold">0</text>
           
           <!-- X-axis labels -->
-          <text x="30" y="190" fill="#9ca3af" font-size="8">Start</text>
-          <text x="270" y="190" fill="#9ca3af" font-size="8" text-anchor="end">
+          <text x="30" y="190" fill="white" font-size="8">Start</text>
+          <text x="270" y="190" fill="white" font-size="8" text-anchor="end">
             {chartData().points.length > 1 ? `Pull ${chartData().points.length}` : 'Current'}
           </text>
         </svg>
