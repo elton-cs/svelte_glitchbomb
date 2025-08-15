@@ -109,6 +109,7 @@ export function pullOrb(gameState: GameState): boolean {
           gameState.playerStats.health + orb.amount,
           GAME_CONFIG.maxHealth
         );
+        addPointHistoryEntry(gameState, gameState.playerStats.points, `Health orb (+${orb.amount} HP)`);
         addLogEntry(gameState, `Pulled health orb (+${orb.amount} HP)`);
         break;
       case 'point':
@@ -118,6 +119,7 @@ export function pullOrb(gameState: GameState): boolean {
       case 'bomb':
         gameState.playerStats.health = Math.max(0, gameState.playerStats.health - orb.amount);
         gameState.playerStats.bombsPulledThisLevel += 1;
+        addPointHistoryEntry(gameState, gameState.playerStats.points, `Bomb orb (-${orb.amount} HP)`);
         addLogEntry(gameState, `Pulled bomb orb (-${orb.amount} HP)`);
         break;
       case 'points_per_anyorb':
@@ -132,14 +134,17 @@ export function pullOrb(gameState: GameState): boolean {
         break;
       case 'multiplier':
         gameState.playerStats.levelMultiplier += orb.amount;
+        addPointHistoryEntry(gameState, gameState.playerStats.points, `Multiplier orb (+${orb.amount}x)`);
         addLogEntry(gameState, `Pulled multiplier orb (+${orb.amount}x boost)`);
         break;
       case 'cheddah':
         gameState.playerStats.cheddah += orb.amount;
+        addPointHistoryEntry(gameState, gameState.playerStats.points, `Cheddah orb (+${orb.amount})`);
         addLogEntry(gameState, `Pulled cheddah orb (+${orb.amount} cheddah)`);
         break;
       case 'moonrocks':
         gameState.playerStats.moonrocks += orb.amount;
+        addPointHistoryEntry(gameState, gameState.playerStats.points, `Moonrocks orb (+${orb.amount})`);
         addLogEntry(gameState, `Pulled moonrocks orb (+${orb.amount} moonrocks)`);
         break;
     }

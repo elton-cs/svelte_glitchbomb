@@ -10,30 +10,68 @@
   // Calculate chart dimensions and data
   const chartData = $derived(() => {
     const history = gameState.pointHistory;
-    if (history.length === 0) return { points: [], maxPoints: 0, minTime: 0, maxTime: 0 };
+    if (history.length === 0) return { 
+      points: [], 
+      maxValue: 100, 
+      minValue: -50, 
+      zeroY: 50,
+      range: 150 
+    };
     
-    const maxPoints = Math.max(...history.map(h => h.points), 0);
-    const minTime = history[0]?.timestamp || 0;
-    const maxTime = history[history.length - 1]?.timestamp || 0;
+    const pointValues = history.map(h => h.points);
+    const maxValue = Math.max(...pointValues, 100); // Minimum top of 100
+    const minValue = Math.min(...pointValues, -50); // Minimum bottom of -50
+    const range = maxValue - minValue;
+    const zeroY = (maxValue / range) * 100; // Y position of zero line as percentage
     
-    return { points: history, maxPoints, minTime, maxTime };
+    return { 
+      points: history, 
+      maxValue, 
+      minValue, 
+      zeroY,
+      range 
+    };
   });
 
   // Convert point history to SVG path coordinates
-  const chartPath = $derived(() => {
-    const { points, maxPoints, minTime, maxTime } = chartData();
-    if (points.length === 0) return '';
+  const chartPaths = $derived(() => {
+    const { points, maxValue, minValue, range } = chartData();
+    if (points.length === 0) return { positive: '', negative: '', segments: [] };
     
-    const width = 280; // SVG width minus padding
-    const height = 100; // SVG height minus padding
+    const width = 260; // SVG width minus padding for axes
+    const height = 80; // SVG height minus padding for axes
     
-    const pathPoints = points.map((entry: PointHistoryEntry, index: number) => {
+    // Create segments for positive and negative sections
+    let segments: Array<{path: string, color: string}> = [];
+    let currentPath = '';
+    let currentColor = '';
+    
+    points.forEach((entry: PointHistoryEntry, index: number) => {
       const x = points.length === 1 ? width / 2 : (index / (points.length - 1)) * width;
-      const y = maxPoints === 0 ? height / 2 : height - (entry.points / maxPoints) * height;
-      return `${x},${y}`;
+      const y = height - ((entry.points - minValue) / range) * height;
+      const isPositive = entry.points >= 0;
+      const color = isPositive ? '#10b981' : '#ef4444'; // green or red
+      
+      if (index === 0) {
+        currentPath = `M ${x},${y}`;
+        currentColor = color;
+      } else {
+        if (color === currentColor) {
+          currentPath += ` L ${x},${y}`;
+        } else {
+          // Color change - finish current segment and start new one
+          segments.push({ path: currentPath, color: currentColor });
+          currentPath = `M ${points.length === 1 ? width / 2 : ((index - 1) / (points.length - 1)) * width},${height - ((points[index - 1].points - minValue) / range) * height} L ${x},${y}`;
+          currentColor = color;
+        }
+      }
+      
+      if (index === points.length - 1) {
+        segments.push({ path: currentPath, color: currentColor });
+      }
     });
     
-    return `M ${pathPoints.join(' L ')}`;
+    return { segments, points };
   });
 
   // Current profit/loss calculation
@@ -78,41 +116,67 @@
               <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#374151" stroke-width="0.5"/>
             </pattern>
           </defs>
-          <rect width="300" height="120" fill="url(#grid)" opacity="0.3"/>
+          <rect x="30" y="10" width="260" height="80" fill="url(#grid)" opacity="0.3"/>
           
           <!-- Chart area -->
-          <g transform="translate(10, 10)">
-            <!-- Points line -->
-            {#if chartPath()}
+          <g transform="translate(30, 10)">
+            <!-- Zero line (white) -->
+            <line 
+              x1="0" 
+              y1={80 - ((0 - chartData().minValue) / chartData().range) * 80} 
+              x2="260" 
+              y2={80 - ((0 - chartData().minValue) / chartData().range) * 80} 
+              stroke="white" 
+              stroke-width="1"
+              stroke-dasharray="2,2"
+            />
+            
+            <!-- Chart segments with colors -->
+            {#each chartPaths().segments as segment}
               <path 
-                d={chartPath()} 
+                d={segment.path} 
                 fill="none" 
-                stroke="#10b981" 
+                stroke={segment.color} 
                 stroke-width="2"
                 stroke-linecap="round"
                 stroke-linejoin="round"
               />
-              
-              <!-- Data points -->
-              {#each chartData().points as entry, index}
-                {@const x = chartData().points.length === 1 ? 140 : (index / (chartData().points.length - 1)) * 280}
-                {@const y = chartData().maxPoints === 0 ? 50 : 100 - (entry.points / chartData().maxPoints) * 100}
-                <circle 
-                  cx={x} 
-                  cy={y} 
-                  r="2" 
-                  fill="#10b981"
-                  class="hover:r-3 transition-all"
-                >
-                  <title>{entry.action}: {entry.points} points</title>
-                </circle>
-              {/each}
-            {/if}
+            {/each}
+            
+            <!-- Data points -->
+            {#each chartData().points as entry, index}
+              {@const x = chartData().points.length === 1 ? 130 : (index / (chartData().points.length - 1)) * 260}
+              {@const y = 80 - ((entry.points - chartData().minValue) / chartData().range) * 80}
+              {@const pointColor = entry.points >= 0 ? '#10b981' : '#ef4444'}
+              <circle 
+                cx={x} 
+                cy={y} 
+                r="2" 
+                fill={pointColor}
+                stroke="white"
+                stroke-width="1"
+                class="hover:r-3 transition-all"
+              >
+                <title>{entry.action}: {entry.points} points</title>
+              </circle>
+            {/each}
           </g>
           
+          <!-- Y-axis -->
+          <line x1="30" y1="10" x2="30" y2="90" stroke="#9ca3af" stroke-width="1"/>
+          <!-- X-axis -->
+          <line x1="30" y1="90" x2="290" y2="90" stroke="#9ca3af" stroke-width="1"/>
+          
           <!-- Y-axis labels -->
-          <text x="5" y="15" fill="#9ca3af" font-size="8">{chartData().maxPoints}</text>
-          <text x="5" y="110" fill="#9ca3af" font-size="8">0</text>
+          <text x="25" y="15" fill="#9ca3af" font-size="8" text-anchor="end">{chartData().maxValue}</text>
+          <text x="25" y="95" fill="#9ca3af" font-size="8" text-anchor="end">{chartData().minValue}</text>
+          <text x="25" y={90 - ((0 - chartData().minValue) / chartData().range) * 80 + 3} fill="white" font-size="8" text-anchor="end" font-weight="bold">0</text>
+          
+          <!-- X-axis labels -->
+          <text x="35" y="105" fill="#9ca3af" font-size="8">Start</text>
+          <text x="285" y="105" fill="#9ca3af" font-size="8" text-anchor="end">
+            {chartData().points.length > 1 ? `Pull ${chartData().points.length}` : 'Current'}
+          </text>
         </svg>
       </div>
       
