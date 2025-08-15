@@ -131,36 +131,47 @@
       <button
         disabled={!item.available || !item.canPurchase || gameState.phase !== 'marketplace' || !gameState.marketplace.available}
         onclick={item.available && item.canPurchase && gameState.phase === 'marketplace' && gameState.marketplace.available && item.isShopItem ? () => handleShopItemPurchase(item.id) : undefined}
-        class="py-3 px-4 rounded text-lg font-medium transition-colors border {item.borderColor}
+        class="py-2 px-2 rounded font-medium transition-colors border {item.borderColor}
                {item.available && item.canPurchase && gameState.phase === 'marketplace' && gameState.marketplace.available
                  ? 'bg-black text-white hover:bg-white hover:text-black' 
                  : 'bg-black text-gray-500 cursor-not-allowed'}"
       >
-        <div class="text-center w-full">
+        <div class="h-full w-full flex flex-col justify-between p-1">
           {#if item.icon}
             <!-- Placeholder X mark - always gray -->
-            <div class="text-3xl {item.color}">{item.icon}</div>
+            <div class="flex-1 flex items-center justify-center">
+              <div class="text-4xl {item.color}">{item.icon}</div>
+            </div>
           {:else}
             <!-- Actual shop item - no color classes so hover works -->
-            {#if item.name}
-              <div class="font-medium uppercase text-lg">{item.name}</div>
-            {/if}
-            {#if item.description}
-              <div class="text-sm opacity-75">{item.description}</div>
-            {/if}
-            {#if item.available && item.cost > 0}
-              <div class="text-sm opacity-90">
-                {#if item.purchaseCount > 0}
-                  <span class="line-through opacity-60">{item.baseCost} </span> {item.cost} 🧀 ({item.purchaseCount}x)
-                {:else}
-                  {item.cost} 🧀
-                {/if}
-              </div>
-            {:else if !item.available && item.cost === 0}
-              <div class="text-sm opacity-60 {item.color}">CLOSED</div>
-            {:else if !item.available}
-              <div class="text-sm opacity-60">LOCKED</div>
-            {/if}
+            <div class="flex-1 flex flex-col justify-center min-h-0">
+              {#if item.name}
+                <div class="font-bold uppercase text-sm leading-tight mb-1 truncate">{item.name}</div>
+              {/if}
+              {#if item.description}
+                <div class="text-xs opacity-75 leading-tight truncate">{item.description}</div>
+              {/if}
+            </div>
+            
+            <!-- Price section at bottom -->
+            <div class="mt-1 flex-shrink-0">
+              {#if item.available && item.cost > 0}
+                <div class="text-sm font-bold">
+                  {#if item.purchaseCount > 0}
+                    <div class="text-xs">
+                      <span class="line-through opacity-60">{item.baseCost}</span> → {item.cost} 🧀
+                    </div>
+                    <div class="text-xs opacity-75">({item.purchaseCount}x bought)</div>
+                  {:else}
+                    {item.cost} 🧀
+                  {/if}
+                </div>
+              {:else if !item.available && item.cost === 0}
+                <div class="text-xs opacity-60 {item.color}">CLOSED</div>
+              {:else if !item.available}
+                <div class="text-xs opacity-60">LOCKED</div>
+              {/if}
+            </div>
           {/if}
         </div>
       </button>
