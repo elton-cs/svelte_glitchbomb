@@ -54,7 +54,7 @@
         if (levelMultiplier > 1) {
           return `${amount}×${remaining}×${levelMultiplier} = ${comboPoints} pts`;
         } else {
-          return `${amount}×${remaining} = ${comboPoints} pts`;
+          return `${amount}×${remaining} = ${amount * remaining} pts`;
         }
       case 'points_per_bombpulled':
         const dangerPoints = Math.floor(amount * bombsPulledThisLevel * levelMultiplier);
