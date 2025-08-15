@@ -33,3 +33,15 @@ export function calculateVictoryReward(points: number): number {
 export function validatePurchase(cheddah: number, cost: number): boolean {
   return cheddah >= cost;
 }
+
+export function getCumulativeLevelCost(currentLevel: number): number {
+  if (currentLevel < 1 || currentLevel > GAME_CONFIG.levelCosts.length) {
+    return 0;
+  }
+  
+  let total = 0;
+  for (let i = 0; i < currentLevel; i++) {
+    total += GAME_CONFIG.levelCosts[i];
+  }
+  return total;
+}

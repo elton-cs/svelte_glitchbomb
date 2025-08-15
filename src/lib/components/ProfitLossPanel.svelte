@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { GameState, PointHistoryEntry } from '../game/types.js';
-  import { getLevelEntryCost } from '../game/economics.js';
+  import { getLevelEntryCost, getCumulativeLevelCost } from '../game/economics.js';
 
   interface Props {
     gameState: GameState;
@@ -21,8 +21,8 @@
     };
     
     // Convert point history to profit/loss values
-    const levelEntryCost = getLevelEntryCost(gameState.currentLevel);
-    const profitLossValues = history.map(h => h.points - levelEntryCost);
+    const cumulativeLevelCost = getCumulativeLevelCost(gameState.currentLevel);
+    const profitLossValues = history.map(h => h.points - cumulativeLevelCost);
     
     const maxValue = Math.max(...profitLossValues, 50); // Minimum top of 50
     const minValue = Math.min(...profitLossValues, -20); // Minimum bottom of -20
@@ -85,8 +85,8 @@
   // Current profit/loss calculation
   const currentProfitLoss = $derived(() => {
     const totalPointsGained = gameState.playerStats.points;
-    const levelEntryCost = getLevelEntryCost(gameState.currentLevel);
-    return totalPointsGained - levelEntryCost;
+    const cumulativeLevelCost = getCumulativeLevelCost(gameState.currentLevel);
+    return totalPointsGained - cumulativeLevelCost;
   });
 
   const profitLossClass = $derived(() => {
@@ -107,7 +107,7 @@
       {currentProfitLoss() >= 0 ? '+' : ''}{currentProfitLoss()}
     </div>
     <div class="text-xs text-gray-400">
-      {gameState.playerStats.points} pts earned
+      {gameState.playerStats.points} pts vs {getCumulativeLevelCost(gameState.currentLevel)} invested
     </div>
   </div>
 
@@ -194,7 +194,7 @@
         <div class="text-xs text-gray-400 mb-1">Recent Actions:</div>
         <div class="text-xs space-y-1 max-h-16 overflow-y-auto">
           {#each gameState.pointHistory.slice(-3).reverse() as entry}
-            {@const profitLoss = entry.points - getLevelEntryCost(gameState.currentLevel)}
+            {@const profitLoss = entry.points - getCumulativeLevelCost(gameState.currentLevel)}
             {@const profitLossColor = profitLoss >= 0 ? 'text-green-400' : 'text-red-400'}
             <div class="flex justify-between">
               <span class="text-gray-300 truncate">{entry.action}</span>
