@@ -44,8 +44,8 @@
     const { points, profitLossValues, maxValue, minValue, range } = chartData();
     if (points.length === 0) return { segments: [], points: [], profitLossValues: [] };
     
-    const width = 260; // SVG width minus padding for axes
-    const height = 200; // SVG height minus padding for axes
+    const width = 250; // SVG width minus padding for axes
+    const height = 170; // SVG height minus padding for axes
     
     // Create segments for positive and negative sections
     let segments: Array<{path: string, color: string}> = [];
@@ -112,24 +112,24 @@
   <div class="flex-1 flex flex-col">
     
     {#if chartData().points.length > 0}
-      <div class="flex-1 bg-gray-900 rounded border border-gray-700 p-1">
-        <svg width="100%" height="100%" viewBox="0 0 300 240" class="overflow-visible">
+      <div class="flex-1 bg-gray-900 rounded border border-gray-700 p-2">
+        <svg width="100%" height="100%" viewBox="0 0 300 220" class="overflow-hidden">
           <!-- Grid lines -->
           <defs>
             <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
               <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#374151" stroke-width="0.5"/>
             </pattern>
           </defs>
-          <rect x="30" y="10" width="260" height="200" fill="url(#grid)" opacity="0.3"/>
+          <rect x="25" y="5" width="250" height="170" fill="url(#grid)" opacity="0.3"/>
           
           <!-- Chart area -->
-          <g transform="translate(30, 10)">
+          <g transform="translate(25, 5)">
             <!-- Zero line (white) -->
             <line 
               x1="0" 
-              y1={200 - ((0 - chartData().minValue) / chartData().range) * 200} 
-              x2="260" 
-              y2={200 - ((0 - chartData().minValue) / chartData().range) * 200} 
+              y1={170 - ((0 - chartData().minValue) / chartData().range) * 170} 
+              x2="250" 
+              y2={170 - ((0 - chartData().minValue) / chartData().range) * 170} 
               stroke="white" 
               stroke-width="1"
               stroke-dasharray="2,2"
@@ -149,8 +149,8 @@
             
             <!-- Data points -->
             {#each chartPaths().profitLossValues as profitLoss, index (index)}
-              {@const x = chartPaths().profitLossValues.length === 1 ? 130 : (index / (chartPaths().profitLossValues.length - 1)) * 260}
-              {@const y = 200 - ((Number(profitLoss) - chartData().minValue) / chartData().range) * 200}
+              {@const x = chartPaths().profitLossValues.length === 1 ? 125 : (index / (chartPaths().profitLossValues.length - 1)) * 250}
+              {@const y = 170 - ((Number(profitLoss) - chartData().minValue) / chartData().range) * 170}
               {@const pointColor = Number(profitLoss) >= 0 ? '#10b981' : '#ef4444'}
               {@const entry = chartPaths().points[index]}
               <circle 
@@ -168,18 +168,18 @@
           </g>
           
           <!-- Y-axis -->
-          <line x1="30" y1="10" x2="30" y2="210" stroke="#9ca3af" stroke-width="1"/>
+          <line x1="25" y1="5" x2="25" y2="175" stroke="#9ca3af" stroke-width="1"/>
           <!-- X-axis -->
-          <line x1="30" y1="210" x2="290" y2="210" stroke="#9ca3af" stroke-width="1"/>
+          <line x1="25" y1="175" x2="275" y2="175" stroke="#9ca3af" stroke-width="1"/>
           
           <!-- Y-axis labels -->
-          <text x="25" y="15" fill="#9ca3af" font-size="8" text-anchor="end">{chartData().maxValue}</text>
-          <text x="25" y="215" fill="#9ca3af" font-size="8" text-anchor="end">{chartData().minValue}</text>
-          <text x="25" y={210 - ((0 - chartData().minValue) / chartData().range) * 200 + 3} fill="white" font-size="8" text-anchor="end" font-weight="bold">0</text>
+          <text x="20" y="10" fill="#9ca3af" font-size="8" text-anchor="end">{chartData().maxValue}</text>
+          <text x="20" y="180" fill="#9ca3af" font-size="8" text-anchor="end">{chartData().minValue}</text>
+          <text x="20" y={175 - ((0 - chartData().minValue) / chartData().range) * 170 + 3} fill="white" font-size="8" text-anchor="end" font-weight="bold">0</text>
           
           <!-- X-axis labels -->
-          <text x="35" y="225" fill="#9ca3af" font-size="8">Start</text>
-          <text x="285" y="225" fill="#9ca3af" font-size="8" text-anchor="end">
+          <text x="30" y="190" fill="#9ca3af" font-size="8">Start</text>
+          <text x="270" y="190" fill="#9ca3af" font-size="8" text-anchor="end">
             {chartData().points.length > 1 ? `Pull ${chartData().points.length}` : 'Current'}
           </text>
         </svg>
