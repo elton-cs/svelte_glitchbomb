@@ -131,7 +131,7 @@
       <button
         disabled={!item.available || !item.canPurchase || gameState.phase !== 'marketplace' || !gameState.marketplace.available}
         onclick={item.available && item.canPurchase && gameState.phase === 'marketplace' && gameState.marketplace.available && item.isShopItem ? () => handleShopItemPurchase(item.id) : undefined}
-        class="py-2 px-3 rounded text-sm font-medium transition-colors border {item.borderColor}
+        class="py-3 px-4 rounded text-lg font-medium transition-colors border {item.borderColor}
                {item.available && item.canPurchase && gameState.phase === 'marketplace' && gameState.marketplace.available
                  ? 'bg-black text-white hover:bg-white hover:text-black' 
                  : 'bg-black text-gray-500 cursor-not-allowed'}"
@@ -143,13 +143,13 @@
           {:else}
             <!-- Actual shop item - no color classes so hover works -->
             {#if item.name}
-              <div class="font-medium uppercase">{item.name}</div>
+              <div class="font-medium uppercase text-lg">{item.name}</div>
             {/if}
             {#if item.description}
-              <div class="text-xs opacity-75">{item.description}</div>
+              <div class="text-sm opacity-75">{item.description}</div>
             {/if}
             {#if item.available && item.cost > 0}
-              <div class="text-xs opacity-90">
+              <div class="text-sm opacity-90">
                 {#if item.purchaseCount > 0}
                   <span class="line-through opacity-60">{item.baseCost} </span> {item.cost} 🧀 ({item.purchaseCount}x)
                 {:else}
@@ -157,9 +157,9 @@
                 {/if}
               </div>
             {:else if !item.available && item.cost === 0}
-              <div class="text-xs opacity-60 {item.color}">CLOSED</div>
+              <div class="text-sm opacity-60 {item.color}">CLOSED</div>
             {:else if !item.available}
-              <div class="text-xs opacity-60">LOCKED</div>
+              <div class="text-sm opacity-60">LOCKED</div>
             {/if}
           {/if}
         </div>
@@ -168,13 +168,13 @@
   </div>
   
   <!-- Footer -->
-  <div class="mt-3 text-xs text-center h-4">
+  <div class="mt-3 text-sm text-center h-5">
     <p class="text-white uppercase tracking-wide">
       CHEDDAH: <span class="font-medium">{gameState.playerStats.cheddah}</span>
     </p>
   </div>
   
-  <div class="mt-1 text-xs text-center h-4">
+  <div class="mt-1 text-sm text-center h-5">
     {#if gameState.phase === 'confirmation'}
       <p class="text-white font-bold">CONVERT {gameState.playerStats.points} POINTS?</p>
     {:else if gameState.phase === 'marketplace' && gameState.marketplace.available && gameState.playerStats.cheddah === 0}
