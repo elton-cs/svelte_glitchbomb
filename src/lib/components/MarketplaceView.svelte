@@ -138,7 +138,7 @@
       >
         <!-- Purchase count badge -->
         {#if item.purchaseCount > 0}
-          <div class="absolute bottom-1 left-1 text-xs font-bold px-1.5 py-0.5 rounded-full min-w-5 text-center z-10 border transition-colors
+          <div class="absolute bottom-1 left-1 text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-5 text-center z-10 border transition-colors
                       {item.available && item.canPurchase && gameState.phase === 'marketplace' && gameState.marketplace.available
                         ? 'bg-black text-white border-white group-hover:bg-white group-hover:text-black group-hover:border-black' 
                         : 'bg-black text-gray-500 border-gray-500'}">
