@@ -94,7 +94,7 @@
       <button 
         onclick={handleStartGame}
         disabled={!canStartGame || gameState.phase !== 'menu'}
-        class="py-2 px-3 rounded text-sm font-medium transition-colors border
+        class="py-3 px-4 rounded text-lg font-medium transition-colors border
                {canStartGame && gameState.phase === 'menu'
                  ? 'bg-black text-white border-white hover:bg-white hover:text-black' 
                  : 'bg-black text-gray-500 border-gray-500 cursor-not-allowed'}"
@@ -105,7 +105,7 @@
       <button 
         onclick={handlePullOrb}
         disabled={!canPullOrb || gameState.phase !== 'level'}
-        class="py-2 px-3 rounded text-sm font-medium transition-colors border
+        class="py-3 px-4 rounded text-lg font-medium transition-colors border
                {canPullOrb && gameState.phase === 'level'
                  ? 'bg-black text-white border-white hover:bg-white hover:text-black' 
                  : 'bg-black text-gray-500 border-gray-500 cursor-not-allowed'}"
@@ -117,19 +117,19 @@
       <button 
         onclick={handleCashOut}
         disabled={!canCashOut}
-        class="py-2 px-3 rounded text-sm font-medium transition-colors border
+        class="py-3 px-4 rounded text-lg font-medium transition-colors border
                {canCashOut
                  ? 'bg-black text-white border-white hover:bg-white hover:text-black'
                  : 'bg-black text-gray-500 border-gray-500 cursor-not-allowed'}"
       >
         <div class="text-center">
-          <div class="font-medium">CASH OUT</div>
+          <div class="font-medium text-lg">CASH OUT</div>
           {#if gameState.phase === 'confirmation'}
-            <div class="text-xs opacity-75">
+            <div class="text-sm opacity-75">
               (+{gameState.playerStats.points} 🌙)
             </div>
           {:else if gameState.phase === 'level'}
-            <div class="text-xs opacity-75">
+            <div class="text-sm opacity-75">
               (+{midLevelCashOut} 🌙)
             </div>
           {/if}
@@ -139,17 +139,17 @@
       <button 
         onclick={canContinue ? handleContinue : handleProceedToNext}
         disabled={!canContinue && (!canProceed || gameState.phase !== 'marketplace')}
-        class="py-2 px-3 rounded text-sm font-medium transition-colors border
+        class="py-3 px-4 rounded text-lg font-medium transition-colors border
                {(canContinue || (canProceed && gameState.phase === 'marketplace'))
                  ? 'bg-black text-white border-white hover:bg-white hover:text-black' 
                  : 'bg-black text-gray-500 border-gray-500 cursor-not-allowed'}"
       >
         <div class="text-center">
-          <div class="font-medium">
+          <div class="font-medium text-lg">
             {canContinue ? 'CONTINUE' : 'NEXT LEVEL'}
           </div>
           {#if canContinue}
-            <div class="text-xs opacity-75">
+            <div class="text-sm opacity-75">
               (+{gameState.playerStats.points} 🧀)
             </div>
           {/if}
@@ -160,15 +160,15 @@
       <button 
         onclick={handleRestart}
         disabled={!canRestart || gameState.phase !== 'gameover'}
-        class="py-2 px-3 rounded text-sm font-medium transition-colors border
+        class="py-3 px-4 rounded text-lg font-medium transition-colors border
                {canRestart && gameState.phase === 'gameover'
                  ? 'bg-black text-white border-white hover:bg-white hover:text-black'
                  : 'bg-black text-gray-500 border-gray-500 cursor-not-allowed'}"
       >
         <div class="text-center">
-          <div class="font-medium">RESTART</div>
+          <div class="font-medium text-lg">RESTART</div>
           {#if canRestart && gameState.phase === 'gameover'}
-            <div class="text-xs opacity-75">(-{getLevelEntryCost(1)} 🌙)</div>
+            <div class="text-sm opacity-75">(-{getLevelEntryCost(1)} 🌙)</div>
           {/if}
         </div>
       </button>
@@ -176,23 +176,23 @@
       <button 
         onclick={handleReturnToMenu}
         disabled={gameState.phase !== 'gameover' && gameState.phase !== 'victory'}
-        class="py-2 px-3 rounded text-sm font-medium transition-colors border
+        class="py-3 px-4 rounded text-lg font-medium transition-colors border
                {gameState.phase === 'gameover' || gameState.phase === 'victory'
                  ? 'bg-black text-white border-white hover:bg-white hover:text-black'
                  : 'bg-black text-gray-500 border-gray-500 cursor-not-allowed'}"
       >
-        MAIN MENU
+        <div class="text-lg font-medium">MAIN MENU</div>
       </button>
     </div>
   
   <!-- Footer -->
-  <div class="mt-3 text-xs text-center h-4">
+  <div class="mt-3 text-sm text-center h-5">
     <p class="text-white uppercase tracking-wide">
       PHASE: <span class="font-medium">{gameState.phase}</span>
     </p>
   </div>
   
-  <div class="mt-1 text-xs text-center h-4">
+  <div class="mt-1 text-sm text-center h-5">
     {#if gameState.phase === 'menu' && !canStartGame}
       <p class="text-red-400">NEED {getLevelEntryCost(1)} MOONROCKS TO START</p>
     {:else if gameState.phase === 'level' && totalAvailableOrbs === 0}
