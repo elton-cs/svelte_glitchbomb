@@ -45,7 +45,7 @@
     if (points.length === 0) return { segments: [], points: [], profitLossValues: [] };
     
     const width = 260; // SVG width minus padding for axes
-    const height = 80; // SVG height minus padding for axes
+    const height = 200; // SVG height minus padding for axes
     
     // Create segments for positive and negative sections
     let segments: Array<{path: string, color: string}> = [];
@@ -100,40 +100,36 @@
 <div class="bg-black p-3 rounded-lg shadow-sm border border-white h-full flex flex-col">
   <h2 class="text-sm font-bold mb-3 text-white">PROFIT/LOSS</h2>
   
-  <!-- Current P/L Display -->
-  <div class="mb-4 text-center">
-    <div class="text-xs text-gray-400 mb-1">Current Session</div>
-    <div class="text-lg font-bold {profitLossClass()}">
+  <!-- Compact P/L Header -->
+  <div class="mb-2 flex justify-between items-center">
+    <div class="text-xs text-gray-400">P/L: {gameState.playerStats.points} vs {getCumulativeLevelCost(gameState.currentLevel)}</div>
+    <div class="text-sm font-bold {profitLossClass()}">
       {currentProfitLoss() >= 0 ? '+' : ''}{currentProfitLoss()}
-    </div>
-    <div class="text-xs text-gray-400">
-      {gameState.playerStats.points} pts vs {getCumulativeLevelCost(gameState.currentLevel)} invested
     </div>
   </div>
 
   <!-- Profit/Loss Chart -->
   <div class="flex-1 flex flex-col">
-    <div class="text-xs text-gray-400 mb-2">Profit/Loss Over Time</div>
     
     {#if chartData().points.length > 0}
-      <div class="flex-1 bg-gray-900 rounded border border-gray-700 p-2">
-        <svg width="100%" height="120" viewBox="0 0 300 120" class="overflow-visible">
+      <div class="flex-1 bg-gray-900 rounded border border-gray-700 p-1">
+        <svg width="100%" height="100%" viewBox="0 0 300 240" class="overflow-visible">
           <!-- Grid lines -->
           <defs>
             <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
               <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#374151" stroke-width="0.5"/>
             </pattern>
           </defs>
-          <rect x="30" y="10" width="260" height="80" fill="url(#grid)" opacity="0.3"/>
+          <rect x="30" y="10" width="260" height="200" fill="url(#grid)" opacity="0.3"/>
           
           <!-- Chart area -->
           <g transform="translate(30, 10)">
             <!-- Zero line (white) -->
             <line 
               x1="0" 
-              y1={80 - ((0 - chartData().minValue) / chartData().range) * 80} 
+              y1={200 - ((0 - chartData().minValue) / chartData().range) * 200} 
               x2="260" 
-              y2={80 - ((0 - chartData().minValue) / chartData().range) * 80} 
+              y2={200 - ((0 - chartData().minValue) / chartData().range) * 200} 
               stroke="white" 
               stroke-width="1"
               stroke-dasharray="2,2"
@@ -154,17 +150,17 @@
             <!-- Data points -->
             {#each chartPaths().profitLossValues as profitLoss, index (index)}
               {@const x = chartPaths().profitLossValues.length === 1 ? 130 : (index / (chartPaths().profitLossValues.length - 1)) * 260}
-              {@const y = 80 - ((Number(profitLoss) - chartData().minValue) / chartData().range) * 80}
+              {@const y = 200 - ((Number(profitLoss) - chartData().minValue) / chartData().range) * 200}
               {@const pointColor = Number(profitLoss) >= 0 ? '#10b981' : '#ef4444'}
               {@const entry = chartPaths().points[index]}
               <circle 
                 cx={x} 
                 cy={y} 
-                r="2" 
+                r="3" 
                 fill={pointColor}
                 stroke="white"
                 stroke-width="1"
-                class="hover:r-3 transition-all"
+                class="hover:r-4 transition-all"
               >
                 <title>{entry.action}: {Number(profitLoss) >= 0 ? '+' : ''}{profitLoss} P/L</title>
               </circle>
@@ -172,36 +168,21 @@
           </g>
           
           <!-- Y-axis -->
-          <line x1="30" y1="10" x2="30" y2="90" stroke="#9ca3af" stroke-width="1"/>
+          <line x1="30" y1="10" x2="30" y2="210" stroke="#9ca3af" stroke-width="1"/>
           <!-- X-axis -->
-          <line x1="30" y1="90" x2="290" y2="90" stroke="#9ca3af" stroke-width="1"/>
+          <line x1="30" y1="210" x2="290" y2="210" stroke="#9ca3af" stroke-width="1"/>
           
           <!-- Y-axis labels -->
           <text x="25" y="15" fill="#9ca3af" font-size="8" text-anchor="end">{chartData().maxValue}</text>
-          <text x="25" y="95" fill="#9ca3af" font-size="8" text-anchor="end">{chartData().minValue}</text>
-          <text x="25" y={90 - ((0 - chartData().minValue) / chartData().range) * 80 + 3} fill="white" font-size="8" text-anchor="end" font-weight="bold">0</text>
+          <text x="25" y="215" fill="#9ca3af" font-size="8" text-anchor="end">{chartData().minValue}</text>
+          <text x="25" y={210 - ((0 - chartData().minValue) / chartData().range) * 200 + 3} fill="white" font-size="8" text-anchor="end" font-weight="bold">0</text>
           
           <!-- X-axis labels -->
-          <text x="35" y="105" fill="#9ca3af" font-size="8">Start</text>
-          <text x="285" y="105" fill="#9ca3af" font-size="8" text-anchor="end">
+          <text x="35" y="225" fill="#9ca3af" font-size="8">Start</text>
+          <text x="285" y="225" fill="#9ca3af" font-size="8" text-anchor="end">
             {chartData().points.length > 1 ? `Pull ${chartData().points.length}` : 'Current'}
           </text>
         </svg>
-      </div>
-      
-      <!-- Recent actions -->
-      <div class="mt-2">
-        <div class="text-xs text-gray-400 mb-1">Recent Actions:</div>
-        <div class="text-xs space-y-1 max-h-16 overflow-y-auto">
-          {#each gameState.pointHistory.slice(-3).reverse() as entry}
-            {@const profitLoss = entry.points - getCumulativeLevelCost(gameState.currentLevel)}
-            {@const profitLossColor = profitLoss >= 0 ? 'text-green-400' : 'text-red-400'}
-            <div class="flex justify-between">
-              <span class="text-gray-300 truncate">{entry.action}</span>
-              <span class="{profitLossColor}">{profitLoss >= 0 ? '+' : ''}{profitLoss}</span>
-            </div>
-          {/each}
-        </div>
       </div>
     {:else}
       <div class="flex-1 flex items-center justify-center text-gray-500 text-xs">
