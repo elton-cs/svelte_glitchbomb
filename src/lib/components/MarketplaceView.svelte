@@ -157,8 +157,10 @@
             <div class="flex flex-col items-center justify-center text-center w-10">
               {#if item.available && item.cost > 0}
                 {#if item.purchaseCount > 0}
-                  <div class="text-xs opacity-60 line-through">{item.baseCost}</div>
-                  <div class="text-lg font-bold">{item.cost}</div>
+                  <div class="flex items-center justify-center gap-1">
+                    <div class="text-xs opacity-60 line-through">{item.baseCost}</div>
+                    <div class="text-lg font-bold">{item.cost}</div>
+                  </div>
                   <div class="text-lg">🧀</div>
                   <div class="text-xs opacity-75">({item.purchaseCount}x)</div>
                 {:else}
