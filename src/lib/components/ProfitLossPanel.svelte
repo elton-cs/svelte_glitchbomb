@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { GameState, PointHistoryEntry } from '../game/types.js';
   import { getLevelEntryCost, getCumulativeLevelCost } from '../game/economics.js';
+  import { getLevelMilestone } from '../game/levels.js';
 
   interface Props {
     gameState: GameState;
@@ -14,18 +15,24 @@
     if (history.length === 0) return { 
       points: [], 
       profitLossValues: [],
-      maxValue: 50, 
-      minValue: -20, 
+      maxValue: getLevelMilestone(gameState.currentLevel), 
+      minValue: -getCumulativeLevelCost(gameState.currentLevel), 
       zeroY: 50,
-      range: 70 
+      range: getLevelMilestone(gameState.currentLevel) + getCumulativeLevelCost(gameState.currentLevel)
     };
     
     // Convert point history to profit/loss values
     const cumulativeLevelCost = getCumulativeLevelCost(gameState.currentLevel);
     const profitLossValues = history.map(h => h.points - cumulativeLevelCost);
     
-    const maxValue = Math.max(...profitLossValues, 50); // Minimum top of 50
-    const minValue = Math.min(...profitLossValues, -20); // Minimum bottom of -20
+    // Use current level milestone as baseline, but extend if player exceeds it
+    const currentMilestone = getLevelMilestone(gameState.currentLevel);
+    const maxPoints = Math.max(...profitLossValues);
+    const maxValue = Math.max(maxPoints, currentMilestone); // Use milestone as minimum, extend if needed
+    
+    // Use cumulative cost as baseline minimum, but extend if player goes further negative  
+    const minPoints = Math.min(...profitLossValues);
+    const minValue = Math.min(minPoints, -cumulativeLevelCost); // Use -cost as minimum, extend if needed
     const range = maxValue - minValue;
     const zeroY = (maxValue / range) * 100; // Y position of zero line as percentage
     
