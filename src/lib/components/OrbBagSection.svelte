@@ -73,7 +73,7 @@
 <div class="bg-black p-3 rounded-lg shadow-sm border border-white h-full flex flex-col {gameState.phase === 'level' || gameState.phase === 'confirmation' ? '' : 'opacity-60 pointer-events-none'}">
   <h2 class="text-sm font-bold mb-3 text-white">ORB BAG ({totalAvailableOrbs}) {gameState.phase === 'level' || gameState.phase === 'confirmation' ? '' : '(INACTIVE)'}</h2>
   
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-xs flex-1 overflow-y-auto">
+  <div class="grid grid-cols-1 gap-4 text-xs flex-1 overflow-y-auto">
     {#each orbTypes as orbTypeInfo}
       <OrbTypeDisplay
         orbType={orbTypeInfo.type}
