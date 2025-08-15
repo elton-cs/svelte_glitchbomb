@@ -138,7 +138,10 @@
       >
         <!-- Purchase count badge -->
         {#if item.purchaseCount > 0}
-          <div class="absolute top-1 left-1 bg-black text-white border border-white text-xs font-bold px-1.5 py-0.5 rounded-full min-w-5 text-center z-10">
+          <div class="absolute top-1 left-1 bg-black text-xs font-bold px-1.5 py-0.5 rounded-full min-w-5 text-center z-10 border
+                      {item.available && item.canPurchase && gameState.phase === 'marketplace' && gameState.marketplace.available
+                        ? 'text-white border-white' 
+                        : 'text-gray-500 border-gray-500'}">
             {item.purchaseCount}x
           </div>
         {/if}
