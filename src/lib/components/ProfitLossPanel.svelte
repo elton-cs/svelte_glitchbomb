@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { GameState, PointHistoryEntry } from '../game/types.js';
+  import { getLevelEntryCost } from '../game/economics.js';
 
   interface Props {
     gameState: GameState;
@@ -12,20 +13,25 @@
     const history = gameState.pointHistory;
     if (history.length === 0) return { 
       points: [], 
-      maxValue: 100, 
-      minValue: -50, 
+      profitLossValues: [],
+      maxValue: 50, 
+      minValue: -20, 
       zeroY: 50,
-      range: 150 
+      range: 70 
     };
     
-    const pointValues = history.map(h => h.points);
-    const maxValue = Math.max(...pointValues, 100); // Minimum top of 100
-    const minValue = Math.min(...pointValues, -50); // Minimum bottom of -50
+    // Convert point history to profit/loss values
+    const levelEntryCost = getLevelEntryCost(gameState.currentLevel);
+    const profitLossValues = history.map(h => h.points - levelEntryCost);
+    
+    const maxValue = Math.max(...profitLossValues, 50); // Minimum top of 50
+    const minValue = Math.min(...profitLossValues, -20); // Minimum bottom of -20
     const range = maxValue - minValue;
     const zeroY = (maxValue / range) * 100; // Y position of zero line as percentage
     
     return { 
       points: history, 
+      profitLossValues,
       maxValue, 
       minValue, 
       zeroY,
@@ -35,8 +41,8 @@
 
   // Convert point history to SVG path coordinates
   const chartPaths = $derived(() => {
-    const { points, maxValue, minValue, range } = chartData();
-    if (points.length === 0) return { positive: '', negative: '', segments: [] };
+    const { points, profitLossValues, maxValue, minValue, range } = chartData();
+    if (points.length === 0) return { segments: [], points: [], profitLossValues: [] };
     
     const width = 260; // SVG width minus padding for axes
     const height = 80; // SVG height minus padding for axes
@@ -46,10 +52,10 @@
     let currentPath = '';
     let currentColor = '';
     
-    points.forEach((entry: PointHistoryEntry, index: number) => {
-      const x = points.length === 1 ? width / 2 : (index / (points.length - 1)) * width;
-      const y = height - ((entry.points - minValue) / range) * height;
-      const isPositive = entry.points >= 0;
+    profitLossValues.forEach((profitLoss: number, index: number) => {
+      const x = profitLossValues.length === 1 ? width / 2 : (index / (profitLossValues.length - 1)) * width;
+      const y = height - ((profitLoss - minValue) / range) * height;
+      const isPositive = profitLoss >= 0;
       const color = isPositive ? '#10b981' : '#ef4444'; // green or red
       
       if (index === 0) {
@@ -61,24 +67,26 @@
         } else {
           // Color change - finish current segment and start new one
           segments.push({ path: currentPath, color: currentColor });
-          currentPath = `M ${points.length === 1 ? width / 2 : ((index - 1) / (points.length - 1)) * width},${height - ((points[index - 1].points - minValue) / range) * height} L ${x},${y}`;
+          const prevX = profitLossValues.length === 1 ? width / 2 : ((index - 1) / (profitLossValues.length - 1)) * width;
+          const prevY = height - ((profitLossValues[index - 1] - minValue) / range) * height;
+          currentPath = `M ${prevX},${prevY} L ${x},${y}`;
           currentColor = color;
         }
       }
       
-      if (index === points.length - 1) {
+      if (index === profitLossValues.length - 1) {
         segments.push({ path: currentPath, color: currentColor });
       }
     });
     
-    return { segments, points };
+    return { segments, points, profitLossValues };
   });
 
   // Current profit/loss calculation
   const currentProfitLoss = $derived(() => {
     const totalPointsGained = gameState.playerStats.points;
-    const levelCosts = gameState.currentLevel * 10; // Simplified cost calculation
-    return totalPointsGained - levelCosts;
+    const levelEntryCost = getLevelEntryCost(gameState.currentLevel);
+    return totalPointsGained - levelEntryCost;
   });
 
   const profitLossClass = $derived(() => {
@@ -103,9 +111,9 @@
     </div>
   </div>
 
-  <!-- Points Chart -->
+  <!-- Profit/Loss Chart -->
   <div class="flex-1 flex flex-col">
-    <div class="text-xs text-gray-400 mb-2">Points Over Time</div>
+    <div class="text-xs text-gray-400 mb-2">Profit/Loss Over Time</div>
     
     {#if chartData().points.length > 0}
       <div class="flex-1 bg-gray-900 rounded border border-gray-700 p-2">
@@ -144,10 +152,11 @@
             {/each}
             
             <!-- Data points -->
-            {#each chartData().points as entry, index}
-              {@const x = chartData().points.length === 1 ? 130 : (index / (chartData().points.length - 1)) * 260}
-              {@const y = 80 - ((entry.points - chartData().minValue) / chartData().range) * 80}
-              {@const pointColor = entry.points >= 0 ? '#10b981' : '#ef4444'}
+            {#each chartPaths().profitLossValues as profitLoss, index (index)}
+              {@const x = chartPaths().profitLossValues.length === 1 ? 130 : (index / (chartPaths().profitLossValues.length - 1)) * 260}
+              {@const y = 80 - ((Number(profitLoss) - chartData().minValue) / chartData().range) * 80}
+              {@const pointColor = Number(profitLoss) >= 0 ? '#10b981' : '#ef4444'}
+              {@const entry = chartPaths().points[index]}
               <circle 
                 cx={x} 
                 cy={y} 
@@ -157,7 +166,7 @@
                 stroke-width="1"
                 class="hover:r-3 transition-all"
               >
-                <title>{entry.action}: {entry.points} points</title>
+                <title>{entry.action}: {Number(profitLoss) >= 0 ? '+' : ''}{profitLoss} P/L</title>
               </circle>
             {/each}
           </g>
@@ -185,9 +194,11 @@
         <div class="text-xs text-gray-400 mb-1">Recent Actions:</div>
         <div class="text-xs space-y-1 max-h-16 overflow-y-auto">
           {#each gameState.pointHistory.slice(-3).reverse() as entry}
+            {@const profitLoss = entry.points - getLevelEntryCost(gameState.currentLevel)}
+            {@const profitLossColor = profitLoss >= 0 ? 'text-green-400' : 'text-red-400'}
             <div class="flex justify-between">
               <span class="text-gray-300 truncate">{entry.action}</span>
-              <span class="text-white">{entry.points}</span>
+              <span class="{profitLossColor}">{profitLoss >= 0 ? '+' : ''}{profitLoss}</span>
             </div>
           {/each}
         </div>
