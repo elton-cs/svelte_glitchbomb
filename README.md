@@ -34,12 +34,13 @@ Glitch Bomb is a strategic luck game where you pull orbs from a bag to score poi
 - **Strategic Selection**: 3 Common + 2 Rare + 1 Cosmic per level
 - **Persistent Pricing**: Price increases persist across levels within same game
 
-### 📊 **Multi-View Interface** *(ENHANCED in v0.1.3)*
+### 📊 **Multi-View Interface** *(ENHANCED in v0.1.4)*
 - **Data View**: Complete 5-section dashboard with all game stats and controls
 - **Player View**: Simplified interface (coming soon)
 - **Playground**: Development/testing environment with orb selection
 - **Real-time Game Log**: Track all actions with timestamps
 - **Visual Orb Bag**: Square-based representation with calculation tooltips
+- **Profit/Loss Chart**: Real-time performance tracking across game sessions
 - **Responsive Design**: Mobile-friendly tab navigation and layouts
 
 ## Complete Orb Types
@@ -98,11 +99,52 @@ npm run check    # Type checking
 ```
 src/
 ├── lib/
-│   ├── components/     # UI components (5 main sections)
+│   ├── components/     # UI components (5 main dashboard sections)
 │   ├── game/          # Core game logic
 │   └── utils/         # Utility functions
 └── assets/            # Static assets
 ```
+
+## What's New in v0.1.4
+
+### 📊 **Performance Tracking System**
+- **Profit/Loss Chart**: Real-time graph tracking performance across all levels within a game session
+- **Dynamic Scaling**: Chart scales based on level milestones for better visualization
+- **Cumulative Cost Tracking**: Accurate profit/loss calculation including all level entry costs
+- **Visual Performance Feedback**: Black background with white borders for clear data visualization
+
+### 🛒 **Enhanced Shop Experience**
+- **Purchase Count Badges**: Visual indicators showing how many times each item has been purchased
+- **Smart Badge Positioning**: Bottom-left corner placement with hover color flip effects
+- **Improved Button Layout**: Two-column design with vertical price display to prevent overflow
+- **Inline Pricing**: Strikethrough base cost displayed alongside current price for space efficiency
+- **Font Size Optimization**: Larger fonts for better readability and visual balance
+
+### 🎯 **Orb Bag Improvements**  
+- **Calculation Display**: Header shows real-time calculation summaries for special orbs
+- **Interactive Tooltips**: Hover over orbs to see detailed point calculations
+- **Single Column Layout**: Cleaner visual hierarchy with right-aligned orb squares
+- **Instructional Text**: Helpful placeholder text when no calculations are available
+- **Smart Tooltip Positioning**: Tooltips positioned to avoid panel border cutoffs
+
+### 🎨 **UI Polish & Accessibility**
+- **Emoji Integration**: Moon (🌙) and cheese (🧀) emojis replace text in key UI elements
+- **Enhanced Grid Layouts**: 2x3 grids for player stats with thicker progress bars for better visibility
+- **Responsive Typography**: Increased font sizes across actions panel and shop buttons
+- **Consistent Spacing**: Reduced padding and optimized layouts for better space utilization
+- **Disabled State Styling**: Purchase count badges match button disabled states
+
+### 🧪 **Playground Mode Enhancements**
+- **Complete Testing Environment**: Full orb selection and stat tracking capabilities
+- **Moonrocks Integration**: 500 default moonrocks for comprehensive testing
+- **Compact Orb Selector**: Space-efficient layout for better user experience
+- **State Machine Fixes**: Resolved invalid states and improved reset functionality
+
+### 🔧 **Technical Improvements**
+- **Chart Overflow Prevention**: Proper boundary handling for profit/loss visualization
+- **Orb Type Display**: Reusable components with improved layout consistency
+- **Responsive Design**: Better handling of window resize events
+- **Performance Optimization**: Efficient chart rendering and state management
 
 ## What's New in v0.1.3
 
