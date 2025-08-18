@@ -6,6 +6,7 @@
   import PlayerStatsSection from './PlayerStatsSection.svelte';
   import OrbBagSection from './OrbBagSection.svelte';
   import GameLogSection from './GameLogSection.svelte';
+  import ProfitLossPanel from './ProfitLossPanel.svelte';
 
   interface Props {
     devMode: boolean;
@@ -39,7 +40,7 @@
       <!-- Moonrocks - Separate section -->
       <div class="bg-black p-3 rounded-lg shadow-sm border border-white flex-1 min-w-64">
         <div class="flex justify-between items-center">
-          <div class="text-sm font-bold text-white">MOONROCKS</div>
+          <div class="text-sm font-bold text-white">🌙 MOONROCKS</div>
           <div class="text-xl font-bold text-white">{gameState.playerStats.moonrocks}</div>
         </div>
         {#if canClaimRocks}
@@ -67,7 +68,7 @@
               onclick={resetMoonrocks}
               class="w-full bg-black hover:bg-white hover:text-black border border-white text-white text-sm font-medium py-2 px-3 rounded-lg transition-colors"
             >
-              RESET MOONROCKS TO 0
+              RESET 🌙 MOONROCKS TO 0
             </button>
           </div>
         </div>
@@ -108,6 +109,13 @@
       <div class="flex-1 min-w-80 h-96">
         <div class="h-full">
           <GameLogSection {gameState} />
+        </div>
+      </div>
+
+      <!-- Profit/Loss Panel -->
+      <div class="flex-1 min-w-80 h-96">
+        <div class="h-full">
+          <ProfitLossPanel {gameState} />
         </div>
       </div>
     </div>

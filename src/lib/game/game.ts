@@ -18,17 +18,26 @@ import {
 import { GAME_CONFIG } from './constants.js';
 import type { OrbType } from './types.js';
 import { getShopItem, getAvailableShopItemsFromDeck, findDeckItem, updateDeckItemPrice, initializeShopDeck } from './shopItems.js';
-import { addLogEntry, clearGameLog } from './state.js';
+import { addLogEntry, clearGameLog, addPointHistoryEntry, clearPointHistory } from './state.js';
+import { getCumulativeLevelCost } from './economics.js';
 
-function applyPointsWithMultiplier(gameState: GameState, basePoints: number): void {
+function applyPointsWithMultiplier(gameState: GameState, basePoints: number, action: string = 'Points gained'): void {
   const multipliedPoints = Math.floor(basePoints * gameState.playerStats.levelMultiplier);
   gameState.playerStats.points += multipliedPoints;
+  const cumulativeCost = getCumulativeLevelCost(gameState.currentLevel);
+  addPointHistoryEntry(gameState, gameState.playerStats.points, action, cumulativeCost);
 }
 
 export function startNewGame(gameState: GameState): boolean {
   try {
     // Clear game log for new session
     clearGameLog(gameState);
+    
+    // Clear point history for new session
+    clearPointHistory(gameState);
+    
+    // Add initial point history entry
+    addPointHistoryEntry(gameState, 0, 'Game started', getCumulativeLevelCost(1));
     
     // Reset shop deck to initial prices (new game session)
     gameState.shopDeck = initializeShopDeck();
@@ -72,6 +81,11 @@ export function enterLevel(gameState: GameState, level: number): boolean {
       gameState.playerStats.cheddah = 0;
     }
     
+    // Track P/L change from entering new level (points reset to 0, moonrocks spent)
+    if (level > 1) {
+      addPointHistoryEntry(gameState, 0, `Entered Level ${level} (-${cost} moonrocks)`, getCumulativeLevelCost(level));
+    }
+    
     return true;
   } catch (error) {
     console.error('Error entering level:', error);
@@ -102,37 +116,42 @@ export function pullOrb(gameState: GameState): boolean {
           gameState.playerStats.health + orb.amount,
           GAME_CONFIG.maxHealth
         );
+        addPointHistoryEntry(gameState, gameState.playerStats.points, `Health orb (+${orb.amount} HP)`, getCumulativeLevelCost(gameState.currentLevel));
         addLogEntry(gameState, `Pulled health orb (+${orb.amount} HP)`);
         break;
       case 'point':
-        applyPointsWithMultiplier(gameState, orb.amount);
+        applyPointsWithMultiplier(gameState, orb.amount, `Point orb (+${orb.amount})`);
         addLogEntry(gameState, `Pulled point orb (+${orb.amount} points)`);
         break;
       case 'bomb':
         gameState.playerStats.health = Math.max(0, gameState.playerStats.health - orb.amount);
         gameState.playerStats.bombsPulledThisLevel += 1;
+        addPointHistoryEntry(gameState, gameState.playerStats.points, `Bomb orb (-${orb.amount} HP)`, getCumulativeLevelCost(gameState.currentLevel));
         addLogEntry(gameState, `Pulled bomb orb (-${orb.amount} HP)`);
         break;
       case 'points_per_anyorb':
         const pointsPerAnyOrbPoints = calculatePointsPerAnyOrbPoints(gameState.orbBag, orb.amount);
-        applyPointsWithMultiplier(gameState, pointsPerAnyOrbPoints);
+        applyPointsWithMultiplier(gameState, pointsPerAnyOrbPoints, `Combo orb (+${pointsPerAnyOrbPoints})`);
         addLogEntry(gameState, `Pulled combo orb (+${pointsPerAnyOrbPoints} points from ${orb.amount} per orb)`);
         break;
       case 'points_per_bombpulled':
         const bombPoints = gameState.playerStats.bombsPulledThisLevel * orb.amount;
-        applyPointsWithMultiplier(gameState, bombPoints);
+        applyPointsWithMultiplier(gameState, bombPoints, `Danger orb (+${bombPoints})`);
         addLogEntry(gameState, `Pulled danger orb (+${bombPoints} points from ${orb.amount} per bomb)`);
         break;
       case 'multiplier':
         gameState.playerStats.levelMultiplier += orb.amount;
+        addPointHistoryEntry(gameState, gameState.playerStats.points, `Multiplier orb (+${orb.amount}x)`, getCumulativeLevelCost(gameState.currentLevel));
         addLogEntry(gameState, `Pulled multiplier orb (+${orb.amount}x boost)`);
         break;
       case 'cheddah':
         gameState.playerStats.cheddah += orb.amount;
+        addPointHistoryEntry(gameState, gameState.playerStats.points, `Cheddah orb (+${orb.amount})`, getCumulativeLevelCost(gameState.currentLevel));
         addLogEntry(gameState, `Pulled cheddah orb (+${orb.amount} cheddah)`);
         break;
       case 'moonrocks':
         gameState.playerStats.moonrocks += orb.amount;
+        addPointHistoryEntry(gameState, gameState.playerStats.points, `Moonrocks orb (+${orb.amount})`, getCumulativeLevelCost(gameState.currentLevel));
         addLogEntry(gameState, `Pulled moonrocks orb (+${orb.amount} moonrocks)`);
         break;
     }
@@ -304,6 +323,15 @@ export function proceedToNextLevel(gameState: GameState): boolean {
 }
 
 export function restartGame(gameState: GameState): boolean {
+  // Reset orb bag to initial state (same as going to main menu then starting)
+  gameState.orbBag = createInitialBag();
+  
+  // Reset other game state
+  gameState.gameStarted = false;
+  gameState.levelCompleted = false;
+  gameState.marketplace.available = false;
+  gameState.committedToNextLevel = false;
+  
   return startNewGame(gameState);
 }
 

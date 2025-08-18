@@ -4,7 +4,7 @@ import type { ShopItem, ShopDeck, ShopDeckItem } from './types.js';
 export const COMMON_SHOP_ITEMS: ShopItem[] = [
   {
     id: 'common_point_5',
-    name: 'POINT 5',
+    name: 'POINTS',
     description: '+5 PTS',
     type: 'point',
     amount: 5,
@@ -12,7 +12,7 @@ export const COMMON_SHOP_ITEMS: ShopItem[] = [
   },
   {
     id: 'common_point_7',
-    name: 'POINT 7',
+    name: 'POINTS',
     description: '+7 PTS',
     type: 'point',
     amount: 7,
@@ -20,7 +20,7 @@ export const COMMON_SHOP_ITEMS: ShopItem[] = [
   },
   {
     id: 'common_cheddah_15',
-    name: 'CHEDDAH 15',
+    name: 'CHEDDAH',
     description: '+15 cheddah',
     type: 'cheddah',
     amount: 15,
@@ -28,15 +28,15 @@ export const COMMON_SHOP_ITEMS: ShopItem[] = [
   },
   {
     id: 'common_moonrocks_15',
-    name: 'MOONROCKS 15',
-    description: '+15 moonrocks',
+    name: 'MOONROCKS',
+    description: '+15 🌙',
     type: 'moonrocks',
     amount: 15,
     cost: 8
   },
   {
     id: 'common_points_per_bombpulled_4',
-    name: '4 PTS PER BOMB',
+    name: 'DANGER',
     description: '+4 per bomb',
     type: 'points_per_bombpulled',
     amount: 4,
@@ -44,7 +44,7 @@ export const COMMON_SHOP_ITEMS: ShopItem[] = [
   },
   {
     id: 'common_health_1',
-    name: 'HEALTH 1',
+    name: 'HEALTH',
     description: '+1 HP',
     type: 'health',
     amount: 1,
@@ -52,7 +52,7 @@ export const COMMON_SHOP_ITEMS: ShopItem[] = [
   },
   {
     id: 'common_multiplier_05',
-    name: '+0.5X MULTIPLIER',
+    name: 'MULTIPLIER',
     description: '+0.5x mult',
     type: 'multiplier',
     amount: 0.5,
@@ -64,7 +64,7 @@ export const COMMON_SHOP_ITEMS: ShopItem[] = [
 export const RARE_SHOP_ITEMS: ShopItem[] = [
   {
     id: 'rare_point_8',
-    name: 'POINTS 8',
+    name: 'POINTS',
     description: '+8 PTS',
     type: 'point',
     amount: 8,
@@ -72,7 +72,7 @@ export const RARE_SHOP_ITEMS: ShopItem[] = [
   },
   {
     id: 'rare_point_9',
-    name: 'POINTS 9',
+    name: 'POINTS',
     description: '+9 PTS',
     type: 'point',
     amount: 9,
@@ -80,7 +80,7 @@ export const RARE_SHOP_ITEMS: ShopItem[] = [
   },
   {
     id: 'rare_multiplier_next_point',
-    name: '+1.0X MULTIPLIER',
+    name: 'MULTIPLIER',
     description: '+1.0x mult',
     type: 'multiplier',
     amount: 1.0,
@@ -88,7 +88,7 @@ export const RARE_SHOP_ITEMS: ShopItem[] = [
   },
   {
     id: 'rare_multiplier_15',
-    name: '1.5X MULTIPLIER',
+    name: 'MULTIPLIER',
     description: '+1.5x mult',
     type: 'multiplier',
     amount: 1.5,
@@ -100,7 +100,7 @@ export const RARE_SHOP_ITEMS: ShopItem[] = [
 export const COSMIC_SHOP_ITEMS: ShopItem[] = [
   {
     id: 'cosmic_health_3',
-    name: 'COSMIC HEALTH',
+    name: 'HEALTH',
     description: 'Gain 3 Health',
     type: 'health',
     amount: 3,
@@ -108,8 +108,8 @@ export const COSMIC_SHOP_ITEMS: ShopItem[] = [
   },
   {
     id: 'cosmic_moonrocks_40',
-    name: 'COSMIC MOON',
-    description: 'Gain 40 Moon Rocks',
+    name: 'MOONROCKS',
+    description: '+40 🌙',
     type: 'moonrocks',
     amount: 40,
     cost: 23

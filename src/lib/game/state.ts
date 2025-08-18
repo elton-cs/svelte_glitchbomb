@@ -1,4 +1,4 @@
-import type { GameState, OrbBag, PlayerStats, MarketplaceState, GameLogEntry } from './types.js';
+import type { GameState, OrbBag, PlayerStats, MarketplaceState, GameLogEntry, PointHistoryEntry } from './types.js';
 import { GAME_CONFIG } from './constants.js';
 import { createInitialBag } from './orbs.js';
 import { initializeShopDeck } from './shopItems.js';
@@ -62,6 +62,7 @@ export function createInitialGameState(moonrocks: number = loadMoonrocks()): Gam
     marketplace: createInitialMarketplaceState(),
     shopDeck: initializeShopDeck(),
     gameLog: [],
+    pointHistory: [],
     gameStarted: false,
     levelCompleted: false,
     committedToNextLevel: false,
@@ -105,6 +106,27 @@ export function addLogEntry(gameState: GameState, action: string, details?: stri
 
 export function clearGameLog(gameState: GameState): void {
   gameState.gameLog = [];
+}
+
+// Point History Utility Functions
+export function addPointHistoryEntry(gameState: GameState, points: number, action: string, cumulativeCost: number): void {
+  const historyEntry: PointHistoryEntry = {
+    timestamp: Date.now(),
+    points,
+    action,
+    cumulativeCost
+  };
+  
+  gameState.pointHistory.push(historyEntry);
+  
+  // Keep only the last 100 entries to prevent memory issues
+  if (gameState.pointHistory.length > 100) {
+    gameState.pointHistory = gameState.pointHistory.slice(-100);
+  }
+}
+
+export function clearPointHistory(gameState: GameState): void {
+  gameState.pointHistory = [];
 }
 
 // Global game state - will be initialized in GameDashboard component
