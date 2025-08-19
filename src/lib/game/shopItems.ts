@@ -129,7 +129,9 @@ export const SHOP_TIER_AVAILABILITY: Record<number, ('common' | 'rare' | 'cosmic
   2: ['common', 'rare', 'cosmic'],
   3: ['common', 'rare', 'cosmic'],
   4: ['common', 'rare', 'cosmic'],
-  5: ['common', 'rare', 'cosmic']
+  5: ['common', 'rare', 'cosmic'],
+  6: ['common', 'rare', 'cosmic'],
+  7: ['common', 'rare', 'cosmic']
 };
 
 // Utility function to shuffle array
