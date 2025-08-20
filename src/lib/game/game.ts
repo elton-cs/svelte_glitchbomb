@@ -352,3 +352,24 @@ export function returnToMenu(gameState: GameState): void {
   // Reset commitment flag
   gameState.committedToNextLevel = false;
 }
+
+export function skipLevel(gameState: GameState): boolean {
+  if (gameState.phase !== 'level') {
+    return false;
+  }
+
+  const milestone = getLevelMilestone(gameState.currentLevel);
+  const pointsNeeded = milestone - gameState.playerStats.points;
+  
+  if (pointsNeeded > 0) {
+    applyPointsWithMultiplier(gameState, pointsNeeded, `DEBUG: Skip to milestone (+${pointsNeeded})`);
+    addLogEntry(gameState, `DEBUG: Added ${pointsNeeded} points to reach level ${gameState.currentLevel} milestone`);
+  }
+  
+  // Complete the level if we now have enough points
+  if (checkLevelComplete(gameState.playerStats.points, gameState.currentLevel)) {
+    completeLevel(gameState);
+  }
+  
+  return true;
+}
