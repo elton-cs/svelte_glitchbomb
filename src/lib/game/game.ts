@@ -15,7 +15,7 @@ import {
   isLastLevel, 
   getNextLevel 
 } from './levels.js';
-import { GAME_CONFIG } from './constants.js';
+import { GAME_CONFIG, LEVEL_COUNT } from './constants.js';
 import type { OrbType } from './types.js';
 import { getShopItem, getAvailableShopItemsFromDeck, findDeckItem, updateDeckItemPrice, initializeShopDeck } from './shopItems.js';
 import { addLogEntry, clearGameLog, addPointHistoryEntry, clearPointHistory } from './state.js';
@@ -55,7 +55,7 @@ export function startNewGame(gameState: GameState): boolean {
 
 export function enterLevel(gameState: GameState, level: number): boolean {
   try {
-    if (level < 1 || level > 5) {
+    if (level < 1 || level > LEVEL_COUNT) {
       console.warn('Invalid level:', level);
       return false;
     }
