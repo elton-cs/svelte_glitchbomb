@@ -75,48 +75,32 @@
       {/if}
     </div>
 
-    <!-- Main Game UI Flex Container -->
-    <div class="flex flex-wrap gap-4 items-stretch">
-      <!-- Player Stats Section -->
-      <div class="flex-1 min-w-80 h-96">
-        <div class="h-full">
-          <PlayerStatsSection {gameState} />
-        </div>
+    <!-- Main Game UI 2x3 Grid -->
+    <div class="grid grid-cols-3 grid-rows-2 gap-4 h-[800px]">
+      <!-- Top Row: Shop | Orb Bag | Player Stats -->
+      <div class="h-full">
+        <MarketplaceView {gameState} />
       </div>
 
-      <!-- Actions Panel - Prominent placement -->
-      <div class="flex-1 min-w-80 h-96">
-        <div class="h-full">
-          <ActionsPanel {gameState} />
-        </div>
+      <div class="h-full">
+        <OrbBagSection {gameState} />
       </div>
 
-      <!-- Marketplace -->
-      <div class="flex-1 min-w-80 h-96">
-        <div class="h-full">
-          <MarketplaceView {gameState} />
-        </div>
+      <div class="h-full">
+        <PlayerStatsSection {gameState} />
       </div>
 
-      <!-- Orb Bag Section -->
-      <div class="flex-1 min-w-80 h-96">
-        <div class="h-full">
-          <OrbBagSection {gameState} />
-        </div>
+      <!-- Bottom Row: Actions | Log | PnL -->
+      <div class="h-full">
+        <ActionsPanel {gameState} />
       </div>
 
-      <!-- Game Log Section -->
-      <div class="flex-1 min-w-80 h-96">
-        <div class="h-full">
-          <GameLogSection {gameState} />
-        </div>
+      <div class="h-full">
+        <GameLogSection {gameState} />
       </div>
 
-      <!-- Profit/Loss Panel -->
-      <div class="flex-1 min-w-80 h-96">
-        <div class="h-full">
-          <ProfitLossPanel {gameState} />
-        </div>
+      <div class="h-full">
+        <ProfitLossPanel {gameState} />
       </div>
     </div>
   </div>
