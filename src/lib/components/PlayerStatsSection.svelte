@@ -14,17 +14,9 @@
   <h2 class="text-sm font-bold mb-3 text-white">PLAYER STATS</h2>
   
   <!-- Main Glitch Bytes Display -->
-  <div class="flex justify-between items-start mb-4">
-    <div class="text-center flex-1">
-      <div class="text-4xl font-bold text-white mb-1">{gameState.playerStats.cheddah}</div>
-      <div class="text-white text-xs tracking-wide">GLITCH BYTES</div>
-    </div>
-    
-    <!-- Small boxes on the right -->
-    <div class="flex flex-col gap-1">
-      <div class="border border-gray-600 px-2 py-1 text-yellow-400 text-xs font-bold">15G</div>
-      <div class="border border-gray-600 px-2 py-1 text-yellow-400 text-xs font-bold">40G</div>
-    </div>
+  <div class="text-center mb-4">
+    <div class="text-4xl font-bold text-white mb-1">{gameState.playerStats.cheddah}</div>
+    <div class="text-white text-xs tracking-wide">GLITCH BYTES</div>
   </div>
   
   <!-- Three stats in a row -->
