@@ -77,9 +77,9 @@
 
     <!-- Main Game UI 2x3 Grid -->
     <div class="grid grid-cols-3 grid-rows-2 gap-4 h-[800px]">
-      <!-- Top Row: Shop | Orb Bag | Player Stats -->
+      <!-- Top Row: Player Stats | Orb Bag | Shop -->
       <div class="h-full">
-        <MarketplaceView {gameState} />
+        <PlayerStatsSection {gameState} />
       </div>
 
       <div class="h-full">
@@ -87,7 +87,7 @@
       </div>
 
       <div class="h-full">
-        <PlayerStatsSection {gameState} />
+        <MarketplaceView {gameState} />
       </div>
 
       <!-- Bottom Row: Actions | Log | PnL -->
