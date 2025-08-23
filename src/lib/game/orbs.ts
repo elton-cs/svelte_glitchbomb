@@ -40,9 +40,9 @@ export function createInitialBag(): OrbBag {
     createOrb('multiplier', 1.0), // 1x Multiplier Boost
   ];
 
-  const cheddahOrbs: Orb[] = [];
+  const bitsOrbs: Orb[] = [];
   
-  const moonrocksOrbs: Orb[] = [];
+  const glitchbytesOrbs: Orb[] = [];
   
   return {
     health: {
@@ -69,19 +69,19 @@ export function createInitialBag(): OrbBag {
       available: [...multiplierOrbs],
       total: [...multiplierOrbs]
     },
-    cheddah: {
-      available: [...cheddahOrbs],
-      total: [...cheddahOrbs]
+    bits: {
+      available: [...bitsOrbs],
+      total: [...bitsOrbs]
     },
-    moonrocks: {
-      available: [...moonrocksOrbs],
-      total: [...moonrocksOrbs]
+    glitchbytes: {
+      available: [...glitchbytesOrbs],
+      total: [...glitchbytesOrbs]
     }
   };
 }
 
 export function getTotalAvailableOrbs(bag: OrbBag): number {
-  return bag.health.available.length + bag.point.available.length + bag.bomb.available.length + bag.points_per_anyorb.available.length + bag.points_per_bombpulled.available.length + bag.multiplier.available.length + bag.cheddah.available.length + bag.moonrocks.available.length;
+  return bag.health.available.length + bag.point.available.length + bag.bomb.available.length + bag.points_per_anyorb.available.length + bag.points_per_bombpulled.available.length + bag.multiplier.available.length + bag.bits.available.length + bag.glitchbytes.available.length;
 }
 
 export function getAvailableOrbCount(bag: OrbBag, type: OrbType): number {
@@ -93,7 +93,7 @@ export function getTotalOrbCount(bag: OrbBag, type: OrbType): number {
 }
 
 export function getAllAvailableOrbs(bag: OrbBag): Orb[] {
-  return [...bag.health.available, ...bag.point.available, ...bag.bomb.available, ...bag.points_per_anyorb.available, ...bag.points_per_bombpulled.available, ...bag.multiplier.available, ...bag.cheddah.available, ...bag.moonrocks.available];
+  return [...bag.health.available, ...bag.point.available, ...bag.bomb.available, ...bag.points_per_anyorb.available, ...bag.points_per_bombpulled.available, ...bag.multiplier.available, ...bag.bits.available, ...bag.glitchbytes.available];
 }
 
 export function pullRandomOrb(bag: OrbBag): Orb | null {
@@ -124,8 +124,8 @@ export function resetConsumedOrbs(bag: OrbBag): void {
   bag.points_per_anyorb.available = [...bag.points_per_anyorb.total];
   bag.points_per_bombpulled.available = [...bag.points_per_bombpulled.total];
   bag.multiplier.available = [...bag.multiplier.total];
-  bag.cheddah.available = [...bag.cheddah.total];
-  bag.moonrocks.available = [...bag.moonrocks.total];
+  bag.bits.available = [...bag.bits.total];
+  bag.glitchbytes.available = [...bag.glitchbytes.total];
 }
 
 export function addOrbsToBag(bag: OrbBag, orbType: OrbType, quantity: number, amount?: number): void {

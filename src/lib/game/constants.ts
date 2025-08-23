@@ -1,7 +1,7 @@
 import type { GameConfig } from './types.js';
 
 export const GAME_CONFIG: GameConfig = {
-  initialMoonrocks: 0,
+  initialGlitchbytes: 0,
   levelMilestones: [12, 18, 28, 44, 70, 100, 150],
   levelCosts: [10, 1, 2, 4, 6, 9, 13],
   orbCosts: {
@@ -15,8 +15,8 @@ export const GAME_CONFIG: GameConfig = {
     points_per_anyorb: 1,
     points_per_bombpulled: 1,
     multiplier: 0.5,
-    cheddah: 10,
-    moonrocks: 5,
+    bits: 10,
+    glitchbytes: 5,
   },
   maxHealth: 5,
   startingOrbs: {
@@ -26,8 +26,8 @@ export const GAME_CONFIG: GameConfig = {
     points_per_anyorb: 1,
     points_per_bombpulled: 1,
     multiplier: 1,
-    cheddah: 0,
-    moonrocks: 0,
+    bits: 0,
+    glitchbytes: 0,
   },
 };
 

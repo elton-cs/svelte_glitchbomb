@@ -1,13 +1,13 @@
 import { GAME_CONFIG } from './constants.js';
 
 
-export function canAffordLevel(moonrocks: number, level: number): boolean {
+export function canAffordLevel(glitchbytes: number, level: number): boolean {
   if (level < 1 || level > GAME_CONFIG.levelCosts.length) {
     return false;
   }
   
   const cost = GAME_CONFIG.levelCosts[level - 1];
-  return moonrocks >= cost;
+  return glitchbytes >= cost;
 }
 
 export function calculateCashOut(points: number, levelCost: number): number {
@@ -26,12 +26,12 @@ export function getLevelEntryCost(level: number): number {
 }
 
 export function calculateVictoryReward(points: number): number {
-  // Auto-convert points to moonrocks (1:1 ratio) instead of fixed reward
+  // Auto-convert points to glitchbytes (1:1 ratio) instead of fixed reward
   return points;
 }
 
-export function validatePurchase(cheddah: number, cost: number): boolean {
-  return cheddah >= cost;
+export function validatePurchase(bits: number, cost: number): boolean {
+  return bits >= cost;
 }
 
 export function getCumulativeLevelCost(currentLevel: number): number {

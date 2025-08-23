@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { createInitialGameState, claimFreeRocks, saveMoonrocks } from '../game/state.js';
+  import { createInitialGameState, claimFreeBytes, saveGlitchbytes } from '../game/state.js';
   import StatsDisplay from './StatsDisplay.svelte';
   import ActionsPanel from './ActionsPanel.svelte';
   import MarketplaceView from './MarketplaceView.svelte';
@@ -15,48 +15,29 @@
   let { devMode }: Props = $props();
   let gameState = $state(createInitialGameState());
   
-  function handleClaimRocks() {
-    const newAmount = claimFreeRocks(gameState.playerStats.moonrocks);
-    gameState.playerStats.moonrocks = newAmount;
+  function handleClaimBytes() {
+    const newAmount = claimFreeBytes(gameState.playerStats.glitchbytes);
+    gameState.playerStats.glitchbytes = newAmount;
   }
   
-  function resetMoonrocks() {
-    gameState.playerStats.moonrocks = 0;
+  function resetGlitchbytes() {
+    gameState.playerStats.glitchbytes = 0;
   }
   
-  // Save moonrocks whenever they change
+  // Save glitchbytes whenever they change
   $effect(() => {
-    saveMoonrocks(gameState.playerStats.moonrocks);
+    saveGlitchbytes(gameState.playerStats.glitchbytes);
   });
   
-  const canClaimRocks = $derived(gameState.playerStats.moonrocks < 100);
+  const canClaimBytes = $derived(gameState.playerStats.glitchbytes < 100);
   
 </script>
 
 <div class="bg-black p-3">
   <div class="max-w-7xl mx-auto">
-    <!-- Top Row: Moonrocks and Dev Tools -->
-    <div class="flex flex-wrap gap-4 mb-6">
-      <!-- Moonrocks - Separate section -->
-      <div class="bg-black p-3 rounded-lg shadow-sm border border-white flex-1 min-w-64">
-        <div class="flex justify-between items-center">
-          <div class="text-sm font-bold text-white">🌙 MOONROCKS</div>
-          <div class="text-xl font-bold text-white">{gameState.playerStats.moonrocks}</div>
-        </div>
-        {#if canClaimRocks}
-          <div class="mt-2 pt-2 border-t border-white">
-            <button 
-              onclick={handleClaimRocks}
-              class="w-full bg-black hover:bg-white hover:text-black border border-white text-white text-sm font-medium py-2 px-3 rounded-lg transition-colors"
-            >
-              CLAIM 1000 FREE ROCKS!
-            </button>
-          </div>
-        {/if}
-      </div>
-
-      <!-- Dev Mode Panel -->
-      {#if devMode}
+    <!-- Dev Tools Panel -->
+    {#if devMode}
+      <div class="flex flex-wrap gap-4 mb-6">
         <div class="bg-black p-3 rounded-lg shadow-sm border border-white flex-1 min-w-64">
           <div class="flex justify-between items-center mb-2">
             <h3 class="font-medium text-white text-sm">🔧 DEVELOPER TOOLS</h3>
@@ -65,15 +46,23 @@
           
           <div class="space-y-2">
             <button 
-              onclick={resetMoonrocks}
+              onclick={resetGlitchbytes}
               class="w-full bg-black hover:bg-white hover:text-black border border-white text-white text-sm font-medium py-2 px-3 rounded-lg transition-colors"
             >
-              RESET 🌙 MOONROCKS TO 0
+              RESET ⚡ GLITCH BYTES TO 0
             </button>
+            {#if canClaimBytes}
+              <button 
+                onclick={handleClaimBytes}
+                class="w-full bg-black hover:bg-white hover:text-black border border-white text-white text-sm font-medium py-2 px-3 rounded-lg transition-colors"
+              >
+                CLAIM 1000 FREE BYTES!
+              </button>
+            {/if}
           </div>
         </div>
-      {/if}
-    </div>
+      </div>
+    {/if}
 
     <!-- Main Game UI 2x3 Grid -->
     <div class="grid grid-cols-3 grid-rows-2 gap-4 h-[800px]">

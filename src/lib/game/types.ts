@@ -1,4 +1,4 @@
-export type OrbType = 'health' | 'point' | 'bomb' | 'points_per_anyorb' | 'points_per_bombpulled' | 'multiplier' | 'cheddah' | 'moonrocks';
+export type OrbType = 'health' | 'point' | 'bomb' | 'points_per_anyorb' | 'points_per_bombpulled' | 'multiplier' | 'bits' | 'glitchbytes';
 
 export type GamePhase = 'menu' | 'level' | 'confirmation' | 'marketplace' | 'gameover' | 'victory';
 
@@ -32,19 +32,19 @@ export interface OrbBag {
     available: Orb[];
     total: Orb[];
   };
-  cheddah: {
+  bits: {
     available: Orb[];
     total: Orb[];
   };
-  moonrocks: {
+  glitchbytes: {
     available: Orb[];
     total: Orb[];
   };
 }
 
 export interface PlayerStats {
-  moonrocks: number;
-  cheddah: number;
+  glitchbytes: number;
+  bits: number;
   health: number;
   points: number;
   bombsPulledThisLevel: number;
@@ -113,7 +113,7 @@ export interface GameLogEntry {
 export type GameLog = GameLogEntry[];
 
 export interface GameConfig {
-  initialMoonrocks: number;
+  initialGlitchbytes: number;
   levelMilestones: number[];
   levelCosts: number[];
   orbCosts: {
@@ -127,8 +127,8 @@ export interface GameConfig {
     points_per_anyorb: number;
     points_per_bombpulled: number;
     multiplier: number;
-    cheddah: number;
-    moonrocks: number;
+    bits: number;
+    glitchbytes: number;
   };
   maxHealth: number;
   startingOrbs: {
@@ -138,7 +138,7 @@ export interface GameConfig {
     points_per_anyorb: number;
     points_per_bombpulled: number;
     multiplier: number;
-    cheddah: number;
-    moonrocks: number;
+    bits: number;
+    glitchbytes: number;
   };
 }

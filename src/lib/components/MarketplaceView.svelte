@@ -56,7 +56,7 @@
           color: tierColor,
           borderColor: tierBorder,
           available: true,
-          canPurchase: gameState.playerStats.cheddah >= shopItem.currentCost,
+          canPurchase: gameState.playerStats.bits >= shopItem.currentCost,
           isShopItem: true
         };
       });
@@ -174,7 +174,7 @@
                 {:else}
                   <div class="text-lg font-bold">{item.cost}</div>
                 {/if}
-                <div class="text-lg">🧀</div>
+                <div class="text-lg">💾</div>
               {:else if !item.available && item.cost === 0}
                 <div class="text-sm opacity-60 {item.color} transform rotate-90">CLOSED</div>
               {:else if !item.available}
@@ -190,15 +190,15 @@
   <!-- Footer -->
   <div class="mt-3 text-sm text-center h-5">
     <p class="text-white uppercase tracking-wide">
-      CHEDDAH: <span class="font-medium">{gameState.playerStats.cheddah}</span>
+      BITS: <span class="font-medium">{gameState.playerStats.bits}</span>
     </p>
   </div>
   
   <div class="mt-1 text-sm text-center h-5">
     {#if gameState.phase === 'confirmation'}
       <p class="text-white font-bold">CONVERT {gameState.playerStats.points} POINTS?</p>
-    {:else if gameState.phase === 'marketplace' && gameState.marketplace.available && gameState.playerStats.cheddah === 0}
-      <p class="text-red-400">NO CHEDDAH TO SPEND</p>
+    {:else if gameState.phase === 'marketplace' && gameState.marketplace.available && gameState.playerStats.bits === 0}
+      <p class="text-red-400">NO BITS TO SPEND</p>
     {:else if gameState.phase === 'marketplace' && gameState.marketplace.available}
       <p class="text-white">CLICK TO BUY</p>
     {:else}

@@ -32,10 +32,10 @@
         }
       case 'multiplier':
         return `+${amount}× boost`;
-      case 'cheddah':
-        return `+${amount} cheddah`;
-      case 'moonrocks':
-        return `+${amount} moonrocks`;
+      case 'bits':
+        return `+${amount} bits`;
+      case 'glitchbytes':
+        return `+${amount} glitchbytes`;
       default:
         return null;
     }
@@ -56,8 +56,8 @@
                                       gameState.orbBag.points_per_anyorb.available.length + 
                                       gameState.orbBag.points_per_bombpulled.available.length + 
                                       gameState.orbBag.multiplier.available.length +
-                                      gameState.orbBag.cheddah.available.length +
-                                      gameState.orbBag.moonrocks.available.length);
+                                      gameState.orbBag.bits.available.length +
+                                      gameState.orbBag.glitchbytes.available.length);
 
   const orbTypes = [
     {
@@ -97,14 +97,14 @@
       color: 'text-orange-400'
     },
     {
-      type: 'cheddah' as const,
-      name: 'CHEDDAH',
-      icon: '🧀',
+      type: 'bits' as const,
+      name: 'BITS',
+      icon: '💾',
       color: 'text-yellow-400'
     },
     {
-      type: 'moonrocks' as const,
-      name: 'MOONROCKS',
+      type: 'glitchbytes' as const,
+      name: 'GLITCH BYTES',
       icon: '🌙',
       color: 'text-gray-300'
     }

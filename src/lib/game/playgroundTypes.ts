@@ -73,17 +73,17 @@ export const PLAYGROUND_ORB_TEMPLATES: OrbTemplate[] = [
     color: 'text-blue-500'
   },
   {
-    type: 'cheddah',
-    name: 'Cheddah Orb',
-    description: 'Gives cheddah currency',
+    type: 'bits',
+    name: 'Bits Orb',
+    description: 'Gives bits currency',
     defaultAmount: 10,
-    emoji: '🧀',
+    emoji: '💾',
     color: 'text-yellow-300'
   },
   {
-    type: 'moonrocks',
-    name: 'Moonrock Orb',
-    description: 'Gives moonrocks currency',
+    type: 'glitchbytes',
+    name: 'Glitchbyte Orb',
+    description: 'Gives glitchbytes currency',
     defaultAmount: 5,
     emoji: '🌙',
     color: 'text-gray-300'

@@ -13,7 +13,7 @@ npm run check    # Type checking with svelte-check and TypeScript
 
 ## Project Architecture
 
-This is **Glitch Bomb**, a bag-building luck-based game built with Svelte 5, TypeScript, and Tailwind CSS v4. The game features orb collection mechanics, level progression, and an economic system with moonrocks currency.
+This is **Glitch Bomb**, a bag-building luck-based game built with Svelte 5, TypeScript, and Tailwind CSS v4. The game features orb collection mechanics, level progression, and an economic system with glitchbytes currency.
 
 ### Core Architecture
 
@@ -50,16 +50,16 @@ src/lib/
 
 ### Game Systems Overview
 
-1. **Orb System**: 8 orb types (health, point, bomb, points_per_anyorb, points_per_bombpulled, multiplier, cheddah, moonrocks)
+1. **Orb System**: 8 orb types (health, point, bomb, points_per_anyorb, points_per_bombpulled, multiplier, bits, glitchbytes)
 2. **Level Progression**: 5 levels with increasing difficulty and entry costs
-3. **Economic System**: Moonrocks (persistent currency), Cheddah (session currency)
+3. **Economic System**: Glitchbytes (persistent currency), Bits (session currency)
 4. **Shop System**: Tier-based items (Common/Rare/Cosmic) with dynamic pricing
 5. **State Persistence**: Moonrocks persist in localStorage, game state is session-based
 
 ### Important Implementation Details
 
 - **State Management**: Uses Svelte 5 runes ($state, $derived) for reactive state
-- **Persistence**: Only moonrocks persist across sessions via localStorage (state.ts:6-22)
+- **Persistence**: Only glitchbytes persist across sessions via localStorage (state.ts:6-22)
 - **Component Architecture**: Main dashboard has 5-section horizontal layout
 - **Game Phases**: menu → level → marketplace → (gameover|victory)
 - **Type Safety**: Comprehensive TypeScript types in types.ts

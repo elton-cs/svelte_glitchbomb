@@ -15,7 +15,7 @@
   
   <!-- Main Glitch Bytes Display -->
   <div class="text-center mb-4">
-    <div class="text-4xl font-bold text-white mb-1">{gameState.playerStats.cheddah}</div>
+    <div class="text-4xl font-bold text-white mb-1">{gameState.playerStats.glitchbytes}</div>
     <div class="text-white text-xs tracking-wide">GLITCH BYTES</div>
   </div>
   

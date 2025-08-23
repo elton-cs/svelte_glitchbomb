@@ -3,29 +3,29 @@ import { GAME_CONFIG } from './constants.js';
 import { createInitialBag } from './orbs.js';
 import { initializeShopDeck } from './shopItems.js';
 
-// LocalStorage utilities for moonrocks persistence
-const MOONROCKS_STORAGE_KEY = 'glitchbomb_moonrocks';
+// LocalStorage utilities for glitchbytes persistence
+const GLITCHBYTES_STORAGE_KEY = 'glitchbomb_glitchbytes';
 
-export function loadMoonrocks(): number {
-  if (typeof localStorage === 'undefined') return GAME_CONFIG.initialMoonrocks;
+export function loadGlitchbytes(): number {
+  if (typeof localStorage === 'undefined') return GAME_CONFIG.initialGlitchbytes;
   
-  const stored = localStorage.getItem(MOONROCKS_STORAGE_KEY);
-  if (stored === null) return GAME_CONFIG.initialMoonrocks;
+  const stored = localStorage.getItem(GLITCHBYTES_STORAGE_KEY);
+  if (stored === null) return GAME_CONFIG.initialGlitchbytes;
   
   const parsed = parseInt(stored, 10);
-  return isNaN(parsed) ? GAME_CONFIG.initialMoonrocks : parsed;
+  return isNaN(parsed) ? GAME_CONFIG.initialGlitchbytes : parsed;
 }
 
-export function saveMoonrocks(amount: number): void {
+export function saveGlitchbytes(amount: number): void {
   if (typeof localStorage === 'undefined') return;
-  localStorage.setItem(MOONROCKS_STORAGE_KEY, amount.toString());
+  localStorage.setItem(GLITCHBYTES_STORAGE_KEY, amount.toString());
 }
 
-export function claimFreeRocks(currentAmount: number): number {
+export function claimFreeBytes(currentAmount: number): number {
   if (currentAmount >= 100) return currentAmount;
   
   const newAmount = currentAmount + 1000;
-  saveMoonrocks(newAmount);
+  saveGlitchbytes(newAmount);
   return newAmount;
 }
 
@@ -33,10 +33,10 @@ function createInitialOrbBag(): OrbBag {
   return createInitialBag();
 }
 
-function createInitialPlayerStats(moonrocks: number): PlayerStats {
+function createInitialPlayerStats(glitchbytes: number): PlayerStats {
   return {
-    moonrocks,
-    cheddah: 0,
+    glitchbytes,
+    bits: 0,
     health: GAME_CONFIG.maxHealth,
     points: 0,
     bombsPulledThisLevel: 0,
@@ -53,11 +53,11 @@ function createInitialMarketplaceState(): MarketplaceState {
   };
 }
 
-export function createInitialGameState(moonrocks: number = loadMoonrocks()): GameState {
+export function createInitialGameState(glitchbytes: number = loadGlitchbytes()): GameState {
   return {
     phase: 'menu',
     currentLevel: 1,
-    playerStats: createInitialPlayerStats(moonrocks),
+    playerStats: createInitialPlayerStats(glitchbytes),
     orbBag: createInitialOrbBag(),
     marketplace: createInitialMarketplaceState(),
     shopDeck: initializeShopDeck(),
@@ -76,8 +76,8 @@ export function resetLevelStats(state: GameState): void {
   state.playerStats.levelMultiplier = 1.0;
 }
 
-export function resetGameSession(state: GameState, moonrocks: number): void {
-  const newState = createInitialGameState(moonrocks);
+export function resetGameSession(state: GameState, glitchbytes: number): void {
+  const newState = createInitialGameState(glitchbytes);
   Object.assign(state, newState);
 }
 

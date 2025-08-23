@@ -19,18 +19,18 @@ export const COMMON_SHOP_ITEMS: ShopItem[] = [
     cost: 8
   },
   {
-    id: 'common_cheddah_15',
-    name: 'CHEDDAH',
-    description: '+15 cheddah',
-    type: 'cheddah',
+    id: 'common_bits_15',
+    name: 'BITS',
+    description: '+15 bits',
+    type: 'bits',
     amount: 15,
     cost: 5
   },
   {
-    id: 'common_moonrocks_15',
-    name: 'MOONROCKS',
+    id: 'common_glitchbytes_15',
+    name: 'GLITCH BYTES',
     description: '+15 🌙',
-    type: 'moonrocks',
+    type: 'glitchbytes',
     amount: 15,
     cost: 8
   },
@@ -107,10 +107,10 @@ export const COSMIC_SHOP_ITEMS: ShopItem[] = [
     cost: 21
   },
   {
-    id: 'cosmic_moonrocks_40',
-    name: 'MOONROCKS',
+    id: 'cosmic_glitchbytes_40',
+    name: 'GLITCH BYTES',
     description: '+40 🌙',
-    type: 'moonrocks',
+    type: 'glitchbytes',
     amount: 40,
     cost: 23
   }
