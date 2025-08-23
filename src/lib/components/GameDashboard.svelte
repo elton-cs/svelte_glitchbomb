@@ -90,9 +90,9 @@
         <MarketplaceView {gameState} />
       </div>
 
-      <!-- Bottom Row: Actions | Log | PnL -->
+      <!-- Bottom Row: PnL | Log | Actions -->
       <div class="h-full">
-        <ActionsPanel {gameState} />
+        <ProfitLossPanel {gameState} />
       </div>
 
       <div class="h-full">
@@ -100,7 +100,7 @@
       </div>
 
       <div class="h-full">
-        <ProfitLossPanel {gameState} />
+        <ActionsPanel {gameState} />
       </div>
     </div>
   </div>
