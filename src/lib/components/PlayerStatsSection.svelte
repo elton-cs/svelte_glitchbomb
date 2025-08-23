@@ -36,11 +36,11 @@
   </div>
   
   <!-- Progress Bars Section -->
-  <div class="space-y-3 flex-1">
+  <div class="flex-1 flex flex-col justify-center space-y-6">
     <!-- Points Progress Bar -->
-    <div>
-      <div class="text-green-400 text-sm font-bold mb-2">POINTS {gameState.playerStats.points}/{getLevelMilestone(gameState.currentLevel)}</div>
-      <div class="bg-gray-800 rounded-full h-4 border border-gray-600">
+    <div class="flex-1 flex flex-col justify-center">
+      <div class="text-green-400 text-lg font-bold mb-3 text-center">POINTS {gameState.playerStats.points}/{getLevelMilestone(gameState.currentLevel)}</div>
+      <div class="bg-gray-800 rounded-full h-8 border border-gray-600">
         <div 
           class="bg-white h-full rounded-full transition-all duration-300"
           style="width: {Math.min(100, (gameState.playerStats.points / getLevelMilestone(gameState.currentLevel)) * 100)}%"
@@ -49,16 +49,16 @@
     </div>
     
     <!-- Health Progress Bar -->
-    <div>
-      <div class="text-red-400 text-sm font-bold mb-2">HEALTH {gameState.playerStats.health}/5</div>
-      <div class="bg-gray-800 rounded-full h-4 border border-gray-600">
+    <div class="flex-1 flex flex-col justify-center">
+      <div class="text-red-400 text-lg font-bold mb-3 text-center">HEALTH {gameState.playerStats.health}/5</div>
+      <div class="bg-gray-800 rounded-full h-8 border border-gray-600">
         <div 
           class="bg-white h-full rounded-full transition-all duration-300"
           style="width: {(gameState.playerStats.health / 5) * 100}%"
         ></div>
       </div>
       {#if gameState.playerStats.health <= 2}
-        <p class="text-red-400 font-medium text-xs mt-1">⚠️ LOW HEALTH!</p>
+        <p class="text-red-400 font-medium text-sm mt-2 text-center">⚠️ LOW HEALTH!</p>
       {/if}
     </div>
   </div>
