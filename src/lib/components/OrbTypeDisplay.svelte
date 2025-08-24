@@ -48,14 +48,14 @@
 
 <div class="space-y-2 {totalAvailable === 0 ? 'opacity-50' : ''}">
   <!-- Header -->
-  <div class="flex items-center justify-between">
-    <h3 class="font-medium {color} text-sm">{icon} {name}:</h3>
+  <div class="text-center mb-2">
+    <h3 class="font-medium {color} text-xs">{icon} {name}</h3>
     <span class="text-white text-xs">{totalAvailable}/{totalOwned}</span>
   </div>
   
   <!-- Available Orbs -->
   {#if availableGroups.length > 0}
-    <div class="flex flex-wrap gap-1 items-start">
+    <div class="flex flex-col gap-1">
       {#each availableGroups as group}
         {#each Array(group.count) as _, i}
           <div class="relative group">

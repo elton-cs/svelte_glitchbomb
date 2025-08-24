@@ -146,18 +146,18 @@
     <div class="text-xs text-white font-mono min-h-4">{calculationDisplay || 'hover for point calculation preview'}</div>
   </div>
   
-  <div class="grid grid-cols-1 gap-4 text-xs flex-1 overflow-y-auto">
+  <div class="grid grid-cols-5 gap-2 text-xs flex-1 overflow-y-auto">
     <!-- Combined Points Category -->
     <div class="space-y-2 {totalPointsAvailable === 0 ? 'opacity-50' : ''}">
       <!-- Header -->
-      <div class="flex items-center justify-between">
-        <h3 class="font-medium text-green-400 text-sm">⭐️ POINTS:</h3>
+      <div class="text-center mb-2">
+        <h3 class="font-medium text-green-400 text-xs">⭐️ POINTS</h3>
         <span class="text-white text-xs">{totalPointsAvailable}/{totalPointsOwned}</span>
       </div>
       
       <!-- Combined Points Orbs -->
       {#if totalPointsAvailable > 0}
-        <div class="flex flex-wrap gap-1 items-start">
+        <div class="flex flex-col gap-1">
           {#each pointsOrbTypes as pointType}
             {#each gameState.orbBag[pointType.type].available as orb}
               <div class="relative group">
@@ -205,14 +205,14 @@
     <!-- Combined Special Category -->
     <div class="space-y-2 {totalSpecialAvailable === 0 ? 'opacity-50' : ''}">
       <!-- Header -->
-      <div class="flex items-center justify-between">
-        <h3 class="font-medium text-cyan-400 text-sm">👑 SPECIAL:</h3>
+      <div class="text-center mb-2">
+        <h3 class="font-medium text-cyan-400 text-xs">👑 SPECIAL</h3>
         <span class="text-white text-xs">{totalSpecialAvailable}/{totalSpecialOwned}</span>
       </div>
       
       <!-- Combined Special Orbs -->
       {#if totalSpecialAvailable > 0}
-        <div class="flex flex-wrap gap-1 items-start">
+        <div class="flex flex-col gap-1">
           {#each specialOrbTypes as specialType}
             {#each gameState.orbBag[specialType.type].available as orb}
               <div class="relative group">
