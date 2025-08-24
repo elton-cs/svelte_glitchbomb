@@ -112,7 +112,7 @@
       type: 'multiplier' as const,
       name: 'MULT',
       icon: '⚡️',
-      color: 'text-orange-400'
+      color: 'text-blue-400'
     }
   ];
 
@@ -210,7 +210,7 @@
       <!-- Header -->
       <div class="text-center mb-2">
         <div class="text-lg">👑</div>
-        <h3 class="font-medium text-cyan-400 text-xs">SPECIAL</h3>
+        <h3 class="font-medium text-yellow-400 text-xs">SPECIAL</h3>
         <span class="text-white text-xs">{totalSpecialAvailable}/{totalSpecialOwned}</span>
       </div>
       
@@ -221,7 +221,7 @@
             {#each gameState.orbBag[specialType.type].available as orb}
               <div class="relative group">
                 <div 
-                  class="min-w-8 h-8 px-1 border border-white bg-black hover:bg-white hover:text-black flex items-center justify-center text-xs font-bold transition-colors {specialType.color}"
+                  class="min-w-8 h-8 px-1 border border-white bg-black hover:bg-white hover:text-black flex items-center justify-center text-xs font-bold transition-colors text-yellow-400"
                   role="button"
                   tabindex="0"
                   onmouseenter={() => handleOrbHover(specialType.type, orb.amount)}
@@ -240,7 +240,7 @@
             {#if gameState.orbBag[specialType.type].total.length > gameState.orbBag[specialType.type].available.length}
               {#each Array(gameState.orbBag[specialType.type].total.length - gameState.orbBag[specialType.type].available.length) as _, consumedIndex}
                 {@const consumedOrb = gameState.orbBag[specialType.type].total[gameState.orbBag[specialType.type].available.length + consumedIndex]}
-                <div class="min-w-8 h-8 px-1 border border-gray-600 bg-gray-800 text-gray-500 flex items-center justify-center text-xs"
+                <div class="min-w-8 h-8 px-1 border border-gray-600 bg-gray-800 text-yellow-600 flex items-center justify-center text-xs"
                      title="Used {specialType.name}: {consumedOrb.amount}">
                   {#if specialType.type === 'bits'}
                     {consumedOrb.amount}B
