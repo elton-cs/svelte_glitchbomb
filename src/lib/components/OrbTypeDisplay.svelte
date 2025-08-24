@@ -49,7 +49,8 @@
 <div class="space-y-2 {totalAvailable === 0 ? 'opacity-50' : ''}">
   <!-- Header -->
   <div class="text-center mb-2">
-    <h3 class="font-medium {color} text-xs">{icon} {name}</h3>
+    <div class="text-lg">{icon}</div>
+    <h3 class="font-medium {color} text-xs">{name}</h3>
     <span class="text-white text-xs">{totalAvailable}/{totalOwned}</span>
   </div>
   

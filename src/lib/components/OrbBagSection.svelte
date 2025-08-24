@@ -110,7 +110,7 @@
     },
     {
       type: 'multiplier' as const,
-      name: 'MULTIPLIER',
+      name: 'MULT',
       icon: '⚡️',
       color: 'text-orange-400'
     }
@@ -151,7 +151,8 @@
     <div class="space-y-2 {totalPointsAvailable === 0 ? 'opacity-50' : ''}">
       <!-- Header -->
       <div class="text-center mb-2">
-        <h3 class="font-medium text-green-400 text-xs">⭐️ POINTS</h3>
+        <div class="text-lg">⭐️</div>
+        <h3 class="font-medium text-green-400 text-xs">POINTS</h3>
         <span class="text-white text-xs">{totalPointsAvailable}/{totalPointsOwned}</span>
       </div>
       
@@ -206,7 +207,8 @@
     <div class="space-y-2 {totalSpecialAvailable === 0 ? 'opacity-50' : ''}">
       <!-- Header -->
       <div class="text-center mb-2">
-        <h3 class="font-medium text-cyan-400 text-xs">👑 SPECIAL</h3>
+        <div class="text-lg">👑</div>
+        <h3 class="font-medium text-cyan-400 text-xs">SPECIAL</h3>
         <span class="text-white text-xs">{totalSpecialAvailable}/{totalSpecialOwned}</span>
       </div>
       
