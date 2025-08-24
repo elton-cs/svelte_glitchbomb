@@ -85,7 +85,7 @@ export const PLAYGROUND_ORB_TEMPLATES: OrbTemplate[] = [
     name: 'Glitchbyte Orb',
     description: 'Gives glitchbytes currency',
     defaultAmount: 5,
-    emoji: '🌙',
+    emoji: 'GB',
     color: 'text-gray-300'
   }
 ];

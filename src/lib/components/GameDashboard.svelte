@@ -49,7 +49,7 @@
               onclick={resetGlitchbytes}
               class="w-full bg-black hover:bg-white hover:text-black border border-white text-white text-sm font-medium py-2 px-3 rounded-lg transition-colors"
             >
-              RESET ⚡ GLITCH BYTES TO 0
+              RESET GLITCH BYTES TO 0
             </button>
             {#if canClaimBytes}
               <button 

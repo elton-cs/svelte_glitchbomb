@@ -105,7 +105,7 @@
     {
       type: 'glitchbytes' as const,
       name: 'GLITCH BYTES',
-      icon: '🌙',
+      icon: 'GB',
       color: 'text-gray-300'
     }
   ];
