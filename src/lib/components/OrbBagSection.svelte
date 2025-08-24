@@ -156,7 +156,13 @@
                   onmouseleave={handleOrbLeave}
                   title="{pointType.name}: {orb.amount}"
                 >
-                  <span class="mr-0.5">{pointType.icon}</span>{orb.amount}
+                  {#if pointType.type === 'point'}
+                    {orb.amount}
+                  {:else if pointType.type === 'points_per_anyorb'}
+                    {orb.amount}/C
+                  {:else if pointType.type === 'points_per_bombpulled'}
+                    {orb.amount}/B
+                  {/if}
                 </div>
               </div>
             {/each}
@@ -165,7 +171,13 @@
               {#if !gameState.orbBag[pointType.type].available.includes(orb)}
                 <div class="min-w-8 h-8 px-1 border border-gray-600 bg-gray-800 text-gray-500 flex items-center justify-center text-xs"
                      title="Used {pointType.name}: {orb.amount}">
-                  <span class="mr-0.5">{pointType.icon}</span>{orb.amount}
+                  {#if pointType.type === 'point'}
+                    {orb.amount}
+                  {:else if pointType.type === 'points_per_anyorb'}
+                    {orb.amount}/C
+                  {:else if pointType.type === 'points_per_bombpulled'}
+                    {orb.amount}/B
+                  {/if}
                 </div>
               {/if}
             {/each}
