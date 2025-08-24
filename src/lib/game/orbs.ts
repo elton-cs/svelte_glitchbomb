@@ -29,15 +29,15 @@ export function createInitialBag(): OrbBag {
   ];
   
   const pointsPerAnyOrbOrbs = [
-    createOrb('points_per_anyorb', 1), // 2 Points Per Any Orb
+    createOrb('points_per_anyorb', GAME_CONFIG.startingOrbs.points_per_anyorb), // Points Per Any Orb
   ];
   
   const pointsPerBombPulledOrbs = [
-    createOrb('points_per_bombpulled', 1), // 3 Points Per Bomb Pulled
+    createOrb('points_per_bombpulled', GAME_CONFIG.startingOrbs.points_per_bombpulled), // Points Per Bomb Pulled
   ];
   
   const multiplierOrbs = [
-    createOrb('multiplier', 1.0), // 1x Multiplier Boost
+    createOrb('multiplier', GAME_CONFIG.startingOrbs.multiplier), // Multiplier Boost
   ];
 
   const bitsOrbs: Orb[] = [];
