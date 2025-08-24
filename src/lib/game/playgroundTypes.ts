@@ -77,7 +77,7 @@ export const PLAYGROUND_ORB_TEMPLATES: OrbTemplate[] = [
     name: 'Bits Orb',
     description: 'Gives bits currency',
     defaultAmount: 10,
-    emoji: '💾',
+    emoji: 'B',
     color: 'text-yellow-300'
   },
   {

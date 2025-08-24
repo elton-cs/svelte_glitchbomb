@@ -99,7 +99,7 @@
     {
       type: 'bits' as const,
       name: 'BITS',
-      icon: '💾',
+      icon: 'B',
       color: 'text-yellow-400'
     },
     {

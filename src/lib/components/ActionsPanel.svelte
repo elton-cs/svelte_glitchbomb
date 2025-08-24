@@ -156,7 +156,7 @@
           </div>
           {#if canContinue}
             <div class="text-sm opacity-75">
-              (+{gameState.playerStats.points} 💾)
+              (+{gameState.playerStats.points}B)
             </div>
           {/if}
         </div>

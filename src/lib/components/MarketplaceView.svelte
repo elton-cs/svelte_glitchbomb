@@ -174,7 +174,7 @@
                 {:else}
                   <div class="text-lg font-bold">{item.cost}</div>
                 {/if}
-                <div class="text-lg">💾</div>
+                <div class="text-lg font-bold">B</div>
               {:else if !item.available && item.cost === 0}
                 <div class="text-sm opacity-60 {item.color} transform rotate-90">CLOSED</div>
               {:else if !item.available}
