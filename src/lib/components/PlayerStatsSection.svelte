@@ -53,13 +53,10 @@
       <div class="text-red-400 text-lg font-bold mb-3 text-center">HEALTH {gameState.playerStats.health}/5</div>
       <div class="bg-gray-800 rounded-full h-8 border border-gray-600">
         <div 
-          class="bg-white h-full rounded-full transition-all duration-300"
+          class="{gameState.playerStats.health <= 2 ? 'bg-red-500' : 'bg-green-500'} h-full rounded-full transition-all duration-300"
           style="width: {(gameState.playerStats.health / 5) * 100}%"
         ></div>
       </div>
-      {#if gameState.playerStats.health <= 2}
-        <p class="text-red-400 font-medium text-sm mt-2 text-center">⚠️ LOW HEALTH!</p>
-      {/if}
     </div>
   </div>
 </div>
