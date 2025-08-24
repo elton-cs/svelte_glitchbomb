@@ -161,8 +161,8 @@
       <div class="text-center mb-2">
         <div class="text-lg">⭐️</div>
         <h3 class="font-medium text-green-400 text-xs">POINTS</h3>
-        <span class="text-white text-xs">{totalPointsAvailable}/{totalPointsOwned}</span>
-        <div class="text-gray-400 text-xs">{pointsPercentage}%</div>
+        <span class="text-green-400 text-xs">{totalPointsAvailable}/{totalPointsOwned}</span>
+        <div class="text-green-400 text-xs">{pointsPercentage}%</div>
       </div>
       
       <!-- Combined Points Orbs -->
@@ -220,8 +220,8 @@
       <div class="text-center mb-2">
         <div class="text-lg">👑</div>
         <h3 class="font-medium text-yellow-400 text-xs">SPECIAL</h3>
-        <span class="text-white text-xs">{totalSpecialAvailable}/{totalSpecialOwned}</span>
-        <div class="text-gray-400 text-xs">{specialPercentage}%</div>
+        <span class="text-yellow-400 text-xs">{totalSpecialAvailable}/{totalSpecialOwned}</span>
+        <div class="text-yellow-400 text-xs">{specialPercentage}%</div>
       </div>
       
       <!-- Combined Special Orbs -->

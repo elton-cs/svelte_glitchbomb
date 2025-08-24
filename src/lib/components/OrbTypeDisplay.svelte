@@ -56,8 +56,8 @@
   <div class="text-center mb-2">
     <div class="text-lg">{icon}</div>
     <h3 class="font-medium {color} text-xs">{name}</h3>
-    <span class="text-white text-xs">{totalAvailable}/{totalOwned}</span>
-    <div class="text-gray-400 text-xs">{percentage}%</div>
+    <span class="{color} text-xs">{totalAvailable}/{totalOwned}</span>
+    <div class="{color} text-xs">{percentage}%</div>
   </div>
   
   <!-- Available Orbs -->
