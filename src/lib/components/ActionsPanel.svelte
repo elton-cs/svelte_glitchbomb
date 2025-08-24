@@ -156,7 +156,11 @@
           </div>
           {#if canContinue}
             <div class="text-sm opacity-75">
-              (+{gameState.playerStats.points}B)
+              (+{gameState.playerStats.points} B)
+            </div>
+          {:else}
+            <div class="text-sm opacity-75">
+              (-{getLevelEntryCost(getNextLevel(gameState.currentLevel))} ⚡)
             </div>
           {/if}
         </div>
