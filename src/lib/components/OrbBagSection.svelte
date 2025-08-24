@@ -80,6 +80,21 @@
     }
   ];
 
+  const specialOrbTypes = [
+    {
+      type: 'bits' as const,
+      name: 'BITS',
+      icon: 'B',
+      color: 'text-yellow-400'
+    },
+    {
+      type: 'glitchbytes' as const,
+      name: 'GLITCH BYTES',
+      icon: 'GB',
+      color: 'text-gray-300'
+    }
+  ];
+
   const otherOrbTypes = [
     {
       type: 'health' as const,
@@ -98,18 +113,6 @@
       name: 'MULTIPLIER',
       icon: '⚡️',
       color: 'text-orange-400'
-    },
-    {
-      type: 'bits' as const,
-      name: 'BITS',
-      icon: 'B',
-      color: 'text-yellow-400'
-    },
-    {
-      type: 'glitchbytes' as const,
-      name: 'GLITCH BYTES',
-      icon: 'GB',
-      color: 'text-gray-300'
     }
   ];
 
@@ -123,6 +126,16 @@
     gameState.orbBag.point.total.length + 
     gameState.orbBag.points_per_anyorb.total.length + 
     gameState.orbBag.points_per_bombpulled.total.length
+  );
+
+  const totalSpecialAvailable = $derived(
+    gameState.orbBag.bits.available.length + 
+    gameState.orbBag.glitchbytes.available.length
+  );
+  
+  const totalSpecialOwned = $derived(
+    gameState.orbBag.bits.total.length + 
+    gameState.orbBag.glitchbytes.total.length
   );
 </script>
 
@@ -186,6 +199,57 @@
         </div>
       {:else}
         <div class="text-gray-500 text-xs">No point orbs available</div>
+      {/if}
+    </div>
+
+    <!-- Combined Special Category -->
+    <div class="space-y-2 {totalSpecialAvailable === 0 ? 'opacity-50' : ''}">
+      <!-- Header -->
+      <div class="flex items-center justify-between">
+        <h3 class="font-medium text-cyan-400 text-sm">B GB SPECIAL:</h3>
+        <span class="text-white text-xs">{totalSpecialAvailable}/{totalSpecialOwned}</span>
+      </div>
+      
+      <!-- Combined Special Orbs -->
+      {#if totalSpecialAvailable > 0}
+        <div class="flex flex-wrap gap-1 items-start">
+          {#each specialOrbTypes as specialType}
+            {#each gameState.orbBag[specialType.type].available as orb}
+              <div class="relative group">
+                <div 
+                  class="min-w-8 h-8 px-1 border border-white bg-black hover:bg-white hover:text-black flex items-center justify-center text-xs font-bold transition-colors {specialType.color}"
+                  role="button"
+                  tabindex="0"
+                  onmouseenter={() => handleOrbHover(specialType.type, orb.amount)}
+                  onmouseleave={handleOrbLeave}
+                  title="{specialType.name}: {orb.amount}"
+                >
+                  {#if specialType.type === 'bits'}
+                    {orb.amount}B
+                  {:else if specialType.type === 'glitchbytes'}
+                    {orb.amount}GB
+                  {/if}
+                </div>
+              </div>
+            {/each}
+            <!-- Consumed orbs for this type -->
+            {#if gameState.orbBag[specialType.type].total.length > gameState.orbBag[specialType.type].available.length}
+              {#each Array(gameState.orbBag[specialType.type].total.length - gameState.orbBag[specialType.type].available.length) as _, consumedIndex}
+                {@const consumedOrb = gameState.orbBag[specialType.type].total[gameState.orbBag[specialType.type].available.length + consumedIndex]}
+                <div class="min-w-8 h-8 px-1 border border-gray-600 bg-gray-800 text-gray-500 flex items-center justify-center text-xs"
+                     title="Used {specialType.name}: {consumedOrb.amount}">
+                  {#if specialType.type === 'bits'}
+                    {consumedOrb.amount}B
+                  {:else if specialType.type === 'glitchbytes'}
+                    {consumedOrb.amount}GB
+                  {/if}
+                </div>
+              {/each}
+            {/if}
+          {/each}
+        </div>
+      {:else}
+        <div class="text-gray-500 text-xs">No special orbs available</div>
       {/if}
     </div>
 
