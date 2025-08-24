@@ -167,20 +167,21 @@
               </div>
             {/each}
             <!-- Consumed orbs for this type -->
-            {#each gameState.orbBag[pointType.type].total as orb, i}
-              {#if !gameState.orbBag[pointType.type].available.includes(orb)}
+            {#if gameState.orbBag[pointType.type].total.length > gameState.orbBag[pointType.type].available.length}
+              {#each Array(gameState.orbBag[pointType.type].total.length - gameState.orbBag[pointType.type].available.length) as _, consumedIndex}
+                {@const consumedOrb = gameState.orbBag[pointType.type].total[gameState.orbBag[pointType.type].available.length + consumedIndex]}
                 <div class="min-w-8 h-8 px-1 border border-gray-600 bg-gray-800 text-gray-500 flex items-center justify-center text-xs"
-                     title="Used {pointType.name}: {orb.amount}">
+                     title="Used {pointType.name}: {consumedOrb.amount}">
                   {#if pointType.type === 'point'}
-                    {orb.amount}
+                    {consumedOrb.amount}
                   {:else if pointType.type === 'points_per_anyorb'}
-                    {orb.amount}/C
+                    {consumedOrb.amount}/C
                   {:else if pointType.type === 'points_per_bombpulled'}
-                    {orb.amount}/B
+                    {consumedOrb.amount}/B
                   {/if}
                 </div>
-              {/if}
-            {/each}
+              {/each}
+            {/if}
           {/each}
         </div>
       {:else}
