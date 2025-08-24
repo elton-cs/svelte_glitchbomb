@@ -60,23 +60,12 @@
                                       gameState.orbBag.glitchbytes.available.length);
 
   const orbTypes = [
-    {
-      type: 'health' as const,
-      name: 'HEALTH',
-      icon: '♥',
-      color: 'text-red-500'
-    },
+    // POINTS CATEGORY - All orbs that give points
     {
       type: 'point' as const,
       name: 'POINTS',
       icon: '★',
       color: 'text-purple-500'
-    },
-    {
-      type: 'bomb' as const,
-      name: 'BOMBS',
-      icon: '💥',
-      color: 'text-orange-500'
     },
     {
       type: 'points_per_anyorb' as const,
@@ -89,6 +78,19 @@
       name: 'DANGER',
       icon: '🎯',
       color: 'text-yellow-500'
+    },
+    // OTHER CATEGORIES
+    {
+      type: 'health' as const,
+      name: 'HEALTH',
+      icon: '♥',
+      color: 'text-red-500'
+    },
+    {
+      type: 'bomb' as const,
+      name: 'BOMBS',
+      icon: '💥',
+      color: 'text-orange-500'
     },
     {
       type: 'multiplier' as const,
