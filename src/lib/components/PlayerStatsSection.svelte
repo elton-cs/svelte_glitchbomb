@@ -30,7 +30,7 @@
       <div class="text-white text-xs">MULT</div>
     </div>
     <div>
-      <div class="text-2xl font-bold text-yellow-400 mb-1">{getLevelMilestone(gameState.currentLevel)}</div>
+      <div class="text-2xl font-bold text-yellow-400 mb-1">{gameState.playerStats.bits}</div>
       <div class="text-white text-xs">BITS</div>
     </div>
   </div>
