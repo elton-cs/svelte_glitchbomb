@@ -23,7 +23,19 @@
     if (isShopOpen) {
       // Shop is open - show actual items
       const availableShopItems = gameState.marketplace.currentShopItems;
-      return availableShopItems.map(shopItem => {
+      
+      // Sort items: common first (top row), then rare and cosmic (bottom row)
+      const sortedItems = [...availableShopItems].sort((a, b) => {
+        const getOrder = (id: string) => {
+          if (id.startsWith('common_')) return 1;
+          if (id.startsWith('rare_')) return 2;
+          if (id.startsWith('cosmic_')) return 3;
+          return 4;
+        };
+        return getOrder(a.id) - getOrder(b.id);
+      });
+      
+      return sortedItems.map(shopItem => {
         // Determine tier and colors based on item ID
         let tierColor = 'text-white';
         let tierBorder = 'border-white';
@@ -123,10 +135,10 @@
 </script>
 
 <div class="bg-black p-3 rounded-lg shadow-sm border border-white h-full flex flex-col {(gameState.phase === 'marketplace' || gameState.phase === 'confirmation') && gameState.marketplace.available ? '' : 'opacity-60'}">
-  <h2 class="text-sm font-bold mb-3 text-white">{gameState.phase === 'confirmation' ? 'LEVEL COMPLETE!' : 'SHOP'} {(gameState.phase === 'marketplace' || gameState.phase === 'confirmation') && gameState.marketplace.available ? '' : '(CLOSED)'}</h2>
+  <h2 class="text-sm font-bold mb-3 text-white">{gameState.phase === 'confirmation' ? 'LEVEL COMPLETE!' : 'MOD SHOP'} {(gameState.phase === 'marketplace' || gameState.phase === 'confirmation') && gameState.marketplace.available ? '' : '(CLOSED)'}</h2>
   
-  <!-- 2x3 Shop Grid -->
-  <div class="grid grid-cols-2 gap-2 flex-1">
+  <!-- 3x2 Shop Grid -->
+  <div class="grid grid-cols-3 gap-2 flex-1">
     {#each shopInventory as item}
       <button
         disabled={!item.available || !item.canPurchase || gameState.phase !== 'marketplace' || !gameState.marketplace.available}
