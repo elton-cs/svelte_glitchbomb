@@ -206,7 +206,7 @@
     <div class="space-y-2 {totalSpecialAvailable === 0 ? 'opacity-50' : ''}">
       <!-- Header -->
       <div class="flex items-center justify-between">
-        <h3 class="font-medium text-cyan-400 text-sm">B GB SPECIAL:</h3>
+        <h3 class="font-medium text-cyan-400 text-sm">👑 SPECIAL:</h3>
         <span class="text-white text-xs">{totalSpecialAvailable}/{totalSpecialOwned}</span>
       </div>
       
