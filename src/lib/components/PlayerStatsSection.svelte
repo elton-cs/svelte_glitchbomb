@@ -36,7 +36,7 @@
   </div>
   
   <!-- Progress Bars Section -->
-  <div class="flex-1 flex flex-col justify-center space-y-6">
+  <div class="flex-1 flex flex-col justify-center space-y-3">
     <!-- Points Progress Bar -->
     <div class="flex-1 flex flex-col justify-center">
       <div class="text-green-400 text-lg font-bold mb-3 text-center">POINTS {gameState.playerStats.points}/{getLevelMilestone(gameState.currentLevel)}</div>
