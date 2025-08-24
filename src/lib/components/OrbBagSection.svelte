@@ -84,19 +84,19 @@
     {
       type: 'health' as const,
       name: 'HEALTH',
-      icon: '♥',
+      icon: '❤️',
       color: 'text-red-500'
     },
     {
       type: 'bomb' as const,
       name: 'BOMBS',
-      icon: '💥',
+      icon: '💣',
       color: 'text-orange-500'
     },
     {
       type: 'multiplier' as const,
       name: 'MULTIPLIER',
-      icon: '⭐',
+      icon: '⚡️',
       color: 'text-orange-400'
     },
     {
@@ -138,7 +138,7 @@
     <div class="space-y-2 {totalPointsAvailable === 0 ? 'opacity-50' : ''}">
       <!-- Header -->
       <div class="flex items-center justify-between">
-        <h3 class="font-medium text-purple-400 text-sm">★⚡🎯 POINTS:</h3>
+        <h3 class="font-medium text-purple-400 text-sm">⭐️ POINTS:</h3>
         <span class="text-white text-xs">{totalPointsAvailable}/{totalPointsOwned}</span>
       </div>
       
