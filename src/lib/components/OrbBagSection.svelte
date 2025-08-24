@@ -199,7 +199,9 @@
           {/each}
         </div>
       {:else}
-        <div class="text-gray-500 text-xs">No point orbs available</div>
+        <div class="min-w-8 h-8 px-1 border border-gray-600 bg-gray-800 text-gray-500 flex items-center justify-center text-xs">
+          NONE
+        </div>
       {/if}
     </div>
 
@@ -251,7 +253,9 @@
           {/each}
         </div>
       {:else}
-        <div class="text-gray-500 text-xs">No special orbs available</div>
+        <div class="min-w-8 h-8 px-1 border border-gray-600 bg-gray-800 text-gray-500 flex items-center justify-center text-xs">
+          NONE
+        </div>
       {/if}
     </div>
 
