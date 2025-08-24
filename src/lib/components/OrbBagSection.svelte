@@ -137,6 +137,14 @@
     gameState.orbBag.bits.total.length + 
     gameState.orbBag.glitchbytes.total.length
   );
+
+  const pointsPercentage = $derived(
+    totalAvailableOrbs > 0 ? Math.round((totalPointsAvailable / totalAvailableOrbs) * 100) : 0
+  );
+  
+  const specialPercentage = $derived(
+    totalAvailableOrbs > 0 ? Math.round((totalSpecialAvailable / totalAvailableOrbs) * 100) : 0
+  );
 </script>
 
 <!-- Orb Bag - Visual Square Design -->
@@ -154,6 +162,7 @@
         <div class="text-lg">⭐️</div>
         <h3 class="font-medium text-green-400 text-xs">POINTS</h3>
         <span class="text-white text-xs">{totalPointsAvailable}/{totalPointsOwned}</span>
+        <div class="text-gray-400 text-xs">{pointsPercentage}%</div>
       </div>
       
       <!-- Combined Points Orbs -->
@@ -212,6 +221,7 @@
         <div class="text-lg">👑</div>
         <h3 class="font-medium text-yellow-400 text-xs">SPECIAL</h3>
         <span class="text-white text-xs">{totalSpecialAvailable}/{totalSpecialOwned}</span>
+        <div class="text-gray-400 text-xs">{specialPercentage}%</div>
       </div>
       
       <!-- Combined Special Orbs -->
@@ -268,6 +278,7 @@
         color={orbTypeInfo.color}
         availableOrbs={gameState.orbBag[orbTypeInfo.type].available}
         totalOrbs={gameState.orbBag[orbTypeInfo.type].total}
+        totalAvailableOrbs={totalAvailableOrbs}
         onOrbHover={handleOrbHover}
         onOrbLeave={handleOrbLeave}
       />

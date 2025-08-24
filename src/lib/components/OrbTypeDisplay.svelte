@@ -8,6 +8,7 @@
     color: string;
     availableOrbs: Orb[];
     totalOrbs: Orb[];
+    totalAvailableOrbs: number;
     onOrbHover: (orbType: OrbType, amount: number) => void;
     onOrbLeave: () => void;
   }
@@ -19,6 +20,7 @@
     color, 
     availableOrbs, 
     totalOrbs,
+    totalAvailableOrbs,
     onOrbHover,
     onOrbLeave
   }: Props = $props();
@@ -44,6 +46,9 @@
   const totalGroups = $derived(groupOrbs(totalOrbs));
   const totalAvailable = $derived(availableOrbs.length);
   const totalOwned = $derived(totalOrbs.length);
+  const percentage = $derived(
+    totalAvailableOrbs > 0 ? Math.round((totalAvailable / totalAvailableOrbs) * 100) : 0
+  );
 </script>
 
 <div class="space-y-2 {totalAvailable === 0 ? 'opacity-50' : ''}">
@@ -52,6 +57,7 @@
     <div class="text-lg">{icon}</div>
     <h3 class="font-medium {color} text-xs">{name}</h3>
     <span class="text-white text-xs">{totalAvailable}/{totalOwned}</span>
+    <div class="text-gray-400 text-xs">{percentage}%</div>
   </div>
   
   <!-- Available Orbs -->
