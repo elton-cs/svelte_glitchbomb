@@ -24,7 +24,7 @@ export const GAME_CONFIG: GameConfig = {
     point: 3,
     bomb: 5,
     points_per_anyorb: 1,
-    points_per_bombpulled: 1,
+    points_per_bombpulled: 4,
     multiplier: 1,
     bits: 0,
     glitchbytes: 0,
