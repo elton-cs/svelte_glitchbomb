@@ -59,8 +59,7 @@
                                       gameState.orbBag.bits.available.length +
                                       gameState.orbBag.glitchbytes.available.length);
 
-  const orbTypes = [
-    // POINTS CATEGORY - All orbs that give points
+  const pointsOrbTypes = [
     {
       type: 'point' as const,
       name: 'POINTS',
@@ -78,8 +77,10 @@
       name: 'DANGER',
       icon: '🎯',
       color: 'text-yellow-500'
-    },
-    // OTHER CATEGORIES
+    }
+  ];
+
+  const otherOrbTypes = [
     {
       type: 'health' as const,
       name: 'HEALTH',
@@ -111,6 +112,18 @@
       color: 'text-gray-300'
     }
   ];
+
+  const totalPointsAvailable = $derived(
+    gameState.orbBag.point.available.length + 
+    gameState.orbBag.points_per_anyorb.available.length + 
+    gameState.orbBag.points_per_bombpulled.available.length
+  );
+  
+  const totalPointsOwned = $derived(
+    gameState.orbBag.point.total.length + 
+    gameState.orbBag.points_per_anyorb.total.length + 
+    gameState.orbBag.points_per_bombpulled.total.length
+  );
 </script>
 
 <!-- Orb Bag - Visual Square Design -->
@@ -121,7 +134,50 @@
   </div>
   
   <div class="grid grid-cols-1 gap-4 text-xs flex-1 overflow-y-auto">
-    {#each orbTypes as orbTypeInfo}
+    <!-- Combined Points Category -->
+    <div class="space-y-2 {totalPointsAvailable === 0 ? 'opacity-50' : ''}">
+      <!-- Header -->
+      <div class="flex items-center justify-between">
+        <h3 class="font-medium text-purple-400 text-sm">★⚡🎯 POINTS:</h3>
+        <span class="text-white text-xs">{totalPointsAvailable}/{totalPointsOwned}</span>
+      </div>
+      
+      <!-- Combined Points Orbs -->
+      {#if totalPointsAvailable > 0}
+        <div class="flex flex-wrap gap-1 items-start">
+          {#each pointsOrbTypes as pointType}
+            {#each gameState.orbBag[pointType.type].available as orb}
+              <div class="relative group">
+                <div 
+                  class="min-w-8 h-8 px-1 border border-white bg-black hover:bg-white hover:text-black flex items-center justify-center text-xs font-bold transition-colors {pointType.color}"
+                  role="button"
+                  tabindex="0"
+                  onmouseenter={() => handleOrbHover(pointType.type, orb.amount)}
+                  onmouseleave={handleOrbLeave}
+                  title="{pointType.name}: {orb.amount}"
+                >
+                  <span class="mr-0.5">{pointType.icon}</span>{orb.amount}
+                </div>
+              </div>
+            {/each}
+            <!-- Consumed orbs for this type -->
+            {#each gameState.orbBag[pointType.type].total as orb, i}
+              {#if !gameState.orbBag[pointType.type].available.includes(orb)}
+                <div class="min-w-8 h-8 px-1 border border-gray-600 bg-gray-800 text-gray-500 flex items-center justify-center text-xs"
+                     title="Used {pointType.name}: {orb.amount}">
+                  <span class="mr-0.5">{pointType.icon}</span>{orb.amount}
+                </div>
+              {/if}
+            {/each}
+          {/each}
+        </div>
+      {:else}
+        <div class="text-gray-500 text-xs">No point orbs available</div>
+      {/if}
+    </div>
+
+    <!-- Other Orb Types -->
+    {#each otherOrbTypes as orbTypeInfo}
       <OrbTypeDisplay
         orbType={orbTypeInfo.type}
         icon={orbTypeInfo.icon}
