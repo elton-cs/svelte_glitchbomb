@@ -54,10 +54,10 @@
 <div class="space-y-2 {totalAvailable === 0 ? 'opacity-50' : ''}">
   <!-- Header -->
   <div class="text-center mb-2">
-    <div class="text-lg">{icon}</div>
-    <h3 class="font-medium {color} text-xs">{name}</h3>
-    <span class="{color} text-xs">{totalAvailable}/{totalOwned}</span>
-    <div class="{color} text-xs">{percentage}%</div>
+    <div class="text-xl">{icon}</div>
+    <h3 class="font-medium {color} text-sm">{name}</h3>
+    <span class="{color} text-sm">{totalAvailable}/{totalOwned}</span>
+    <div class="{color} text-sm">{percentage}%</div>
   </div>
   
   <!-- Available Orbs -->
@@ -67,7 +67,7 @@
         {#each Array(group.count) as _, i}
           <div class="relative group">
             <div 
-              class="min-w-8 h-8 px-1 border border-white bg-black hover:bg-white hover:text-black flex items-center justify-center text-xs font-bold transition-colors {color}"
+              class="min-w-8 h-8 px-1 border border-white bg-black hover:bg-white hover:text-black flex items-center justify-center text-sm font-bold transition-colors {color}"
               role="button"
               tabindex="0"
               onmouseenter={() => onOrbHover(orbType, group.amount)}
@@ -82,7 +82,7 @@
       <!-- Consumed Orbs (grayed out) -->
       {#each totalGroups as group}
         {#each Array(Math.max(0, group.count - (availableGroups.find(a => a.amount === group.amount)?.count || 0))) as _, i}
-          <div class="min-w-8 h-8 px-1 border border-gray-600 bg-gray-800 text-gray-500 flex items-center justify-center text-xs">
+          <div class="min-w-8 h-8 px-1 border border-gray-600 bg-gray-800 text-gray-500 flex items-center justify-center text-sm">
             {group.amount}
           </div>
         {/each}
@@ -90,7 +90,7 @@
     </div>
   {:else}
     <!-- No orbs available -->
-    <div class="min-w-8 h-8 px-1 border border-gray-600 bg-gray-800 text-gray-500 flex items-center justify-center text-xs">
+    <div class="min-w-8 h-8 px-1 border border-gray-600 bg-gray-800 text-gray-500 flex items-center justify-center text-sm">
       NONE
     </div>
   {/if}

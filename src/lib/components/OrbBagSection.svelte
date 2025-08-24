@@ -154,15 +154,15 @@
     <div class="text-xs text-white font-mono min-h-4">{calculationDisplay || 'hover for point calculation preview'}</div>
   </div>
   
-  <div class="grid grid-cols-5 gap-2 text-xs flex-1 overflow-y-auto">
+  <div class="grid grid-cols-5 gap-2 text-sm flex-1 overflow-y-auto">
     <!-- Combined Points Category -->
     <div class="space-y-2 {totalPointsAvailable === 0 ? 'opacity-50' : ''}">
       <!-- Header -->
       <div class="text-center mb-2">
-        <div class="text-lg">⭐️</div>
-        <h3 class="font-medium text-green-400 text-xs">POINTS</h3>
-        <span class="text-green-400 text-xs">{totalPointsAvailable}/{totalPointsOwned}</span>
-        <div class="text-green-400 text-xs">{pointsPercentage}%</div>
+        <div class="text-xl">⭐️</div>
+        <h3 class="font-medium text-green-400 text-sm">POINTS</h3>
+        <span class="text-green-400 text-sm">{totalPointsAvailable}/{totalPointsOwned}</span>
+        <div class="text-green-400 text-sm">{pointsPercentage}%</div>
       </div>
       
       <!-- Combined Points Orbs -->
@@ -172,7 +172,7 @@
             {#each gameState.orbBag[pointType.type].available as orb}
               <div class="relative group">
                 <div 
-                  class="min-w-8 h-8 px-1 border border-white bg-black hover:bg-white hover:text-black flex items-center justify-center text-xs font-bold transition-colors text-green-400"
+                  class="min-w-8 h-8 px-1 border border-white bg-black hover:bg-white hover:text-black flex items-center justify-center text-sm font-bold transition-colors text-green-400"
                   role="button"
                   tabindex="0"
                   onmouseenter={() => handleOrbHover(pointType.type, orb.amount)}
@@ -193,7 +193,7 @@
             {#if gameState.orbBag[pointType.type].total.length > gameState.orbBag[pointType.type].available.length}
               {#each Array(gameState.orbBag[pointType.type].total.length - gameState.orbBag[pointType.type].available.length) as _, consumedIndex}
                 {@const consumedOrb = gameState.orbBag[pointType.type].total[gameState.orbBag[pointType.type].available.length + consumedIndex]}
-                <div class="min-w-8 h-8 px-1 border border-gray-600 bg-gray-800 text-green-600 flex items-center justify-center text-xs"
+                <div class="min-w-8 h-8 px-1 border border-gray-600 bg-gray-800 text-green-600 flex items-center justify-center text-sm"
                      title="Used {pointType.name}: {consumedOrb.amount}">
                   {#if pointType.type === 'point'}
                     {consumedOrb.amount}
@@ -208,7 +208,7 @@
           {/each}
         </div>
       {:else}
-        <div class="min-w-8 h-8 px-1 border border-gray-600 bg-gray-800 text-gray-500 flex items-center justify-center text-xs">
+        <div class="min-w-8 h-8 px-1 border border-gray-600 bg-gray-800 text-gray-500 flex items-center justify-center text-sm">
           NONE
         </div>
       {/if}
@@ -218,10 +218,10 @@
     <div class="space-y-2 {totalSpecialAvailable === 0 ? 'opacity-50' : ''}">
       <!-- Header -->
       <div class="text-center mb-2">
-        <div class="text-lg">👑</div>
-        <h3 class="font-medium text-yellow-400 text-xs">SPECIAL</h3>
-        <span class="text-yellow-400 text-xs">{totalSpecialAvailable}/{totalSpecialOwned}</span>
-        <div class="text-yellow-400 text-xs">{specialPercentage}%</div>
+        <div class="text-xl">👑</div>
+        <h3 class="font-medium text-yellow-400 text-sm">SPECIAL</h3>
+        <span class="text-yellow-400 text-sm">{totalSpecialAvailable}/{totalSpecialOwned}</span>
+        <div class="text-yellow-400 text-sm">{specialPercentage}%</div>
       </div>
       
       <!-- Combined Special Orbs -->
@@ -231,7 +231,7 @@
             {#each gameState.orbBag[specialType.type].available as orb}
               <div class="relative group">
                 <div 
-                  class="min-w-8 h-8 px-1 border border-white bg-black hover:bg-white hover:text-black flex items-center justify-center text-xs font-bold transition-colors text-yellow-400"
+                  class="min-w-8 h-8 px-1 border border-white bg-black hover:bg-white hover:text-black flex items-center justify-center text-sm font-bold transition-colors text-yellow-400"
                   role="button"
                   tabindex="0"
                   onmouseenter={() => handleOrbHover(specialType.type, orb.amount)}
@@ -250,7 +250,7 @@
             {#if gameState.orbBag[specialType.type].total.length > gameState.orbBag[specialType.type].available.length}
               {#each Array(gameState.orbBag[specialType.type].total.length - gameState.orbBag[specialType.type].available.length) as _, consumedIndex}
                 {@const consumedOrb = gameState.orbBag[specialType.type].total[gameState.orbBag[specialType.type].available.length + consumedIndex]}
-                <div class="min-w-8 h-8 px-1 border border-gray-600 bg-gray-800 text-yellow-600 flex items-center justify-center text-xs"
+                <div class="min-w-8 h-8 px-1 border border-gray-600 bg-gray-800 text-yellow-600 flex items-center justify-center text-sm"
                      title="Used {specialType.name}: {consumedOrb.amount}">
                   {#if specialType.type === 'bits'}
                     {consumedOrb.amount}B
@@ -263,7 +263,7 @@
           {/each}
         </div>
       {:else}
-        <div class="min-w-8 h-8 px-1 border border-gray-600 bg-gray-800 text-gray-500 flex items-center justify-center text-xs">
+        <div class="min-w-8 h-8 px-1 border border-gray-600 bg-gray-800 text-gray-500 flex items-center justify-center text-sm">
           NONE
         </div>
       {/if}
