@@ -6,8 +6,8 @@ import { createOrb } from './orbs.js';
 export function createInitialPlaygroundState(): PlaygroundState {
   return {
     playerStats: {
-      moonrocks: 500, // Default 500 to see moonrocks orb effects
-      cheddah: 0,   // Not relevant for playground  
+      glitchbytes: 500, // Default 500 to see glitchbytes orb effects
+      bits: 0,   // Not relevant for playground  
       health: GAME_CONFIG.maxHealth,
       points: 0,
       bombsPulledThisLevel: 0,
@@ -48,7 +48,7 @@ export function removeOrbFromPlayground(state: PlaygroundState, orbId: string): 
 
 export function resetPlaygroundStats(state: PlaygroundState): void {
   // Reset stats but preserve orb queue
-  state.playerStats.moonrocks = 500;
+  state.playerStats.glitchbytes = 500;
   state.playerStats.health = GAME_CONFIG.maxHealth;
   state.playerStats.points = 0;
   state.playerStats.bombsPulledThisLevel = 0;
@@ -68,7 +68,7 @@ export function resetPlaygroundStats(state: PlaygroundState): void {
 
 export function restartPlayground(state: PlaygroundState): void {
   // Reset everything including orb queue
-  state.playerStats.moonrocks = 500;
+  state.playerStats.glitchbytes = 500;
   state.playerStats.health = GAME_CONFIG.maxHealth;
   state.playerStats.points = 0;
   state.playerStats.bombsPulledThisLevel = 0;

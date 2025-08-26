@@ -19,18 +19,18 @@ export const COMMON_SHOP_ITEMS: ShopItem[] = [
     cost: 8
   },
   {
-    id: 'common_cheddah_15',
-    name: 'CHEDDAH',
-    description: '+15 cheddah',
-    type: 'cheddah',
+    id: 'common_bits_15',
+    name: 'BITS',
+    description: '+15 bits',
+    type: 'bits',
     amount: 15,
     cost: 5
   },
   {
-    id: 'common_moonrocks_15',
-    name: 'MOONROCKS',
-    description: '+15 🌙',
-    type: 'moonrocks',
+    id: 'common_glitchbytes_15',
+    name: 'GLITCH BYTES',
+    description: '+15 GB',
+    type: 'glitchbytes',
     amount: 15,
     cost: 8
   },
@@ -107,10 +107,10 @@ export const COSMIC_SHOP_ITEMS: ShopItem[] = [
     cost: 21
   },
   {
-    id: 'cosmic_moonrocks_40',
-    name: 'MOONROCKS',
-    description: '+40 🌙',
-    type: 'moonrocks',
+    id: 'cosmic_glitchbytes_40',
+    name: 'GLITCH BYTES',
+    description: '+40 GB',
+    type: 'glitchbytes',
     amount: 40,
     cost: 23
   }
@@ -129,7 +129,9 @@ export const SHOP_TIER_AVAILABILITY: Record<number, ('common' | 'rare' | 'cosmic
   2: ['common', 'rare', 'cosmic'],
   3: ['common', 'rare', 'cosmic'],
   4: ['common', 'rare', 'cosmic'],
-  5: ['common', 'rare', 'cosmic']
+  5: ['common', 'rare', 'cosmic'],
+  6: ['common', 'rare', 'cosmic'],
+  7: ['common', 'rare', 'cosmic']
 };
 
 // Utility function to shuffle array

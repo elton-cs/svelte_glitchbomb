@@ -66,12 +66,12 @@
         <div class="text-white">MULT</div>
       </div>
       <div>
-        <div class="text-sm font-bold text-white">{playgroundState.playerStats.moonrocks}</div>
-        <div class="text-white">MOONROCKS</div>
+        <div class="text-sm font-bold text-white">{playgroundState.playerStats.glitchbytes}</div>
+        <div class="text-white">GLITCH BYTES</div>
       </div>
       <div>
-        <div class="text-sm font-bold text-white">{playgroundState.playerStats.cheddah}</div>
-        <div class="text-white">CHEDDAH</div>
+        <div class="text-sm font-bold text-white">{playgroundState.playerStats.bits}</div>
+        <div class="text-white">BITS</div>
       </div>
       <div>
         <div class="text-sm font-bold text-white">{playgroundState.playerStats.bombsPulledThisLevel}</div>

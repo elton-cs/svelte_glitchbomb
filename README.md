@@ -1,6 +1,6 @@
 # Glitch Bomb
 
-A bag-building, luck-based game built with Svelte 5 and TypeScript. Manage your orb collection, survive bomb draws, and progress through increasingly challenging levels to earn moonrocks.
+A bag-building, luck-based game built with Svelte 5 and TypeScript. Manage your orb collection, survive bomb draws, and progress through increasingly challenging levels to earn glitchbytes.
 
 ## Game Overview
 
@@ -9,24 +9,24 @@ Glitch Bomb is a strategic luck game where you pull orbs from a bag to score poi
 ## Core Game Features
 
 ### 🎯 **Enhanced Orb Bag System**
-- Start with 12 orbs (1 Health, 3 Point, 5 Bomb, 3 Special)
+- Start with 15 orbs (1 Health, 3 Point, 5 Bomb, 6 Special)
 - Pull random orbs with different effects
 - **NEW**: Visual square representation with hover tooltips
 - **NEW**: 8 different orb types with unique mechanics
 
 ### 🏆 **Level Progression** 
-- 5 levels with increasing difficulty
-- Progressive point milestones: 10 → 20 → 30 → 40 → 50
-- Entry costs increase per level [10, 15, 25, 35, 45 moonrocks]
+- 7 levels with increasing difficulty
+- Progressive point milestones: 12 → 18 → 28 → 44 → 70 → 100 → 150
+- Entry costs per level [10, 1, 2, 4, 6, 9, 13 glitchbytes]
 - Level multipliers affect scoring
 - **NEW**: Confirmation phase with cash out vs continue choice
 
 ### 💰 **Economic System**
-- Start with 1000 moonrocks (persistent across sessions)
-- Level entry costs: 10, 15, 25, 35, 45 moonrocks
-- Cash out mid-level or after completion (1:1 points to moonrocks)
-- **NEW**: Cheddah currency accumulates across levels within same game
-- **NEW**: 10 moonrocks restart option from game over screen
+- Start with 0 glitchbytes (build up through gameplay)
+- Level entry costs: 10, 1, 2, 4, 6, 9, 13 glitchbytes
+- Cash out mid-level or after completion (1:1 points to glitchbytes)
+- **NEW**: Bits currency accumulates across levels within same game
+- **NEW**: 10 glitchbytes restart option from game over screen
 
 ### 🛒 **Advanced Shop System** *(NEW in v0.1.2)*
 - **Tier-based Items**: Common (7 items), Rare (4 items), Cosmic (2 items)
@@ -54,29 +54,29 @@ Glitch Bomb is a strategic luck game where you pull orbs from a bag to score poi
 - **Multiplier Orbs** ⭐: Increase level scoring multiplier
 
 ### New Orbs *(v0.1.2)*
-- **Cheddah Orbs** 🧀: Award cheddah currency directly
-- **Moonrocks Orbs** 🌙: Award moonrocks currency directly
+- **Bits Orbs** 💾: Award bits currency directly
+- **Glitchbytes Orbs** 🌙: Award glitchbytes currency directly
 
 ## Shop Items by Rarity
 
-### **COMMON** (Cost 5-9 cheddah)
+### **COMMON** (Cost 5-9 bits)
 - **POINT 5** - Cost: 5 - +5 PTS
-- **CHEDDAH 15** - Cost: 5 - +15 cheddah  
+- **BITS 15** - Cost: 5 - +15 bits  
 - **4 PTS PER BOMB** - Cost: 6 - +4 per bomb
 - **POINT 7** - Cost: 8 - +7 PTS
-- **MOONROCKS 15** - Cost: 8 - +15 moonrocks
+- **GLITCH BYTES 15** - Cost: 8 - +15 glitchbytes
 - **HEALTH 1** - Cost: 9 - +1 HP
 - **+0.5X MULTIPLIER** - Cost: 9 - +0.5x mult
 
-### **RARE** (Cost 11-16 cheddah)
+### **RARE** (Cost 11-16 bits)
 - **POINTS 8** - Cost: 11 - +8 PTS
 - **POINTS 9** - Cost: 13 - +9 PTS
 - **+1.0X MULTIPLIER** - Cost: 14 - +1.0x mult
 - **1.5X MULTIPLIER** - Cost: 16 - +1.5x mult
 
-### **COSMIC** (Cost 21-23 cheddah)
+### **COSMIC** (Cost 21-23 bits)
 - **COSMIC HEALTH** - Cost: 21 - Gain 3 Health
-- **COSMIC MOON** - Cost: 23 - Gain 40 Moon Rocks
+- **COSMIC GLITCH BYTES** - Cost: 23 - Gain 40 Glitch Bytes
 
 ## Tech Stack
 
@@ -105,6 +105,40 @@ src/
 └── assets/            # Static assets
 ```
 
+## What's New in v0.1.5
+
+### 🎮 **Enhanced Game Balance & Progression**
+- **Expanded Level System**: Now 7 levels instead of 5, with progressive difficulty scaling
+- **Rebalanced Progression**: New point milestones (12 → 18 → 28 → 44 → 70 → 100 → 150)
+- **Restructured Economy**: Level costs reduced and rebalanced [10, 1, 2, 4, 6, 9, 13 GB]
+- **Starting Configuration**: Increased points per bomb orbs from 1 to 4 for better early game balance
+- **Zero Starting Glitchbytes**: Players now start with 0 GB and earn through gameplay
+
+### 🎯 **Advanced Orb Bag Interface**
+- **Vertical Column Layout**: Space-efficient columnar display with emoji headers
+- **Color-Coded Categories**: 
+  - Green fonts for all point-giving orbs (Points, Combo, Danger)
+  - Yellow fonts for Special orbs category
+  - Blue fonts for Multiplier orbs
+- **Percentage Display**: Shows each orb category as percentage of total available orbs
+- **Smart Orb Notation**: Enhanced notation system (number for points, number/C for combo, number/B for bomb-pulled)
+- **Visual Grouping**: Points, Combo, and Danger orbs consolidated into single POINTS category
+- **Special Category**: Bits and Glitchbytes orbs combined into unified SPECIAL category with crown emoji (👑)
+
+### 🎨 **Interface Improvements**
+- **Consistent Typography**: Larger, more readable fonts across orb bag display
+- **Enhanced Visual Hierarchy**: Better spacing and alignment for improved readability
+- **Crown Iconography**: Special orbs section uses crown emoji for premium feel
+- **Standardized Display**: GB notation consistent throughout interface
+- **Improved Placeholder Text**: "NONE" displayed in all caps for better visibility
+- **Column Color Consistency**: Available/total counts use matching category colors
+
+### 🔧 **Technical Enhancements**
+- **Configuration-Based Orbs**: All starting orb counts now use GAME_CONFIG values instead of hardcoded numbers
+- **Better Code Organization**: Cleaner separation between orb categories and display logic
+- **Responsive Layout**: Improved mobile-friendly column layouts
+- **Performance Optimizations**: More efficient orb grouping and percentage calculations
+
 ## What's New in v0.1.4
 
 ### 📊 **Performance Tracking System**
@@ -128,7 +162,7 @@ src/
 - **Smart Tooltip Positioning**: Tooltips positioned to avoid panel border cutoffs
 
 ### 🎨 **UI Polish & Accessibility**
-- **Emoji Integration**: Moon (🌙) and cheese (🧀) emojis replace text in key UI elements
+- **Emoji Integration**: Moon (🌙) and floppy disk (💾) emojis replace text in key UI elements
 - **Enhanced Grid Layouts**: 2x3 grids for player stats with thicker progress bars for better visibility
 - **Responsive Typography**: Increased font sizes across actions panel and shop buttons
 - **Consistent Spacing**: Reduced padding and optimized layouts for better space utilization
@@ -136,7 +170,7 @@ src/
 
 ### 🧪 **Playground Mode Enhancements**
 - **Complete Testing Environment**: Full orb selection and stat tracking capabilities
-- **Moonrocks Integration**: 500 default moonrocks for comprehensive testing
+- **Glitchbytes Integration**: 500 default glitchbytes for comprehensive testing
 - **Compact Orb Selector**: Space-efficient layout for better user experience
 - **State Machine Fixes**: Resolved invalid states and improved reset functionality
 
@@ -151,14 +185,14 @@ src/
 ### 🎮 **Game Flow & Player Experience**
 - **Confirmation Phase System**: New phase between level completion and marketplace with choice to cash out or continue
 - **Player Commitment Logic**: Once committed to next level, cash out is disabled in marketplace
-- **Restart Button**: Quick restart from game over screen for 10 moonrocks (no menu navigation needed)
+- **Restart Button**: Quick restart from game over screen for 10 glitchbytes (no menu navigation needed)
 - **Enhanced Cash Out**: Removed double penalty - mid-level cash out now gives full points value
 
 ### 💰 **Economic System Improvements**
-- **Cheddah Accumulation**: Cheddah now properly accumulates across levels instead of resetting
-- **Point Conversion Choice**: Players choose when to convert points to cheddah (on CONTINUE action)
-- **Fair Cash Out Logic**: Consistent 1:1 points-to-moonrocks conversion for all cash out methods
-- **Moonrocks Preview**: Mid-level cash out button shows accurate moonrocks gain
+- **Bits Accumulation**: Bits now properly accumulates across levels instead of resetting
+- **Point Conversion Choice**: Players choose when to convert points to bits (on CONTINUE action)
+- **Fair Cash Out Logic**: Consistent 1:1 points-to-glitchbytes conversion for all cash out methods
+- **Glitchbytes Preview**: Mid-level cash out button shows accurate glitchbytes gain
 
 ### 🎨 **Visual & UI Enhancements**
 - **Orb Bag Redesign**: Visual square representation with hover tooltips for calculations
@@ -172,7 +206,7 @@ src/
 - **Orb Bag State**: Delayed reset until player commits to marketplace (better decision visibility)
 - **Shop Item Sorting**: Items now sorted by cost for better UX
 - **Playground Mode**: Complete testing environment with orb selection and stat tracking
-- **State Persistence**: Proper cheddah and moonrocks persistence across game sessions
+- **State Persistence**: Proper bits and glitchbytes persistence across game sessions
 
 ### 🎯 **Quality of Life**
 - **Visual Orb Grouping**: Orbs grouped by type and amount with distinct squares for each variant
@@ -185,7 +219,7 @@ src/
 
 ### Major Features
 - **Complete Shop System Overhaul**: Tier-based items with dynamic pricing
-- **New Orb Types**: Cheddah and Moonrocks orbs for direct currency rewards
+- **New Orb Types**: Bits and Glitchbytes orbs for direct currency rewards
 - **Horizontal Dashboard Layout**: Responsive 5-section design
 - **Real-time Game Logging**: Track all player actions with timestamps
 - **Enhanced Visual Design**: Consistent black/white theme with tier accents
@@ -206,4 +240,4 @@ src/
 
 **Total Shop Items**: 13 (7 Common, 4 Rare, 2 Cosmic)
 **Total Orb Types**: 8 unique mechanics
-**Game Sessions**: Fully persistent moonrocks with session-based resets
+**Game Sessions**: Fully persistent glitchbytes with session-based resets

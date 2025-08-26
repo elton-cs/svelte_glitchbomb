@@ -55,13 +55,13 @@ export function pullNextOrb(state: PlaygroundState): boolean {
       state.playerStats.levelMultiplier += orb.amount;
       addPlaygroundLog(state, `Pulled multiplier orb (+${orb.amount}x boost)`);
       break;
-    case 'cheddah':
-      state.playerStats.cheddah += orb.amount;
-      addPlaygroundLog(state, `Pulled cheddah orb (+${orb.amount} cheddah)`);
+    case 'bits':
+      state.playerStats.bits += orb.amount;
+      addPlaygroundLog(state, `Pulled bits orb (+${orb.amount} bits)`);
       break;
-    case 'moonrocks':
-      state.playerStats.moonrocks += orb.amount;
-      addPlaygroundLog(state, `Pulled moonrocks orb (+${orb.amount} moonrocks)`);
+    case 'glitchbytes':
+      state.playerStats.glitchbytes += orb.amount;
+      addPlaygroundLog(state, `Pulled glitchbytes orb (+${orb.amount} glitchbytes)`);
       break;
   }
 

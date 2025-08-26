@@ -1,5 +1,5 @@
-export function validatePurchase(cheddah: number, cost: number): boolean {
-  return cheddah >= cost && cost > 0;
+export function validatePurchase(bits: number, cost: number): boolean {
+  return bits >= cost && cost > 0;
 }
 
 export function validateQuantity(quantity: number, maxQuantity?: number): boolean {
@@ -16,6 +16,6 @@ export function validatePoints(points: number): boolean {
   return points >= 0;
 }
 
-export function validateMoonrocks(moonrocks: number): boolean {
-  return moonrocks >= 0;
+export function validateGlitchbytes(glitchbytes: number): boolean {
+  return glitchbytes >= 0;
 }

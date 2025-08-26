@@ -15,7 +15,7 @@ import {
   isLastLevel, 
   getNextLevel 
 } from './levels.js';
-import { GAME_CONFIG } from './constants.js';
+import { GAME_CONFIG, LEVEL_COUNT } from './constants.js';
 import type { OrbType } from './types.js';
 import { getShopItem, getAvailableShopItemsFromDeck, findDeckItem, updateDeckItemPrice, initializeShopDeck } from './shopItems.js';
 import { addLogEntry, clearGameLog, addPointHistoryEntry, clearPointHistory } from './state.js';
@@ -55,19 +55,19 @@ export function startNewGame(gameState: GameState): boolean {
 
 export function enterLevel(gameState: GameState, level: number): boolean {
   try {
-    if (level < 1 || level > 5) {
+    if (level < 1 || level > LEVEL_COUNT) {
       console.warn('Invalid level:', level);
       return false;
     }
 
     const cost = getLevelEntryCost(level);
     
-    if (!canAffordLevel(gameState.playerStats.moonrocks, level)) {
+    if (!canAffordLevel(gameState.playerStats.glitchbytes, level)) {
       console.warn('Cannot afford level', level, 'cost:', cost);
       return false;
     }
 
-    gameState.playerStats.moonrocks -= cost;
+    gameState.playerStats.glitchbytes -= cost;
     gameState.currentLevel = level;
     gameState.phase = 'level';
     gameState.levelCompleted = false;
@@ -78,12 +78,12 @@ export function enterLevel(gameState: GameState, level: number): boolean {
     // Only reset consumed orbs and cheddah when starting a new game (level 1)
     if (level === 1) {
       resetConsumedOrbs(gameState.orbBag);
-      gameState.playerStats.cheddah = 0;
+      gameState.playerStats.bits = 0;
     }
     
     // Track P/L change from entering new level (points reset to 0, moonrocks spent)
     if (level > 1) {
-      addPointHistoryEntry(gameState, 0, `Entered Level ${level} (-${cost} moonrocks)`, getCumulativeLevelCost(level));
+      addPointHistoryEntry(gameState, 0, `Entered Level ${level} (-${cost} glitchbytes)`, getCumulativeLevelCost(level));
     }
     
     return true;
@@ -144,15 +144,15 @@ export function pullOrb(gameState: GameState): boolean {
         addPointHistoryEntry(gameState, gameState.playerStats.points, `Multiplier orb (+${orb.amount}x)`, getCumulativeLevelCost(gameState.currentLevel));
         addLogEntry(gameState, `Pulled multiplier orb (+${orb.amount}x boost)`);
         break;
-      case 'cheddah':
-        gameState.playerStats.cheddah += orb.amount;
-        addPointHistoryEntry(gameState, gameState.playerStats.points, `Cheddah orb (+${orb.amount})`, getCumulativeLevelCost(gameState.currentLevel));
-        addLogEntry(gameState, `Pulled cheddah orb (+${orb.amount} cheddah)`);
+      case 'bits':
+        gameState.playerStats.bits += orb.amount;
+        addPointHistoryEntry(gameState, gameState.playerStats.points, `Bits orb (+${orb.amount})`, getCumulativeLevelCost(gameState.currentLevel));
+        addLogEntry(gameState, `Pulled bits orb (+${orb.amount} bits)`);
         break;
-      case 'moonrocks':
-        gameState.playerStats.moonrocks += orb.amount;
-        addPointHistoryEntry(gameState, gameState.playerStats.points, `Moonrocks orb (+${orb.amount})`, getCumulativeLevelCost(gameState.currentLevel));
-        addLogEntry(gameState, `Pulled moonrocks orb (+${orb.amount} moonrocks)`);
+      case 'glitchbytes':
+        gameState.playerStats.glitchbytes += orb.amount;
+        addPointHistoryEntry(gameState, gameState.playerStats.points, `Glitchbytes orb (+${orb.amount})`, getCumulativeLevelCost(gameState.currentLevel));
+        addLogEntry(gameState, `Pulled glitchbytes orb (+${orb.amount} glitchbytes)`);
         break;
     }
 
@@ -181,8 +181,8 @@ export function completeLevel(gameState: GameState): void {
   if (isLastLevel(gameState.currentLevel)) {
     gameState.phase = 'victory';
     const victoryReward = calculateVictoryReward(gameState.playerStats.points);
-    gameState.playerStats.moonrocks += victoryReward;
-    addLogEntry(gameState, `Victory! Level ${gameState.currentLevel} completed (+${victoryReward} moonrocks)`);
+    gameState.playerStats.glitchbytes += victoryReward;
+    addLogEntry(gameState, `Victory! Level ${gameState.currentLevel} completed (+${victoryReward} glitchbytes)`);
   } else {
     gameState.phase = 'confirmation';
     gameState.marketplace.available = false;
@@ -194,11 +194,11 @@ export function completeLevel(gameState: GameState): void {
 export function cashOutMidLevel(gameState: GameState): number {
   const cashOut = gameState.playerStats.points;
   
-  gameState.playerStats.moonrocks += cashOut;
+  gameState.playerStats.glitchbytes += cashOut;
   gameState.phase = 'menu';
   gameState.gameStarted = false;
   
-  addLogEntry(gameState, `Cashed out mid-level: ${gameState.playerStats.points} points for ${cashOut} moonrocks`);
+  addLogEntry(gameState, `Cashed out mid-level: ${gameState.playerStats.points} points for ${cashOut} glitchbytes`);
   
   // Reset orb bag to initial state (lose all purchased orbs)
   gameState.orbBag = createInitialBag();
@@ -214,11 +214,11 @@ export function cashOutMidLevel(gameState: GameState): number {
 
 export function cashOutPostLevel(gameState: GameState): number {
   const points = gameState.playerStats.points;
-  gameState.playerStats.moonrocks += points;
+  gameState.playerStats.glitchbytes += points;
   gameState.phase = 'menu';
   gameState.gameStarted = false;
   
-  addLogEntry(gameState, `Cashed out post-level: ${points} points for ${points} moonrocks`);
+  addLogEntry(gameState, `Cashed out post-level: ${points} points for ${points} glitchbytes`);
   
   // Reset orb bag to initial state (lose all purchased orbs)
   gameState.orbBag = createInitialBag();
@@ -253,11 +253,11 @@ export function purchaseOrb(gameState: GameState, type: OrbType, quantity: numbe
     gameState.marketplace.healthOrbCost * quantity :
     gameState.marketplace.pointOrbCost * quantity;
 
-  if (gameState.playerStats.cheddah < cost) {
+  if (gameState.playerStats.bits < cost) {
     return false;
   }
 
-  gameState.playerStats.cheddah -= cost;
+  gameState.playerStats.bits -= cost;
   addOrbsToBag(gameState.orbBag, type, quantity);
   
   return true;
@@ -276,14 +276,14 @@ export function purchaseShopItem(gameState: GameState, shopItemId: string, quant
 
   const totalCost = deckItem.currentCost * quantity;
   
-  if (gameState.playerStats.cheddah < totalCost) {
+  if (gameState.playerStats.bits < totalCost) {
     return false;
   }
 
-  gameState.playerStats.cheddah -= totalCost;
+  gameState.playerStats.bits -= totalCost;
   addOrbsToBag(gameState.orbBag, deckItem.type, quantity, deckItem.amount);
   
-  addLogEntry(gameState, `Bought ${deckItem.name} for ${totalCost} cheddah`);
+  addLogEntry(gameState, `Bought ${deckItem.name} for ${totalCost} bits`);
   
   // Update deck item price for future purchases
   for (let i = 0; i < quantity; i++) {
@@ -296,15 +296,15 @@ export function purchaseShopItem(gameState: GameState, shopItemId: string, quant
 export function continueToMarketplace(gameState: GameState): void {
   gameState.phase = 'marketplace';
   gameState.committedToNextLevel = true;
-  const newCheddah = processLevelReward(gameState.playerStats.points);
-  gameState.playerStats.cheddah += newCheddah;
+  const newBits = processLevelReward(gameState.playerStats.points);
+  gameState.playerStats.bits += newBits;
   gameState.marketplace.available = true;
   gameState.marketplace.currentShopItems = getAvailableShopItemsFromDeck(gameState.shopDeck, gameState.currentLevel);
   
   // Reset consumed orbs so players can purchase more orbs with their cheddah
   resetConsumedOrbs(gameState.orbBag);
   
-  addLogEntry(gameState, `Converted ${gameState.playerStats.points} points to ${newCheddah} cheddah (+${newCheddah} total: ${gameState.playerStats.cheddah})`);
+  addLogEntry(gameState, `Converted ${gameState.playerStats.points} points to ${newBits} bits (+${newBits} total: ${gameState.playerStats.bits})`);
 }
 
 export function proceedToNextLevel(gameState: GameState): boolean {
@@ -317,7 +317,7 @@ export function proceedToNextLevel(gameState: GameState): boolean {
   gameState.marketplace.available = false;
   gameState.committedToNextLevel = false; // Reset for next level cycle
   
-  addLogEntry(gameState, `Advanced to level ${nextLevel} (-${levelCost} moonrocks)`);
+  addLogEntry(gameState, `Advanced to level ${nextLevel} (-${levelCost} glitchbytes)`);
   
   return enterLevel(gameState, nextLevel);
 }
@@ -351,4 +351,25 @@ export function returnToMenu(gameState: GameState): void {
   
   // Reset commitment flag
   gameState.committedToNextLevel = false;
+}
+
+export function skipLevel(gameState: GameState): boolean {
+  if (gameState.phase !== 'level') {
+    return false;
+  }
+
+  const milestone = getLevelMilestone(gameState.currentLevel);
+  const pointsNeeded = milestone - gameState.playerStats.points;
+  
+  if (pointsNeeded > 0) {
+    applyPointsWithMultiplier(gameState, pointsNeeded, `DEBUG: Skip to milestone (+${pointsNeeded})`);
+    addLogEntry(gameState, `DEBUG: Added ${pointsNeeded} points to reach level ${gameState.currentLevel} milestone`);
+  }
+  
+  // Complete the level if we now have enough points
+  if (checkLevelComplete(gameState.playerStats.points, gameState.currentLevel)) {
+    completeLevel(gameState);
+  }
+  
+  return true;
 }

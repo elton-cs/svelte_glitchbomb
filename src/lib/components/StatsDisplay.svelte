@@ -15,13 +15,13 @@
   
   <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-4">
     <div class="text-center">
-      <div class="text-2xl font-bold text-white">{gameState.playerStats.moonrocks}</div>
-      <div class="text-sm text-white">MOONROCKS</div>
+      <div class="text-2xl font-bold text-white">{gameState.playerStats.glitchbytes}</div>
+      <div class="text-sm text-white">GLITCH BYTES</div>
     </div>
     
     <div class="text-center">
-      <div class="text-2xl font-bold text-white">{gameState.playerStats.cheddah}</div>
-      <div class="text-sm text-white">CHEDDAH</div>
+      <div class="text-2xl font-bold text-white">{gameState.playerStats.bits}</div>
+      <div class="text-sm text-white">BITS</div>
     </div>
     
     <div class="text-center">
