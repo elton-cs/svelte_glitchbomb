@@ -9,21 +9,21 @@ Glitch Bomb is a strategic luck game where you pull orbs from a bag to score poi
 ## Core Game Features
 
 ### 🎯 **Enhanced Orb Bag System**
-- Start with 12 orbs (1 Health, 3 Point, 5 Bomb, 3 Special)
+- Start with 15 orbs (1 Health, 3 Point, 5 Bomb, 6 Special)
 - Pull random orbs with different effects
 - **NEW**: Visual square representation with hover tooltips
 - **NEW**: 8 different orb types with unique mechanics
 
 ### 🏆 **Level Progression** 
-- 5 levels with increasing difficulty
-- Progressive point milestones: 10 → 20 → 30 → 40 → 50
-- Entry costs increase per level [10, 15, 25, 35, 45 glitchbytes]
+- 7 levels with increasing difficulty
+- Progressive point milestones: 12 → 18 → 28 → 44 → 70 → 100 → 150
+- Entry costs per level [10, 1, 2, 4, 6, 9, 13 glitchbytes]
 - Level multipliers affect scoring
 - **NEW**: Confirmation phase with cash out vs continue choice
 
 ### 💰 **Economic System**
-- Start with 1000 glitchbytes (persistent across sessions)
-- Level entry costs: 10, 15, 25, 35, 45 glitchbytes
+- Start with 0 glitchbytes (build up through gameplay)
+- Level entry costs: 10, 1, 2, 4, 6, 9, 13 glitchbytes
 - Cash out mid-level or after completion (1:1 points to glitchbytes)
 - **NEW**: Bits currency accumulates across levels within same game
 - **NEW**: 10 glitchbytes restart option from game over screen
@@ -104,6 +104,40 @@ src/
 │   └── utils/         # Utility functions
 └── assets/            # Static assets
 ```
+
+## What's New in v0.1.5
+
+### 🎮 **Enhanced Game Balance & Progression**
+- **Expanded Level System**: Now 7 levels instead of 5, with progressive difficulty scaling
+- **Rebalanced Progression**: New point milestones (12 → 18 → 28 → 44 → 70 → 100 → 150)
+- **Restructured Economy**: Level costs reduced and rebalanced [10, 1, 2, 4, 6, 9, 13 GB]
+- **Starting Configuration**: Increased points per bomb orbs from 1 to 4 for better early game balance
+- **Zero Starting Glitchbytes**: Players now start with 0 GB and earn through gameplay
+
+### 🎯 **Advanced Orb Bag Interface**
+- **Vertical Column Layout**: Space-efficient columnar display with emoji headers
+- **Color-Coded Categories**: 
+  - Green fonts for all point-giving orbs (Points, Combo, Danger)
+  - Yellow fonts for Special orbs category
+  - Blue fonts for Multiplier orbs
+- **Percentage Display**: Shows each orb category as percentage of total available orbs
+- **Smart Orb Notation**: Enhanced notation system (number for points, number/C for combo, number/B for bomb-pulled)
+- **Visual Grouping**: Points, Combo, and Danger orbs consolidated into single POINTS category
+- **Special Category**: Bits and Glitchbytes orbs combined into unified SPECIAL category with crown emoji (👑)
+
+### 🎨 **Interface Improvements**
+- **Consistent Typography**: Larger, more readable fonts across orb bag display
+- **Enhanced Visual Hierarchy**: Better spacing and alignment for improved readability
+- **Crown Iconography**: Special orbs section uses crown emoji for premium feel
+- **Standardized Display**: GB notation consistent throughout interface
+- **Improved Placeholder Text**: "NONE" displayed in all caps for better visibility
+- **Column Color Consistency**: Available/total counts use matching category colors
+
+### 🔧 **Technical Enhancements**
+- **Configuration-Based Orbs**: All starting orb counts now use GAME_CONFIG values instead of hardcoded numbers
+- **Better Code Organization**: Cleaner separation between orb categories and display logic
+- **Responsive Layout**: Improved mobile-friendly column layouts
+- **Performance Optimizations**: More efficient orb grouping and percentage calculations
 
 ## What's New in v0.1.4
 
