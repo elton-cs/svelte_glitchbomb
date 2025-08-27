@@ -166,7 +166,7 @@
       </div>
       
       <!-- Combined Points Commands -->
-      {#if totalPointsAvailable > 0}
+      {#if totalPointsOwned > 0}
         <div class="flex flex-col gap-1">
           {#each pointsOrbTypes as pointType}
             {#each gameState.orbBag[pointType.type].available as orb}
@@ -225,7 +225,7 @@
       </div>
       
       <!-- Combined Special Commands -->
-      {#if totalSpecialAvailable > 0}
+      {#if totalSpecialOwned > 0}
         <div class="flex flex-col gap-1">
           {#each specialOrbTypes as specialType}
             {#each gameState.orbBag[specialType.type].available as orb}
