@@ -66,9 +66,9 @@
 
     <!-- Top Bar with Glitch Bytes -->
     <div class="bg-black p-3 rounded-lg shadow-sm border border-white mb-4">
-      <div class="flex justify-between items-center">
-        <!-- Left spacer for balance -->
-        <div class="flex-1"></div>
+      <div class="grid grid-cols-3 items-center">
+        <!-- Left: Empty space -->
+        <div></div>
         
         <!-- Center: Glitch Bytes Display -->
         <div class="text-center">
