@@ -68,7 +68,7 @@
     <div class="bg-black p-3 rounded-lg shadow-sm border border-white mb-4">
       <div class="flex justify-between items-center">
         <!-- Left spacer for balance -->
-        <div class="w-32"></div>
+        <div class="flex-1"></div>
         
         <!-- Center: Glitch Bytes Display -->
         <div class="text-center">
@@ -77,18 +77,18 @@
         </div>
         
         <!-- Right: Action Buttons -->
-        <div class="flex gap-2 w-32 justify-end">
+        <div class="flex gap-2 justify-end">
           {#if canClaimBytes}
             <button 
               onclick={handleClaimBytes}
-              class="bg-black hover:bg-white hover:text-black border border-white text-white text-xs font-medium py-1 px-2 rounded transition-colors"
+              class="bg-black hover:bg-white hover:text-black border border-white text-white text-xs font-medium py-1 px-2 rounded transition-colors whitespace-nowrap"
             >
-              CLAIM FREE GLITCH BYTES
+              CLAIM FREE
             </button>
           {/if}
           <button 
             onclick={resetGlitchbytes}
-            class="bg-black hover:bg-white hover:text-black border border-white text-white text-xs font-medium py-1 px-2 rounded transition-colors"
+            class="bg-black hover:bg-white hover:text-black border border-white text-white text-xs font-medium py-1 px-2 rounded transition-colors whitespace-nowrap"
           >
             RESET
           </button>
