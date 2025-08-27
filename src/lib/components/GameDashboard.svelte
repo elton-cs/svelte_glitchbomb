@@ -66,10 +66,32 @@
 
     <!-- Top Bar with Glitch Bytes -->
     <div class="bg-black p-3 rounded-lg shadow-sm border border-white mb-4">
-      <div class="flex justify-center items-center">
+      <div class="flex justify-between items-center">
+        <!-- Left spacer for balance -->
+        <div class="w-32"></div>
+        
+        <!-- Center: Glitch Bytes Display -->
         <div class="text-center">
           <div class="text-4xl font-bold text-white mb-1">{gameState.playerStats.glitchbytes}</div>
           <div class="text-white text-xs tracking-wide">GLITCH BYTES</div>
+        </div>
+        
+        <!-- Right: Action Buttons -->
+        <div class="flex gap-2 w-32 justify-end">
+          <button 
+            onclick={resetGlitchbytes}
+            class="bg-black hover:bg-white hover:text-black border border-white text-white text-xs font-medium py-1 px-2 rounded transition-colors"
+          >
+            RESET
+          </button>
+          {#if canClaimBytes}
+            <button 
+              onclick={handleClaimBytes}
+              class="bg-black hover:bg-white hover:text-black border border-white text-white text-xs font-medium py-1 px-2 rounded transition-colors"
+            >
+              CLAIM
+            </button>
+          {/if}
         </div>
       </div>
     </div>
