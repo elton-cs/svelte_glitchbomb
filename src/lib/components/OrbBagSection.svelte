@@ -97,16 +97,16 @@
 
   const otherOrbTypes = [
     {
-      type: 'health' as const,
-      name: 'HEALTH',
-      icon: '❤️',
-      color: 'text-red-500'
-    },
-    {
       type: 'bomb' as const,
       name: 'BOMBS',
       icon: '💣',
       color: 'text-orange-500'
+    },
+    {
+      type: 'health' as const,
+      name: 'HEALTH',
+      icon: '❤️',
+      color: 'text-red-500'
     },
     {
       type: 'multiplier' as const,
@@ -155,6 +155,32 @@
   </div>
   
   <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 text-sm flex-1 overflow-y-auto">
+    <!-- Bomb -->
+    <OrbTypeDisplay
+      orbType="bomb"
+      icon="💣"
+      name="BOMBS"
+      color="text-orange-500"
+      availableOrbs={gameState.orbBag.bomb.available}
+      totalOrbs={gameState.orbBag.bomb.total}
+      totalAvailableOrbs={totalAvailableOrbs}
+      onOrbHover={handleOrbHover}
+      onOrbLeave={handleOrbLeave}
+    />
+
+    <!-- Health -->
+    <OrbTypeDisplay
+      orbType="health"
+      icon="❤️"
+      name="HEALTH"
+      color="text-red-500"
+      availableOrbs={gameState.orbBag.health.available}
+      totalOrbs={gameState.orbBag.health.total}
+      totalAvailableOrbs={totalAvailableOrbs}
+      onOrbHover={handleOrbHover}
+      onOrbLeave={handleOrbLeave}
+    />
+
     <!-- Combined Points Category -->
     <div class="space-y-2 {totalPointsAvailable === 0 ? 'opacity-50' : ''}">
       <!-- Header -->
@@ -210,6 +236,19 @@
       {/if}
     </div>
 
+    <!-- Multiplier -->
+    <OrbTypeDisplay
+      orbType="multiplier"
+      icon="⚡️"
+      name="MULT"
+      color="text-blue-400"
+      availableOrbs={gameState.orbBag.multiplier.available}
+      totalOrbs={gameState.orbBag.multiplier.total}
+      totalAvailableOrbs={totalAvailableOrbs}
+      onOrbHover={handleOrbHover}
+      onOrbLeave={handleOrbLeave}
+    />
+
     <!-- Combined Special Category -->
     <div class="space-y-2 {totalSpecialAvailable === 0 ? 'opacity-50' : ''}">
       <!-- Header -->
@@ -260,20 +299,5 @@
         </div>
       {/if}
     </div>
-
-    <!-- Other Command Types -->
-    {#each otherOrbTypes as orbTypeInfo}
-      <OrbTypeDisplay
-        orbType={orbTypeInfo.type}
-        icon={orbTypeInfo.icon}
-        name={orbTypeInfo.name}
-        color={orbTypeInfo.color}
-        availableOrbs={gameState.orbBag[orbTypeInfo.type].available}
-        totalOrbs={gameState.orbBag[orbTypeInfo.type].total}
-        totalAvailableOrbs={totalAvailableOrbs}
-        onOrbHover={handleOrbHover}
-        onOrbLeave={handleOrbLeave}
-      />
-    {/each}
   </div>
 </div>
