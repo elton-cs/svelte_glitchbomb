@@ -55,9 +55,9 @@
   <!-- Header -->
   <div class="text-center mb-2">
     <div class="text-xl">{icon}</div>
-    <h3 class="font-medium {color} text-sm">{name}</h3>
-    <span class="{color} text-sm">{totalAvailable}/{totalOwned}</span>
-    <div class="{color} text-sm">{percentage}%</div>
+    <h3 class="font-medium {totalOwned === 0 ? 'text-gray-500' : color} text-sm">{name}</h3>
+    <span class="{totalOwned === 0 ? 'text-gray-500' : color} text-sm">{totalAvailable}/{totalOwned}</span>
+    <div class="{totalOwned === 0 ? 'text-gray-500' : color} text-sm">{percentage}%</div>
   </div>
   
   <!-- Available and Consumed Commands -->
@@ -87,11 +87,6 @@
           </div>
         {/each}
       {/each}
-    </div>
-  {:else}
-    <!-- No commands exist -->
-    <div class="min-w-8 h-8 px-1 border border-gray-600 bg-gray-800 text-gray-500 flex items-center justify-center text-sm">
-      NONE
     </div>
   {/if}
 </div>

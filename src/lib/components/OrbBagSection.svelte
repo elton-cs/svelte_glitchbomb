@@ -160,9 +160,9 @@
       <!-- Header -->
       <div class="text-center mb-2">
         <div class="text-xl">⭐️</div>
-        <h3 class="font-medium text-green-400 text-sm">POINTS</h3>
-        <span class="text-green-400 text-sm">{totalPointsAvailable}/{totalPointsOwned}</span>
-        <div class="text-green-400 text-sm">{pointsPercentage}%</div>
+        <h3 class="font-medium {totalPointsOwned === 0 ? 'text-gray-500' : 'text-green-400'} text-sm">POINTS</h3>
+        <span class="{totalPointsOwned === 0 ? 'text-gray-500' : 'text-green-400'} text-sm">{totalPointsAvailable}/{totalPointsOwned}</span>
+        <div class="{totalPointsOwned === 0 ? 'text-gray-500' : 'text-green-400'} text-sm">{pointsPercentage}%</div>
       </div>
       
       <!-- Combined Points Commands -->
@@ -207,10 +207,6 @@
             {/if}
           {/each}
         </div>
-      {:else}
-        <div class="min-w-8 h-8 px-1 border border-gray-600 bg-gray-800 text-gray-500 flex items-center justify-center text-sm">
-          NONE
-        </div>
       {/if}
     </div>
 
@@ -219,9 +215,9 @@
       <!-- Header -->
       <div class="text-center mb-2">
         <div class="text-xl">👑</div>
-        <h3 class="font-medium text-yellow-400 text-sm">SPECIAL</h3>
-        <span class="text-yellow-400 text-sm">{totalSpecialAvailable}/{totalSpecialOwned}</span>
-        <div class="text-yellow-400 text-sm">{specialPercentage}%</div>
+        <h3 class="font-medium {totalSpecialOwned === 0 ? 'text-gray-500' : 'text-yellow-400'} text-sm">SPECIAL</h3>
+        <span class="{totalSpecialOwned === 0 ? 'text-gray-500' : 'text-yellow-400'} text-sm">{totalSpecialAvailable}/{totalSpecialOwned}</span>
+        <div class="{totalSpecialOwned === 0 ? 'text-gray-500' : 'text-yellow-400'} text-sm">{specialPercentage}%</div>
       </div>
       
       <!-- Combined Special Commands -->
@@ -261,10 +257,6 @@
               {/each}
             {/if}
           {/each}
-        </div>
-      {:else}
-        <div class="min-w-8 h-8 px-1 border border-gray-600 bg-gray-800 text-gray-500 flex items-center justify-center text-sm">
-          NONE
         </div>
       {/if}
     </div>
