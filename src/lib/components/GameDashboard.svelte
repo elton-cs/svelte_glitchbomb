@@ -35,34 +35,6 @@
 
 <div class="bg-black p-3">
   <div class="max-w-7xl mx-auto">
-    <!-- Dev Tools Panel -->
-    {#if devMode}
-      <div class="flex flex-wrap gap-4 mb-6">
-        <div class="bg-black p-3 rounded-lg shadow-sm border border-white flex-1 min-w-64">
-          <div class="flex justify-between items-center mb-2">
-            <h3 class="font-medium text-white text-sm">🔧 DEVELOPER TOOLS</h3>
-            <span class="text-xs text-white">DEBUG MODE</span>
-          </div>
-          
-          <div class="space-y-2">
-            <button 
-              onclick={resetGlitchbytes}
-              class="w-full bg-black hover:bg-white hover:text-black border border-white text-white text-sm font-medium py-2 px-3 rounded-lg transition-colors"
-            >
-              RESET GLITCH BYTES TO 0
-            </button>
-            {#if canClaimBytes}
-              <button 
-                onclick={handleClaimBytes}
-                class="w-full bg-black hover:bg-white hover:text-black border border-white text-white text-sm font-medium py-2 px-3 rounded-lg transition-colors"
-              >
-                CLAIM 1000 FREE BYTES!
-              </button>
-            {/if}
-          </div>
-        </div>
-      </div>
-    {/if}
 
     <!-- Top Bar with Glitch Bytes -->
     <div class="bg-black p-3 rounded-lg shadow-sm border border-white mb-4">
@@ -77,22 +49,27 @@
         </div>
         
         <!-- Right: Action Buttons -->
-        <div class="flex gap-2 justify-center sm:justify-end">
-          {#if canClaimBytes}
-            <button 
-              onclick={handleClaimBytes}
-              class="bg-black hover:bg-white hover:text-black border border-white text-white text-xs font-medium py-1 px-2 rounded transition-colors whitespace-nowrap"
-            >
-              CLAIM FREE
-            </button>
-          {/if}
-          <button 
-            onclick={resetGlitchbytes}
-            class="bg-black hover:bg-white hover:text-black border border-white text-white text-xs font-medium py-1 px-2 rounded transition-colors whitespace-nowrap"
-          >
-            RESET
-          </button>
-        </div>
+        {#if devMode}
+          <div class="flex flex-col items-center sm:items-end gap-2">
+            <div class="text-xs text-gray-400 uppercase tracking-wide">dev tools</div>
+            <div class="flex gap-2">
+              {#if canClaimBytes}
+                <button 
+                  onclick={handleClaimBytes}
+                  class="bg-black hover:bg-white hover:text-black border border-white text-white text-xs font-medium py-1 px-2 rounded transition-colors whitespace-nowrap"
+                >
+                  CLAIM FREE
+                </button>
+              {/if}
+              <button 
+                onclick={resetGlitchbytes}
+                class="bg-black hover:bg-white hover:text-black border border-white text-white text-xs font-medium py-1 px-2 rounded transition-colors whitespace-nowrap"
+              >
+                RESET
+              </button>
+            </div>
+          </div>
+        {/if}
       </div>
     </div>
 

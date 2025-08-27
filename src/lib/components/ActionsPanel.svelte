@@ -7,8 +7,7 @@
     proceedToNextLevel, 
     returnToMenu,
     restartGame,
-    pullOrb,
-    skipLevel 
+    pullOrb
   } from '../game/game.js';
   import { canAffordLevel, getLevelEntryCost, calculateCashOut } from '../game/economics.js';
   import { GAME_CONFIG } from '../game/constants.js';
@@ -61,9 +60,6 @@
     pullOrb(gameState);
   }
 
-  function handleSkipLevel() {
-    skipLevel(gameState);
-  }
 
   const canStartGame = $derived(gameState.phase === 'menu' && canAffordLevel(gameState.playerStats.glitchbytes, 1));
   const canCashOut = $derived((gameState.phase === 'level' && gameState.gameStarted) || 
@@ -88,7 +84,6 @@
     gameState.playerStats.points : 0);
   
   const canRestart = $derived(gameState.phase === 'gameover' && canAffordLevel(gameState.playerStats.glitchbytes, 1));
-  const canSkipLevel = $derived(gameState.phase === 'level');
 </script>
 
 <div class="bg-black p-3 rounded-lg shadow-sm border border-white h-full flex flex-col">
@@ -194,22 +189,8 @@
         <div class="text-sm sm:text-base lg:text-lg font-medium">MAIN MENU</div>
       </button>
       
-      <!-- Row 4: Debug Skip Level -->
-      <button 
-        onclick={handleSkipLevel}
-        disabled={!canSkipLevel}
-        class="py-3 px-2 sm:px-4 rounded text-sm sm:text-base lg:text-lg font-medium transition-colors border
-               {canSkipLevel
-                 ? 'bg-orange-800 text-white border-orange-400 hover:bg-orange-400 hover:text-black'
-                 : 'bg-black text-gray-500 border-gray-500 cursor-not-allowed'}"
-      >
-        <div class="text-center">
-          <div class="font-medium text-sm sm:text-base lg:text-lg">DEBUG</div>
-          <div class="text-xs opacity-75">SKIP LVL</div>
-        </div>
-      </button>
-      
-      <!-- Empty slot for symmetry -->
+      <!-- Empty slots for symmetry -->
+      <div></div>
       <div></div>
     </div>
   
