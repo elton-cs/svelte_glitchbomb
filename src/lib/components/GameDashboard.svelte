@@ -78,20 +78,20 @@
         
         <!-- Right: Action Buttons -->
         <div class="flex gap-2 w-32 justify-end">
+          {#if canClaimBytes}
+            <button 
+              onclick={handleClaimBytes}
+              class="bg-black hover:bg-white hover:text-black border border-white text-white text-xs font-medium py-1 px-2 rounded transition-colors"
+            >
+              CLAIM FREE GLITCH BYTES
+            </button>
+          {/if}
           <button 
             onclick={resetGlitchbytes}
             class="bg-black hover:bg-white hover:text-black border border-white text-white text-xs font-medium py-1 px-2 rounded transition-colors"
           >
             RESET
           </button>
-          {#if canClaimBytes}
-            <button 
-              onclick={handleClaimBytes}
-              class="bg-black hover:bg-white hover:text-black border border-white text-white text-xs font-medium py-1 px-2 rounded transition-colors"
-            >
-              CLAIM
-            </button>
-          {/if}
         </div>
       </div>
     </div>
