@@ -74,7 +74,7 @@
     </div>
 
     <!-- Main Game UI - Responsive Layout -->
-    <div class="flex flex-col lg:grid lg:grid-cols-3 lg:grid-rows-2 gap-4 min-h-[800px]">
+    <div class="flex flex-col lg:grid lg:grid-cols-3 lg:grid-rows-2 gap-4 min-h-[800px] lg:h-[800px]">
       <!-- Mobile: Stack vertically, Desktop: 2x3 Grid -->
       
       <!-- Top Row: Actions | Player Stats | Glitch Rift -->

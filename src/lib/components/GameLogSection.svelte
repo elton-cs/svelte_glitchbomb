@@ -9,9 +9,9 @@
 </script>
 
 <!-- Game Log - Always visible -->
-<div class="bg-black p-3 rounded-lg border border-white h-full flex flex-col">
+<div class="bg-black p-3 rounded-lg border border-white h-full flex flex-col min-h-0">
   <h2 class="text-sm font-bold mb-3 text-white">COMMAND LOG</h2>
-  <div class="flex-1 overflow-y-auto">
+  <div class="flex-1 overflow-y-auto min-h-0">
     <div class="text-xs text-white space-y-0.5">
       {#if gameState.gameLog.length === 0}
         <p class="text-gray-500 italic">No actions yet...</p>
