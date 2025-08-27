@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { GameState } from '../game/types.js';
+  import type { GameState, OrbType } from '../game/types.js';
   import OrbTypeDisplay from './OrbTypeDisplay.svelte';
 
   interface Props {
@@ -10,7 +10,7 @@
 
   let calculationDisplay = $state('');
 
-  function getCalculation(type: typeof orbTypes[number]['type'], amount: number): string | null {
+  function getCalculation(type: OrbType, amount: number): string | null {
     switch (type) {
       case 'point':
         const multipliedPoints = Math.floor(amount * gameState.playerStats.levelMultiplier);
@@ -41,7 +41,7 @@
     }
   }
 
-  function handleOrbHover(orbType: typeof orbTypes[number]['type'], amount: number) {
+  function handleOrbHover(orbType: OrbType, amount: number) {
     const calculation = getCalculation(orbType, amount);
     calculationDisplay = calculation || '';
   }
@@ -154,7 +154,7 @@
     <div class="text-xs text-white font-mono min-h-4">{calculationDisplay || 'hover for point calculation preview'}</div>
   </div>
   
-  <div class="grid grid-cols-5 gap-2 text-sm flex-1 overflow-y-auto">
+  <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 text-sm flex-1 overflow-y-auto">
     <!-- Combined Points Category -->
     <div class="space-y-2 {totalPointsAvailable === 0 ? 'opacity-50' : ''}">
       <!-- Header -->

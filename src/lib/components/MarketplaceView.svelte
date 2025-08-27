@@ -137,8 +137,8 @@
 <div class="bg-black p-3 rounded-lg shadow-sm border border-white h-full flex flex-col {(gameState.phase === 'marketplace' || gameState.phase === 'confirmation') && gameState.marketplace.available ? '' : 'opacity-60'}">
   <h2 class="text-sm font-bold mb-3 text-white">{gameState.phase === 'confirmation' ? 'LEVEL COMPLETE!' : 'MOD SHOP'} {(gameState.phase === 'marketplace' || gameState.phase === 'confirmation') && gameState.marketplace.available ? '' : '(CLOSED)'}</h2>
   
-  <!-- 3x2 Shop Grid -->
-  <div class="grid grid-cols-3 gap-2 flex-1">
+  <!-- Shop Grid - Responsive -->
+  <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 flex-1">
     {#each shopInventory as item}
       <button
         disabled={!item.available || !item.canPurchase || gameState.phase !== 'marketplace' || !gameState.marketplace.available}
@@ -169,7 +169,7 @@
             <div class="flex-1 flex flex-col justify-between">
               <div class="flex-1 flex flex-col justify-start">
                 {#if item.name}
-                  <div class="font-bold uppercase text-sm leading-tight mb-1">{item.name}</div>
+                  <div class="font-bold uppercase text-xs sm:text-sm leading-tight mb-1">{item.name}</div>
                 {/if}
                 {#if item.description}
                   <div class="text-xs opacity-75 leading-tight flex-1">{item.description}</div>

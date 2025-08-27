@@ -124,7 +124,7 @@
     
     {#if chartData().points.length > 0}
       <div class="flex-1 bg-black rounded border border-white p-2 overflow-hidden">
-        <svg width="100%" height="100%" viewBox="0 0 300 220" class="w-full h-full" preserveAspectRatio="xMidYMid meet">
+        <svg width="100%" height="100%" viewBox="0 0 300 220" class="w-full h-full min-h-0" preserveAspectRatio="xMidYMid meet">
           <!-- Grid lines -->
           <defs>
             <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">

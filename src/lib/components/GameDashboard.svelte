@@ -66,18 +66,18 @@
 
     <!-- Top Bar with Glitch Bytes -->
     <div class="bg-black p-3 rounded-lg shadow-sm border border-white mb-4">
-      <div class="grid grid-cols-3 items-center">
-        <!-- Left: Empty space -->
-        <div></div>
+      <div class="flex flex-col sm:grid sm:grid-cols-3 items-center gap-3 sm:gap-0">
+        <!-- Left: Empty space on desktop -->
+        <div class="hidden sm:block"></div>
         
         <!-- Center: Glitch Bytes Display -->
         <div class="text-center">
-          <div class="text-4xl font-bold text-white mb-1">{gameState.playerStats.glitchbytes}</div>
+          <div class="text-3xl sm:text-4xl font-bold text-white mb-1">{gameState.playerStats.glitchbytes}</div>
           <div class="text-white text-xs tracking-wide">GLITCH BYTES</div>
         </div>
         
         <!-- Right: Action Buttons -->
-        <div class="flex gap-2 justify-end">
+        <div class="flex gap-2 justify-center sm:justify-end">
           {#if canClaimBytes}
             <button 
               onclick={handleClaimBytes}
@@ -96,31 +96,33 @@
       </div>
     </div>
 
-    <!-- Main Game UI 2x3 Grid -->
-    <div class="grid grid-cols-3 grid-rows-2 gap-4 h-[800px]">
+    <!-- Main Game UI - Responsive Layout -->
+    <div class="flex flex-col lg:grid lg:grid-cols-3 lg:grid-rows-2 gap-4 min-h-[800px]">
+      <!-- Mobile: Stack vertically, Desktop: 2x3 Grid -->
+      
       <!-- Top Row: Player Stats | Orb Bag | Shop -->
-      <div class="h-full">
+      <div class="flex flex-col min-h-[250px] lg:h-full">
         <PlayerStatsSection {gameState} />
       </div>
 
-      <div class="h-full">
+      <div class="flex flex-col min-h-[250px] lg:h-full">
         <OrbBagSection {gameState} />
       </div>
 
-      <div class="h-full">
+      <div class="flex flex-col min-h-[250px] lg:h-full">
         <MarketplaceView {gameState} />
       </div>
 
       <!-- Bottom Row: PnL | Log | Actions -->
-      <div class="h-full">
+      <div class="flex flex-col min-h-[200px] lg:h-full">
         <ProfitLossPanel {gameState} />
       </div>
 
-      <div class="h-full">
+      <div class="flex flex-col min-h-[200px] lg:h-full">
         <GameLogSection {gameState} />
       </div>
 
-      <div class="h-full">
+      <div class="flex flex-col min-h-[200px] lg:h-full">
         <ActionsPanel {gameState} />
       </div>
     </div>
