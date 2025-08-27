@@ -64,6 +64,16 @@
       </div>
     {/if}
 
+    <!-- Top Bar with Glitch Bytes -->
+    <div class="bg-black p-3 rounded-lg shadow-sm border border-white mb-4">
+      <div class="flex justify-center items-center">
+        <div class="text-center">
+          <div class="text-4xl font-bold text-white mb-1">{gameState.playerStats.glitchbytes}</div>
+          <div class="text-white text-xs tracking-wide">GLITCH BYTES</div>
+        </div>
+      </div>
+    </div>
+
     <!-- Main Game UI 2x3 Grid -->
     <div class="grid grid-cols-3 grid-rows-2 gap-4 h-[800px]">
       <!-- Top Row: Player Stats | Orb Bag | Shop -->

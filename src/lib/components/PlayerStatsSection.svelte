@@ -13,10 +13,9 @@
 <div class="bg-black p-3 rounded-lg shadow-sm border border-white h-full flex flex-col overflow-hidden">
   <h2 class="text-sm font-bold mb-3 text-white">PLAYER STATS</h2>
   
-  <!-- Main Glitch Bytes Display -->
+  <!-- Game Title -->
   <div class="text-center mb-4">
-    <div class="text-4xl font-bold text-white mb-1">{gameState.playerStats.glitchbytes}</div>
-    <div class="text-white text-xs tracking-wide">GLITCH BYTES</div>
+    <div class="text-4xl font-bold text-white mb-1">GLITCH BOMB</div>
   </div>
   
   <!-- Three stats in a row -->
