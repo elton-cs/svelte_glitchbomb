@@ -77,7 +77,7 @@
     <div class="flex flex-col lg:grid lg:grid-cols-3 lg:grid-rows-2 gap-4 min-h-[800px]">
       <!-- Mobile: Stack vertically, Desktop: 2x3 Grid -->
       
-      <!-- Top Row: Actions | Player Stats | Orb Bag -->
+      <!-- Top Row: Actions | Player Stats | Glitch Rift -->
       <div class="flex flex-col min-h-[200px] lg:h-full">
         <ActionsPanel {gameState} />
       </div>

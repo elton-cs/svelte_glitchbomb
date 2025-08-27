@@ -147,11 +147,11 @@
   );
 </script>
 
-<!-- Orb Bag - Visual Square Design -->
+<!-- Glitch Rift - Command Display -->
 <div class="bg-black p-3 rounded-lg shadow-sm border border-white h-full flex flex-col {gameState.phase === 'level' || gameState.phase === 'confirmation' ? '' : 'opacity-60 pointer-events-none'}">
   <div class="flex justify-between items-center mb-3">
-    <h2 class="text-sm font-bold text-white">ORB BAG ({totalAvailableOrbs}) {gameState.phase === 'level' || gameState.phase === 'confirmation' ? '' : '(INACTIVE)'}</h2>
-    <div class="text-xs text-white font-mono min-h-4">{calculationDisplay || 'hover for point calculation preview'}</div>
+    <h2 class="text-sm font-bold text-white">GLITCH RIFT ({totalAvailableOrbs}) {gameState.phase === 'level' || gameState.phase === 'confirmation' ? '' : '(INACTIVE)'}</h2>
+    <div class="text-xs text-white font-mono min-h-4">{calculationDisplay || 'hover for command output preview'}</div>
   </div>
   
   <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 text-sm flex-1 overflow-y-auto">
@@ -165,7 +165,7 @@
         <div class="text-green-400 text-sm">{pointsPercentage}%</div>
       </div>
       
-      <!-- Combined Points Orbs -->
+      <!-- Combined Points Commands -->
       {#if totalPointsAvailable > 0}
         <div class="flex flex-col gap-1">
           {#each pointsOrbTypes as pointType}
@@ -189,7 +189,7 @@
                 </div>
               </div>
             {/each}
-            <!-- Consumed orbs for this type -->
+            <!-- Consumed commands for this type -->
             {#if gameState.orbBag[pointType.type].total.length > gameState.orbBag[pointType.type].available.length}
               {#each Array(gameState.orbBag[pointType.type].total.length - gameState.orbBag[pointType.type].available.length) as _, consumedIndex}
                 {@const consumedOrb = gameState.orbBag[pointType.type].total[gameState.orbBag[pointType.type].available.length + consumedIndex]}
@@ -224,7 +224,7 @@
         <div class="text-yellow-400 text-sm">{specialPercentage}%</div>
       </div>
       
-      <!-- Combined Special Orbs -->
+      <!-- Combined Special Commands -->
       {#if totalSpecialAvailable > 0}
         <div class="flex flex-col gap-1">
           {#each specialOrbTypes as specialType}
@@ -246,7 +246,7 @@
                 </div>
               </div>
             {/each}
-            <!-- Consumed orbs for this type -->
+            <!-- Consumed commands for this type -->
             {#if gameState.orbBag[specialType.type].total.length > gameState.orbBag[specialType.type].available.length}
               {#each Array(gameState.orbBag[specialType.type].total.length - gameState.orbBag[specialType.type].available.length) as _, consumedIndex}
                 {@const consumedOrb = gameState.orbBag[specialType.type].total[gameState.orbBag[specialType.type].available.length + consumedIndex]}
@@ -269,7 +269,7 @@
       {/if}
     </div>
 
-    <!-- Other Orb Types -->
+    <!-- Other Command Types -->
     {#each otherOrbTypes as orbTypeInfo}
       <OrbTypeDisplay
         orbType={orbTypeInfo.type}

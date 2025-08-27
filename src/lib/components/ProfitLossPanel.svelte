@@ -191,7 +191,7 @@
           <!-- X-axis labels -->
           <text x="30" y="190" fill="white" font-size="8">Start</text>
           <text x="270" y="190" fill="white" font-size="8" text-anchor="end">
-            {chartData().points.length > 1 ? `Pull ${chartData().points.length}` : 'Current'}
+            {chartData().points.length > 1 ? `Exec ${chartData().points.length}` : 'Current'}
           </text>
         </svg>
       </div>

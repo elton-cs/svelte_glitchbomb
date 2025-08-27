@@ -10,7 +10,7 @@
 
 <!-- Game Log - Always visible -->
 <div class="bg-black p-3 rounded-lg border border-white h-full flex flex-col">
-  <h2 class="text-sm font-bold mb-3 text-white">GAME LOG</h2>
+  <h2 class="text-sm font-bold mb-3 text-white">COMMAND LOG</h2>
   <div class="flex-1 overflow-y-auto">
     <div class="text-xs text-white space-y-0.5">
       {#if gameState.gameLog.length === 0}

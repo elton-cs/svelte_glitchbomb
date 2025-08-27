@@ -91,7 +91,7 @@
   
   <!-- 2x3 Button Grid -->
   <div class="grid grid-cols-2 gap-2 flex-1 min-h-0">
-      <!-- Row 1: Start Game & Pull Orb -->
+      <!-- Row 1: Start Game & Execute -->
       <button 
         onclick={handleStartGame}
         disabled={!canStartGame || gameState.phase !== 'menu'}
@@ -111,7 +111,7 @@
                  ? 'bg-black text-white border-white hover:bg-white hover:text-black' 
                  : 'bg-black text-gray-500 border-gray-500 cursor-not-allowed'}"
       >
-        PULL ORB
+        EXECUTE
       </button>
       
       <!-- Row 2: Cash Out & Continue/Next Level -->
@@ -206,7 +206,7 @@
       <p class="text-red-400 mb-1">NEED {getLevelEntryCost(1)} GLITCH BYTES TO START</p>
       <p class="text-red-400">CLICK DEV BUTTON TO CLAIM</p>
     {:else if gameState.phase === 'level' && totalAvailableOrbs === 0}
-      <p class="text-red-400">NO ORBS AVAILABLE</p>
+      <p class="text-red-400">NO COMMANDS AVAILABLE</p>
     {:else if gameState.phase === 'marketplace' && gameState.committedToNextLevel}
       <p class="text-white font-bold">COMMITTED TO NEXT LEVEL</p>
     {:else if gameState.phase === 'marketplace' && !canProceed && !isLastLevel(gameState.currentLevel)}
