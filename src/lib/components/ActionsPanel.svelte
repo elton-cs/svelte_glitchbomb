@@ -86,11 +86,11 @@
   const canRestart = $derived(gameState.phase === 'gameover' && canAffordLevel(gameState.playerStats.glitchbytes, 1));
 </script>
 
-<div class="bg-black p-3 rounded-lg shadow-sm border border-white h-full flex flex-col">
+<div class="bg-black p-3 rounded-lg shadow-sm border border-white h-full flex flex-col overflow-hidden">
   <h2 class="text-sm font-bold mb-3 text-white">ACTIONS</h2>
   
-  <!-- 2x4 Button Grid (Added Debug Row) -->
-  <div class="grid grid-cols-2 gap-2 flex-1">
+  <!-- 2x3 Button Grid -->
+  <div class="grid grid-cols-2 gap-2 flex-1 min-h-0">
       <!-- Row 1: Start Game & Pull Orb -->
       <button 
         onclick={handleStartGame}
@@ -201,9 +201,10 @@
     </p>
   </div>
   
-  <div class="mt-1 text-sm text-center h-5">
+  <div class="mt-2 text-xs text-center px-2 pb-1">
     {#if gameState.phase === 'menu' && !canStartGame}
-      <p class="text-red-400">NEED {getLevelEntryCost(1)} GLITCH BYTES TO START</p>
+      <p class="text-red-400 mb-1">NEED {getLevelEntryCost(1)} GLITCH BYTES TO START</p>
+      <p class="text-red-400">CLICK DEV BUTTON TO CLAIM</p>
     {:else if gameState.phase === 'level' && totalAvailableOrbs === 0}
       <p class="text-red-400">NO ORBS AVAILABLE</p>
     {:else if gameState.phase === 'marketplace' && gameState.committedToNextLevel}
