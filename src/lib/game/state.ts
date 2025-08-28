@@ -36,7 +36,7 @@ function createInitialOrbBag(): OrbBag {
 function createInitialPlayerStats(glitchbytes: number): PlayerStats {
   return {
     glitchbytes,
-    bits: 0,
+    chips: 0,
     health: GAME_CONFIG.maxHealth,
     points: 0,
     bombsPulledThisLevel: 0,

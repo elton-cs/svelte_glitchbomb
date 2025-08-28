@@ -78,7 +78,7 @@ export function enterLevel(gameState: GameState, level: number): boolean {
     // Only reset consumed orbs and cheddah when starting a new game (level 1)
     if (level === 1) {
       resetConsumedOrbs(gameState.orbBag);
-      gameState.playerStats.bits = 0;
+      gameState.playerStats.chips = 0;
     }
     
     // Track P/L change from entering new level (points reset to 0, moonrocks spent)
@@ -145,9 +145,9 @@ export function pullOrb(gameState: GameState): boolean {
         addLogEntry(gameState, `Pulled multiplier orb (+${orb.amount}x boost)`);
         break;
       case 'bits':
-        gameState.playerStats.bits += orb.amount;
-        addPointHistoryEntry(gameState, gameState.playerStats.points, `Bits orb (+${orb.amount})`, getCumulativeLevelCost(gameState.currentLevel));
-        addLogEntry(gameState, `Pulled bits orb (+${orb.amount} bits)`);
+        gameState.playerStats.chips += orb.amount;
+        addPointHistoryEntry(gameState, gameState.playerStats.points, `Chips orb (+${orb.amount})`, getCumulativeLevelCost(gameState.currentLevel));
+        addLogEntry(gameState, `Pulled chips orb (+${orb.amount} chips)`);
         break;
       case 'glitchbytes':
         gameState.playerStats.glitchbytes += orb.amount;
@@ -253,11 +253,11 @@ export function purchaseOrb(gameState: GameState, type: OrbType, quantity: numbe
     gameState.marketplace.healthOrbCost * quantity :
     gameState.marketplace.pointOrbCost * quantity;
 
-  if (gameState.playerStats.bits < cost) {
+  if (gameState.playerStats.chips < cost) {
     return false;
   }
 
-  gameState.playerStats.bits -= cost;
+  gameState.playerStats.chips -= cost;
   addOrbsToBag(gameState.orbBag, type, quantity);
   
   return true;
@@ -276,14 +276,14 @@ export function purchaseShopItem(gameState: GameState, shopItemId: string, quant
 
   const totalCost = deckItem.currentCost * quantity;
   
-  if (gameState.playerStats.bits < totalCost) {
+  if (gameState.playerStats.chips < totalCost) {
     return false;
   }
 
-  gameState.playerStats.bits -= totalCost;
+  gameState.playerStats.chips -= totalCost;
   addOrbsToBag(gameState.orbBag, deckItem.type, quantity, deckItem.amount);
   
-  addLogEntry(gameState, `Bought ${deckItem.name} for ${totalCost} bits`);
+  addLogEntry(gameState, `Bought ${deckItem.name} for ${totalCost} chips`);
   
   // Update deck item price for future purchases
   for (let i = 0; i < quantity; i++) {
@@ -296,15 +296,15 @@ export function purchaseShopItem(gameState: GameState, shopItemId: string, quant
 export function continueToMarketplace(gameState: GameState): void {
   gameState.phase = 'marketplace';
   gameState.committedToNextLevel = true;
-  const newBits = processLevelReward(gameState.playerStats.points);
-  gameState.playerStats.bits += newBits;
+  const newChips = processLevelReward(gameState.playerStats.points);
+  gameState.playerStats.chips += newChips;
   gameState.marketplace.available = true;
   gameState.marketplace.currentShopItems = getAvailableShopItemsFromDeck(gameState.shopDeck, gameState.currentLevel);
   
-  // Reset consumed orbs so players can purchase more orbs with their cheddah
+  // Reset consumed orbs so players can purchase more orbs with their chips
   resetConsumedOrbs(gameState.orbBag);
   
-  addLogEntry(gameState, `Converted ${gameState.playerStats.points} points to ${newBits} bits (+${newBits} total: ${gameState.playerStats.bits})`);
+  addLogEntry(gameState, `Converted ${gameState.playerStats.points} points to ${newChips} chips (+${newChips} total: ${gameState.playerStats.chips})`);
 }
 
 export function proceedToNextLevel(gameState: GameState): boolean {

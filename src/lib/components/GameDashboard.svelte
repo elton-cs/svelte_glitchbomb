@@ -44,7 +44,9 @@
         
         <!-- Center: Glitch Bytes Display -->
         <div class="text-center">
-          <div class="text-3xl sm:text-4xl font-bold text-white mb-1">{gameState.playerStats.glitchbytes}</div>
+          <div class="text-3xl sm:text-4xl font-bold text-white mb-1 flex items-center justify-center gap-2">
+            {gameState.playerStats.glitchbytes}<span class="text-3xl sm:text-4xl">👾</span>
+          </div>
           <div class="text-white text-xs tracking-wide">GLITCH BYTES</div>
         </div>
         

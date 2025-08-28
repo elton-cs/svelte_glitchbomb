@@ -1,6 +1,7 @@
 <script lang="ts">
   import { getLevelMilestone } from '../game/levels.js';
   import type { GameState } from '../game/types.js';
+  import ChipIcon from './ChipIcon.svelte';
 
   interface Props {
     gameState: GameState;
@@ -28,8 +29,11 @@
       <div class="text-white text-xs">MULT</div>
     </div>
     <div>
-      <div class="text-lg sm:text-xl lg:text-2xl font-bold text-yellow-400 mb-1">{gameState.playerStats.bits}</div>
-      <div class="text-white text-xs">BITS</div>
+      <div class="text-lg sm:text-xl lg:text-2xl font-bold text-yellow-400 mb-1 flex items-center justify-center gap-1">
+        {gameState.playerStats.chips}
+        <ChipIcon size="md" class="text-yellow-400" />
+      </div>
+      <div class="text-white text-xs">CHIPS</div>
     </div>
   </div>
   

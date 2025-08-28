@@ -44,7 +44,7 @@ export interface OrbBag {
 
 export interface PlayerStats {
   glitchbytes: number;
-  bits: number;
+  chips: number;
   health: number;
   points: number;
   bombsPulledThisLevel: number;

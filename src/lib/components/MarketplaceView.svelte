@@ -1,6 +1,7 @@
 <script lang="ts">
   import { purchaseOrb, purchaseShopItem } from '../game/game.js';
   import type { GameState } from '../game/types.js';
+  import ChipIcon from './ChipIcon.svelte';
 
   interface Props {
     gameState: GameState;
@@ -55,13 +56,15 @@
         };
       case 'bits':
       case 'glitchbytes':
-        // Both bits and glitchbytes use the SPECIAL category emoji and color
-        const specialText = type === 'bits' ? `${amount}B` : `${amount}GB`;
+        // Both chips and glitchbytes use crown emoji (SPECIAL category)
+        const specialText = type === 'bits' ? amount.toString() : `${amount}👾`;
+        const specialIcon = '👑';
         return {
           text: specialText,
-          icon: '👑',
+          icon: specialIcon,
           color: 'text-yellow-400',
-          borderColor: 'border-yellow-400'
+          borderColor: 'border-yellow-400',
+          isChipOrb: type === 'bits'
         };
       default:
         return {
@@ -127,7 +130,7 @@
           color: tierColor,
           borderColor: tierBorder,
           available: true,
-          canPurchase: gameState.playerStats.bits >= shopItem.currentCost,
+          canPurchase: gameState.playerStats.chips >= shopItem.currentCost,
           isShopItem: true,
           orbDisplay
         };
@@ -200,7 +203,9 @@
 <div class="bg-black p-2 rounded-lg shadow-sm border border-white h-full flex flex-col {(gameState.phase === 'marketplace' || gameState.phase === 'confirmation') && gameState.marketplace.available ? '' : 'opacity-60'}">
   <div class="flex items-center justify-between mb-2">
     <h2 class="text-sm font-bold text-white">{gameState.phase === 'confirmation' ? 'LEVEL COMPLETE!' : 'MOD SHOP'} {(gameState.phase === 'marketplace' || gameState.phase === 'confirmation') && gameState.marketplace.available ? '' : '(CLOSED)'}</h2>
-    <div class="text-sm font-medium text-white">BALANCE: {gameState.playerStats.bits} B</div>
+    <div class="text-sm font-medium text-white flex items-center gap-1">
+      BALANCE: {gameState.playerStats.chips} <ChipIcon size="sm" class="text-white" />
+    </div>
   </div>
   
   <!-- Shop Grid - Fixed 2x3 layout -->
@@ -246,10 +251,20 @@
                                   ? 'group-hover:bg-white group-hover:border-black' 
                                   : ''}">
                       <div class="text-xl mb-1">{item.orbDisplay.icon}</div>
-                      <div class="text-sm font-bold {item.orbDisplay.color} transition-colors
-                                  {item.available && item.canPurchase && gameState.phase === 'marketplace' && gameState.marketplace.available
-                                    ? 'group-hover:text-black' 
-                                    : ''}">{item.orbDisplay.text}</div>
+                      {#if item.orbDisplay.isChipOrb}
+                        <div class="flex items-center gap-1">
+                          <div class="text-sm font-bold {item.orbDisplay.color} transition-colors
+                                      {item.available && item.canPurchase && gameState.phase === 'marketplace' && gameState.marketplace.available
+                                        ? 'group-hover:text-black' 
+                                        : ''}">{item.orbDisplay.text}</div>
+                          <ChipIcon size="sm" class="{item.orbDisplay.color} transition-colors {item.available && item.canPurchase && gameState.phase === 'marketplace' && gameState.marketplace.available ? 'group-hover:text-black' : ''}" />
+                        </div>
+                      {:else}
+                        <div class="text-sm font-bold {item.orbDisplay.color} transition-colors
+                                    {item.available && item.canPurchase && gameState.phase === 'marketplace' && gameState.marketplace.available
+                                      ? 'group-hover:text-black' 
+                                      : ''}">{item.orbDisplay.text}</div>
+                      {/if}
                     </div>
                   </div>
                 {/if}
@@ -264,7 +279,7 @@
                       <div class="text-xs opacity-60 line-through">{item.baseCost}</div>
                     {/if}
                     <div class="text-lg font-bold">{item.cost}</div>
-                    <div class="text-lg font-bold">B</div>
+                    <ChipIcon size="md" class="text-white transition-colors {item.available && item.canPurchase && gameState.phase === 'marketplace' && gameState.marketplace.available ? 'group-hover:text-black' : ''}" />
                   {:else if !item.available && item.cost === 0}
                     <div class="text-sm opacity-60 {item.color}">CLOSED</div>
                   {:else if !item.available}
