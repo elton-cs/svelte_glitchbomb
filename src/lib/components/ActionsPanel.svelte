@@ -234,7 +234,7 @@
             {:else if gameState.phase === 'level' && totalAvailableOrbs === 0}
               <span class="text-white">NO COMMANDS AVAILABLE</span>
             {:else if gameState.phase === 'marketplace' && gameState.committedToNextLevel}
-              <span class="text-white">ADVANCE LEVEL?</span>
+              <span class="text-white">UPGRADE TIME</span>
             {:else if gameState.phase === 'marketplace' && !canProceed && !isLastLevel(gameState.currentLevel)}
               <span class="text-white">NEED {nextLevelCost} 👾 FOR NEXT LEVEL</span>
             {:else if gameState.phase === 'confirmation'}
