@@ -238,9 +238,15 @@
                 <!-- Inner card view with orb display -->
                 {#if item.orbDisplay}
                   <div class="flex-1 flex items-center justify-center mb-2">
-                    <div class="border-2 {item.orbDisplay.borderColor} bg-black rounded px-2 py-1 flex flex-col items-center justify-center min-h-12 min-w-12 transition-colors group-hover:bg-white group-hover:border-black">
+                    <div class="border-2 {item.orbDisplay.borderColor} bg-black rounded px-2 py-1 flex flex-col items-center justify-center min-h-12 min-w-12 transition-colors 
+                                {item.available && item.canPurchase && gameState.phase === 'marketplace' && gameState.marketplace.available
+                                  ? 'group-hover:bg-white group-hover:border-black' 
+                                  : ''}">
                       <div class="text-lg mb-1">{item.orbDisplay.icon}</div>
-                      <div class="text-xs font-bold {item.orbDisplay.color} group-hover:text-black transition-colors">{item.orbDisplay.text}</div>
+                      <div class="text-xs font-bold {item.orbDisplay.color} transition-colors
+                                  {item.available && item.canPurchase && gameState.phase === 'marketplace' && gameState.marketplace.available
+                                    ? 'group-hover:text-black' 
+                                    : ''}">{item.orbDisplay.text}</div>
                     </div>
                   </div>
                 {/if}
