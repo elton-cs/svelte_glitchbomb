@@ -118,7 +118,7 @@
     <div class="flex flex-col lg:grid lg:grid-cols-3 lg:grid-rows-2 gap-4 min-h-[800px] lg:h-[800px]">
       <!-- Mobile: Stack vertically, Desktop: 2x3 Grid -->
       
-      <!-- Top Row: Actions | Player Stats | Glitch Rift -->
+      <!-- Top Row: Actions | Player Stats | P/L -->
       <div class="flex flex-col min-h-[200px] lg:h-full">
         <ActionsPanel {gameState} />
       </div>
@@ -128,16 +128,16 @@
       </div>
 
       <div class="flex flex-col min-h-[250px] lg:h-full">
-        <OrbBagSection {gameState} />
+        <ProfitLossPanel {gameState} />
       </div>
 
-      <!-- Bottom Row: Mod Shop | P/L | Game Log -->
+      <!-- Bottom Row: Mod Shop | Glitch Rift | Game Log -->
       <div class="flex flex-col min-h-[250px] lg:h-full">
         <MarketplaceView {gameState} />
       </div>
 
       <div class="flex flex-col min-h-[200px] lg:h-full">
-        <ProfitLossPanel {gameState} />
+        <OrbBagSection {gameState} />
       </div>
 
       <div class="flex flex-col min-h-[200px] lg:h-full">
