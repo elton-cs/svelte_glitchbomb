@@ -233,6 +233,8 @@
               <span class="text-white">NEED {getLevelEntryCost(1)} 👾 TO START</span>
             {:else if gameState.phase === 'level' && totalAvailableOrbs === 0}
               <span class="text-white">NO COMMANDS AVAILABLE</span>
+            {:else if gameState.phase === 'level' && totalAvailableOrbs > 0}
+              <span class="text-white">IN-GAME</span>
             {:else if gameState.phase === 'marketplace' && gameState.committedToNextLevel}
               <span class="text-white">UPGRADE TIME</span>
             {:else if gameState.phase === 'marketplace' && !canProceed && !isLastLevel(gameState.currentLevel)}
@@ -246,7 +248,7 @@
             {:else if gameState.phase === 'victory'}
               <span class="text-white">VICTORY!</span>
             {:else}
-              <span class="text-white">IN-PROGRESS</span>
+              <span class="text-white">START GAME</span>
             {/if}
           </div>
         </div>
