@@ -236,37 +236,32 @@
         </div>
       </button>
       
-      <!-- Empty slot for symmetry -->
-      <div></div>
+      <!-- Phase Display -->
+      <div class="py-3 px-2 rounded border border-gray-500 flex flex-col items-center justify-center text-center">
+        <div class="text-white text-xs uppercase tracking-wide font-medium mb-1">
+          PHASE: {gameState.phase}
+        </div>
+        <div class="text-xs">
+          {#if gameState.phase === 'menu' && !canStartGame}
+            <div class="text-red-400">NEED {getLevelEntryCost(1)} 👾</div>
+          {:else if gameState.phase === 'level' && totalAvailableOrbs === 0}
+            <div class="text-red-400">NO COMMANDS</div>
+          {:else if gameState.phase === 'marketplace' && gameState.committedToNextLevel}
+            <div class="text-white font-bold">COMMITTED</div>
+          {:else if gameState.phase === 'marketplace' && !canProceed && !isLastLevel(gameState.currentLevel)}
+            <div class="text-red-400">NEED {nextLevelCost} 👾</div>
+          {:else if gameState.phase === 'confirmation'}
+            <div class="text-white font-bold">CHOOSE!</div>
+          {:else if gameState.phase === 'gameover' && !canRestart}
+            <div class="text-red-400">NEED {getLevelEntryCost(1)} 👾</div>
+          {:else if gameState.phase === 'gameover'}
+            <div class="text-red-400 font-bold">GAME OVER!</div>
+          {:else if gameState.phase === 'victory'}
+            <div class="text-white font-bold">VICTORY!</div>
+          {:else}
+            <div class="text-gray-500">READY</div>
+          {/if}
+        </div>
+      </div>
     </div>
-  
-  <!-- Footer -->
-  <div class="mt-3 text-sm text-center h-5">
-    <p class="text-white uppercase tracking-wide">
-      PHASE: <span class="font-medium">{gameState.phase}</span>
-    </p>
-  </div>
-  
-  <div class="mt-2 text-xs text-center px-2 pb-1">
-    {#if gameState.phase === 'menu' && !canStartGame}
-      <p class="text-red-400 mb-1">NEED {getLevelEntryCost(1)} GLITCH BYTES TO START</p>
-      <p class="text-red-400">CLICK DEV BUTTON TO CLAIM</p>
-    {:else if gameState.phase === 'level' && totalAvailableOrbs === 0}
-      <p class="text-red-400">NO COMMANDS AVAILABLE</p>
-    {:else if gameState.phase === 'marketplace' && gameState.committedToNextLevel}
-      <p class="text-white font-bold">COMMITTED TO NEXT LEVEL</p>
-    {:else if gameState.phase === 'marketplace' && !canProceed && !isLastLevel(gameState.currentLevel)}
-      <p class="text-red-400">NEED {nextLevelCost} GLITCH BYTES FOR NEXT LEVEL</p>
-    {:else if gameState.phase === 'confirmation'}
-      <p class="text-white font-bold">GLITCH BYTES OR BITS?</p>
-    {:else if gameState.phase === 'gameover' && !canRestart}
-      <p class="text-red-400">NEED {getLevelEntryCost(1)} GLITCH BYTES TO RESTART</p>
-    {:else if gameState.phase === 'gameover'}
-      <p class="text-red-400 font-bold">GAME OVER!</p>
-    {:else if gameState.phase === 'victory'}
-      <p class="text-white font-bold">VICTORY!</p>
-    {:else}
-      <p>&nbsp;</p>
-    {/if}
-  </div>
 </div>
