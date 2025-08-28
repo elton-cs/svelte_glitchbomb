@@ -197,23 +197,23 @@
   });
 </script>
 
-<div class="bg-black p-3 rounded-lg shadow-sm border border-white h-full flex flex-col {(gameState.phase === 'marketplace' || gameState.phase === 'confirmation') && gameState.marketplace.available ? '' : 'opacity-60'}">
-  <h2 class="text-sm font-bold mb-3 text-white">{gameState.phase === 'confirmation' ? 'LEVEL COMPLETE!' : 'MOD SHOP'} {(gameState.phase === 'marketplace' || gameState.phase === 'confirmation') && gameState.marketplace.available ? '' : '(CLOSED)'}</h2>
+<div class="bg-black p-2 rounded-lg shadow-sm border border-white h-full flex flex-col {(gameState.phase === 'marketplace' || gameState.phase === 'confirmation') && gameState.marketplace.available ? '' : 'opacity-60'}">
+  <h2 class="text-sm font-bold mb-2 text-white">{gameState.phase === 'confirmation' ? 'LEVEL COMPLETE!' : 'MOD SHOP'} {(gameState.phase === 'marketplace' || gameState.phase === 'confirmation') && gameState.marketplace.available ? '' : '(CLOSED)'}</h2>
   
-  <!-- Shop Grid - Responsive -->
-  <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 flex-1">
+  <!-- Shop Grid - Fixed 2x3 layout -->
+  <div class="grid grid-cols-3 grid-rows-2 gap-1 flex-1">
     {#each shopInventory as item}
       <button
         disabled={!item.available || !item.canPurchase || gameState.phase !== 'marketplace' || !gameState.marketplace.available}
         onclick={item.available && item.canPurchase && gameState.phase === 'marketplace' && gameState.marketplace.available && item.isShopItem ? () => handleShopItemPurchase(item.id) : undefined}
-        class="group relative py-1 px-1 rounded font-medium transition-colors border {item.borderColor}
+        class="group relative p-0.5 rounded text-xs font-medium transition-colors border {item.borderColor} min-h-0 overflow-hidden
                {item.available && item.canPurchase && gameState.phase === 'marketplace' && gameState.marketplace.available
                  ? 'bg-black text-white hover:bg-white hover:text-black' 
                  : 'bg-black text-gray-500 cursor-not-allowed'}"
       >
         <!-- Purchase count badge -->
         {#if item.purchaseCount > 0}
-          <div class="absolute bottom-1 left-1 text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-5 text-center z-10 border transition-colors
+          <div class="absolute bottom-0 left-0 text-[8px] font-bold px-1 py-0 rounded-full min-w-3 text-center z-10 border transition-colors
                       {item.available && item.canPurchase && gameState.phase === 'marketplace' && gameState.marketplace.available
                         ? 'bg-black text-white border-white group-hover:bg-white group-hover:text-black group-hover:border-black' 
                         : 'bg-black text-gray-500 border-gray-500'}">
@@ -221,29 +221,29 @@
           </div>
         {/if}
         
-        <div class="h-full w-full flex flex-col p-2">
+        <div class="h-full w-full flex flex-col p-1">
           {#if item.icon}
             <!-- Placeholder X mark - always gray -->
             <div class="flex-1 flex items-center justify-center">
-              <div class="text-4xl {item.color}">{item.icon}</div>
+              <div class="text-2xl {item.color}">{item.icon}</div>
             </div>
           {:else}
             <!-- Stacked layout: Name, Inner Card, Price -->
             <div class="flex-1 flex flex-col justify-between">
               <div class="flex-1 flex flex-col justify-start">
                 {#if item.name}
-                  <div class="font-bold uppercase text-xs sm:text-sm leading-tight mb-2">{item.name}</div>
+                  <div class="font-bold uppercase text-[8px] leading-tight mb-1">{item.name}</div>
                 {/if}
                 
                 <!-- Inner card view with orb display -->
                 {#if item.orbDisplay}
-                  <div class="flex-1 flex items-center justify-center mb-2">
-                    <div class="border-2 {item.orbDisplay.borderColor} bg-black rounded px-2 py-1 flex flex-col items-center justify-center min-h-12 min-w-12 transition-colors 
+                  <div class="flex-1 flex items-center justify-center mb-1">
+                    <div class="border {item.orbDisplay.borderColor} bg-black rounded px-1 py-0.5 flex flex-col items-center justify-center min-h-6 min-w-6 transition-colors 
                                 {item.available && item.canPurchase && gameState.phase === 'marketplace' && gameState.marketplace.available
                                   ? 'group-hover:bg-white group-hover:border-black' 
                                   : ''}">
-                      <div class="text-lg mb-1">{item.orbDisplay.icon}</div>
-                      <div class="text-xs font-bold {item.orbDisplay.color} transition-colors
+                      <div class="text-sm mb-0.5">{item.orbDisplay.icon}</div>
+                      <div class="text-[8px] font-bold {item.orbDisplay.color} transition-colors
                                   {item.available && item.canPurchase && gameState.phase === 'marketplace' && gameState.marketplace.available
                                     ? 'group-hover:text-black' 
                                     : ''}">{item.orbDisplay.text}</div>
@@ -253,19 +253,19 @@
               </div>
               
               <!-- Price section at bottom -->
-              <div class="flex items-center justify-between mt-2">
+              <div class="flex items-center justify-between mt-1">
                 <div></div> <!-- Spacer -->
-                <div class="flex items-center gap-1">
+                <div class="flex items-center gap-0.5">
                   {#if item.available && item.cost > 0}
                     {#if item.purchaseCount > 0}
-                      <div class="text-xs opacity-60 line-through">{item.baseCost}</div>
+                      <div class="text-[8px] opacity-60 line-through">{item.baseCost}</div>
                     {/if}
-                    <div class="text-lg font-bold">{item.cost}</div>
-                    <div class="text-lg font-bold">B</div>
+                    <div class="text-xs font-bold">{item.cost}</div>
+                    <div class="text-xs font-bold">B</div>
                   {:else if !item.available && item.cost === 0}
-                    <div class="text-sm opacity-60 {item.color}">CLOSED</div>
+                    <div class="text-[8px] opacity-60 {item.color}">CLOSED</div>
                   {:else if !item.available}
-                    <div class="text-sm opacity-60">LOCKED</div>
+                    <div class="text-[8px] opacity-60">LOCKED</div>
                   {/if}
                 </div>
               </div>
@@ -277,7 +277,7 @@
   </div>
   
   <!-- Footer -->
-  <div class="mt-3 text-sm text-center h-5">
+  <div class="mt-2 text-sm text-center h-5">
     <p class="text-white uppercase tracking-wide">
       BITS: <span class="font-medium">{gameState.playerStats.bits}</span>
     </p>
