@@ -221,47 +221,47 @@
         <div class="text-sm sm:text-base lg:text-lg font-medium">MAIN MENU</div>
       </button>
       
-      <!-- Row 4: Debug Skip Level -->
-      <button 
-        onclick={() => playClickAndExecute(handleSkipLevel)}
-        disabled={!canSkipLevel}
-        class="py-3 px-2 sm:px-4 rounded text-sm sm:text-base lg:text-lg font-medium transition-colors border
-               {canSkipLevel
-                 ? 'bg-orange-800 text-white border-orange-400 hover:bg-orange-400 hover:text-black'
-                 : 'bg-black text-gray-500 border-gray-500 cursor-not-allowed'}"
-      >
-        <div class="text-center">
-          <div class="font-medium text-sm sm:text-base lg:text-lg">DEBUG</div>
-          <div class="text-xs opacity-75">SKIP LVL</div>
+      <!-- Status Bar spanning both columns -->
+      <div class="col-span-2 bg-gray-900 border-2 border-gray-600 rounded-md p-2 flex items-center justify-between">
+        <!-- Left side: Phase and status -->
+        <div class="flex items-center gap-3">
+          <div class="bg-gray-800 px-2 py-1 rounded text-xs font-mono text-green-400 border border-gray-700">
+            PHASE: {gameState.phase.toUpperCase()}
+          </div>
+          <div class="text-xs font-medium">
+            {#if gameState.phase === 'menu' && !canStartGame}
+              <span class="text-red-400">⚠ NEED {getLevelEntryCost(1)} 👾 TO START</span>
+            {:else if gameState.phase === 'level' && totalAvailableOrbs === 0}
+              <span class="text-red-400">⚠ NO COMMANDS AVAILABLE</span>
+            {:else if gameState.phase === 'marketplace' && gameState.committedToNextLevel}
+              <span class="text-blue-400">✓ COMMITTED TO NEXT LEVEL</span>
+            {:else if gameState.phase === 'marketplace' && !canProceed && !isLastLevel(gameState.currentLevel)}
+              <span class="text-red-400">⚠ NEED {nextLevelCost} 👾 FOR NEXT LEVEL</span>
+            {:else if gameState.phase === 'confirmation'}
+              <span class="text-yellow-400">? GLITCH BYTES OR CHIPS?</span>
+            {:else if gameState.phase === 'gameover' && !canRestart}
+              <span class="text-red-400">⚠ NEED {getLevelEntryCost(1)} 👾 TO RESTART</span>
+            {:else if gameState.phase === 'gameover'}
+              <span class="text-red-500">💀 GAME OVER!</span>
+            {:else if gameState.phase === 'victory'}
+              <span class="text-green-400">🎉 VICTORY!</span>
+            {:else}
+              <span class="text-gray-400">⚡ READY</span>
+            {/if}
+          </div>
         </div>
-      </button>
-      
-      <!-- Phase Display -->
-      <div class="py-3 px-2 rounded border border-gray-500 flex flex-col items-center justify-center text-center">
-        <div class="text-white text-xs uppercase tracking-wide font-medium mb-1">
-          PHASE: {gameState.phase}
-        </div>
-        <div class="text-xs">
-          {#if gameState.phase === 'menu' && !canStartGame}
-            <div class="text-red-400">NEED {getLevelEntryCost(1)} 👾</div>
-          {:else if gameState.phase === 'level' && totalAvailableOrbs === 0}
-            <div class="text-red-400">NO COMMANDS</div>
-          {:else if gameState.phase === 'marketplace' && gameState.committedToNextLevel}
-            <div class="text-white font-bold">COMMITTED</div>
-          {:else if gameState.phase === 'marketplace' && !canProceed && !isLastLevel(gameState.currentLevel)}
-            <div class="text-red-400">NEED {nextLevelCost} 👾</div>
-          {:else if gameState.phase === 'confirmation'}
-            <div class="text-white font-bold">CHOOSE!</div>
-          {:else if gameState.phase === 'gameover' && !canRestart}
-            <div class="text-red-400">NEED {getLevelEntryCost(1)} 👾</div>
-          {:else if gameState.phase === 'gameover'}
-            <div class="text-red-400 font-bold">GAME OVER!</div>
-          {:else if gameState.phase === 'victory'}
-            <div class="text-white font-bold">VICTORY!</div>
-          {:else}
-            <div class="text-gray-500">READY</div>
-          {/if}
-        </div>
+        
+        <!-- Right side: Debug button -->
+        <button 
+          onclick={() => playClickAndExecute(handleSkipLevel)}
+          disabled={!canSkipLevel}
+          class="px-3 py-1 rounded text-xs font-mono transition-colors border-2
+                 {canSkipLevel
+                   ? 'bg-orange-900 text-orange-300 border-orange-600 hover:bg-orange-800 hover:text-orange-200'
+                   : 'bg-gray-800 text-gray-500 border-gray-600 cursor-not-allowed'}"
+        >
+          DEBUG_SKIP
+        </button>
       </div>
     </div>
 </div>
