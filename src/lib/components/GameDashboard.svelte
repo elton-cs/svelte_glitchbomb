@@ -44,6 +44,7 @@
     audioManager.preloadSoundEffect('pointsbar', '/sounds/pointsbar.wav');
     audioManager.preloadSoundEffect('bomb1', '/sounds/bomb1.wav');
     audioManager.preloadSoundEffect('endgame', '/sounds/endgame.wav');
+    audioManager.preloadSoundEffect('levelup', '/sounds/levelup.wav');
     
     // Add global click listener to enable audio on first user interaction
     function handleFirstInteraction() {

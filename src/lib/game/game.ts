@@ -198,6 +198,11 @@ export function pullOrb(gameState: GameState): boolean {
 export function completeLevel(gameState: GameState): void {
   gameState.levelCompleted = true;
 
+  // Play levelup sound after a brief delay to let progress bar sound finish
+  setTimeout(() => {
+    audioManager.playSoundEffect('levelup', 0.7);
+  }, 400);
+
   if (isLastLevel(gameState.currentLevel)) {
     gameState.phase = 'victory';
     const victoryReward = calculateVictoryReward(gameState.playerStats.points);
@@ -390,6 +395,11 @@ export function skipLevel(gameState: GameState): boolean {
   if (checkLevelComplete(gameState.playerStats.points, gameState.currentLevel)) {
     // Custom debug completion logic instead of using completeLevel()
     gameState.levelCompleted = true;
+    
+    // Play levelup sound after a brief delay to let progress bar sound finish
+    setTimeout(() => {
+      audioManager.playSoundEffect('levelup', 0.7);
+    }, 400);
     
     if (isLastLevel(gameState.currentLevel)) {
       gameState.phase = 'victory';
