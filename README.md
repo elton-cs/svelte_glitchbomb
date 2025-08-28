@@ -1,18 +1,18 @@
 # Glitch Bomb
 
-A bag-building, luck-based game built with Svelte 5 and TypeScript. Manage your orb collection, survive bomb draws, and progress through increasingly challenging levels to earn glitchbytes.
+A bag-building, luck-based game built with Svelte 5 and TypeScript. Manage your command collection, survive bomb draws, and progress through increasingly challenging levels to earn glitchbytes.
 
 ## Game Overview
 
-Glitch Bomb is a strategic luck game where you pull orbs from a bag to score points and reach level milestones. Balance risk and reward as you decide when to cash out your progress or push forward for bigger payouts.
+Glitch Bomb is a strategic luck game where you pull commands from a bag to score points and reach level milestones. Balance risk and reward as you decide when to cash out your progress or push forward for bigger payouts.
 
 ## Core Game Features
 
-### 🎯 **Enhanced Orb Bag System**
-- Start with 15 orbs (1 Health, 3 Point, 5 Bomb, 6 Special)
-- Pull random orbs with different effects
+### 🎯 **Enhanced Command System**
+- Start with 15 commands (1 Health, 3 Point, 5 Bomb, 6 Special)
+- Pull random commands with different effects
 - **NEW**: Visual square representation with hover tooltips
-- **NEW**: 8 different orb types with unique mechanics
+- **NEW**: 8 different command types with unique mechanics
 
 ### 🏆 **Level Progression** 
 - 7 levels with increasing difficulty
@@ -25,7 +25,7 @@ Glitch Bomb is a strategic luck game where you pull orbs from a bag to score poi
 - Start with 0 glitchbytes (build up through gameplay)
 - Level entry costs: 10, 1, 2, 4, 6, 9, 13 glitchbytes
 - Cash out mid-level or after completion (1:1 points to glitchbytes)
-- **NEW**: Bits currency accumulates across levels within same game
+- **NEW**: Chips currency accumulates across levels within same game
 - **NEW**: 10 glitchbytes restart option from game over screen
 
 ### 🛒 **Advanced Shop System** *(NEW in v0.1.2)*
@@ -43,38 +43,38 @@ Glitch Bomb is a strategic luck game where you pull orbs from a bag to score poi
 - **Profit/Loss Chart**: Real-time performance tracking across game sessions
 - **Responsive Design**: Mobile-friendly tab navigation and layouts
 
-## Complete Orb Types
+## Complete Command Types
 
-### Original Orbs
-- **Health Orbs** ♥: Restore 1-3 health points
-- **Point Orbs** ★: Award points toward milestones  
-- **Bomb Orbs** 💥: Deal 1-3 damage, end turn
-- **Points Per Any Orb** ⚡: Bonus points for each remaining orb
+### Original Commands
+- **Health Commands** ♥: Restore 1-3 health points
+- **Point Commands** ★: Award points toward milestones  
+- **Bomb Commands** 💥: Deal 1-3 damage, end turn
+- **Points Per Any Command** ⚡: Bonus points for each remaining command
 - **Points Per Bomb Pulled** 🎯: Bonus points for bomb count this level
-- **Multiplier Orbs** ⭐: Increase level scoring multiplier
+- **Multiplier Commands** ⭐: Increase level scoring multiplier
 
-### New Orbs *(v0.1.2)*
-- **Bits Orbs** 💾: Award bits currency directly
-- **Glitchbytes Orbs** 🌙: Award glitchbytes currency directly
+### New Commands *(v0.1.2)*
+- **Chip Commands** 💾: Award chips currency directly
+- **Glitchbyte Commands** 👽: Award glitchbytes currency directly
 
 ## Shop Items by Rarity
 
-### **COMMON** (Cost 5-9 bits)
+### **COMMON** (Cost 5-9 chips)
 - **POINT 5** - Cost: 5 - +5 PTS
-- **BITS 15** - Cost: 5 - +15 bits  
+- **CHIPS 15** - Cost: 5 - +15 chips  
 - **4 PTS PER BOMB** - Cost: 6 - +4 per bomb
 - **POINT 7** - Cost: 8 - +7 PTS
 - **GLITCH BYTES 15** - Cost: 8 - +15 glitchbytes
 - **HEALTH 1** - Cost: 9 - +1 HP
 - **+0.5X MULTIPLIER** - Cost: 9 - +0.5x mult
 
-### **RARE** (Cost 11-16 bits)
+### **RARE** (Cost 11-16 chips)
 - **POINTS 8** - Cost: 11 - +8 PTS
 - **POINTS 9** - Cost: 13 - +9 PTS
 - **+1.0X MULTIPLIER** - Cost: 14 - +1.0x mult
 - **1.5X MULTIPLIER** - Cost: 16 - +1.5x mult
 
-### **COSMIC** (Cost 21-23 bits)
+### **COSMIC** (Cost 21-23 chips)
 - **COSMIC HEALTH** - Cost: 21 - Gain 3 Health
 - **COSMIC GLITCH BYTES** - Cost: 23 - Gain 40 Glitch Bytes
 
@@ -105,6 +105,48 @@ src/
 └── assets/            # Static assets
 ```
 
+## What's New in v0.1.6
+
+### 🎮 **Terminology & Visual Identity Overhaul**
+- **Command System**: Rebranded "orbs" to "commands" throughout the interface
+- **Chip Currency**: Renamed "bits" to "chips" for clearer game terminology
+- **Alien Monster Emoji**: Replaced all glitchbytes references with 👽 alien monster emoji
+- **Chip Icon**: Introduced custom SVG chip icon ⚙️ to replace gear emoji for better visual consistency
+- **Favicon Update**: Replaced default Vite favicon with alien monster emoji for brand consistency
+
+### 🎯 **Interface Layout & UX Improvements**
+- **Top Bar Integration**: Moved glitchbytes display to prominent top bar with game title
+- **Panel Reorganization**: Reordered dashboard sections for better information hierarchy
+  - Top row: Actions | Player Stats | Command Bag (formerly Orb Bag)
+  - Bottom row: Mod Shop | P/L Chart | Game Log
+- **Responsive Design**: Implemented flexible layouts optimized for both mobile and desktop
+- **Glitch Rift Display**: Enhanced command visualization with better category ordering (bomb, health, points, mult, special)
+- **Clean Empty States**: Removed 'NONE' placeholder boxes, grey out empty category titles instead
+
+### 🛒 **Enhanced Shop Experience**
+- **Card Layout Optimization**: Fixed 2x3 grid with improved spacing and sizing
+- **Balance Display**: Added prominent "BALANCE:" prefix in mod shop header
+- **Visual Card Improvements**: Enhanced shop item cards with inner command display and category colors
+- **Hover State Refinements**: Improved card interaction states and disabled card handling
+- **Space Utilization**: Moved balance to header row to maximize shop display area
+
+### ⚡**Game Balance Updates**
+- **Combo Command Boost**: Increased combo points per any command from 1 to 2 points for better progression
+- **Command Log Revamp**: Complete overhaul of action history display and formatting
+- **Dev Tools Integration**: Streamlined development controls into glitch bytes bar
+
+### 🎨 **Quality of Life Enhancements**
+- **Consumed Command Visualization**: Always show consumed commands instead of empty placeholders
+- **Layout Constraints**: Prevented Command Log from expanding panels with proper height constraints
+- **Button Improvements**: Enhanced claim and reset button layouts with better text display
+- **Mobile Responsiveness**: Improved flex layouts for various screen sizes
+
+### 🔧 **Technical Improvements**
+- **Consistent Iconography**: Standardized emoji usage throughout the interface
+- **Layout Stability**: Fixed panel expansion issues and improved responsive behavior
+- **Visual Hierarchy**: Better spacing, alignment, and color consistency across all sections
+- **Performance Optimization**: Improved hover states and card interaction responsiveness
+
 ## What's New in v0.1.5
 
 ### 🎮 **Enhanced Game Balance & Progression**
@@ -123,7 +165,7 @@ src/
 - **Percentage Display**: Shows each orb category as percentage of total available orbs
 - **Smart Orb Notation**: Enhanced notation system (number for points, number/C for combo, number/B for bomb-pulled)
 - **Visual Grouping**: Points, Combo, and Danger orbs consolidated into single POINTS category
-- **Special Category**: Bits and Glitchbytes orbs combined into unified SPECIAL category with crown emoji (👑)
+- **Special Category**: Chips and Glitchbytes commands combined into unified SPECIAL category with crown emoji (👑)
 
 ### 🎨 **Interface Improvements**
 - **Consistent Typography**: Larger, more readable fonts across orb bag display
@@ -189,8 +231,8 @@ src/
 - **Enhanced Cash Out**: Removed double penalty - mid-level cash out now gives full points value
 
 ### 💰 **Economic System Improvements**
-- **Bits Accumulation**: Bits now properly accumulates across levels instead of resetting
-- **Point Conversion Choice**: Players choose when to convert points to bits (on CONTINUE action)
+- **Chips Accumulation**: Chips now properly accumulates across levels instead of resetting
+- **Point Conversion Choice**: Players choose when to convert points to chips (on CONTINUE action)
 - **Fair Cash Out Logic**: Consistent 1:1 points-to-glitchbytes conversion for all cash out methods
 - **Glitchbytes Preview**: Mid-level cash out button shows accurate glitchbytes gain
 
@@ -219,7 +261,7 @@ src/
 
 ### Major Features
 - **Complete Shop System Overhaul**: Tier-based items with dynamic pricing
-- **New Orb Types**: Bits and Glitchbytes orbs for direct currency rewards
+- **New Command Types**: Chips and Glitchbytes commands for direct currency rewards
 - **Horizontal Dashboard Layout**: Responsive 5-section design
 - **Real-time Game Logging**: Track all player actions with timestamps
 - **Enhanced Visual Design**: Consistent black/white theme with tier accents
@@ -239,5 +281,5 @@ src/
 ---
 
 **Total Shop Items**: 13 (7 Common, 4 Rare, 2 Cosmic)
-**Total Orb Types**: 8 unique mechanics
+**Total Command Types**: 8 unique mechanics
 **Game Sessions**: Fully persistent glitchbytes with session-based resets

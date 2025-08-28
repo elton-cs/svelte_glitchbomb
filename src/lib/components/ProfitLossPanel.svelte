@@ -124,7 +124,7 @@
     
     {#if chartData().points.length > 0}
       <div class="flex-1 bg-black rounded border border-white p-2 overflow-hidden">
-        <svg width="100%" height="100%" viewBox="0 0 300 220" class="w-full h-full" preserveAspectRatio="xMidYMid meet">
+        <svg width="100%" height="100%" viewBox="0 0 300 220" class="w-full h-full min-h-0" preserveAspectRatio="xMidYMid meet">
           <!-- Grid lines -->
           <defs>
             <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
@@ -191,7 +191,7 @@
           <!-- X-axis labels -->
           <text x="30" y="190" fill="white" font-size="8">Start</text>
           <text x="270" y="190" fill="white" font-size="8" text-anchor="end">
-            {chartData().points.length > 1 ? `Pull ${chartData().points.length}` : 'Current'}
+            {chartData().points.length > 1 ? `Exec ${chartData().points.length}` : 'Current'}
           </text>
         </svg>
       </div>

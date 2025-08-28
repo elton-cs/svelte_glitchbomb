@@ -20,8 +20,8 @@ export const COMMON_SHOP_ITEMS: ShopItem[] = [
   },
   {
     id: 'common_bits_15',
-    name: 'BITS',
-    description: '+15 bits',
+    name: 'CHIPS',
+    description: '+15 chips',
     type: 'bits',
     amount: 15,
     cost: 5

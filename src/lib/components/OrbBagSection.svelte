@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { GameState } from '../game/types.js';
+  import type { GameState, OrbType } from '../game/types.js';
   import OrbTypeDisplay from './OrbTypeDisplay.svelte';
 
   interface Props {
@@ -10,7 +10,7 @@
 
   let calculationDisplay = $state('');
 
-  function getCalculation(type: typeof orbTypes[number]['type'], amount: number): string | null {
+  function getCalculation(type: OrbType, amount: number): string | null {
     switch (type) {
       case 'point':
         const multipliedPoints = Math.floor(amount * gameState.playerStats.levelMultiplier);
@@ -41,7 +41,7 @@
     }
   }
 
-  function handleOrbHover(orbType: typeof orbTypes[number]['type'], amount: number) {
+  function handleOrbHover(orbType: OrbType, amount: number) {
     const calculation = getCalculation(orbType, amount);
     calculationDisplay = calculation || '';
   }
@@ -97,16 +97,16 @@
 
   const otherOrbTypes = [
     {
-      type: 'health' as const,
-      name: 'HEALTH',
-      icon: '❤️',
-      color: 'text-red-500'
-    },
-    {
       type: 'bomb' as const,
       name: 'BOMBS',
       icon: '💣',
       color: 'text-orange-500'
+    },
+    {
+      type: 'health' as const,
+      name: 'HEALTH',
+      icon: '❤️',
+      color: 'text-red-500'
     },
     {
       type: 'multiplier' as const,
@@ -147,26 +147,52 @@
   );
 </script>
 
-<!-- Orb Bag - Visual Square Design -->
+<!-- Glitch Rift - Command Display -->
 <div class="bg-black p-3 rounded-lg shadow-sm border border-white h-full flex flex-col {gameState.phase === 'level' || gameState.phase === 'confirmation' ? '' : 'opacity-60 pointer-events-none'}">
   <div class="flex justify-between items-center mb-3">
-    <h2 class="text-sm font-bold text-white">ORB BAG ({totalAvailableOrbs}) {gameState.phase === 'level' || gameState.phase === 'confirmation' ? '' : '(INACTIVE)'}</h2>
-    <div class="text-xs text-white font-mono min-h-4">{calculationDisplay || 'hover for point calculation preview'}</div>
+    <h2 class="text-sm font-bold text-white">GLITCH RIFT ({totalAvailableOrbs}) {gameState.phase === 'level' || gameState.phase === 'confirmation' ? '' : '(INACTIVE)'}</h2>
+    <div class="text-xs text-white font-mono min-h-4">{calculationDisplay || 'hover for command output preview'}</div>
   </div>
   
-  <div class="grid grid-cols-5 gap-2 text-sm flex-1 overflow-y-auto">
+  <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 text-sm flex-1 overflow-y-auto">
+    <!-- Bomb -->
+    <OrbTypeDisplay
+      orbType="bomb"
+      icon="💣"
+      name="BOMBS"
+      color="text-orange-500"
+      availableOrbs={gameState.orbBag.bomb.available}
+      totalOrbs={gameState.orbBag.bomb.total}
+      totalAvailableOrbs={totalAvailableOrbs}
+      onOrbHover={handleOrbHover}
+      onOrbLeave={handleOrbLeave}
+    />
+
+    <!-- Health -->
+    <OrbTypeDisplay
+      orbType="health"
+      icon="❤️"
+      name="HEALTH"
+      color="text-red-500"
+      availableOrbs={gameState.orbBag.health.available}
+      totalOrbs={gameState.orbBag.health.total}
+      totalAvailableOrbs={totalAvailableOrbs}
+      onOrbHover={handleOrbHover}
+      onOrbLeave={handleOrbLeave}
+    />
+
     <!-- Combined Points Category -->
     <div class="space-y-2 {totalPointsAvailable === 0 ? 'opacity-50' : ''}">
       <!-- Header -->
       <div class="text-center mb-2">
         <div class="text-xl">⭐️</div>
-        <h3 class="font-medium text-green-400 text-sm">POINTS</h3>
-        <span class="text-green-400 text-sm">{totalPointsAvailable}/{totalPointsOwned}</span>
-        <div class="text-green-400 text-sm">{pointsPercentage}%</div>
+        <h3 class="font-medium {totalPointsOwned === 0 ? 'text-gray-500' : 'text-green-400'} text-sm">POINTS</h3>
+        <span class="{totalPointsOwned === 0 ? 'text-gray-500' : 'text-green-400'} text-sm">{totalPointsAvailable}/{totalPointsOwned}</span>
+        <div class="{totalPointsOwned === 0 ? 'text-gray-500' : 'text-green-400'} text-sm">{pointsPercentage}%</div>
       </div>
       
-      <!-- Combined Points Orbs -->
-      {#if totalPointsAvailable > 0}
+      <!-- Combined Points Commands -->
+      {#if totalPointsOwned > 0}
         <div class="flex flex-col gap-1">
           {#each pointsOrbTypes as pointType}
             {#each gameState.orbBag[pointType.type].available as orb}
@@ -189,7 +215,7 @@
                 </div>
               </div>
             {/each}
-            <!-- Consumed orbs for this type -->
+            <!-- Consumed commands for this type -->
             {#if gameState.orbBag[pointType.type].total.length > gameState.orbBag[pointType.type].available.length}
               {#each Array(gameState.orbBag[pointType.type].total.length - gameState.orbBag[pointType.type].available.length) as _, consumedIndex}
                 {@const consumedOrb = gameState.orbBag[pointType.type].total[gameState.orbBag[pointType.type].available.length + consumedIndex]}
@@ -207,25 +233,34 @@
             {/if}
           {/each}
         </div>
-      {:else}
-        <div class="min-w-8 h-8 px-1 border border-gray-600 bg-gray-800 text-gray-500 flex items-center justify-center text-sm">
-          NONE
-        </div>
       {/if}
     </div>
+
+    <!-- Multiplier -->
+    <OrbTypeDisplay
+      orbType="multiplier"
+      icon="⚡️"
+      name="MULT"
+      color="text-blue-400"
+      availableOrbs={gameState.orbBag.multiplier.available}
+      totalOrbs={gameState.orbBag.multiplier.total}
+      totalAvailableOrbs={totalAvailableOrbs}
+      onOrbHover={handleOrbHover}
+      onOrbLeave={handleOrbLeave}
+    />
 
     <!-- Combined Special Category -->
     <div class="space-y-2 {totalSpecialAvailable === 0 ? 'opacity-50' : ''}">
       <!-- Header -->
       <div class="text-center mb-2">
         <div class="text-xl">👑</div>
-        <h3 class="font-medium text-yellow-400 text-sm">SPECIAL</h3>
-        <span class="text-yellow-400 text-sm">{totalSpecialAvailable}/{totalSpecialOwned}</span>
-        <div class="text-yellow-400 text-sm">{specialPercentage}%</div>
+        <h3 class="font-medium {totalSpecialOwned === 0 ? 'text-gray-500' : 'text-yellow-400'} text-sm">SPECIAL</h3>
+        <span class="{totalSpecialOwned === 0 ? 'text-gray-500' : 'text-yellow-400'} text-sm">{totalSpecialAvailable}/{totalSpecialOwned}</span>
+        <div class="{totalSpecialOwned === 0 ? 'text-gray-500' : 'text-yellow-400'} text-sm">{specialPercentage}%</div>
       </div>
       
-      <!-- Combined Special Orbs -->
-      {#if totalSpecialAvailable > 0}
+      <!-- Combined Special Commands -->
+      {#if totalSpecialOwned > 0}
         <div class="flex flex-col gap-1">
           {#each specialOrbTypes as specialType}
             {#each gameState.orbBag[specialType.type].available as orb}
@@ -246,7 +281,7 @@
                 </div>
               </div>
             {/each}
-            <!-- Consumed orbs for this type -->
+            <!-- Consumed commands for this type -->
             {#if gameState.orbBag[specialType.type].total.length > gameState.orbBag[specialType.type].available.length}
               {#each Array(gameState.orbBag[specialType.type].total.length - gameState.orbBag[specialType.type].available.length) as _, consumedIndex}
                 {@const consumedOrb = gameState.orbBag[specialType.type].total[gameState.orbBag[specialType.type].available.length + consumedIndex]}
@@ -262,26 +297,7 @@
             {/if}
           {/each}
         </div>
-      {:else}
-        <div class="min-w-8 h-8 px-1 border border-gray-600 bg-gray-800 text-gray-500 flex items-center justify-center text-sm">
-          NONE
-        </div>
       {/if}
     </div>
-
-    <!-- Other Orb Types -->
-    {#each otherOrbTypes as orbTypeInfo}
-      <OrbTypeDisplay
-        orbType={orbTypeInfo.type}
-        icon={orbTypeInfo.icon}
-        name={orbTypeInfo.name}
-        color={orbTypeInfo.color}
-        availableOrbs={gameState.orbBag[orbTypeInfo.type].available}
-        totalOrbs={gameState.orbBag[orbTypeInfo.type].total}
-        totalAvailableOrbs={totalAvailableOrbs}
-        onOrbHover={handleOrbHover}
-        onOrbLeave={handleOrbLeave}
-      />
-    {/each}
   </div>
 </div>

@@ -1,6 +1,7 @@
 <script lang="ts">
   import { purchaseOrb, purchaseShopItem } from '../game/game.js';
   import type { GameState } from '../game/types.js';
+  import ChipIcon from './ChipIcon.svelte';
 
   interface Props {
     gameState: GameState;
@@ -14,6 +15,65 @@
 
   function handleShopItemPurchase(shopItemId: string) {
     purchaseShopItem(gameState, shopItemId, 1);
+  }
+
+  // Get orb display text and styling for each shop item type
+  function getOrbDisplay(type: string, amount: number) {
+    switch (type) {
+      case 'point':
+      case 'points_per_anyorb':
+      case 'points_per_bombpulled':
+        // All points-related orbs use the POINTS category emoji and color
+        let text = amount.toString();
+        if (type === 'points_per_anyorb') text = `${amount}/C`;
+        if (type === 'points_per_bombpulled') text = `${amount}/B`;
+        return {
+          text,
+          icon: '⭐️',
+          color: 'text-green-400',
+          borderColor: 'border-green-400'
+        };
+      case 'multiplier':
+        return {
+          text: amount.toString(),
+          icon: '⚡️',
+          color: 'text-blue-400',
+          borderColor: 'border-blue-400'
+        };
+      case 'health':
+        return {
+          text: amount.toString(),
+          icon: '❤️',
+          color: 'text-red-500',
+          borderColor: 'border-red-500'
+        };
+      case 'bomb':
+        return {
+          text: amount.toString(),
+          icon: '💣',
+          color: 'text-orange-500',
+          borderColor: 'border-orange-500'
+        };
+      case 'bits':
+      case 'glitchbytes':
+        // Both chips and glitchbytes use crown emoji (SPECIAL category)
+        const specialText = type === 'bits' ? amount.toString() : `${amount}👾`;
+        const specialIcon = '👑';
+        return {
+          text: specialText,
+          icon: specialIcon,
+          color: 'text-yellow-400',
+          borderColor: 'border-yellow-400',
+          isChipOrb: type === 'bits'
+        };
+      default:
+        return {
+          text: amount.toString(),
+          icon: '?',
+          color: 'text-white',
+          borderColor: 'border-white'
+        };
+    }
   }
 
 
@@ -57,6 +117,8 @@
           // Keep the tier-based border color, don't override
         }
         
+        const orbDisplay = getOrbDisplay(shopItem.type, shopItem.amount);
+        
         return {
           id: shopItem.id,
           name: shopItem.name,
@@ -68,8 +130,9 @@
           color: tierColor,
           borderColor: tierBorder,
           available: true,
-          canPurchase: gameState.playerStats.bits >= shopItem.currentCost,
-          isShopItem: true
+          canPurchase: gameState.playerStats.chips >= shopItem.currentCost,
+          isShopItem: true,
+          orbDisplay
         };
       });
     } else {
@@ -91,7 +154,8 @@
           borderColor: 'border-gray-400',
           available: false,
           canPurchase: false,
-          isShopItem: false
+          isShopItem: false,
+          orbDisplay: null
         });
       }
       
@@ -109,7 +173,8 @@
           borderColor: 'border-blue-500',
           available: false,
           canPurchase: false,
-          isShopItem: false
+          isShopItem: false,
+          orbDisplay: null
         });
       }
       
@@ -126,7 +191,8 @@
         borderColor: 'border-purple-500',
         available: false,
         canPurchase: false,
-        isShopItem: false
+        isShopItem: false,
+        orbDisplay: null
       });
       
       return placeholders;
@@ -134,23 +200,28 @@
   });
 </script>
 
-<div class="bg-black p-3 rounded-lg shadow-sm border border-white h-full flex flex-col {(gameState.phase === 'marketplace' || gameState.phase === 'confirmation') && gameState.marketplace.available ? '' : 'opacity-60'}">
-  <h2 class="text-sm font-bold mb-3 text-white">{gameState.phase === 'confirmation' ? 'LEVEL COMPLETE!' : 'MOD SHOP'} {(gameState.phase === 'marketplace' || gameState.phase === 'confirmation') && gameState.marketplace.available ? '' : '(CLOSED)'}</h2>
+<div class="bg-black p-2 rounded-lg shadow-sm border border-white h-full flex flex-col {(gameState.phase === 'marketplace' || gameState.phase === 'confirmation') && gameState.marketplace.available ? '' : 'opacity-60'}">
+  <div class="flex items-center justify-between mb-2">
+    <h2 class="text-sm font-bold text-white">{gameState.phase === 'confirmation' ? 'LEVEL COMPLETE!' : 'MOD SHOP'} {(gameState.phase === 'marketplace' || gameState.phase === 'confirmation') && gameState.marketplace.available ? '' : '(CLOSED)'}</h2>
+    <div class="text-sm font-medium text-white flex items-center gap-1">
+      BALANCE: {gameState.playerStats.chips} <ChipIcon size="sm" class="text-white" />
+    </div>
+  </div>
   
-  <!-- 3x2 Shop Grid -->
-  <div class="grid grid-cols-3 gap-2 flex-1">
+  <!-- Shop Grid - Fixed 2x3 layout -->
+  <div class="grid grid-cols-3 grid-rows-2 gap-2 flex-1">
     {#each shopInventory as item}
       <button
         disabled={!item.available || !item.canPurchase || gameState.phase !== 'marketplace' || !gameState.marketplace.available}
         onclick={item.available && item.canPurchase && gameState.phase === 'marketplace' && gameState.marketplace.available && item.isShopItem ? () => handleShopItemPurchase(item.id) : undefined}
-        class="group relative py-1 px-1 rounded font-medium transition-colors border {item.borderColor}
+        class="group relative p-2 rounded text-sm font-medium transition-colors border {item.borderColor} min-h-0 overflow-hidden
                {item.available && item.canPurchase && gameState.phase === 'marketplace' && gameState.marketplace.available
                  ? 'bg-black text-white hover:bg-white hover:text-black' 
                  : 'bg-black text-gray-500 cursor-not-allowed'}"
       >
         <!-- Purchase count badge -->
         {#if item.purchaseCount > 0}
-          <div class="absolute bottom-1 left-1 text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-5 text-center z-10 border transition-colors
+          <div class="absolute bottom-1 left-1 text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-4 text-center z-10 border transition-colors
                       {item.available && item.canPurchase && gameState.phase === 'marketplace' && gameState.marketplace.available
                         ? 'bg-black text-white border-white group-hover:bg-white group-hover:text-black group-hover:border-black' 
                         : 'bg-black text-gray-500 border-gray-500'}">
@@ -158,26 +229,49 @@
           </div>
         {/if}
         
-        <div class="h-full w-full flex flex-col p-2">
+        <div class="h-full w-full flex flex-col">
           {#if item.icon}
             <!-- Placeholder X mark - always gray -->
             <div class="flex-1 flex items-center justify-center">
               <div class="text-4xl {item.color}">{item.icon}</div>
             </div>
           {:else}
-            <!-- Stacked layout: Name, Description, Price -->
+            <!-- Stacked layout: Name, Inner Card, Price -->
             <div class="flex-1 flex flex-col justify-between">
               <div class="flex-1 flex flex-col justify-start">
                 {#if item.name}
-                  <div class="font-bold uppercase text-sm leading-tight mb-1">{item.name}</div>
+                  <div class="font-bold uppercase text-xs leading-tight mb-2">{item.name}</div>
                 {/if}
-                {#if item.description}
-                  <div class="text-xs opacity-75 leading-tight flex-1">{item.description}</div>
+                
+                <!-- Inner card view with orb display -->
+                {#if item.orbDisplay}
+                  <div class="flex-1 flex items-center justify-center mb-2">
+                    <div class="border-2 {item.orbDisplay.borderColor} bg-black rounded px-3 py-2 flex flex-col items-center justify-center min-h-16 min-w-16 transition-colors 
+                                {item.available && item.canPurchase && gameState.phase === 'marketplace' && gameState.marketplace.available
+                                  ? 'group-hover:bg-white group-hover:border-black' 
+                                  : ''}">
+                      <div class="text-xl mb-1">{item.orbDisplay.icon}</div>
+                      {#if item.orbDisplay.isChipOrb}
+                        <div class="flex items-center gap-1">
+                          <div class="text-sm font-bold {item.orbDisplay.color} transition-colors
+                                      {item.available && item.canPurchase && gameState.phase === 'marketplace' && gameState.marketplace.available
+                                        ? 'group-hover:text-black' 
+                                        : ''}">{item.orbDisplay.text}</div>
+                          <ChipIcon size="sm" class="{item.orbDisplay.color} transition-colors {item.available && item.canPurchase && gameState.phase === 'marketplace' && gameState.marketplace.available ? 'group-hover:text-black' : ''}" />
+                        </div>
+                      {:else}
+                        <div class="text-sm font-bold {item.orbDisplay.color} transition-colors
+                                    {item.available && item.canPurchase && gameState.phase === 'marketplace' && gameState.marketplace.available
+                                      ? 'group-hover:text-black' 
+                                      : ''}">{item.orbDisplay.text}</div>
+                      {/if}
+                    </div>
+                  </div>
                 {/if}
               </div>
               
               <!-- Price section at bottom -->
-              <div class="flex items-center justify-between mt-2">
+              <div class="flex items-center justify-between">
                 <div></div> <!-- Spacer -->
                 <div class="flex items-center gap-1">
                   {#if item.available && item.cost > 0}
@@ -185,7 +279,7 @@
                       <div class="text-xs opacity-60 line-through">{item.baseCost}</div>
                     {/if}
                     <div class="text-lg font-bold">{item.cost}</div>
-                    <div class="text-lg font-bold">B</div>
+                    <ChipIcon size="md" class="text-white transition-colors {item.available && item.canPurchase && gameState.phase === 'marketplace' && gameState.marketplace.available ? 'group-hover:text-black' : ''}" />
                   {:else if !item.available && item.cost === 0}
                     <div class="text-sm opacity-60 {item.color}">CLOSED</div>
                   {:else if !item.available}
@@ -198,13 +292,6 @@
         </div>
       </button>
     {/each}
-  </div>
-  
-  <!-- Footer -->
-  <div class="mt-3 text-sm text-center h-5">
-    <p class="text-white uppercase tracking-wide">
-      BITS: <span class="font-medium">{gameState.playerStats.bits}</span>
-    </p>
   </div>
   
 </div>
