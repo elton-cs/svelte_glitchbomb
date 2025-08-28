@@ -1,6 +1,7 @@
 import { resetLevelStats } from './state.js';
 import type { GameState } from './types.js';
 import { pullRandomOrb, resetConsumedOrbs, addOrbsToBag, calculatePointsPerAnyOrbPoints, createInitialBag } from './orbs.js';
+import { audioManager } from '../utils/audio.js';
 import { 
   canAffordLevel, 
   calculateCashOut, 
@@ -24,6 +25,12 @@ import { getCumulativeLevelCost } from './economics.js';
 function applyPointsWithMultiplier(gameState: GameState, basePoints: number, action: string = 'Points gained'): void {
   const multipliedPoints = Math.floor(basePoints * gameState.playerStats.levelMultiplier);
   gameState.playerStats.points += multipliedPoints;
+  
+  // Play points bar sound when points increase
+  if (multipliedPoints > 0) {
+    audioManager.playSoundEffect('pointsbar', 0.3);
+  }
+  
   const cumulativeCost = getCumulativeLevelCost(gameState.currentLevel);
   addPointHistoryEntry(gameState, gameState.playerStats.points, action, cumulativeCost);
 }
