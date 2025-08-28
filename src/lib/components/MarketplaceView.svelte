@@ -198,7 +198,10 @@
 </script>
 
 <div class="bg-black p-2 rounded-lg shadow-sm border border-white h-full flex flex-col {(gameState.phase === 'marketplace' || gameState.phase === 'confirmation') && gameState.marketplace.available ? '' : 'opacity-60'}">
-  <h2 class="text-sm font-bold mb-2 text-white">{gameState.phase === 'confirmation' ? 'LEVEL COMPLETE!' : 'MOD SHOP'} {(gameState.phase === 'marketplace' || gameState.phase === 'confirmation') && gameState.marketplace.available ? '' : '(CLOSED)'}</h2>
+  <div class="flex items-center justify-between mb-2">
+    <h2 class="text-sm font-bold text-white">{gameState.phase === 'confirmation' ? 'LEVEL COMPLETE!' : 'MOD SHOP'} {(gameState.phase === 'marketplace' || gameState.phase === 'confirmation') && gameState.marketplace.available ? '' : '(CLOSED)'}</h2>
+    <div class="text-sm font-medium text-white">{gameState.playerStats.bits} B</div>
+  </div>
   
   <!-- Shop Grid - Fixed 2x3 layout -->
   <div class="grid grid-cols-3 grid-rows-2 gap-2 flex-1">
@@ -274,13 +277,6 @@
         </div>
       </button>
     {/each}
-  </div>
-  
-  <!-- Footer -->
-  <div class="mt-2 text-sm text-center h-5">
-    <p class="text-white uppercase tracking-wide">
-      BITS: <span class="font-medium">{gameState.playerStats.bits}</span>
-    </p>
   </div>
   
 </div>
