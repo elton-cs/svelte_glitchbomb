@@ -210,8 +210,8 @@
 <div class="bg-black p-2 rounded-lg shadow-sm border border-white h-full flex flex-col {(gameState.phase === 'marketplace' || gameState.phase === 'confirmation') && gameState.marketplace.available ? '' : 'opacity-60'}">
   <div class="flex items-center justify-between mb-2">
     <h2 class="text-sm font-bold text-white">{gameState.phase === 'confirmation' ? 'LEVEL COMPLETE!' : 'MOD SHOP'} {(gameState.phase === 'marketplace' || gameState.phase === 'confirmation') && gameState.marketplace.available ? '' : '(CLOSED)'}</h2>
-    <div class="text-base font-bold text-yellow-400 flex items-center gap-1">
-      BALANCE: {gameState.playerStats.chips} <ChipIcon size="sm" class="text-yellow-400" />
+    <div class="text-sm font-bold text-yellow-400 flex items-center gap-1">
+      BALANCE: <span class="text-base text-xl">{gameState.playerStats.chips}</span> <ChipIcon size="md" class="text-yellow-400" />
     </div>
   </div>
   

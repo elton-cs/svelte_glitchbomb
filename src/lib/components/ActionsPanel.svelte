@@ -226,7 +226,7 @@
         <!-- Left side: Phase and status -->
         <div class="flex items-center gap-2">
           <div class="text-white text-xs font-medium uppercase tracking-wide">
-            PHASE: {gameState.phase}
+            PHASE: {gameState.phase} | 
           </div>
           <div class="text-xs">
             {#if gameState.phase === 'menu' && !canStartGame}
@@ -234,11 +234,11 @@
             {:else if gameState.phase === 'level' && totalAvailableOrbs === 0}
               <span class="text-white">NO COMMANDS AVAILABLE</span>
             {:else if gameState.phase === 'marketplace' && gameState.committedToNextLevel}
-              <span class="text-white">COMMITTED TO NEXT LEVEL</span>
+              <span class="text-white">ADVANCE LEVEL?</span>
             {:else if gameState.phase === 'marketplace' && !canProceed && !isLastLevel(gameState.currentLevel)}
               <span class="text-white">NEED {nextLevelCost} 👾 FOR NEXT LEVEL</span>
             {:else if gameState.phase === 'confirmation'}
-              <span class="text-white">GLITCH BYTES OR CHIPS?</span>
+              <span class="text-white">CONTINUE?</span>
             {:else if gameState.phase === 'gameover' && !canRestart}
               <span class="text-white">NEED {getLevelEntryCost(1)} 👾 TO RESTART</span>
             {:else if gameState.phase === 'gameover'}
@@ -246,7 +246,7 @@
             {:else if gameState.phase === 'victory'}
               <span class="text-white">VICTORY!</span>
             {:else}
-              <span class="text-white">READY</span>
+              <span class="text-white">IN-PROGRESS</span>
             {/if}
           </div>
         </div>
@@ -260,7 +260,7 @@
                    ? 'bg-black text-white border-white hover:bg-white hover:text-black'
                    : 'bg-black text-gray-500 border-gray-500 cursor-not-allowed'}"
         >
-          DEBUG SKIP
+          SKIP
         </button>
       </div>
     </div>
