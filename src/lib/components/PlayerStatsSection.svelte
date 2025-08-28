@@ -21,19 +21,19 @@
   <!-- Three stats in a row -->
   <div class="grid grid-cols-3 gap-2 sm:gap-4 text-center mb-4">
     <div>
-      <div class="text-lg sm:text-xl lg:text-2xl font-bold text-purple-400 mb-1">{gameState.currentLevel}</div>
-      <div class="text-white text-xs">LEVEL</div>
+      <div class="text-lg sm:text-xl lg:text-2xl font-bold text-yellow-400 mb-1 flex items-center justify-center gap-1">
+        {gameState.playerStats.chips}
+        <ChipIcon size="md" class="text-yellow-400" />
+      </div>
+      <div class="text-white text-xs">CHIPS</div>
     </div>
     <div>
       <div class="text-lg sm:text-xl lg:text-2xl font-bold text-blue-400 mb-1">{gameState.playerStats.levelMultiplier}x</div>
       <div class="text-white text-xs">MULT</div>
     </div>
     <div>
-      <div class="text-lg sm:text-xl lg:text-2xl font-bold text-yellow-400 mb-1 flex items-center justify-center gap-1">
-        {gameState.playerStats.chips}
-        <ChipIcon size="md" class="text-yellow-400" />
-      </div>
-      <div class="text-white text-xs">CHIPS</div>
+      <div class="text-lg sm:text-xl lg:text-2xl font-bold text-purple-400 mb-1">{gameState.currentLevel}</div>
+      <div class="text-white text-xs">LEVEL</div>
     </div>
   </div>
   
