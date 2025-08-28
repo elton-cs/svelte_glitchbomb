@@ -72,6 +72,19 @@
     audioManager.playSoundEffect('click', 0.3);
     action();
   }
+  
+  // Helper function to play appropriate sound for continue/next level button
+  function playContinueOrNextLevel() {
+    if (canContinue) {
+      // Continue button - play regular click sound
+      audioManager.playSoundEffect('click', 0.3);
+      handleContinue();
+    } else {
+      // Next Level button - play special nextlevel sound
+      audioManager.playSoundEffect('nextlevel', 0.5);
+      handleProceedToNext();
+    }
+  }
 
   const canStartGame = $derived(gameState.phase === 'menu' && canAffordLevel(gameState.playerStats.glitchbytes, 1));
   const canCashOut = $derived((gameState.phase === 'level' && gameState.gameStarted) || 
@@ -151,7 +164,7 @@
       </button>
       
       <button 
-        onclick={() => playClickAndExecute(canContinue ? handleContinue : handleProceedToNext)}
+        onclick={playContinueOrNextLevel}
         disabled={!canContinue && (!canProceed || gameState.phase !== 'marketplace')}
         class="py-3 px-2 sm:px-4 rounded text-sm sm:text-base lg:text-lg font-medium transition-colors border
                {(canContinue || (canProceed && gameState.phase === 'marketplace'))
