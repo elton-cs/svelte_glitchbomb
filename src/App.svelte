@@ -15,7 +15,7 @@
   <!-- Header with Navigation -->
   <div class="bg-black border-b border-white p-3">
     <div class="max-w-7xl mx-auto">
-      <div class="relative flex items-center">
+      <div class="flex items-center justify-between">
         <!-- Left side: Tabs -->
         <div class="flex space-x-2">
           <button 
@@ -59,13 +59,11 @@
           </button>
         </div>
 
-        <!-- Center: Game Title - Absolutely positioned to stay centered -->
-        <div class="absolute left-1/2 transform -translate-x-1/2 text-center">
-          <h1 class="text-lg sm:text-2xl font-bold text-white">GLITCH BOMB</h1>
-        </div>
+        <!-- Center: Empty space -->
+        <div></div>
 
-        <!-- Right side: Dev Button - Same size as tabs -->
-        <div class="ml-auto">
+        <!-- Right side: Dev Button -->
+        <div>
           <button 
             onclick={toggleDevMode}
             class="px-4 py-2 rounded font-medium text-sm transition-colors border border-white uppercase tracking-wide"
