@@ -14,6 +14,7 @@
   import { GAME_CONFIG } from '../game/constants.js';
   import { isLastLevel, getNextLevel } from '../game/levels.js';
   import type { GameState } from '../game/types.js';
+  import ChipIcon from './ChipIcon.svelte';
 
   interface Props {
     gameState: GameState;
@@ -132,11 +133,11 @@
           <div class="font-medium text-sm sm:text-base lg:text-lg">CASH OUT</div>
           {#if gameState.phase === 'confirmation'}
             <div class="text-sm opacity-75">
-              (+{gameState.playerStats.points} GB)
+              (+{gameState.playerStats.points} 👾)
             </div>
           {:else if gameState.phase === 'level'}
             <div class="text-sm opacity-75">
-              (+{midLevelCashOut} GB)
+              (+{midLevelCashOut} 👾)
             </div>
           {/if}
         </div>
@@ -155,12 +156,12 @@
             {canContinue ? 'CONTINUE' : 'NEXT LEVEL'}
           </div>
           {#if canContinue}
-            <div class="text-sm opacity-75">
-              (+{gameState.playerStats.points} B)
+            <div class="text-sm opacity-75 flex items-center justify-center gap-1">
+              (+{gameState.playerStats.points} <ChipIcon size="sm" class="text-white opacity-75" />)
             </div>
           {:else}
             <div class="text-sm opacity-75">
-              (-{getLevelEntryCost(getNextLevel(gameState.currentLevel))} GB)
+              (-{getLevelEntryCost(getNextLevel(gameState.currentLevel))} 👾)
             </div>
           {/if}
         </div>
@@ -178,7 +179,7 @@
         <div class="text-center">
           <div class="font-medium text-sm sm:text-base lg:text-lg">RESTART</div>
           {#if canRestart && gameState.phase === 'gameover'}
-            <div class="text-sm opacity-75">(-{getLevelEntryCost(1)} GB)</div>
+            <div class="text-sm opacity-75">(-{getLevelEntryCost(1)} 👾)</div>
           {/if}
         </div>
       </button>
