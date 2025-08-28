@@ -132,6 +132,12 @@ export function pullOrb(gameState: GameState): boolean {
         break;
       case 'bomb':
         gameState.playerStats.health = Math.max(0, gameState.playerStats.health - orb.amount);
+        
+        // Play bomb sound when health decreases
+        if (orb.amount > 0) {
+          audioManager.playSoundEffect('bomb1', 0.5);
+        }
+        
         gameState.playerStats.bombsPulledThisLevel += 1;
         addPointHistoryEntry(gameState, gameState.playerStats.points, `Bomb orb (-${orb.amount} HP)`, getCumulativeLevelCost(gameState.currentLevel));
         addLogEntry(gameState, `Pulled bomb orb (-${orb.amount} HP)`);
