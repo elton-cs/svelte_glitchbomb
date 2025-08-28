@@ -29,15 +29,15 @@
 
   function handleCashOut() {
     if (gameState.phase === 'level') {
-      if (confirm(`Cash out ${gameState.playerStats.points} points for glitchbytes? You'll lose progress and glitchbytes spent on this level.`)) {
+      if (confirm(`Cache out ${gameState.playerStats.points} points for glitchbytes? You'll lose progress and glitchbytes spent on this level.`)) {
         cashOutMidLevel(gameState);
       }
     } else if (gameState.phase === 'marketplace') {
-      if (confirm(`Cash out ${gameState.playerStats.points} points for glitchbytes and end the run?`)) {
+      if (confirm(`Cache out ${gameState.playerStats.points} points for glitchbytes and end the run?`)) {
         cashOutPostLevel(gameState);
       }
     } else if (gameState.phase === 'confirmation') {
-      if (confirm(`Cash out ${gameState.playerStats.points} points for glitchbytes and end the run?`)) {
+      if (confirm(`Cache out ${gameState.playerStats.points} points for glitchbytes and end the run?`)) {
         cashOutPostLevel(gameState);
       }
     }
@@ -156,7 +156,7 @@
                  : 'bg-black text-gray-500 border-gray-500 cursor-not-allowed'}"
       >
         <div class="text-center">
-          <div class="font-medium text-sm sm:text-base lg:text-lg">CASH OUT</div>
+          <div class="font-medium text-sm sm:text-base lg:text-lg">CACHE OUT</div>
           {#if gameState.phase === 'confirmation'}
             <div class="text-sm opacity-75">
               (+{gameState.playerStats.points} 👾)
@@ -183,7 +183,7 @@
           </div>
           {#if canContinue}
             <div class="text-sm opacity-75 flex items-center justify-center gap-1">
-              (+{gameState.playerStats.points} <ChipIcon size="sm" class="text-white opacity-75" />)
+              (+{gameState.playerStats.points} <ChipIcon size="sm" class="opacity-75" />)
             </div>
           {:else}
             <div class="text-sm opacity-75">
