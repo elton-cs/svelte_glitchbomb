@@ -73,6 +73,12 @@
     action();
   }
   
+  // Helper function to play nextlevel sound for game progression actions
+  function playNextLevelAndExecute(action: () => void) {
+    audioManager.playSoundEffect('nextlevel', 0.5);
+    action();
+  }
+  
   // Helper function to play appropriate sound for continue/next level button
   function playContinueOrNextLevel() {
     if (canContinue) {
@@ -119,7 +125,7 @@
   <div class="grid grid-cols-2 gap-2 flex-1 min-h-0">
       <!-- Row 1: Start Game & Execute -->
       <button 
-        onclick={() => playClickAndExecute(handleStartGame)}
+        onclick={() => playNextLevelAndExecute(handleStartGame)}
         disabled={!canStartGame || gameState.phase !== 'menu'}
         class="py-3 px-2 sm:px-4 rounded text-sm sm:text-base lg:text-lg font-medium transition-colors border
                {canStartGame && gameState.phase === 'menu'
@@ -189,7 +195,7 @@
       
       <!-- Row 3: Restart & Main Menu -->
       <button 
-        onclick={() => playClickAndExecute(handleRestart)}
+        onclick={() => playNextLevelAndExecute(handleRestart)}
         disabled={!canRestart || gameState.phase !== 'gameover'}
         class="py-3 px-2 sm:px-4 rounded text-sm sm:text-base lg:text-lg font-medium transition-colors border
                {canRestart && gameState.phase === 'gameover'
