@@ -16,6 +16,68 @@
     purchaseShopItem(gameState, shopItemId, 1);
   }
 
+  // Get orb display text and styling for each shop item type
+  function getOrbDisplay(type: string, amount: number) {
+    switch (type) {
+      case 'point':
+        return {
+          text: amount.toString(),
+          icon: '★',
+          color: 'text-purple-500',
+          borderColor: 'border-purple-500'
+        };
+      case 'points_per_anyorb':
+        return {
+          text: `${amount}/C`,
+          icon: '⚡',
+          color: 'text-blue-500',
+          borderColor: 'border-blue-500'
+        };
+      case 'points_per_bombpulled':
+        return {
+          text: `${amount}/B`,
+          icon: '🎯',
+          color: 'text-yellow-500',
+          borderColor: 'border-yellow-500'
+        };
+      case 'multiplier':
+        return {
+          text: amount.toString(),
+          icon: '⚡️',
+          color: 'text-blue-400',
+          borderColor: 'border-blue-400'
+        };
+      case 'health':
+        return {
+          text: amount.toString(),
+          icon: '❤️',
+          color: 'text-red-500',
+          borderColor: 'border-red-500'
+        };
+      case 'bits':
+        return {
+          text: `${amount}B`,
+          icon: 'B',
+          color: 'text-yellow-400',
+          borderColor: 'border-yellow-400'
+        };
+      case 'glitchbytes':
+        return {
+          text: `${amount}GB`,
+          icon: 'GB',
+          color: 'text-gray-300',
+          borderColor: 'border-gray-300'
+        };
+      default:
+        return {
+          text: amount.toString(),
+          icon: '?',
+          color: 'text-white',
+          borderColor: 'border-white'
+        };
+    }
+  }
+
 
   const shopInventory = $derived.by(() => {
     const isShopOpen = gameState.phase === 'marketplace' && gameState.marketplace.available;
@@ -57,6 +119,8 @@
           // Keep the tier-based border color, don't override
         }
         
+        const orbDisplay = getOrbDisplay(shopItem.type, shopItem.amount);
+        
         return {
           id: shopItem.id,
           name: shopItem.name,
@@ -69,7 +133,8 @@
           borderColor: tierBorder,
           available: true,
           canPurchase: gameState.playerStats.bits >= shopItem.currentCost,
-          isShopItem: true
+          isShopItem: true,
+          orbDisplay
         };
       });
     } else {
@@ -91,7 +156,8 @@
           borderColor: 'border-gray-400',
           available: false,
           canPurchase: false,
-          isShopItem: false
+          isShopItem: false,
+          orbDisplay: null
         });
       }
       
@@ -109,7 +175,8 @@
           borderColor: 'border-blue-500',
           available: false,
           canPurchase: false,
-          isShopItem: false
+          isShopItem: false,
+          orbDisplay: null
         });
       }
       
@@ -126,7 +193,8 @@
         borderColor: 'border-purple-500',
         available: false,
         canPurchase: false,
-        isShopItem: false
+        isShopItem: false,
+        orbDisplay: null
       });
       
       return placeholders;
@@ -165,14 +233,21 @@
               <div class="text-4xl {item.color}">{item.icon}</div>
             </div>
           {:else}
-            <!-- Stacked layout: Name, Description, Price -->
+            <!-- Stacked layout: Name, Inner Card, Price -->
             <div class="flex-1 flex flex-col justify-between">
               <div class="flex-1 flex flex-col justify-start">
                 {#if item.name}
-                  <div class="font-bold uppercase text-xs sm:text-sm leading-tight mb-1">{item.name}</div>
+                  <div class="font-bold uppercase text-xs sm:text-sm leading-tight mb-2">{item.name}</div>
                 {/if}
-                {#if item.description}
-                  <div class="text-xs opacity-75 leading-tight flex-1">{item.description}</div>
+                
+                <!-- Inner card view with orb display -->
+                {#if item.orbDisplay}
+                  <div class="flex-1 flex items-center justify-center mb-2">
+                    <div class="border-2 {item.orbDisplay.borderColor} bg-black rounded px-2 py-1 flex flex-col items-center justify-center min-h-12 min-w-12">
+                      <div class="text-lg mb-1">{item.orbDisplay.icon}</div>
+                      <div class="text-xs font-bold {item.orbDisplay.color}">{item.orbDisplay.text}</div>
+                    </div>
+                  </div>
                 {/if}
               </div>
               
