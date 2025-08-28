@@ -2,6 +2,7 @@
   import { purchaseOrb, purchaseShopItem } from '../game/game.js';
   import type { GameState } from '../game/types.js';
   import ChipIcon from './ChipIcon.svelte';
+  import { audioManager } from '../utils/audio.js';
 
   interface Props {
     gameState: GameState;
@@ -15,6 +16,12 @@
 
   function handleShopItemPurchase(shopItemId: string) {
     purchaseShopItem(gameState, shopItemId, 1);
+  }
+  
+  // Helper function to play buy sound with purchase action
+  function playBuyAndPurchase(shopItemId: string) {
+    audioManager.playSoundEffect('buy', 0.4);
+    handleShopItemPurchase(shopItemId);
   }
 
   // Get orb display text and styling for each shop item type
@@ -213,7 +220,7 @@
     {#each shopInventory as item}
       <button
         disabled={!item.available || !item.canPurchase || gameState.phase !== 'marketplace' || !gameState.marketplace.available}
-        onclick={item.available && item.canPurchase && gameState.phase === 'marketplace' && gameState.marketplace.available && item.isShopItem ? () => handleShopItemPurchase(item.id) : undefined}
+        onclick={item.available && item.canPurchase && gameState.phase === 'marketplace' && gameState.marketplace.available && item.isShopItem ? () => playBuyAndPurchase(item.id) : undefined}
         class="group relative p-2 rounded text-sm font-medium transition-colors border {item.borderColor} min-h-0 overflow-hidden
                {item.available && item.canPurchase && gameState.phase === 'marketplace' && gameState.marketplace.available
                  ? 'bg-black text-white hover:bg-white hover:text-black' 

@@ -40,6 +40,7 @@
     
     // Preload sound effects
     audioManager.preloadSoundEffect('click', '/sounds/click.wav');
+    audioManager.preloadSoundEffect('buy', '/sounds/buy.wav');
     
     // Add global click listener to enable audio on first user interaction
     function handleFirstInteraction() {
