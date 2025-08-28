@@ -200,7 +200,7 @@
 <div class="bg-black p-2 rounded-lg shadow-sm border border-white h-full flex flex-col {(gameState.phase === 'marketplace' || gameState.phase === 'confirmation') && gameState.marketplace.available ? '' : 'opacity-60'}">
   <div class="flex items-center justify-between mb-2">
     <h2 class="text-sm font-bold text-white">{gameState.phase === 'confirmation' ? 'LEVEL COMPLETE!' : 'MOD SHOP'} {(gameState.phase === 'marketplace' || gameState.phase === 'confirmation') && gameState.marketplace.available ? '' : '(CLOSED)'}</h2>
-    <div class="text-sm font-medium text-white">{gameState.playerStats.bits} B</div>
+    <div class="text-sm font-medium text-white">Balance: {gameState.playerStats.bits} B</div>
   </div>
   
   <!-- Shop Grid - Fixed 2x3 layout -->
