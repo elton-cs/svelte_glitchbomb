@@ -42,9 +42,9 @@
     <!-- Points Progress Bar -->
     <div class="flex-1 flex flex-col justify-center">
       <div class="text-green-400 text-sm sm:text-base lg:text-lg font-bold mb-3 text-center">POINTS {gameState.playerStats.points}/{getLevelMilestone(gameState.currentLevel)}</div>
-      <div class="bg-gray-800 rounded-full h-6 sm:h-8 border border-gray-600">
+      <div class="bg-gray-800 rounded h-6 sm:h-8 border border-gray-600">
         <div 
-          class="bg-white h-full rounded-full transition-all duration-300"
+          class="bg-white h-full rounded transition-all duration-300"
           style="width: {Math.min(100, (gameState.playerStats.points / getLevelMilestone(gameState.currentLevel)) * 100)}%"
         ></div>
       </div>
@@ -53,9 +53,9 @@
     <!-- Health Progress Bar -->
     <div class="flex-1 flex flex-col justify-center">
       <div class="text-red-400 text-sm sm:text-base lg:text-lg font-bold mb-3 text-center">HEALTH {gameState.playerStats.health}/5</div>
-      <div class="bg-gray-800 rounded-full h-6 sm:h-8 border border-gray-600">
+      <div class="bg-gray-800 rounded h-6 sm:h-8 border border-gray-600">
         <div 
-          class="bg-white h-full rounded-full transition-all duration-300"
+          class="bg-white h-full rounded transition-all duration-300"
           style="width: {(gameState.playerStats.health / 5) * 100}%"
         ></div>
       </div>
