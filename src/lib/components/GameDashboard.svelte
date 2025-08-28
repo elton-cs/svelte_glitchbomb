@@ -1,5 +1,6 @@
 <script lang="ts">
   import { createInitialGameState, claimFreeBytes, saveGlitchbytes } from '../game/state.js';
+  import { audioManager } from '../utils/audio.js';
   import StatsDisplay from './StatsDisplay.svelte';
   import ActionsPanel from './ActionsPanel.svelte';
   import MarketplaceView from './MarketplaceView.svelte';
@@ -30,6 +31,44 @@
   });
   
   const canClaimBytes = $derived(gameState.playerStats.glitchbytes < 100);
+  
+  // Initialize background music when component mounts
+  $effect(() => {
+    audioManager.initializeBackgroundMusic('/sounds/thepilot.mp3').then(() => {
+      audioManager.playBackgroundMusic();
+    });
+    
+    // Preload sound effects
+    audioManager.preloadSoundEffect('click', '/sounds/click.wav');
+    audioManager.preloadSoundEffect('buy', '/sounds/buy.wav');
+    audioManager.preloadSoundEffect('pointsbar', '/sounds/pointsbar.wav');
+    audioManager.preloadSoundEffect('bomb1', '/sounds/bomb1.wav');
+    audioManager.preloadSoundEffect('endgame', '/sounds/endgame.wav');
+    audioManager.preloadSoundEffect('levelup', '/sounds/levelup.wav');
+    audioManager.preloadSoundEffect('nextlevel', '/sounds/nextlevel.wav');
+    audioManager.preloadSoundEffect('multiplier', '/sounds/multiplier.wav');
+    audioManager.preloadSoundEffect('specialpull', '/sounds/specialpull.wav');
+    
+    // Add global click listener to enable audio on first user interaction
+    function handleFirstInteraction() {
+      audioManager.enableAudioOnUserInteraction();
+      audioManager.playBackgroundMusic();
+      document.removeEventListener('click', handleFirstInteraction);
+      document.removeEventListener('keydown', handleFirstInteraction);
+      document.removeEventListener('touchstart', handleFirstInteraction);
+    }
+    
+    document.addEventListener('click', handleFirstInteraction);
+    document.addEventListener('keydown', handleFirstInteraction);
+    document.addEventListener('touchstart', handleFirstInteraction);
+    
+    return () => {
+      audioManager.cleanup();
+      document.removeEventListener('click', handleFirstInteraction);
+      document.removeEventListener('keydown', handleFirstInteraction);
+      document.removeEventListener('touchstart', handleFirstInteraction);
+    };
+  });
   
 </script>
 
@@ -79,7 +118,7 @@
     <div class="flex flex-col lg:grid lg:grid-cols-3 lg:grid-rows-2 gap-4 min-h-[800px] lg:h-[800px]">
       <!-- Mobile: Stack vertically, Desktop: 2x3 Grid -->
       
-      <!-- Top Row: Actions | Player Stats | Glitch Rift -->
+      <!-- Top Row: Actions | Player Stats | P/L -->
       <div class="flex flex-col min-h-[200px] lg:h-full">
         <ActionsPanel {gameState} />
       </div>
@@ -89,16 +128,16 @@
       </div>
 
       <div class="flex flex-col min-h-[250px] lg:h-full">
-        <OrbBagSection {gameState} />
+        <ProfitLossPanel {gameState} />
       </div>
 
-      <!-- Bottom Row: Mod Shop | P/L | Game Log -->
+      <!-- Bottom Row: Mod Shop | Glitch Rift | Game Log -->
       <div class="flex flex-col min-h-[250px] lg:h-full">
         <MarketplaceView {gameState} />
       </div>
 
       <div class="flex flex-col min-h-[200px] lg:h-full">
-        <ProfitLossPanel {gameState} />
+        <OrbBagSection {gameState} />
       </div>
 
       <div class="flex flex-col min-h-[200px] lg:h-full">

@@ -105,6 +105,39 @@ src/
 └── assets/            # Static assets
 ```
 
+## What's New in v0.1.7
+
+### 🎯 **Dashboard Layout Optimization**
+- **Panel Position Swaps**: Reorganized dashboard for better visual hierarchy
+  - Swapped Glitch Rift (Command Bag) with Profit/Loss panel positions
+  - Chips and Level elements repositioned in Player Stats panel for better balance
+- **Improved Information Flow**: More logical arrangement of game data and controls
+
+### 🎮 **Enhanced Actions Panel**
+- **Status Bar Integration**: Consolidated phase display and debug controls into single horizontal bar
+- **Space Optimization**: Moved phase status to same row as debug button to save vertical space
+- **Consistent Theme**: Maintained black and white styling throughout status elements
+- **Enhanced Status Messages**: Improved contextual messages with cleaner formatting
+
+### 🛒 **Mod Shop Visual Improvements**
+- **Enhanced Balance Display**: Made chip balance more prominent with yellow highlighting
+- **Improved Typography**: Balance label matches title font while keeping chip value emphasized
+- **Better Visual Hierarchy**: Larger chip icon (md size) and number display for better visibility
+
+### 🎨 **UI Polish & User Experience**
+- **Button Interaction Fixes**: Fixed chip icon color inversion on continue button hover
+- **Terminology Update**: Renamed "Cash Out" to "Cache Out" for thematic consistency
+- **Consistent Theming**: Maintained cohesive black and white design language across all elements
+
+### ⚖️ **Game Balance Refinements**
+- **Starting Command Adjustment**: Reduced starting "Points Per Any Command" from 2 to 1 for better balance
+- **Improved Early Game**: More strategic decision-making with adjusted starting configuration
+
+### 🔧 **Technical Improvements**
+- **Layout Efficiency**: Optimized dashboard space utilization with strategic panel repositioning
+- **Consistent Styling**: Unified status bar design with action button theme
+- **Enhanced Visual Feedback**: Better hover states and interaction responses throughout UI
+
 ## What's New in v0.1.6
 
 ### 🎮 **Terminology & Visual Identity Overhaul**

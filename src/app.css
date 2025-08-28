@@ -1,6 +1,25 @@
 @import "tailwindcss";
 
-/* Base theme */
+/* Custom font */
+@font-face {
+  font-family: 'NewFont';
+  src: url('/newfont.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* Base theme with scaled up font sizes */
+:root {
+  /* Scale up all Tailwind font sizes */
+  font-size: 15px; /* This affects rem calculations */
+}
+
 body {
-  @apply bg-black text-white font-mono;
+  @apply bg-black text-white;
+  font-family: 'NewFont', monospace;
+}
+
+/* Apply custom font to all elements but preserve Tailwind sizing */
+* {
+  font-family: 'NewFont', monospace !important;
 }

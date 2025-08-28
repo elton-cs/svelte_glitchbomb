@@ -1,6 +1,7 @@
 import { resetLevelStats } from './state.js';
 import type { GameState } from './types.js';
 import { pullRandomOrb, resetConsumedOrbs, addOrbsToBag, calculatePointsPerAnyOrbPoints, createInitialBag } from './orbs.js';
+import { audioManager } from '../utils/audio.js';
 import { 
   canAffordLevel, 
   calculateCashOut, 
@@ -24,6 +25,12 @@ import { getCumulativeLevelCost } from './economics.js';
 function applyPointsWithMultiplier(gameState: GameState, basePoints: number, action: string = 'Points gained'): void {
   const multipliedPoints = Math.floor(basePoints * gameState.playerStats.levelMultiplier);
   gameState.playerStats.points += multipliedPoints;
+  
+  // Play points bar sound when points increase
+  if (multipliedPoints > 0) {
+    audioManager.playSoundEffect('pointsbar', 0.3);
+  }
+  
   const cumulativeCost = getCumulativeLevelCost(gameState.currentLevel);
   addPointHistoryEntry(gameState, gameState.playerStats.points, action, cumulativeCost);
 }
@@ -124,7 +131,20 @@ export function pullOrb(gameState: GameState): boolean {
         addLogEntry(gameState, `Pulled point orb (+${orb.amount} points)`);
         break;
       case 'bomb':
+        const previousHealth = gameState.playerStats.health;
         gameState.playerStats.health = Math.max(0, gameState.playerStats.health - orb.amount);
+        
+        // Play appropriate sound when health decreases
+        if (orb.amount > 0) {
+          if (gameState.playerStats.health === 0 && previousHealth > 0) {
+            // Health hit 0 - play endgame sound instead of bomb sound
+            audioManager.playSoundEffect('endgame', 0.6);
+          } else {
+            // Health decreased but didn't hit 0 - play bomb sound
+            audioManager.playSoundEffect('bomb1', 0.5);
+          }
+        }
+        
         gameState.playerStats.bombsPulledThisLevel += 1;
         addPointHistoryEntry(gameState, gameState.playerStats.points, `Bomb orb (-${orb.amount} HP)`, getCumulativeLevelCost(gameState.currentLevel));
         addLogEntry(gameState, `Pulled bomb orb (-${orb.amount} HP)`);
@@ -141,16 +161,34 @@ export function pullOrb(gameState: GameState): boolean {
         break;
       case 'multiplier':
         gameState.playerStats.levelMultiplier += orb.amount;
+        
+        // Play multiplier sound when multiplier increases
+        if (orb.amount > 0) {
+          audioManager.playSoundEffect('multiplier', 0.6);
+        }
+        
         addPointHistoryEntry(gameState, gameState.playerStats.points, `Multiplier orb (+${orb.amount}x)`, getCumulativeLevelCost(gameState.currentLevel));
         addLogEntry(gameState, `Pulled multiplier orb (+${orb.amount}x boost)`);
         break;
       case 'bits':
         gameState.playerStats.chips += orb.amount;
+        
+        // Play special pull sound when chips increase
+        if (orb.amount > 0) {
+          audioManager.playSoundEffect('specialpull', 0.4);
+        }
+        
         addPointHistoryEntry(gameState, gameState.playerStats.points, `Chips orb (+${orb.amount})`, getCumulativeLevelCost(gameState.currentLevel));
         addLogEntry(gameState, `Pulled chips orb (+${orb.amount} chips)`);
         break;
       case 'glitchbytes':
         gameState.playerStats.glitchbytes += orb.amount;
+        
+        // Play special pull sound when glitchbytes increase
+        if (orb.amount > 0) {
+          audioManager.playSoundEffect('specialpull', 0.4);
+        }
+        
         addPointHistoryEntry(gameState, gameState.playerStats.points, `Glitchbytes orb (+${orb.amount})`, getCumulativeLevelCost(gameState.currentLevel));
         addLogEntry(gameState, `Pulled glitchbytes orb (+${orb.amount} glitchbytes)`);
         break;
@@ -177,6 +215,11 @@ export function pullOrb(gameState: GameState): boolean {
 
 export function completeLevel(gameState: GameState): void {
   gameState.levelCompleted = true;
+
+  // Play levelup sound after a brief delay to let progress bar sound finish
+  setTimeout(() => {
+    audioManager.playSoundEffect('levelup', 0.7);
+  }, 400);
 
   if (isLastLevel(gameState.currentLevel)) {
     gameState.phase = 'victory';
@@ -370,6 +413,11 @@ export function skipLevel(gameState: GameState): boolean {
   if (checkLevelComplete(gameState.playerStats.points, gameState.currentLevel)) {
     // Custom debug completion logic instead of using completeLevel()
     gameState.levelCompleted = true;
+    
+    // Play levelup sound after a brief delay to let progress bar sound finish
+    setTimeout(() => {
+      audioManager.playSoundEffect('levelup', 0.7);
+    }, 400);
     
     if (isLastLevel(gameState.currentLevel)) {
       gameState.phase = 'victory';

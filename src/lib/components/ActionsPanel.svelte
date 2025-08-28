@@ -15,6 +15,7 @@
   import { isLastLevel, getNextLevel } from '../game/levels.js';
   import type { GameState } from '../game/types.js';
   import ChipIcon from './ChipIcon.svelte';
+  import { audioManager } from '../utils/audio.js';
 
   interface Props {
     gameState: GameState;
@@ -28,15 +29,15 @@
 
   function handleCashOut() {
     if (gameState.phase === 'level') {
-      if (confirm(`Cash out ${gameState.playerStats.points} points for glitchbytes? You'll lose progress and glitchbytes spent on this level.`)) {
+      if (confirm(`Cache out ${gameState.playerStats.points} points for glitchbytes? You'll lose progress and glitchbytes spent on this level.`)) {
         cashOutMidLevel(gameState);
       }
     } else if (gameState.phase === 'marketplace') {
-      if (confirm(`Cash out ${gameState.playerStats.points} points for glitchbytes and end the run?`)) {
+      if (confirm(`Cache out ${gameState.playerStats.points} points for glitchbytes and end the run?`)) {
         cashOutPostLevel(gameState);
       }
     } else if (gameState.phase === 'confirmation') {
-      if (confirm(`Cash out ${gameState.playerStats.points} points for glitchbytes and end the run?`)) {
+      if (confirm(`Cache out ${gameState.playerStats.points} points for glitchbytes and end the run?`)) {
         cashOutPostLevel(gameState);
       }
     }
@@ -64,6 +65,31 @@
 
   function handleSkipLevel() {
     skipLevel(gameState);
+  }
+  
+  // Helper function to play click sound with any action
+  function playClickAndExecute(action: () => void) {
+    audioManager.playSoundEffect('click', 0.3);
+    action();
+  }
+  
+  // Helper function to play nextlevel sound for game progression actions
+  function playNextLevelAndExecute(action: () => void) {
+    audioManager.playSoundEffect('nextlevel', 0.5);
+    action();
+  }
+  
+  // Helper function to play appropriate sound for continue/next level button
+  function playContinueOrNextLevel() {
+    if (canContinue) {
+      // Continue button - play regular click sound
+      audioManager.playSoundEffect('click', 0.3);
+      handleContinue();
+    } else {
+      // Next Level button - play special nextlevel sound
+      audioManager.playSoundEffect('nextlevel', 0.5);
+      handleProceedToNext();
+    }
   }
 
   const canStartGame = $derived(gameState.phase === 'menu' && canAffordLevel(gameState.playerStats.glitchbytes, 1));
@@ -99,7 +125,7 @@
   <div class="grid grid-cols-2 gap-2 flex-1 min-h-0">
       <!-- Row 1: Start Game & Execute -->
       <button 
-        onclick={handleStartGame}
+        onclick={() => playNextLevelAndExecute(handleStartGame)}
         disabled={!canStartGame || gameState.phase !== 'menu'}
         class="py-3 px-2 sm:px-4 rounded text-sm sm:text-base lg:text-lg font-medium transition-colors border
                {canStartGame && gameState.phase === 'menu'
@@ -110,7 +136,7 @@
       </button>
       
       <button 
-        onclick={handlePullOrb}
+        onclick={() => playClickAndExecute(handlePullOrb)}
         disabled={!canPullOrb || gameState.phase !== 'level'}
         class="py-3 px-2 sm:px-4 rounded text-sm sm:text-base lg:text-lg font-medium transition-colors border
                {canPullOrb && gameState.phase === 'level'
@@ -122,7 +148,7 @@
       
       <!-- Row 2: Cash Out & Continue/Next Level -->
       <button 
-        onclick={handleCashOut}
+        onclick={() => playClickAndExecute(handleCashOut)}
         disabled={!canCashOut}
         class="py-3 px-2 sm:px-4 rounded text-sm sm:text-base lg:text-lg font-medium transition-colors border
                {canCashOut
@@ -130,7 +156,7 @@
                  : 'bg-black text-gray-500 border-gray-500 cursor-not-allowed'}"
       >
         <div class="text-center">
-          <div class="font-medium text-sm sm:text-base lg:text-lg">CASH OUT</div>
+          <div class="font-medium text-sm sm:text-base lg:text-lg">CACHE OUT</div>
           {#if gameState.phase === 'confirmation'}
             <div class="text-sm opacity-75">
               (+{gameState.playerStats.points} 👾)
@@ -144,7 +170,7 @@
       </button>
       
       <button 
-        onclick={canContinue ? handleContinue : handleProceedToNext}
+        onclick={playContinueOrNextLevel}
         disabled={!canContinue && (!canProceed || gameState.phase !== 'marketplace')}
         class="py-3 px-2 sm:px-4 rounded text-sm sm:text-base lg:text-lg font-medium transition-colors border
                {(canContinue || (canProceed && gameState.phase === 'marketplace'))
@@ -157,7 +183,7 @@
           </div>
           {#if canContinue}
             <div class="text-sm opacity-75 flex items-center justify-center gap-1">
-              (+{gameState.playerStats.points} <ChipIcon size="sm" class="text-white opacity-75" />)
+              (+{gameState.playerStats.points} <ChipIcon size="sm" class="opacity-75" />)
             </div>
           {:else}
             <div class="text-sm opacity-75">
@@ -169,7 +195,7 @@
       
       <!-- Row 3: Restart & Main Menu -->
       <button 
-        onclick={handleRestart}
+        onclick={() => playNextLevelAndExecute(handleRestart)}
         disabled={!canRestart || gameState.phase !== 'gameover'}
         class="py-3 px-2 sm:px-4 rounded text-sm sm:text-base lg:text-lg font-medium transition-colors border
                {canRestart && gameState.phase === 'gameover'
@@ -185,7 +211,7 @@
       </button>
       
       <button 
-        onclick={handleReturnToMenu}
+        onclick={() => playClickAndExecute(handleReturnToMenu)}
         disabled={gameState.phase !== 'gameover' && gameState.phase !== 'victory'}
         class="py-3 px-2 sm:px-4 rounded text-sm sm:text-base lg:text-lg font-medium transition-colors border
                {gameState.phase === 'gameover' || gameState.phase === 'victory'
@@ -195,52 +221,47 @@
         <div class="text-sm sm:text-base lg:text-lg font-medium">MAIN MENU</div>
       </button>
       
-      <!-- Row 4: Debug Skip Level -->
-      <button 
-        onclick={handleSkipLevel}
-        disabled={!canSkipLevel}
-        class="py-3 px-2 sm:px-4 rounded text-sm sm:text-base lg:text-lg font-medium transition-colors border
-               {canSkipLevel
-                 ? 'bg-orange-800 text-white border-orange-400 hover:bg-orange-400 hover:text-black'
-                 : 'bg-black text-gray-500 border-gray-500 cursor-not-allowed'}"
-      >
-        <div class="text-center">
-          <div class="font-medium text-sm sm:text-base lg:text-lg">DEBUG</div>
-          <div class="text-xs opacity-75">SKIP LVL</div>
+      <!-- Status Bar spanning both columns -->
+      <div class="col-span-2 bg-black border border-white rounded p-2 flex items-center justify-between">
+        <!-- Left side: Phase and status -->
+        <div class="flex items-center gap-2">
+          <div class="text-white text-xs font-medium uppercase tracking-wide">
+            PHASE: {gameState.phase} | 
+          </div>
+          <div class="text-xs">
+            {#if gameState.phase === 'menu' && !canStartGame}
+              <span class="text-white">NEED {getLevelEntryCost(1)} 👾 TO START</span>
+            {:else if gameState.phase === 'level' && totalAvailableOrbs === 0}
+              <span class="text-white">NO COMMANDS AVAILABLE</span>
+            {:else if gameState.phase === 'marketplace' && gameState.committedToNextLevel}
+              <span class="text-white">UPGRADE TIME</span>
+            {:else if gameState.phase === 'marketplace' && !canProceed && !isLastLevel(gameState.currentLevel)}
+              <span class="text-white">NEED {nextLevelCost} 👾 FOR NEXT LEVEL</span>
+            {:else if gameState.phase === 'confirmation'}
+              <span class="text-white">CONTINUE?</span>
+            {:else if gameState.phase === 'gameover' && !canRestart}
+              <span class="text-white">NEED {getLevelEntryCost(1)} 👾 TO RESTART</span>
+            {:else if gameState.phase === 'gameover'}
+              <span class="text-white">GAME OVER!</span>
+            {:else if gameState.phase === 'victory'}
+              <span class="text-white">VICTORY!</span>
+            {:else}
+              <span class="text-white">IN-PROGRESS</span>
+            {/if}
+          </div>
         </div>
-      </button>
-      
-      <!-- Empty slot for symmetry -->
-      <div></div>
+        
+        <!-- Right side: Debug button -->
+        <button 
+          onclick={() => playClickAndExecute(handleSkipLevel)}
+          disabled={!canSkipLevel}
+          class="px-2 py-1 rounded text-xs font-medium transition-colors border
+                 {canSkipLevel
+                   ? 'bg-black text-white border-white hover:bg-white hover:text-black'
+                   : 'bg-black text-gray-500 border-gray-500 cursor-not-allowed'}"
+        >
+          SKIP
+        </button>
+      </div>
     </div>
-  
-  <!-- Footer -->
-  <div class="mt-3 text-sm text-center h-5">
-    <p class="text-white uppercase tracking-wide">
-      PHASE: <span class="font-medium">{gameState.phase}</span>
-    </p>
-  </div>
-  
-  <div class="mt-2 text-xs text-center px-2 pb-1">
-    {#if gameState.phase === 'menu' && !canStartGame}
-      <p class="text-red-400 mb-1">NEED {getLevelEntryCost(1)} GLITCH BYTES TO START</p>
-      <p class="text-red-400">CLICK DEV BUTTON TO CLAIM</p>
-    {:else if gameState.phase === 'level' && totalAvailableOrbs === 0}
-      <p class="text-red-400">NO COMMANDS AVAILABLE</p>
-    {:else if gameState.phase === 'marketplace' && gameState.committedToNextLevel}
-      <p class="text-white font-bold">COMMITTED TO NEXT LEVEL</p>
-    {:else if gameState.phase === 'marketplace' && !canProceed && !isLastLevel(gameState.currentLevel)}
-      <p class="text-red-400">NEED {nextLevelCost} GLITCH BYTES FOR NEXT LEVEL</p>
-    {:else if gameState.phase === 'confirmation'}
-      <p class="text-white font-bold">GLITCH BYTES OR BITS?</p>
-    {:else if gameState.phase === 'gameover' && !canRestart}
-      <p class="text-red-400">NEED {getLevelEntryCost(1)} GLITCH BYTES TO RESTART</p>
-    {:else if gameState.phase === 'gameover'}
-      <p class="text-red-400 font-bold">GAME OVER!</p>
-    {:else if gameState.phase === 'victory'}
-      <p class="text-white font-bold">VICTORY!</p>
-    {:else}
-      <p>&nbsp;</p>
-    {/if}
-  </div>
 </div>

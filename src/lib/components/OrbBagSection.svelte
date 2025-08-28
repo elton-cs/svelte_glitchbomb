@@ -151,7 +151,7 @@
 <div class="bg-black p-3 rounded-lg shadow-sm border border-white h-full flex flex-col {gameState.phase === 'level' || gameState.phase === 'confirmation' ? '' : 'opacity-60 pointer-events-none'}">
   <div class="flex justify-between items-center mb-3">
     <h2 class="text-sm font-bold text-white">GLITCH RIFT ({totalAvailableOrbs}) {gameState.phase === 'level' || gameState.phase === 'confirmation' ? '' : '(INACTIVE)'}</h2>
-    <div class="text-xs text-white font-mono min-h-4">{calculationDisplay || 'hover for command output preview'}</div>
+    <div class="text-xs text-white font-mono min-h-4">{calculationDisplay || 'hover for details'}</div>
   </div>
   
   <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 text-sm flex-1 overflow-y-auto">
