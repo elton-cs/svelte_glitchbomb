@@ -18,7 +18,7 @@ import {
 import { GAME_CONFIG, LEVEL_COUNT } from './constants.js';
 import type { OrbType } from './types.js';
 import { getShopItem, getAvailableShopItemsFromDeck, findDeckItem, updateDeckItemPrice, initializeShopDeck } from './shopItems.js';
-import { addLogEntry, clearGameLog, addPointHistoryEntry, clearPointHistory } from './state.js';
+import { addLogEntry, clearGameLog, addPointHistoryEntry, clearPointHistory, saveGlitchbytes } from './state.js';
 import { getCumulativeLevelCost } from './economics.js';
 
 function applyPointsWithMultiplier(gameState: GameState, basePoints: number, action: string = 'Points gained'): void {
@@ -187,7 +187,7 @@ export function completeLevel(gameState: GameState): void {
     gameState.phase = 'confirmation';
     gameState.marketplace.available = false;
     gameState.marketplace.currentShopItems = [];
-    addLogEntry(gameState, `Level ${gameState.currentLevel} completed! Choose: cash out or continue?`);
+    addLogEntry(gameState, `Level ${gameState.currentLevel} completed!`);
   }
 }
 
@@ -368,7 +368,21 @@ export function skipLevel(gameState: GameState): boolean {
   
   // Complete the level if we now have enough points
   if (checkLevelComplete(gameState.playerStats.points, gameState.currentLevel)) {
-    completeLevel(gameState);
+    // Custom debug completion logic instead of using completeLevel()
+    gameState.levelCompleted = true;
+    
+    if (isLastLevel(gameState.currentLevel)) {
+      gameState.phase = 'victory';
+      const victoryReward = calculateVictoryReward(gameState.playerStats.points);
+      gameState.playerStats.glitchbytes += victoryReward;
+      saveGlitchbytes(gameState.playerStats.glitchbytes);
+      addLogEntry(gameState, `DEBUG: Level ${gameState.currentLevel} skipped to victory (+${victoryReward} glitchbytes)`);
+    } else {
+      gameState.phase = 'confirmation';
+      gameState.marketplace.available = false;
+      gameState.marketplace.currentShopItems = [];
+      addLogEntry(gameState, `DEBUG: Level ${gameState.currentLevel} skipped`);
+    }
   }
   
   return true;
