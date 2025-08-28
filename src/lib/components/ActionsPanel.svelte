@@ -15,6 +15,7 @@
   import { isLastLevel, getNextLevel } from '../game/levels.js';
   import type { GameState } from '../game/types.js';
   import ChipIcon from './ChipIcon.svelte';
+  import { audioManager } from '../utils/audio.js';
 
   interface Props {
     gameState: GameState;
@@ -65,6 +66,12 @@
   function handleSkipLevel() {
     skipLevel(gameState);
   }
+  
+  // Helper function to play click sound with any action
+  function playClickAndExecute(action: () => void) {
+    audioManager.playSoundEffect('click', 0.3);
+    action();
+  }
 
   const canStartGame = $derived(gameState.phase === 'menu' && canAffordLevel(gameState.playerStats.glitchbytes, 1));
   const canCashOut = $derived((gameState.phase === 'level' && gameState.gameStarted) || 
@@ -99,7 +106,7 @@
   <div class="grid grid-cols-2 gap-2 flex-1 min-h-0">
       <!-- Row 1: Start Game & Execute -->
       <button 
-        onclick={handleStartGame}
+        onclick={() => playClickAndExecute(handleStartGame)}
         disabled={!canStartGame || gameState.phase !== 'menu'}
         class="py-3 px-2 sm:px-4 rounded text-sm sm:text-base lg:text-lg font-medium transition-colors border
                {canStartGame && gameState.phase === 'menu'
@@ -110,7 +117,7 @@
       </button>
       
       <button 
-        onclick={handlePullOrb}
+        onclick={() => playClickAndExecute(handlePullOrb)}
         disabled={!canPullOrb || gameState.phase !== 'level'}
         class="py-3 px-2 sm:px-4 rounded text-sm sm:text-base lg:text-lg font-medium transition-colors border
                {canPullOrb && gameState.phase === 'level'
@@ -122,7 +129,7 @@
       
       <!-- Row 2: Cash Out & Continue/Next Level -->
       <button 
-        onclick={handleCashOut}
+        onclick={() => playClickAndExecute(handleCashOut)}
         disabled={!canCashOut}
         class="py-3 px-2 sm:px-4 rounded text-sm sm:text-base lg:text-lg font-medium transition-colors border
                {canCashOut
@@ -144,7 +151,7 @@
       </button>
       
       <button 
-        onclick={canContinue ? handleContinue : handleProceedToNext}
+        onclick={() => playClickAndExecute(canContinue ? handleContinue : handleProceedToNext)}
         disabled={!canContinue && (!canProceed || gameState.phase !== 'marketplace')}
         class="py-3 px-2 sm:px-4 rounded text-sm sm:text-base lg:text-lg font-medium transition-colors border
                {(canContinue || (canProceed && gameState.phase === 'marketplace'))
@@ -169,7 +176,7 @@
       
       <!-- Row 3: Restart & Main Menu -->
       <button 
-        onclick={handleRestart}
+        onclick={() => playClickAndExecute(handleRestart)}
         disabled={!canRestart || gameState.phase !== 'gameover'}
         class="py-3 px-2 sm:px-4 rounded text-sm sm:text-base lg:text-lg font-medium transition-colors border
                {canRestart && gameState.phase === 'gameover'
@@ -185,7 +192,7 @@
       </button>
       
       <button 
-        onclick={handleReturnToMenu}
+        onclick={() => playClickAndExecute(handleReturnToMenu)}
         disabled={gameState.phase !== 'gameover' && gameState.phase !== 'victory'}
         class="py-3 px-2 sm:px-4 rounded text-sm sm:text-base lg:text-lg font-medium transition-colors border
                {gameState.phase === 'gameover' || gameState.phase === 'victory'
@@ -197,7 +204,7 @@
       
       <!-- Row 4: Debug Skip Level -->
       <button 
-        onclick={handleSkipLevel}
+        onclick={() => playClickAndExecute(handleSkipLevel)}
         disabled={!canSkipLevel}
         class="py-3 px-2 sm:px-4 rounded text-sm sm:text-base lg:text-lg font-medium transition-colors border
                {canSkipLevel
