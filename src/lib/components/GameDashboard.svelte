@@ -1,5 +1,6 @@
 <script lang="ts">
   import { createInitialGameState, claimFreeBytes, saveGlitchbytes } from '../game/state.js';
+  import { audioManager } from '../utils/audio.js';
   import StatsDisplay from './StatsDisplay.svelte';
   import ActionsPanel from './ActionsPanel.svelte';
   import MarketplaceView from './MarketplaceView.svelte';
@@ -30,6 +31,17 @@
   });
   
   const canClaimBytes = $derived(gameState.playerStats.glitchbytes < 100);
+  
+  // Initialize background music when component mounts
+  $effect(() => {
+    audioManager.initializeBackgroundMusic('/sounds/thepilot.mp3').then(() => {
+      audioManager.playBackgroundMusic();
+    });
+    
+    return () => {
+      audioManager.cleanup();
+    };
+  });
   
 </script>
 
