@@ -161,6 +161,12 @@ export function pullOrb(gameState: GameState): boolean {
         break;
       case 'multiplier':
         gameState.playerStats.levelMultiplier += orb.amount;
+        
+        // Play multiplier sound when multiplier increases
+        if (orb.amount > 0) {
+          audioManager.playSoundEffect('multiplier', 0.6);
+        }
+        
         addPointHistoryEntry(gameState, gameState.playerStats.points, `Multiplier orb (+${orb.amount}x)`, getCumulativeLevelCost(gameState.currentLevel));
         addLogEntry(gameState, `Pulled multiplier orb (+${orb.amount}x boost)`);
         break;
