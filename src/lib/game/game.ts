@@ -172,11 +172,23 @@ export function pullOrb(gameState: GameState): boolean {
         break;
       case 'bits':
         gameState.playerStats.chips += orb.amount;
+        
+        // Play special pull sound when chips increase
+        if (orb.amount > 0) {
+          audioManager.playSoundEffect('specialpull', 0.4);
+        }
+        
         addPointHistoryEntry(gameState, gameState.playerStats.points, `Chips orb (+${orb.amount})`, getCumulativeLevelCost(gameState.currentLevel));
         addLogEntry(gameState, `Pulled chips orb (+${orb.amount} chips)`);
         break;
       case 'glitchbytes':
         gameState.playerStats.glitchbytes += orb.amount;
+        
+        // Play special pull sound when glitchbytes increase
+        if (orb.amount > 0) {
+          audioManager.playSoundEffect('specialpull', 0.4);
+        }
+        
         addPointHistoryEntry(gameState, gameState.playerStats.points, `Glitchbytes orb (+${orb.amount})`, getCumulativeLevelCost(gameState.currentLevel));
         addLogEntry(gameState, `Pulled glitchbytes orb (+${orb.amount} glitchbytes)`);
         break;

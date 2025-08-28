@@ -47,6 +47,7 @@
     audioManager.preloadSoundEffect('levelup', '/sounds/levelup.wav');
     audioManager.preloadSoundEffect('nextlevel', '/sounds/nextlevel.wav');
     audioManager.preloadSoundEffect('multiplier', '/sounds/multiplier.wav');
+    audioManager.preloadSoundEffect('specialpull', '/sounds/specialpull.wav');
     
     // Add global click listener to enable audio on first user interaction
     function handleFirstInteraction() {
