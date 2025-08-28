@@ -15,6 +15,7 @@
 
   let { devMode }: Props = $props();
   let gameState = $state(createInitialGameState());
+  let musicEnabled = $state(false);
   
   function handleClaimBytes() {
     const newAmount = claimFreeBytes(gameState.playerStats.glitchbytes);
@@ -23,6 +24,17 @@
   
   function resetGlitchbytes() {
     gameState.playerStats.glitchbytes = 0;
+  }
+  
+  function toggleMusic() {
+    if (!musicEnabled) {
+      audioManager.enableAudioOnUserInteraction();
+      audioManager.playBackgroundMusic();
+      musicEnabled = true;
+    } else {
+      audioManager.stopBackgroundMusic();
+      musicEnabled = false;
+    }
   }
   
   // Save glitchbytes whenever they change
@@ -34,9 +46,7 @@
   
   // Initialize background music when component mounts
   $effect(() => {
-    audioManager.initializeBackgroundMusic('/sounds/thepilot.mp3').then(() => {
-      audioManager.playBackgroundMusic();
-    });
+    audioManager.initializeBackgroundMusic('/sounds/thepilot.mp3');
     
     return () => {
       audioManager.cleanup();
@@ -63,8 +73,16 @@
         </div>
         
         <!-- Right: Action Buttons -->
-        {#if devMode}
-          <div class="flex flex-col items-center sm:items-end gap-2">
+        <div class="flex flex-col items-center sm:items-end gap-2">
+          <!-- Music Toggle (always visible) -->
+          <button 
+            onclick={toggleMusic}
+            class="bg-black hover:bg-white hover:text-black border border-white text-white text-xs font-medium py-1 px-2 rounded transition-colors whitespace-nowrap"
+          >
+            {musicEnabled ? '🔊 MUSIC ON' : '🔇 MUSIC OFF'}
+          </button>
+          
+          {#if devMode}
             <div class="text-xs text-gray-400 uppercase tracking-wide">dev tools</div>
             <div class="flex gap-2">
               {#if canClaimBytes}
@@ -82,8 +100,8 @@
                 RESET
               </button>
             </div>
-          </div>
-        {/if}
+          {/if}
+        </div>
       </div>
     </div>
 

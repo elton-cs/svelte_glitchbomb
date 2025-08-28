@@ -1,6 +1,8 @@
 class AudioManager {
 	private backgroundMusic: HTMLAudioElement | null = null;
 	private soundEffects: Map<string, HTMLAudioElement> = new Map();
+	private hasUserInteracted = false;
+	private pendingPlay = false;
 
 	async initializeBackgroundMusic(src: string): Promise<void> {
 		if (this.backgroundMusic) {
@@ -22,10 +24,25 @@ class AudioManager {
 	async playBackgroundMusic(): Promise<void> {
 		if (!this.backgroundMusic) return;
 
+		if (!this.hasUserInteracted) {
+			this.pendingPlay = true;
+			return;
+		}
+
 		try {
 			await this.backgroundMusic.play();
+			this.pendingPlay = false;
 		} catch (error) {
 			console.warn('Failed to play background music:', error);
+		}
+	}
+
+	enableAudioOnUserInteraction(): void {
+		if (this.hasUserInteracted) return;
+		
+		this.hasUserInteracted = true;
+		if (this.pendingPlay && this.backgroundMusic) {
+			this.playBackgroundMusic();
 		}
 	}
 
