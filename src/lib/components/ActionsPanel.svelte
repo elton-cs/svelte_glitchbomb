@@ -20,10 +20,11 @@
 
   interface Props {
     gameState: GameState;
+    devMode: boolean;
     showMatrixWarning: boolean;
   }
 
-  let { gameState, showMatrixWarning = $bindable() }: Props = $props();
+  let { gameState, devMode, showMatrixWarning = $bindable() }: Props = $props();
 
   function handleStartGame() {
     startNewGame(gameState);
@@ -282,25 +283,27 @@
         </div>
         
         <!-- Right side: Debug buttons -->
-        <div class="flex gap-1">
-          <button 
-            onclick={() => playClickAndExecute(handleSkipLevel)}
-            disabled={!canSkipLevel}
-            class="px-2 py-1 rounded text-xs font-medium transition-colors border
-                   {canSkipLevel
-                     ? 'bg-black text-white border-white hover:bg-white hover:text-black'
-                     : 'bg-black text-gray-500 border-gray-500 cursor-not-allowed'}"
-          >
-            SKIP
-          </button>
-          
-          <button 
-            onclick={() => playClickAndExecute(handleSkipToLevel3)}
-            class="px-2 py-1 rounded text-xs font-medium transition-colors border bg-black text-white border-white hover:bg-white hover:text-black"
-          >
-            SKIP→3
-          </button>
-        </div>
+        {#if devMode}
+          <div class="flex gap-1">
+            <button 
+              onclick={() => playClickAndExecute(handleSkipLevel)}
+              disabled={!canSkipLevel}
+              class="px-2 py-1 rounded text-xs font-medium transition-colors border
+                     {canSkipLevel
+                       ? 'bg-black text-white border-white hover:bg-white hover:text-black'
+                       : 'bg-black text-gray-500 border-gray-500 cursor-not-allowed'}"
+            >
+              SKIP
+            </button>
+            
+            <button 
+              onclick={() => playClickAndExecute(handleSkipToLevel3)}
+              class="px-2 py-1 rounded text-xs font-medium transition-colors border bg-black text-white border-white hover:bg-white hover:text-black"
+            >
+              SKIP→3
+            </button>
+          </div>
+        {/if}
       </div>
     </div>
 </div>
