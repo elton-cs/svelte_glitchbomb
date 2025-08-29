@@ -68,9 +68,9 @@
       const match = action.match(/(\d+)x/);
       const mult = match ? match[1] : '1';
       return `<span class="text-blue-400">MULTIPLIER</span> > +${mult}x Multiplier`;
-    } else if (action.includes('health')) {
-      const match = action.match(/(\d+) health/);
-      const health = match ? match[1] : '1';
+    } else if (action.includes('health orb') || action.includes('HP')) {
+      const match = action.match(/(\d+) health|(\d+) HP/);
+      const health = match ? (match[1] || match[2]) : '1';
       return `<span class="text-red-500">HEALTH</span> > +${health} Health`;
     } else if (action.includes('purchased') || action.includes('bought') || action.includes('Bought')) {
       // Extract item name and cost from "Bought [item] for [cost] chips"
@@ -109,6 +109,8 @@
       const match = action.match(/(\d+) glitchbytes/);
       const bytes = match ? match[1] : '';
       return `<span class="text-yellow-400">SPECIAL</span> > +${bytes} 👾`;
+    } else if (action.includes('Game over') || action.includes('game over')) {
+      return `<span class="text-cyan-400">SYSTEM</span> > Game over`;
     } else if (action.includes('DEBUG:')) {
       return `<span class="text-yellow-500">DEBUG</span> > ${action.replace('DEBUG: ', '')} ${details}`.trim();
     } else if (action.includes('level') || action.includes('started') || action.includes('completed') || action.includes('Returned to main menu')) {
