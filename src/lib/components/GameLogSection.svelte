@@ -54,9 +54,9 @@
       case 'points_per_anyorb':
         const orbsConsumed = effect.orbsConsumed || 0;
         if (effect.appliedMultiplier && effect.appliedMultiplier > 1 && effect.basePoints) {
-          return `<span class="text-green-400">POINTS</span> > ${amount}/C: ${amount} Points * ${orbsConsumed} Commands = ${effect.basePoints} * ${effect.appliedMultiplier}x = +${effect.points} Points`;
+          return `<span class="text-green-400">POINTS</span> > ${amount}/RC: ${amount} Points * ${orbsConsumed} Commands = ${effect.basePoints} * ${effect.appliedMultiplier}x = +${effect.points} Points`;
         } else {
-          return `<span class="text-green-400">POINTS</span> > ${amount}/C: ${amount} Points * ${orbsConsumed} Commands = +${effect.points} Points`;
+          return `<span class="text-green-400">POINTS</span> > ${amount}/RC: ${amount} Points * ${orbsConsumed} Commands = +${effect.points} Points`;
         }
       
       case 'points_per_bombpulled':

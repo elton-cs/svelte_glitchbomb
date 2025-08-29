@@ -209,7 +209,7 @@
                   {#if pointType.type === 'point'}
                     {orb.amount}
                   {:else if pointType.type === 'points_per_anyorb'}
-                    {orb.amount}/C
+                    {orb.amount}/RC
                   {:else if pointType.type === 'points_per_bombpulled'}
                     {orb.amount}/B
                   {/if}
@@ -225,7 +225,7 @@
                   {#if pointType.type === 'point'}
                     {consumedOrb.amount}
                   {:else if pointType.type === 'points_per_anyorb'}
-                    {consumedOrb.amount}/C
+                    {consumedOrb.amount}/RC
                   {:else if pointType.type === 'points_per_bombpulled'}
                     {consumedOrb.amount}/B
                   {/if}

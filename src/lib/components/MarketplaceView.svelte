@@ -32,7 +32,7 @@
       case 'points_per_bombpulled':
         // All points-related orbs use the POINTS category emoji and color
         let text = amount.toString();
-        if (type === 'points_per_anyorb') text = `${amount}/C`;
+        if (type === 'points_per_anyorb') text = `${amount}/RC`;
         if (type === 'points_per_bombpulled') text = `${amount}/B`;
         return {
           text,
