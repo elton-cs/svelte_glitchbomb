@@ -66,6 +66,7 @@ export function createInitialGameState(glitchbytes: number = loadGlitchbytes()):
     gameStarted: false,
     levelCompleted: false,
     committedToNextLevel: false,
+    matrixDisarrayActive: false,
   };
 }
 

@@ -83,6 +83,7 @@ export interface GameState {
   gameStarted: boolean;
   levelCompleted: boolean;
   committedToNextLevel: boolean;
+  matrixDisarrayActive: boolean;
 }
 
 export interface ShopItem extends Orb {
@@ -226,13 +227,8 @@ export interface GameConfig {
   };
   maxHealth: number;
   startingOrbs: {
-    health: number;
-    point: number;
-    bomb: number;
     points_per_anyorb: number;
     points_per_bombpulled: number;
     multiplier: number;
-    bits: number;
-    glitchbytes: number;
   };
 }

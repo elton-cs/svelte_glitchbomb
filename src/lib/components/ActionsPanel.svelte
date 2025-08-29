@@ -8,7 +8,8 @@
     returnToMenu,
     restartGame,
     pullOrb,
-    skipLevel
+    skipLevel,
+    completeLevel
   } from '../game/game.js';
   import { canAffordLevel, getLevelEntryCost, calculateCashOut } from '../game/economics.js';
   import { GAME_CONFIG } from '../game/constants.js';
@@ -19,9 +20,10 @@
 
   interface Props {
     gameState: GameState;
+    showMatrixWarning: boolean;
   }
 
-  let { gameState }: Props = $props();
+  let { gameState, showMatrixWarning = $bindable() }: Props = $props();
 
   function handleStartGame() {
     startNewGame(gameState);
@@ -44,7 +46,12 @@
   }
 
   function handleContinue() {
-    continueToMarketplace(gameState);
+    // Show matrix disarray warning if completing level 3
+    if (gameState.currentLevel === 3) {
+      showMatrixWarning = true;
+    } else {
+      continueToMarketplace(gameState);
+    }
   }
 
   function handleProceedToNext() {
@@ -66,6 +73,27 @@
   function handleSkipLevel() {
     skipLevel(gameState);
   }
+  
+  function handleSkipToLevel3() {
+    // Debug function to jump to level 3 for testing
+    if (gameState.phase === 'menu') {
+      // Start game first
+      startNewGame(gameState);
+    }
+    
+    // Skip to level 3
+    gameState.currentLevel = 3;
+    gameState.phase = 'level';
+    gameState.levelCompleted = false;
+    gameState.gameStarted = true;
+    
+    // Set sufficient points to complete level 3
+    gameState.playerStats.points = 28; // Level 3 milestone
+    
+    // Complete the level immediately
+    completeLevel(gameState);
+  }
+  
   
   // Helper function to play click sound with any action
   function playClickAndExecute(action: () => void) {
@@ -118,7 +146,7 @@
   const canSkipLevel = $derived(gameState.phase === 'level');
 </script>
 
-<div class="bg-black p-3 rounded-lg shadow-sm border border-white h-full flex flex-col overflow-hidden">
+<div class="bg-black p-3 rounded-lg shadow-sm border border-white h-full flex flex-col overflow-hidden relative">
   <h2 class="text-sm font-bold mb-3 text-white">ACTIONS</h2>
   
   <!-- 2x3 Button Grid -->
@@ -253,17 +281,27 @@
           </div>
         </div>
         
-        <!-- Right side: Debug button -->
-        <button 
-          onclick={() => playClickAndExecute(handleSkipLevel)}
-          disabled={!canSkipLevel}
-          class="px-2 py-1 rounded text-xs font-medium transition-colors border
-                 {canSkipLevel
-                   ? 'bg-black text-white border-white hover:bg-white hover:text-black'
-                   : 'bg-black text-gray-500 border-gray-500 cursor-not-allowed'}"
-        >
-          SKIP
-        </button>
+        <!-- Right side: Debug buttons -->
+        <div class="flex gap-1">
+          <button 
+            onclick={() => playClickAndExecute(handleSkipLevel)}
+            disabled={!canSkipLevel}
+            class="px-2 py-1 rounded text-xs font-medium transition-colors border
+                   {canSkipLevel
+                     ? 'bg-black text-white border-white hover:bg-white hover:text-black'
+                     : 'bg-black text-gray-500 border-gray-500 cursor-not-allowed'}"
+          >
+            SKIP
+          </button>
+          
+          <button 
+            onclick={() => playClickAndExecute(handleSkipToLevel3)}
+            class="px-2 py-1 rounded text-xs font-medium transition-colors border bg-black text-white border-white hover:bg-white hover:text-black"
+          >
+            SKIP→3
+          </button>
+        </div>
       </div>
     </div>
 </div>
+

@@ -93,6 +93,22 @@ export function enterLevel(gameState: GameState, level: number): boolean {
       gameState.playerStats.chips = 0;
     }
     
+    // Ensure matrix disarray bomb persists in levels 4 through 7
+    if (gameState.matrixDisarrayActive && level >= 4) {
+      // Check if we have the extra 2-damage bomb, if not add it (safety check)
+      const hasTwoDamageBomb = gameState.orbBag.bomb.total.some(orb => orb.amount === 2);
+      if (!hasTwoDamageBomb) {
+        addOrbsToBag(gameState.orbBag, 'bomb', 1, 2);
+        addStructuredLogEntry(gameState, {
+          type: 'system',
+          data: {
+            message: 'Matrix disarray bomb restored to glitch rift',
+            level: 'info'
+          }
+        });
+      }
+    }
+    
     // Track P/L change from entering new level (points reset to 0, moonrocks spent)
     if (level > 1) {
       addPointHistoryEntry(gameState, 0, `Entered Level ${level} (-${cost} glitchbytes)`, getCumulativeLevelCost(level));
@@ -380,6 +396,10 @@ export function completeLevel(gameState: GameState): void {
     gameState.phase = 'victory';
     const victoryReward = calculateVictoryReward(gameState.playerStats.points);
     gameState.playerStats.glitchbytes += victoryReward;
+    
+    // Reset matrix disarray after victory (completed full game)
+    gameState.matrixDisarrayActive = false;
+    
     addStructuredLogEntry(gameState, {
       type: 'level_change',
       data: {
@@ -428,8 +448,9 @@ export function cashOutMidLevel(gameState: GameState): number {
   // Reset shop deck to initial prices (new game session)
   gameState.shopDeck = initializeShopDeck();
   
-  // Reset commitment flag
+  // Reset commitment flag and matrix disarray
   gameState.committedToNextLevel = false;
+  gameState.matrixDisarrayActive = false;
   
   return cashOut;
 }
@@ -456,8 +477,9 @@ export function cashOutPostLevel(gameState: GameState): number {
   // Reset shop deck to initial prices (new game session)
   gameState.shopDeck = initializeShopDeck();
   
-  // Reset commitment flag
+  // Reset commitment flag and matrix disarray
   gameState.committedToNextLevel = false;
+  gameState.matrixDisarrayActive = false;
   
   return points;
 }
@@ -608,8 +630,9 @@ export function returnToMenu(gameState: GameState): void {
   // Reset shop deck to initial prices (new game session)
   gameState.shopDeck = initializeShopDeck();
   
-  // Reset commitment flag
+  // Reset commitment flag and matrix disarray
   gameState.committedToNextLevel = false;
+  gameState.matrixDisarrayActive = false;
 }
 
 export function skipLevel(gameState: GameState): boolean {

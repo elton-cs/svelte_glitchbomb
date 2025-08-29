@@ -1,7 +1,9 @@
 <script lang="ts">
   import { tweened } from 'svelte/motion';
   import { cubicOut } from 'svelte/easing';
-  import { createInitialGameState, claimFreeBytes, saveGlitchbytes } from '../game/state.js';
+  import { createInitialGameState, claimFreeBytes, saveGlitchbytes, addStructuredLogEntry } from '../game/state.js';
+  import { continueToMarketplace, cashOutPostLevel } from '../game/game.js';
+  import { addOrbsToBag } from '../game/orbs.js';
   import { audioManager } from '../utils/audio.js';
   import StatsDisplay from './StatsDisplay.svelte';
   import ActionsPanel from './ActionsPanel.svelte';
@@ -10,6 +12,7 @@
   import OrbBagSection from './OrbBagSection.svelte';
   import GameLogSection from './GameLogSection.svelte';
   import ProfitLossPanel from './ProfitLossPanel.svelte';
+  import MatrixDisarrayWarning from './MatrixDisarrayWarning.svelte';
 
   interface Props {
     devMode: boolean;
@@ -17,6 +20,34 @@
 
   let { devMode }: Props = $props();
   let gameState = $state(createInitialGameState());
+  
+  // Matrix disarray warning state
+  let showMatrixWarning = $state(false);
+  
+  function handleAcceptDisarray() {
+    showMatrixWarning = false;
+    gameState.matrixDisarrayActive = true;
+    
+    // Add the 2-damage bomb orb to the glitch rift
+    addOrbsToBag(gameState.orbBag, 'bomb', 1, 2);
+    
+    // Log the matrix disarray activation
+    addStructuredLogEntry(gameState, {
+      type: 'system',
+      data: {
+        message: 'Matrix disarray accepted - 2-damage bomb added to glitch rift',
+        level: 'warning'
+      }
+    });
+    
+    // Continue to marketplace normally
+    continueToMarketplace(gameState);
+  }
+  
+  function handleCacheOutFromWarning() {
+    showMatrixWarning = false;
+    cashOutPostLevel(gameState);
+  }
   
   // Track previous value to detect increase/decrease
   let previousGlitchBytes = $state(gameState.playerStats.glitchbytes);
@@ -151,12 +182,12 @@
     </div>
 
     <!-- Main Game UI - Responsive Layout -->
-    <div class="flex flex-col lg:grid lg:grid-cols-3 lg:grid-rows-2 gap-4 min-h-[800px] lg:h-[800px]">
+    <div class="flex flex-col lg:grid lg:grid-cols-3 lg:grid-rows-2 gap-4 min-h-[800px] lg:h-[800px] relative">
       <!-- Mobile: Stack vertically, Desktop: 2x3 Grid -->
       
       <!-- Top Row: Actions | Player Stats | P/L -->
       <div class="flex flex-col min-h-[200px] lg:h-full">
-        <ActionsPanel {gameState} />
+        <ActionsPanel {gameState} bind:showMatrixWarning />
       </div>
 
       <div class="flex flex-col min-h-[250px] lg:h-full">
@@ -179,6 +210,15 @@
       <div class="flex flex-col min-h-[200px] lg:h-full">
         <GameLogSection {gameState} />
       </div>
+      
+      <!-- Matrix Disarray Warning Modal - Overlays entire game area -->
+      {#if showMatrixWarning}
+        <MatrixDisarrayWarning 
+          onAccept={handleAcceptDisarray}
+          onCacheOut={handleCacheOutFromWarning}
+          playerPoints={gameState.playerStats.points}
+        />
+      {/if}
     </div>
   </div>
 </div>

@@ -12,8 +12,7 @@ export function createInitialBag(): OrbBag {
   // Create specific orbs as per specification
   const bombOrbs = [
     createOrb('bomb', 1),  // Bomb
-    createOrb('bomb', 1),  // Bomb  
-    createOrb('bomb', 2),  // Double Bomb
+    createOrb('bomb', 1),  // Bomb
     createOrb('bomb', 2),  // Double Bomb
     createOrb('bomb', 3),  // Triple Bomb
   ];
