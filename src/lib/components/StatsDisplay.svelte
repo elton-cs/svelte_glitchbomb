@@ -20,8 +20,8 @@
     </div>
     
     <div class="text-center">
-      <div class="text-2xl font-bold text-white">{gameState.playerStats.bits}</div>
-      <div class="text-sm text-white">BITS</div>
+      <div class="text-2xl font-bold text-white">{gameState.playerStats.chips}</div>
+      <div class="text-sm text-white">CHIPS</div>
     </div>
     
     <div class="text-center">

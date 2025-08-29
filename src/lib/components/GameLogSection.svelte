@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { GameState, GameLogEntry } from '../game/types.js';
+  import type { GameState, GameLogEntry, OrbPullLogEntry, ShopPurchaseLogEntry, LevelChangeLogEntry, PointsConversionLogEntry, GameEventLogEntry, SystemLogEntry } from '../game/types.js';
 
   interface Props {
     gameState: GameState;
@@ -7,116 +7,189 @@
 
   let { gameState }: Props = $props();
 
+  // Chip icon SVG for inline use
+  const chipIcon = `<svg class="w-3 h-3 inline" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="3.38" y="3.38" width="17.25" height="17.25" rx="2.18" stroke="currentColor" stroke-width="1.92" fill="none"/>
+    <rect x="7.21" y="7.21" width="9.58" height="9.58" rx="1.92" stroke="currentColor" stroke-width="1.92" fill="none"/>
+    <line x1="7.21" y1="0.5" x2="7.21" y2="2.42" stroke="currentColor" stroke-width="1.92"/>
+    <line x1="12" y1="0.5" x2="12" y2="2.42" stroke="currentColor" stroke-width="1.92"/>
+    <line x1="16.79" y1="0.5" x2="16.79" y2="2.42" stroke="currentColor" stroke-width="1.92"/>
+    <line x1="7.21" y1="21.58" x2="7.21" y2="23.5" stroke="currentColor" stroke-width="1.92"/>
+    <line x1="12" y1="21.58" x2="12" y2="23.5" stroke="currentColor" stroke-width="1.92"/>
+    <line x1="16.79" y1="21.58" x2="16.79" y2="23.5" stroke="currentColor" stroke-width="1.92"/>
+    <line x1="0.5" y1="16.79" x2="2.42" y2="16.79" stroke="currentColor" stroke-width="1.92"/>
+    <line x1="0.5" y1="12" x2="2.42" y2="12" stroke="currentColor" stroke-width="1.92"/>
+    <line x1="0.5" y1="7.21" x2="2.42" y2="7.21" stroke="currentColor" stroke-width="1.92"/>
+    <line x1="21.58" y1="16.79" x2="23.5" y2="16.79" stroke="currentColor" stroke-width="1.92"/>
+    <line x1="21.58" y1="12" x2="23.5" y2="12" stroke="currentColor" stroke-width="1.92"/>
+    <line x1="21.58" y1="7.21" x2="23.5" y2="7.21" stroke="currentColor" stroke-width="1.92"/>
+  </svg>`;
+
+  function formatOrbPullEntry(entry: OrbPullLogEntry): string {
+    const { orbType, amount, effect } = entry.data;
+    
+    switch (orbType) {
+      case 'health':
+        return `<span class="text-red-500">HEALTH</span> > +${effect.health} Health`;
+      
+      case 'point':
+        if (effect.appliedMultiplier && effect.appliedMultiplier > 1 && effect.basePoints) {
+          return `<span class="text-green-400">POINTS</span> > ${effect.basePoints} * ${effect.appliedMultiplier}x = +${effect.points} Points`;
+        } else {
+          return `<span class="text-green-400">POINTS</span> > +${effect.points} Points`;
+        }
+      
+      case 'bomb':
+        const bombCount = effect.bombsPulled || 1;
+        if (effect.bombDamage === 1) {
+          return `<span class="text-orange-500">GLITCH BOMB</span> > Single Bomb: -1 Health`;
+        } else if (effect.bombDamage === 2) {
+          return `<span class="text-orange-500">GLITCH BOMB</span> > Double Bomb: -2 Health`;
+        } else if (effect.bombDamage === 3) {
+          return `<span class="text-orange-500">GLITCH BOMB</span> > TRIPLE BOMB: -3 Health`;
+        } else {
+          return `<span class="text-orange-500">GLITCH BOMB</span> > -${effect.bombDamage} Health`;
+        }
+      
+      case 'points_per_anyorb':
+        const orbsConsumed = effect.orbsConsumed || 0;
+        if (effect.appliedMultiplier && effect.appliedMultiplier > 1 && effect.basePoints) {
+          return `<span class="text-green-400">POINTS</span> > ${amount}/RC: ${amount} Points * ${orbsConsumed} Commands = ${effect.basePoints} * ${effect.appliedMultiplier}x = +${effect.points} Points`;
+        } else {
+          return `<span class="text-green-400">POINTS</span> > ${amount}/RC: ${amount} Points * ${orbsConsumed} Commands = +${effect.points} Points`;
+        }
+      
+      case 'points_per_bombpulled':
+        const bombsPulled = effect.bombsPulled || 0;
+        if (effect.appliedMultiplier && effect.appliedMultiplier > 1 && effect.basePoints) {
+          return `<span class="text-green-400">POINTS</span> > ${amount}/B: ${amount} Points * ${bombsPulled} Bomb Commands = ${effect.basePoints} * ${effect.appliedMultiplier}x = +${effect.points} Points`;
+        } else {
+          return `<span class="text-green-400">POINTS</span> > ${amount}/B: ${amount} Points * ${bombsPulled} Bomb Commands = +${effect.points} Points`;
+        }
+      
+      case 'multiplier':
+        return `<span class="text-blue-400">MULTIPLIER</span> > +${effect.multiplier}x Multiplier`;
+      
+      case 'bits':
+        return `<span class="text-blue-500">CHIPS</span> > +${effect.chips} ${chipIcon}`;
+      
+      case 'glitchbytes':
+        return `<span class="text-cyan-500">GLITCH BYTES</span> > +${effect.glitchbytes} 👾`;
+      
+      default:
+        return `<span class="text-yellow-400">SPECIAL</span> > ${orbType} orb pulled`;
+    }
+  }
+
+  function formatShopPurchaseEntry(entry: ShopPurchaseLogEntry): string {
+    const { itemName, cost } = entry.data;
+    return `<span class="text-orange-400">MOD SHOP</span> > install ${itemName} > -${cost} ${chipIcon}`;
+  }
+
+  function formatLevelChangeEntry(entry: LevelChangeLogEntry): string {
+    const { fromLevel, toLevel, cost, reward, reason } = entry.data;
+    
+    switch (reason) {
+      case 'advance':
+        return `<span class="text-purple-500">ADVANCE</span> > level ${toLevel} > -${cost} 👾`;
+      
+      case 'complete':
+        return `<span class="text-cyan-400">SYSTEM</span> > Level ${fromLevel} completed!`;
+      
+      case 'victory':
+        return `<span class="text-purple-500">VICTORY</span> > Level ${fromLevel} completed > +${reward} 👾`;
+      
+      case 'skip':
+        if (reward) {
+          return `<span class="text-yellow-500">DEBUG</span> > Level ${fromLevel} skipped to victory > +${reward} 👾`;
+        } else {
+          return `<span class="text-yellow-500">DEBUG</span> > Level ${fromLevel} skipped`;
+        }
+      
+      default:
+        return `<span class="text-cyan-400">SYSTEM</span> > Level change`;
+    }
+  }
+
+  function formatPointsConversionEntry(entry: PointsConversionLogEntry): string {
+    const { pointsConverted, chipsGained, totalChips, conversionType } = entry.data;
+    
+    switch (conversionType) {
+      case 'manual':
+        return `<span class="text-blue-500">CHIPS</span> > Converted ${pointsConverted} points > +${chipsGained} ${chipIcon}`;
+      
+      case 'level_end':
+        return `<span class="text-blue-500">CHIPS</span> > +${chipsGained} ${chipIcon}`;
+      
+      case 'cash_out':
+        return `<span class="text-cyan-500">GLITCH BYTES</span> > +${pointsConverted} 👾`;
+      
+      default:
+        return `<span class="text-blue-500">CHIPS</span> > Points conversion`;
+    }
+  }
+
+  function formatGameEventEntry(entry: GameEventLogEntry): string {
+    const { event, details } = entry.data;
+    
+    switch (event) {
+      case 'game_start':
+        return `<span class="text-cyan-400">SYSTEM</span> > Game started`;
+      
+      case 'game_over':
+        return `<span class="text-cyan-400">SYSTEM</span> > Game over`;
+      
+      case 'return_to_menu':
+        return `<span class="text-cyan-400">SYSTEM</span> > Returned to main menu`;
+      
+      case 'cash_out':
+        if (details?.glitchbytesEarned) {
+          return `<span class="text-cyan-500">GLITCH BYTES</span> > +${details.glitchbytesEarned} 👾`;
+        }
+        return `<span class="text-cyan-400">SYSTEM</span> > Cashed out`;
+      
+      default:
+        return `<span class="text-cyan-400">SYSTEM</span> > ${event}`;
+    }
+  }
+
+  function formatSystemEntry(entry: SystemLogEntry): string {
+    const { message, level } = entry.data;
+    
+    switch (level) {
+      case 'debug':
+        return `<span class="text-yellow-500">DEBUG</span> > ${message}`;
+      case 'warning':
+        return `<span class="text-orange-500">WARNING</span> > ${message}`;
+      case 'error':
+        return `<span class="text-red-500">ERROR</span> > ${message}`;
+      default:
+        return `<span class="text-cyan-400">SYSTEM</span> > ${message}`;
+    }
+  }
+
   function formatLogEntry(entry: GameLogEntry): string {
-    const action = entry.action;
-    const details = entry.details || '';
-    
-    // Chip icon SVG for inline use
-    const chipIcon = `<svg class="w-3 h-3 inline" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect x="3.38" y="3.38" width="17.25" height="17.25" rx="2.18" stroke="currentColor" stroke-width="1.92" fill="none"/>
-      <rect x="7.21" y="7.21" width="9.58" height="9.58" rx="1.92" stroke="currentColor" stroke-width="1.92" fill="none"/>
-      <line x1="7.21" y1="0.5" x2="7.21" y2="2.42" stroke="currentColor" stroke-width="1.92"/>
-      <line x1="12" y1="0.5" x2="12" y2="2.42" stroke="currentColor" stroke-width="1.92"/>
-      <line x1="16.79" y1="0.5" x2="16.79" y2="2.42" stroke="currentColor" stroke-width="1.92"/>
-      <line x1="7.21" y1="21.58" x2="7.21" y2="23.5" stroke="currentColor" stroke-width="1.92"/>
-      <line x1="12" y1="21.58" x2="12" y2="23.5" stroke="currentColor" stroke-width="1.92"/>
-      <line x1="16.79" y1="21.58" x2="16.79" y2="23.5" stroke="currentColor" stroke-width="1.92"/>
-      <line x1="0.5" y1="16.79" x2="2.42" y2="16.79" stroke="currentColor" stroke-width="1.92"/>
-      <line x1="0.5" y1="12" x2="2.42" y2="12" stroke="currentColor" stroke-width="1.92"/>
-      <line x1="0.5" y1="7.21" x2="2.42" y2="7.21" stroke="currentColor" stroke-width="1.92"/>
-      <line x1="21.58" y1="16.79" x2="23.5" y2="16.79" stroke="currentColor" stroke-width="1.92"/>
-      <line x1="21.58" y1="12" x2="23.5" y2="12" stroke="currentColor" stroke-width="1.92"/>
-      <line x1="21.58" y1="7.21" x2="23.5" y2="7.21" stroke="currentColor" stroke-width="1.92"/>
-    </svg>`;
-    
-    // Map different actions to command format with colors - only use the colored category
-    if (action.includes('Converted') && action.includes('points to') && action.includes('chips')) {
-      // Extract chips amount from "Converted X points to Y chips (+Y total: Z)"
-      const chipsMatch = action.match(/Converted \d+ points to (\d+) chips/);
-      if (chipsMatch) {
-        const chips = chipsMatch[1];
-        return `<span class="text-blue-500">CHIPS</span> > +${chips} ${chipIcon}`;
-      } else {
-        return `<span class="text-blue-500">CHIPS</span> > ${action} ${details}`.trim();
-      }
-    } else if (action.includes('points')) {
-      const match = action.match(/(\d+) points/);
-      const points = match ? match[1] : '';
-      if (action.includes('multiplier')) {
-        return `<span class="text-green-400">POINTS</span> > +${points} Points (${details})`;
-      } else {
-        return `<span class="text-green-400">POINTS</span> > +${points} Points`;
-      }
-    } else if (action.includes('bomb')) {
-      // Extract damage from bomb log entries like "Pulled bomb orb (-2 HP)"
-      const damageMatch = action.match(/\(-(\d+)\s*HP\)/i);
-      if (damageMatch) {
-        const damage = damageMatch[1];
-        return `<span class="text-orange-500">GLITCH BOMB</span> > -${damage} Health`;
-      } else if (action.includes('Single')) {
-        return `<span class="text-orange-500">GLITCH BOMB</span> > Single Bomb: -1 Health`;
-      } else if (action.includes('Double')) {
-        return `<span class="text-orange-500">GLITCH BOMB</span> > Double Bomb: -2 Health`;
-      } else if (action.includes('Triple')) {
-        return `<span class="text-orange-500">GLITCH BOMB</span> > TRIPLE BOMB: -3 Health`;
-      } else if (details) {
-        return `<span class="text-orange-500">GLITCH BOMB</span> > ${details}`;
-      } else {
-        return `<span class="text-orange-500">GLITCH BOMB</span> > Bomb detonated`;
-      }
-    } else if (action.includes('multiplier')) {
-      const match = action.match(/(\d+)x/);
-      const mult = match ? match[1] : '1';
-      return `<span class="text-blue-400">MULTIPLIER</span> > +${mult}x Multiplier`;
-    } else if (action.includes('health orb') || action.includes('HP')) {
-      const match = action.match(/(\d+) health|(\d+) HP/);
-      const health = match ? (match[1] || match[2]) : '1';
-      return `<span class="text-red-500">HEALTH</span> > +${health} Health`;
-    } else if (action.includes('purchased') || action.includes('bought') || action.includes('Bought')) {
-      // Extract item name and cost from "Bought [item] for [cost] chips"
-      const shopMatch = action.match(/Bought (.+?) for (\d+) chips/);
-      if (shopMatch) {
-        const item = shopMatch[1];
-        const cost = shopMatch[2];
-        return `<span class="text-orange-400">MOD SHOP</span> > install ${item} > -${cost} ${chipIcon}`;
-      } else {
-        return `<span class="text-orange-400">MOD SHOP</span> > ${action} ${details}`.trim();
-      }
-    } else if (action.includes('Advanced to level')) {
-      // Extract level number and cost from "Advanced to level X (-Y glitchbytes)"
-      const levelMatch = action.match(/Advanced to level (\d+) \(-(\d+) glitchbytes\)/);
-      if (levelMatch) {
-        const level = levelMatch[1];
-        const cost = levelMatch[2];
-        return `<span class="text-purple-500">ADVANCE</span> > level ${level} > -${cost} 👾`;
-      } else {
-        return `<span class="text-purple-500">ADVANCE</span> > ${action} ${details}`.trim();
-      }
-    } else if (action.includes('Cashed out') && action.includes('glitchbytes')) {
-      // Extract glitchbytes amount from "Cashed out post-level: X points for Y glitchbytes"
-      const gbMatch = action.match(/for (\d+) glitchbytes/);
-      if (gbMatch) {
-        const gb = gbMatch[1];
-        return `<span class="text-cyan-500">GLITCH BYTES</span> > +${gb} 👾`;
-      } else {
-        return `<span class="text-cyan-500">GLITCH BYTES</span> > ${action} ${details}`.trim();
-      }
-    } else if (action.includes('chips')) {
-      const match = action.match(/(\d+) chips/);
-      const chips = match ? match[1] : '';
-      return `<span class="text-yellow-400">SPECIAL</span> > +${chips} ${chipIcon}`;
-    } else if (action.includes('glitchbytes')) {
-      const match = action.match(/(\d+) glitchbytes/);
-      const bytes = match ? match[1] : '';
-      return `<span class="text-yellow-400">SPECIAL</span> > +${bytes} 👾`;
-    } else if (action.includes('Game over') || action.includes('game over')) {
-      return `<span class="text-cyan-400">SYSTEM</span> > Game over`;
-    } else if (action.includes('DEBUG:')) {
-      return `<span class="text-yellow-500">DEBUG</span> > ${action.replace('DEBUG: ', '')} ${details}`.trim();
-    } else if (action.includes('level') || action.includes('started') || action.includes('completed') || action.includes('Returned to main menu')) {
-      return `<span class="text-cyan-400">SYSTEM</span> > ${action} ${details}`.trim();
-    } else {
-      return `<span class="text-red-500">UNCATEGORIZED</span> > ${action} ${details || ''}`.trim();
+    switch (entry.type) {
+      case 'orb_pulled':
+        return formatOrbPullEntry(entry as OrbPullLogEntry);
+      
+      case 'shop_purchase':
+        return formatShopPurchaseEntry(entry as ShopPurchaseLogEntry);
+      
+      case 'level_change':
+        return formatLevelChangeEntry(entry as LevelChangeLogEntry);
+      
+      case 'points_conversion':
+        return formatPointsConversionEntry(entry as PointsConversionLogEntry);
+      
+      case 'game_event':
+        return formatGameEventEntry(entry as GameEventLogEntry);
+      
+      case 'system':
+        return formatSystemEntry(entry as SystemLogEntry);
+      
+      default:
+        return `<span class="text-red-500">UNKNOWN</span> > Unknown log entry`;
     }
   }
 </script>

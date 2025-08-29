@@ -70,8 +70,8 @@
         <div class="text-white">GLITCH BYTES</div>
       </div>
       <div>
-        <div class="text-sm font-bold text-white">{playgroundState.playerStats.bits}</div>
-        <div class="text-white">BITS</div>
+        <div class="text-sm font-bold text-white">{playgroundState.playerStats.chips}</div>
+        <div class="text-white">CHIPS</div>
       </div>
       <div>
         <div class="text-sm font-bold text-white">{playgroundState.playerStats.bombsPulledThisLevel}</div>

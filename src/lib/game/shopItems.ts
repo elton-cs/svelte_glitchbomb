@@ -36,7 +36,7 @@ export const COMMON_SHOP_ITEMS: ShopItem[] = [
   },
   {
     id: 'common_points_per_bombpulled_4',
-    name: 'DANGER',
+    name: 'POINTS',
     description: '+4 per bomb',
     type: 'points_per_bombpulled',
     amount: 4,

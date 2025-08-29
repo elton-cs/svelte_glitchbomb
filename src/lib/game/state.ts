@@ -66,6 +66,7 @@ export function createInitialGameState(glitchbytes: number = loadGlitchbytes()):
     gameStarted: false,
     levelCompleted: false,
     committedToNextLevel: false,
+    matrixDisarrayActive: false,
   };
 }
 
@@ -82,26 +83,39 @@ export function resetGameSession(state: GameState, glitchbytes: number): void {
 }
 
 // Game Log Utility Functions
-export function addLogEntry(gameState: GameState, action: string, details?: string): void {
-  const timestamp = new Date().toLocaleTimeString('en-US', { 
+function getTimestamp(): string {
+  return new Date().toLocaleTimeString('en-US', { 
     hour12: false, 
     hour: '2-digit', 
     minute: '2-digit', 
     second: '2-digit' 
   });
+}
+
+// New structured logging function
+export function addStructuredLogEntry(gameState: GameState, entry: Omit<GameLogEntry, 'timestamp'>): void {
+  const fullEntry = {
+    ...entry,
+    timestamp: getTimestamp()
+  } as GameLogEntry;
   
-  const logEntry: GameLogEntry = {
-    timestamp,
-    action,
-    details
-  };
-  
-  gameState.gameLog.push(logEntry);
+  gameState.gameLog.push(fullEntry);
   
   // Keep only the last 30 log entries to prevent memory issues
   if (gameState.gameLog.length > 30) {
     gameState.gameLog = gameState.gameLog.slice(-30);
   }
+}
+
+// Legacy compatibility function (will be removed after migration)
+export function addLogEntry(gameState: GameState, action: string, details?: string): void {
+  addStructuredLogEntry(gameState, {
+    type: 'system',
+    data: {
+      message: details ? `${action} ${details}` : action,
+      level: 'info'
+    }
+  });
 }
 
 export function clearGameLog(gameState: GameState): void {

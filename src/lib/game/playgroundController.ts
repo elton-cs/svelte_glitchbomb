@@ -56,8 +56,8 @@ export function pullNextOrb(state: PlaygroundState): boolean {
       addPlaygroundLog(state, `Pulled multiplier orb (+${orb.amount}x boost)`);
       break;
     case 'bits':
-      state.playerStats.bits += orb.amount;
-      addPlaygroundLog(state, `Pulled bits orb (+${orb.amount} bits)`);
+      state.playerStats.chips += orb.amount;
+      addPlaygroundLog(state, `Pulled chips orb (+${orb.amount} chips)`);
       break;
     case 'glitchbytes':
       state.playerStats.glitchbytes += orb.amount;

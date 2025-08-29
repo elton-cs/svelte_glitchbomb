@@ -105,6 +105,36 @@ src/
 └── assets/            # Static assets
 ```
 
+## What's New in v0.1.9
+
+### 🎯 **Matrix Disarray System** *(NEW)*
+- **Difficulty Escalation**: After completing Level 3, players face a critical decision point
+- **Warning Modal**: Dramatic ⚠️ Matrix Disarray warning with looping alarm sound (alarmloop.wav)
+- **Persistent Challenge**: Accepting disarray adds a permanent 2-damage bomb orb to the glitch rift for Levels 4-7
+- **Strategic Choice**: Players can cache out safely at Level 3 or accept the increased difficulty for higher rewards
+- **Visual Drama**: Red-themed warning modal with system overload messaging and thematic terminology
+
+### 🛒 **Shop System Terminology Updates**
+- **Simplified Naming**: All shop items that provide points (including DANGER items) now display as "POINTS"
+- **Consistent Interface**: Streamlined shop item names for better clarity and user experience
+- **Maintained Functionality**: All underlying mechanics remain the same, only display names updated
+
+### 📊 **Enhanced Command Log System**
+- **Improved Notation**: Changed "/C" to "/RC" (Remaining Commands) for better clarity
+- **Visual Consistency**: Updated command log formatting to use consistent notation across all point calculations
+- **Better Readability**: Enhanced command pull descriptions with clearer multiplier and calculation displays
+
+### 🎨 **Visual Interface Improvements**
+- **Chip Icon Integration**: Replaced "B" text with custom chip SVG icons in the Glitch Rift view
+- **Consistent Iconography**: Better visual consistency across all chip/bits displays
+- **Enhanced Color Coding**: Improved visual distinction between available and consumed commands
+
+### 🔧 **Technical Improvements**
+- **State Persistence**: Matrix Disarray state properly persists across level transitions
+- **Audio Integration**: New alarm sound system for dramatic warning moments
+- **Component Architecture**: New MatrixDisarrayWarning component with proper cleanup and audio management
+- **Game Balance**: Maintained existing difficulty curve while adding optional increased challenge path
+
 ## What's New in v0.1.8
 
 ### 🎵 **Complete Audio System Integration**
