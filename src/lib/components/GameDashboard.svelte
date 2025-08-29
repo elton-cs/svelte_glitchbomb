@@ -157,27 +157,24 @@
         </div>
         
         <!-- Right: Action Buttons -->
-        {#if devMode}
-          <div class="flex flex-col items-center sm:items-end gap-2">
-            <div class="text-xs text-gray-400 uppercase tracking-wide">dev tools</div>
-            <div class="flex gap-2">
-              {#if canClaimBytes}
-                <button 
-                  onclick={handleClaimBytes}
-                  class="bg-black hover:bg-white hover:text-black border border-white text-white text-xs font-medium py-1 px-2 rounded transition-colors whitespace-nowrap"
-                >
-                  CLAIM FREE
-                </button>
-              {/if}
+        <div class="flex flex-col items-center sm:items-end gap-2">
+          <div class="flex gap-2">
+            {#if canClaimBytes}
               <button 
-                onclick={resetGlitchbytes}
+                onclick={handleClaimBytes}
                 class="bg-black hover:bg-white hover:text-black border border-white text-white text-xs font-medium py-1 px-2 rounded transition-colors whitespace-nowrap"
               >
-                RESET
+                CLAIM FREE
               </button>
-            </div>
+            {/if}
+            <button 
+              onclick={resetGlitchbytes}
+              class="bg-black hover:bg-white hover:text-black border border-white text-white text-xs font-medium py-1 px-2 rounded transition-colors whitespace-nowrap"
+            >
+              RESET
+            </button>
           </div>
-        {/if}
+        </div>
       </div>
     </div>
 
@@ -187,7 +184,7 @@
       
       <!-- Top Row: Actions | Player Stats | P/L -->
       <div class="flex flex-col min-h-[200px] lg:h-full">
-        <ActionsPanel {gameState} bind:showMatrixWarning />
+        <ActionsPanel {gameState} {devMode} bind:showMatrixWarning />
       </div>
 
       <div class="flex flex-col min-h-[250px] lg:h-full">
