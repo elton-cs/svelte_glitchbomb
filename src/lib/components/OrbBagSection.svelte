@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { GameState, OrbType } from '../game/types.js';
   import OrbTypeDisplay from './OrbTypeDisplay.svelte';
+  import ChipIcon from './ChipIcon.svelte';
 
   interface Props {
     gameState: GameState;
@@ -274,7 +275,10 @@
                   title="{specialType.name}: {orb.amount}"
                 >
                   {#if specialType.type === 'bits'}
-                    {orb.amount}B
+                    <div class="flex items-center gap-1">
+                      <span>{orb.amount}</span>
+                      <ChipIcon size="sm" class="text-yellow-400" />
+                    </div>
                   {:else if specialType.type === 'glitchbytes'}
                     {orb.amount}👾
                   {/if}
@@ -288,7 +292,10 @@
                 <div class="min-w-8 h-8 px-1 border border-gray-600 bg-gray-800 text-yellow-600 flex items-center justify-center text-sm"
                      title="Used {specialType.name}: {consumedOrb.amount}">
                   {#if specialType.type === 'bits'}
-                    {consumedOrb.amount}B
+                    <div class="flex items-center gap-1">
+                      <span>{consumedOrb.amount}</span>
+                      <ChipIcon size="sm" class="text-yellow-600" />
+                    </div>
                   {:else if specialType.type === 'glitchbytes'}
                     {consumedOrb.amount}👾
                   {/if}
