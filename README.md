@@ -105,6 +105,50 @@ src/
 └── assets/            # Static assets
 ```
 
+## What's New in v0.1.8
+
+### 🎵 **Complete Audio System Integration**
+- **Background Music**: Looping thematic soundtrack (thepilot.mp3) with automatic user interaction detection
+- **Comprehensive Sound Effects**: 10+ unique sound effects for different game actions
+  - Click sounds for all button interactions
+  - Buy sounds for marketplace purchases  
+  - Points bar sound for score increases
+  - Bomb explosion sound for health damage
+  - Multiplier boost sound for stat increases
+  - Special pull sound for currency rewards
+  - Level progression sounds (levelup, nextlevel)
+  - Endgame sound for dramatic game over moments
+- **Smart Audio Logic**: Context-aware sound selection based on game state and action type
+- **Volume Balance**: Carefully tuned volume levels for each sound type to create cohesive audio experience
+
+### 🎨 **Visual Identity & Typography Overhaul**  
+- **Custom Typography**: Integrated JetBrains Mono font for enhanced code/terminal aesthetic
+- **Icon System Refinement**: Consistent use of alien monster emoji (👾) and chip SVG icons throughout
+- **Visual Polish**: Updated progress bar styling, improved font sizing, and enhanced visual hierarchy
+
+### 📊 **Enhanced Command History System**
+- **Complete Log Formatter Rewrite**: Comprehensive categorization system with color-coded command types
+  - Health commands: Red highlighting with proper HP notation
+  - Point commands: Green highlighting with multiplier context
+  - Bomb commands: Orange highlighting with damage indication
+  - System messages: Cyan highlighting for game state changes
+  - Shop purchases: Orange highlighting with item and cost details
+  - Special commands: Yellow highlighting for currency rewards
+- **Improved Message Parsing**: Fixed formatting issues and prevented incorrect categorization
+- **Game Over Handling**: Proper "SYSTEM > Game over" display instead of uncategorized errors
+
+### 🎯 **User Experience Improvements**
+- **Audio Feedback**: Every player action now provides appropriate audio feedback
+- **Font Readability**: Increased command history font size from text-xs to text-sm for better visibility
+- **Consistent Theming**: Maintained cohesive black and white design with strategic color accents
+- **Error Prevention**: Fixed health log formatter to prevent false positive matches
+
+### 🔧 **Technical Audio Infrastructure**
+- **AudioManager Class**: Centralized audio management with proper error handling and cleanup
+- **Browser Compatibility**: Automatic handling of browser autoplay restrictions
+- **Performance Optimization**: Efficient audio preloading and memory management
+- **State Integration**: Audio system properly integrated with game state for context-aware sound selection
+
 ## What's New in v0.1.7
 
 ### 🎯 **Dashboard Layout Optimization**
