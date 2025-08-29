@@ -19,7 +19,7 @@ import {
 import { GAME_CONFIG, LEVEL_COUNT } from './constants.js';
 import type { OrbType } from './types.js';
 import { getShopItem, getAvailableShopItemsFromDeck, findDeckItem, updateDeckItemPrice, initializeShopDeck } from './shopItems.js';
-import { addLogEntry, clearGameLog, addPointHistoryEntry, clearPointHistory, saveGlitchbytes } from './state.js';
+import { addStructuredLogEntry, clearGameLog, addPointHistoryEntry, clearPointHistory, saveGlitchbytes } from './state.js';
 import { getCumulativeLevelCost } from './economics.js';
 
 function applyPointsWithMultiplier(gameState: GameState, basePoints: number, action: string = 'Points gained'): void {
@@ -51,7 +51,12 @@ export function startNewGame(gameState: GameState): boolean {
     
     const success = enterLevel(gameState, 1);
     if (success) {
-      addLogEntry(gameState, 'Game started');
+      addStructuredLogEntry(gameState, {
+        type: 'game_event',
+        data: {
+          event: 'game_start'
+        }
+      });
     }
     return success;
   } catch (error) {
@@ -124,11 +129,46 @@ export function pullOrb(gameState: GameState): boolean {
           GAME_CONFIG.maxHealth
         );
         addPointHistoryEntry(gameState, gameState.playerStats.points, `Health orb (+${orb.amount} HP)`, getCumulativeLevelCost(gameState.currentLevel));
-        addLogEntry(gameState, `Pulled health orb (+${orb.amount} HP)`);
+        addStructuredLogEntry(gameState, {
+          type: 'orb_pulled',
+          data: {
+            orbType: 'health',
+            amount: orb.amount,
+            effect: {
+              health: orb.amount
+            },
+            resultingStats: {
+              health: gameState.playerStats.health,
+              points: gameState.playerStats.points,
+              multiplier: gameState.playerStats.levelMultiplier,
+              chips: gameState.playerStats.chips,
+              glitchbytes: gameState.playerStats.glitchbytes
+            }
+          }
+        });
         break;
       case 'point':
+        const pointOrbMultiplied = Math.floor(orb.amount * gameState.playerStats.levelMultiplier);
         applyPointsWithMultiplier(gameState, orb.amount, `Point orb (+${orb.amount})`);
-        addLogEntry(gameState, `Pulled point orb (+${orb.amount} points)`);
+        addStructuredLogEntry(gameState, {
+          type: 'orb_pulled',
+          data: {
+            orbType: 'point',
+            amount: orb.amount,
+            effect: {
+              points: pointOrbMultiplied,
+              basePoints: orb.amount,
+              appliedMultiplier: gameState.playerStats.levelMultiplier
+            },
+            resultingStats: {
+              health: gameState.playerStats.health,
+              points: gameState.playerStats.points,
+              multiplier: gameState.playerStats.levelMultiplier,
+              chips: gameState.playerStats.chips,
+              glitchbytes: gameState.playerStats.glitchbytes
+            }
+          }
+        });
         break;
       case 'bomb':
         const previousHealth = gameState.playerStats.health;
@@ -147,17 +187,75 @@ export function pullOrb(gameState: GameState): boolean {
         
         gameState.playerStats.bombsPulledThisLevel += 1;
         addPointHistoryEntry(gameState, gameState.playerStats.points, `Bomb orb (-${orb.amount} HP)`, getCumulativeLevelCost(gameState.currentLevel));
-        addLogEntry(gameState, `Pulled bomb orb (-${orb.amount} HP)`);
+        addStructuredLogEntry(gameState, {
+          type: 'orb_pulled',
+          data: {
+            orbType: 'bomb',
+            amount: orb.amount,
+            effect: {
+              bombDamage: orb.amount,
+              bombsPulled: gameState.playerStats.bombsPulledThisLevel
+            },
+            resultingStats: {
+              health: gameState.playerStats.health,
+              points: gameState.playerStats.points,
+              multiplier: gameState.playerStats.levelMultiplier,
+              chips: gameState.playerStats.chips,
+              glitchbytes: gameState.playerStats.glitchbytes
+            }
+          }
+        });
         break;
       case 'points_per_anyorb':
         const pointsPerAnyOrbPoints = calculatePointsPerAnyOrbPoints(gameState.orbBag, orb.amount);
+        const orbsConsumed = pointsPerAnyOrbPoints / orb.amount; // Calculate orbs consumed from the result
+        const comboMultiplied = Math.floor(pointsPerAnyOrbPoints * gameState.playerStats.levelMultiplier);
         applyPointsWithMultiplier(gameState, pointsPerAnyOrbPoints, `Combo orb (+${pointsPerAnyOrbPoints})`);
-        addLogEntry(gameState, `Pulled combo orb (+${pointsPerAnyOrbPoints} points from ${orb.amount} per orb)`);
+        addStructuredLogEntry(gameState, {
+          type: 'orb_pulled',
+          data: {
+            orbType: 'points_per_anyorb',
+            amount: orb.amount,
+            effect: {
+              points: comboMultiplied,
+              basePoints: pointsPerAnyOrbPoints,
+              appliedMultiplier: gameState.playerStats.levelMultiplier,
+              orbsConsumed: orbsConsumed
+            },
+            resultingStats: {
+              health: gameState.playerStats.health,
+              points: gameState.playerStats.points,
+              multiplier: gameState.playerStats.levelMultiplier,
+              chips: gameState.playerStats.chips,
+              glitchbytes: gameState.playerStats.glitchbytes
+            }
+          }
+        });
         break;
       case 'points_per_bombpulled':
         const bombPoints = gameState.playerStats.bombsPulledThisLevel * orb.amount;
+        const dangerMultiplied = Math.floor(bombPoints * gameState.playerStats.levelMultiplier);
         applyPointsWithMultiplier(gameState, bombPoints, `Danger orb (+${bombPoints})`);
-        addLogEntry(gameState, `Pulled danger orb (+${bombPoints} points from ${orb.amount} per bomb)`);
+        addStructuredLogEntry(gameState, {
+          type: 'orb_pulled',
+          data: {
+            orbType: 'points_per_bombpulled',
+            amount: orb.amount,
+            effect: {
+              points: dangerMultiplied,
+              basePoints: bombPoints,
+              appliedMultiplier: gameState.playerStats.levelMultiplier,
+              bombsPulled: gameState.playerStats.bombsPulledThisLevel
+            },
+            resultingStats: {
+              health: gameState.playerStats.health,
+              points: gameState.playerStats.points,
+              multiplier: gameState.playerStats.levelMultiplier,
+              chips: gameState.playerStats.chips,
+              glitchbytes: gameState.playerStats.glitchbytes
+            }
+          }
+        });
         break;
       case 'multiplier':
         gameState.playerStats.levelMultiplier += orb.amount;
@@ -168,7 +266,23 @@ export function pullOrb(gameState: GameState): boolean {
         }
         
         addPointHistoryEntry(gameState, gameState.playerStats.points, `Multiplier orb (+${orb.amount}x)`, getCumulativeLevelCost(gameState.currentLevel));
-        addLogEntry(gameState, `Pulled multiplier orb (+${orb.amount}x boost)`);
+        addStructuredLogEntry(gameState, {
+          type: 'orb_pulled',
+          data: {
+            orbType: 'multiplier',
+            amount: orb.amount,
+            effect: {
+              multiplier: orb.amount
+            },
+            resultingStats: {
+              health: gameState.playerStats.health,
+              points: gameState.playerStats.points,
+              multiplier: gameState.playerStats.levelMultiplier,
+              chips: gameState.playerStats.chips,
+              glitchbytes: gameState.playerStats.glitchbytes
+            }
+          }
+        });
         break;
       case 'bits':
         gameState.playerStats.chips += orb.amount;
@@ -179,7 +293,23 @@ export function pullOrb(gameState: GameState): boolean {
         }
         
         addPointHistoryEntry(gameState, gameState.playerStats.points, `Chips orb (+${orb.amount})`, getCumulativeLevelCost(gameState.currentLevel));
-        addLogEntry(gameState, `Pulled chips orb (+${orb.amount} chips)`);
+        addStructuredLogEntry(gameState, {
+          type: 'orb_pulled',
+          data: {
+            orbType: 'bits',
+            amount: orb.amount,
+            effect: {
+              chips: orb.amount
+            },
+            resultingStats: {
+              health: gameState.playerStats.health,
+              points: gameState.playerStats.points,
+              multiplier: gameState.playerStats.levelMultiplier,
+              chips: gameState.playerStats.chips,
+              glitchbytes: gameState.playerStats.glitchbytes
+            }
+          }
+        });
         break;
       case 'glitchbytes':
         gameState.playerStats.glitchbytes += orb.amount;
@@ -190,14 +320,39 @@ export function pullOrb(gameState: GameState): boolean {
         }
         
         addPointHistoryEntry(gameState, gameState.playerStats.points, `Glitchbytes orb (+${orb.amount})`, getCumulativeLevelCost(gameState.currentLevel));
-        addLogEntry(gameState, `Pulled glitchbytes orb (+${orb.amount} glitchbytes)`);
+        addStructuredLogEntry(gameState, {
+          type: 'orb_pulled',
+          data: {
+            orbType: 'glitchbytes',
+            amount: orb.amount,
+            effect: {
+              glitchbytes: orb.amount
+            },
+            resultingStats: {
+              health: gameState.playerStats.health,
+              points: gameState.playerStats.points,
+              multiplier: gameState.playerStats.levelMultiplier,
+              chips: gameState.playerStats.chips,
+              glitchbytes: gameState.playerStats.glitchbytes
+            }
+          }
+        });
         break;
     }
 
     if (checkGameOver(gameState.playerStats.health, gameState.orbBag)) {
       if (!checkLevelComplete(gameState.playerStats.points, gameState.currentLevel)) {
         gameState.phase = 'gameover';
-        addLogEntry(gameState, 'Game over! No health or orbs remaining');
+        addStructuredLogEntry(gameState, {
+          type: 'game_event',
+          data: {
+            event: 'game_over',
+            details: {
+              finalPoints: gameState.playerStats.points,
+              reason: 'No health or orbs remaining'
+            }
+          }
+        });
         return true;
       }
     }
@@ -225,12 +380,27 @@ export function completeLevel(gameState: GameState): void {
     gameState.phase = 'victory';
     const victoryReward = calculateVictoryReward(gameState.playerStats.points);
     gameState.playerStats.glitchbytes += victoryReward;
-    addLogEntry(gameState, `Victory! Level ${gameState.currentLevel} completed (+${victoryReward} glitchbytes)`);
+    addStructuredLogEntry(gameState, {
+      type: 'level_change',
+      data: {
+        fromLevel: gameState.currentLevel,
+        toLevel: gameState.currentLevel,
+        reward: victoryReward,
+        reason: 'victory'
+      }
+    });
   } else {
     gameState.phase = 'confirmation';
     gameState.marketplace.available = false;
     gameState.marketplace.currentShopItems = [];
-    addLogEntry(gameState, `Level ${gameState.currentLevel} completed!`);
+    addStructuredLogEntry(gameState, {
+      type: 'level_change',
+      data: {
+        fromLevel: gameState.currentLevel,
+        toLevel: gameState.currentLevel,
+        reason: 'complete'
+      }
+    });
   }
 }
 
@@ -241,7 +411,16 @@ export function cashOutMidLevel(gameState: GameState): number {
   gameState.phase = 'menu';
   gameState.gameStarted = false;
   
-  addLogEntry(gameState, `Cashed out mid-level: ${gameState.playerStats.points} points for ${cashOut} glitchbytes`);
+  addStructuredLogEntry(gameState, {
+    type: 'game_event',
+    data: {
+      event: 'cash_out',
+      details: {
+        glitchbytesEarned: cashOut,
+        finalPoints: gameState.playerStats.points
+      }
+    }
+  });
   
   // Reset orb bag to initial state (lose all purchased orbs)
   gameState.orbBag = createInitialBag();
@@ -261,7 +440,15 @@ export function cashOutPostLevel(gameState: GameState): number {
   gameState.phase = 'menu';
   gameState.gameStarted = false;
   
-  addLogEntry(gameState, `Cashed out post-level: ${points} points for ${points} glitchbytes`);
+  addStructuredLogEntry(gameState, {
+    type: 'points_conversion',
+    data: {
+      pointsConverted: points,
+      chipsGained: 0,
+      totalChips: gameState.playerStats.chips,
+      conversionType: 'cash_out'
+    }
+  });
   
   // Reset orb bag to initial state (lose all purchased orbs)
   gameState.orbBag = createInitialBag();
@@ -326,7 +513,15 @@ export function purchaseShopItem(gameState: GameState, shopItemId: string, quant
   gameState.playerStats.chips -= totalCost;
   addOrbsToBag(gameState.orbBag, deckItem.type, quantity, deckItem.amount);
   
-  addLogEntry(gameState, `Bought ${deckItem.name} for ${totalCost} chips`);
+  addStructuredLogEntry(gameState, {
+    type: 'shop_purchase',
+    data: {
+      itemName: deckItem.name,
+      itemId: deckItem.id,
+      cost: totalCost,
+      remainingChips: gameState.playerStats.chips
+    }
+  });
   
   // Update deck item price for future purchases
   for (let i = 0; i < quantity; i++) {
@@ -347,7 +542,15 @@ export function continueToMarketplace(gameState: GameState): void {
   // Reset consumed orbs so players can purchase more orbs with their chips
   resetConsumedOrbs(gameState.orbBag);
   
-  addLogEntry(gameState, `Converted ${gameState.playerStats.points} points to ${newChips} chips (+${newChips} total: ${gameState.playerStats.chips})`);
+  addStructuredLogEntry(gameState, {
+    type: 'points_conversion',
+    data: {
+      pointsConverted: gameState.playerStats.points,
+      chipsGained: newChips,
+      totalChips: gameState.playerStats.chips,
+      conversionType: 'level_end'
+    }
+  });
 }
 
 export function proceedToNextLevel(gameState: GameState): boolean {
@@ -360,7 +563,15 @@ export function proceedToNextLevel(gameState: GameState): boolean {
   gameState.marketplace.available = false;
   gameState.committedToNextLevel = false; // Reset for next level cycle
   
-  addLogEntry(gameState, `Advanced to level ${nextLevel} (-${levelCost} glitchbytes)`);
+  addStructuredLogEntry(gameState, {
+    type: 'level_change',
+    data: {
+      fromLevel: gameState.currentLevel,
+      toLevel: nextLevel,
+      cost: levelCost,
+      reason: 'advance'
+    }
+  });
   
   return enterLevel(gameState, nextLevel);
 }
@@ -379,7 +590,12 @@ export function restartGame(gameState: GameState): boolean {
 }
 
 export function returnToMenu(gameState: GameState): void {
-  addLogEntry(gameState, 'Returned to main menu');
+  addStructuredLogEntry(gameState, {
+    type: 'game_event',
+    data: {
+      event: 'return_to_menu'
+    }
+  });
   
   gameState.phase = 'menu';
   gameState.gameStarted = false;
@@ -406,7 +622,13 @@ export function skipLevel(gameState: GameState): boolean {
   
   if (pointsNeeded > 0) {
     applyPointsWithMultiplier(gameState, pointsNeeded, `DEBUG: Skip to milestone (+${pointsNeeded})`);
-    addLogEntry(gameState, `DEBUG: Added ${pointsNeeded} points to reach level ${gameState.currentLevel} milestone`);
+    addStructuredLogEntry(gameState, {
+      type: 'system',
+      data: {
+        message: `Added ${pointsNeeded} points to reach level ${gameState.currentLevel} milestone`,
+        level: 'debug'
+      }
+    });
   }
   
   // Complete the level if we now have enough points
@@ -424,12 +646,27 @@ export function skipLevel(gameState: GameState): boolean {
       const victoryReward = calculateVictoryReward(gameState.playerStats.points);
       gameState.playerStats.glitchbytes += victoryReward;
       saveGlitchbytes(gameState.playerStats.glitchbytes);
-      addLogEntry(gameState, `DEBUG: Level ${gameState.currentLevel} skipped to victory (+${victoryReward} glitchbytes)`);
+      addStructuredLogEntry(gameState, {
+        type: 'level_change',
+        data: {
+          fromLevel: gameState.currentLevel,
+          toLevel: gameState.currentLevel,
+          reward: victoryReward,
+          reason: 'skip'
+        }
+      });
     } else {
       gameState.phase = 'confirmation';
       gameState.marketplace.available = false;
       gameState.marketplace.currentShopItems = [];
-      addLogEntry(gameState, `DEBUG: Level ${gameState.currentLevel} skipped`);
+      addStructuredLogEntry(gameState, {
+        type: 'level_change',
+        data: {
+          fromLevel: gameState.currentLevel,
+          toLevel: gameState.currentLevel,
+          reason: 'skip'
+        }
+      });
     }
   }
   

@@ -104,11 +104,105 @@ export interface ShopDeck {
   cosmic: ShopDeckItem[];
 }
 
-export interface GameLogEntry {
+// Structured log entry types for robust logging
+export type LogActionType = 
+  | 'orb_pulled'
+  | 'shop_purchase' 
+  | 'level_change'
+  | 'points_conversion'
+  | 'game_event'
+  | 'system';
+
+export interface BaseLogEntry {
   timestamp: string;
-  action: string;
-  details?: string;
+  type: LogActionType;
 }
+
+export interface OrbPullLogEntry extends BaseLogEntry {
+  type: 'orb_pulled';
+  data: {
+    orbType: OrbType;
+    amount: number;
+    effect: {
+      health?: number;
+      points?: number;
+      basePoints?: number;
+      appliedMultiplier?: number;
+      multiplier?: number;
+      chips?: number;
+      glitchbytes?: number;
+      bombDamage?: number;
+      bombsPulled?: number;
+      orbsConsumed?: number;
+    };
+    resultingStats: {
+      health: number;
+      points: number;
+      multiplier: number;
+      chips: number;
+      glitchbytes: number;
+    };
+  };
+}
+
+export interface ShopPurchaseLogEntry extends BaseLogEntry {
+  type: 'shop_purchase';
+  data: {
+    itemName: string;
+    itemId: string;
+    cost: number;
+    remainingChips: number;
+  };
+}
+
+export interface LevelChangeLogEntry extends BaseLogEntry {
+  type: 'level_change';
+  data: {
+    fromLevel: number;
+    toLevel: number;
+    cost?: number;
+    reward?: number;
+    reason: 'advance' | 'complete' | 'victory' | 'skip';
+  };
+}
+
+export interface PointsConversionLogEntry extends BaseLogEntry {
+  type: 'points_conversion';
+  data: {
+    pointsConverted: number;
+    chipsGained: number;
+    totalChips: number;
+    conversionType: 'manual' | 'level_end' | 'cash_out';
+  };
+}
+
+export interface GameEventLogEntry extends BaseLogEntry {
+  type: 'game_event';
+  data: {
+    event: 'game_start' | 'game_over' | 'return_to_menu' | 'cash_out';
+    details?: {
+      glitchbytesEarned?: number;
+      finalPoints?: number;
+      reason?: string;
+    };
+  };
+}
+
+export interface SystemLogEntry extends BaseLogEntry {
+  type: 'system';
+  data: {
+    message: string;
+    level?: 'debug' | 'info' | 'warning' | 'error';
+  };
+}
+
+export type GameLogEntry = 
+  | OrbPullLogEntry 
+  | ShopPurchaseLogEntry 
+  | LevelChangeLogEntry 
+  | PointsConversionLogEntry 
+  | GameEventLogEntry
+  | SystemLogEntry;
 
 export type GameLog = GameLogEntry[];
 
