@@ -90,7 +90,7 @@
     {
       type: 'glitchbytes' as const,
       name: 'GLITCH BYTES',
-      icon: 'GB',
+      icon: '👾',
       color: 'text-gray-300'
     }
   ];
@@ -276,7 +276,7 @@
                   {#if specialType.type === 'bits'}
                     {orb.amount}B
                   {:else if specialType.type === 'glitchbytes'}
-                    {orb.amount}GB
+                    {orb.amount}👾
                   {/if}
                 </div>
               </div>
@@ -290,7 +290,7 @@
                   {#if specialType.type === 'bits'}
                     {consumedOrb.amount}B
                   {:else if specialType.type === 'glitchbytes'}
-                    {consumedOrb.amount}GB
+                    {consumedOrb.amount}👾
                   {/if}
                 </div>
               {/each}
