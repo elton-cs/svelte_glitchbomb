@@ -7,6 +7,7 @@ export const game_state = $state({
 
 // Start a new game
 export function init_game() {
+  game_state.current_view = GameView.Game;
   game_state.game = {
     level: 1,
     points: 0,
@@ -16,7 +17,6 @@ export function init_game() {
     multiplier: 1,
     chips: 0,
   };
-  game_state.current_view = GameView.Game;
 }
 
 // Return to menu and clean up
