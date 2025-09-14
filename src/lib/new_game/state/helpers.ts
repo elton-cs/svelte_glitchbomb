@@ -54,6 +54,9 @@ export function flatten_and_shuffle_orbs(orb_lists: Orb[][]): Orb[] {
 
 // Initialize a new game with all default values
 export function init_game(): Game {
+  const starting_orbs = build_starting_orbs();
+  const purchased_orbs: Orb[] = [];
+
   return {
     level: 1,
     points: 0,
@@ -62,7 +65,8 @@ export function init_game(): Game {
     max_health: 5,
     multiplier: 1,
     chips: 0,
-    starting_orbs: build_starting_orbs(),
-    purchased_orbs: [],
+    starting_orbs,
+    purchased_orbs,
+    playground_orbs: flatten_and_shuffle_orbs([starting_orbs, purchased_orbs]),
   };
 }

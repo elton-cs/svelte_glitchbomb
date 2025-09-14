@@ -36,4 +36,5 @@ export interface Game {
   chips: number;
   starting_orbs: Orb[];
   purchased_orbs: Orb[];
+  playground_orbs: Orb[];
 }
