@@ -1,29 +1,29 @@
 <script lang="ts">
   import HomeScreen from './views/HomeScreen.svelte';
   import GameViewComponent from './views/GameView.svelte';
-  import { gameState } from './state/game_state.svelte';
+  import { game_state } from './state/game_state.svelte';
   import { GameView } from './state/types';
 </script>
 
 <div class="mobile-view-container">
-  {#if gameState.currentView === GameView.Menu}
+  {#if game_state.current_view === GameView.Menu}
     <HomeScreen />
-  {:else if gameState.currentView === GameView.Shop}
+  {:else if game_state.current_view === GameView.Shop}
     <!-- Shop view will go here -->
-    <div class="p-4">
-      <h2 class="text-2xl font-bold">Shop</h2>
+    <div class="bg-black p-4 rounded-lg border border-white">
+      <h2 class="text-2xl font-bold text-white text-center">SHOP</h2>
     </div>
-  {:else if gameState.currentView === GameView.Game}
+  {:else if game_state.current_view === GameView.Game}
     <GameViewComponent />
-  {:else if gameState.currentView === GameView.Win}
+  {:else if game_state.current_view === GameView.Win}
     <!-- Win view will go here -->
-    <div class="p-4">
-      <h2 class="text-2xl font-bold">Victory!</h2>
+    <div class="bg-black p-4 rounded-lg border border-white">
+      <h2 class="text-2xl font-bold text-green-400 text-center">VICTORY!</h2>
     </div>
-  {:else if gameState.currentView === GameView.Lose}
+  {:else if game_state.current_view === GameView.Lose}
     <!-- Lose view will go here -->
-    <div class="p-4">
-      <h2 class="text-2xl font-bold">Game Over</h2>
+    <div class="bg-black p-4 rounded-lg border border-white">
+      <h2 class="text-2xl font-bold text-red-400 text-center">GAME OVER</h2>
     </div>
   {/if}
 </div>

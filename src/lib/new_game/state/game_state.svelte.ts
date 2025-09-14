@@ -1,12 +1,12 @@
 import { GameView, type Game } from "./types";
 
-export const gameState = $state({
-  currentView: GameView.Menu,
+export const game_state = $state({
+  current_view: GameView.Menu,
   game: null as Game | null,
 });
 
-export function initGame() {
-  gameState.game = {
+export function init_game() {
+  game_state.game = {
     level: 1,
     points: 0,
     milestone: 10,
@@ -15,5 +15,5 @@ export function initGame() {
     multiplier: 1,
     chips: 0,
   };
-  gameState.currentView = GameView.Game;
+  game_state.current_view = GameView.Game;
 }

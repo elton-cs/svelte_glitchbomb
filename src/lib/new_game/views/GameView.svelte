@@ -1,59 +1,59 @@
 <script lang="ts">
-  import { gameState } from '../state/game_state.svelte';
+  import { game_state } from '../state/game_state.svelte';
 
-  $: game = gameState.game!;
-  $: pointsProgress = (game.points / game.milestone) * 100;
-  $: healthProgress = (game.health / game.max_health) * 100;
+  let game = $derived(game_state.game!);
+  let points_progress = $derived((game.points / game.milestone) * 100);
+  let health_progress = $derived((game.health / game.max_health) * 100);
 </script>
 
-<div class="p-4 space-y-6">
-  <h2 class="text-2xl font-bold mb-4">Game</h2>
+<div class="bg-black p-4 rounded-lg border border-white">
+  <div class="text-center mb-6">
+    <h2 class="text-3xl font-bold text-white">LEVEL {game.level}</h2>
+  </div>
 
-  <div class="grid grid-cols-2 gap-4">
-    <!-- Level -->
-    <div class="bg-gray-900 p-4 rounded border border-gray-700">
-      <div class="text-sm text-gray-400 mb-1">Level</div>
-      <div class="text-2xl font-bold">{game.level}</div>
+  <div class="grid grid-cols-3 gap-3 text-center mb-6">
+    <!-- Chips -->
+    <div>
+      <div class="text-2xl font-bold text-yellow-400 mb-1">{game.chips}</div>
+      <div class="text-white text-xs uppercase">Chips</div>
     </div>
 
     <!-- Multiplier -->
-    <div class="bg-gray-900 p-4 rounded border border-gray-700">
-      <div class="text-sm text-gray-400 mb-1">Multiplier</div>
-      <div class="text-2xl font-bold">{game.multiplier}x</div>
+    <div>
+      <div class="text-2xl font-bold text-blue-400 mb-1">{game.multiplier}x</div>
+      <div class="text-white text-xs uppercase">Mult</div>
+    </div>
+
+    <!-- Level -->
+    <div>
+      <div class="text-2xl font-bold text-purple-400 mb-1">{game.level}</div>
+      <div class="text-white text-xs uppercase">Level</div>
     </div>
   </div>
 
   <!-- Points Progress Bar -->
-  <div class="space-y-2">
-    <div class="flex justify-between text-sm">
-      <span class="text-gray-400">Points</span>
-      <span class="font-bold">{game.points} / {game.milestone}</span>
+  <div class="mb-6">
+    <div class="text-green-400 text-sm font-bold mb-2 text-center uppercase">
+      Points {game.points}/{game.milestone}
     </div>
-    <div class="w-full bg-gray-800 rounded-full h-4 overflow-hidden border border-gray-700">
+    <div class="bg-gray-800 rounded h-8 border border-gray-600">
       <div
-        class="bg-blue-500 h-full transition-all duration-300"
-        style="width: {pointsProgress}%"
+        class="bg-white h-full rounded transition-all duration-300"
+        style="width: {Math.min(100, points_progress)}%"
       ></div>
     </div>
   </div>
 
   <!-- Health Bar -->
-  <div class="space-y-2">
-    <div class="flex justify-between text-sm">
-      <span class="text-gray-400">Health</span>
-      <span class="font-bold">{game.health} / {game.max_health}</span>
+  <div class="mb-6">
+    <div class="text-red-400 text-sm font-bold mb-2 text-center uppercase">
+      Health {game.health}/{game.max_health}
     </div>
-    <div class="w-full bg-gray-800 rounded-full h-4 overflow-hidden border border-gray-700">
+    <div class="bg-gray-800 rounded h-8 border border-gray-600">
       <div
-        class="bg-red-500 h-full transition-all duration-300"
-        style="width: {healthProgress}%"
+        class="bg-red-500 h-full rounded transition-all duration-300"
+        style="width: {Math.min(100, health_progress)}%"
       ></div>
     </div>
-  </div>
-
-  <!-- Chips -->
-  <div class="bg-gray-900 p-4 rounded border border-gray-700">
-    <div class="text-sm text-gray-400 mb-1">Chips</div>
-    <div class="text-2xl font-bold">{game.chips}</div>
   </div>
 </div>
