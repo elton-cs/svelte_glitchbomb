@@ -3,5 +3,14 @@ export enum GameView {
   Shop,
   Game,
   Win,
-  Lose
+  Lose,
+}
+
+export interface Game {
+  level: number;
+  points: number;
+  milestone: number;
+  health: number;
+  multiplier: number;
+  chips: number;
 }

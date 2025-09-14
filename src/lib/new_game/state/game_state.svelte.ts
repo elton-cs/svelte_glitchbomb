@@ -1,5 +1,5 @@
-import { GameView } from './types';
+import { GameView } from "./types";
 
 export const gameState = $state({
-  currentView: GameView.Menu
+  currentView: GameView.Menu,
 });
