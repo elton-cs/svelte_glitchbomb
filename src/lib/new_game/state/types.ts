@@ -11,6 +11,7 @@ export interface Game {
   points: number;
   milestone: number;
   health: number;
+  max_health: number;
   multiplier: number;
   chips: number;
 }
