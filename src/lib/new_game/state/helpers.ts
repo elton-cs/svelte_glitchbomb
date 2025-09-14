@@ -37,6 +37,21 @@ function build_starting_orbs(): Orb[] {
   return starting_orbs;
 }
 
+// Flatten multiple orb arrays into one and shuffle the result
+export function flatten_and_shuffle_orbs(orb_lists: Orb[][]): Orb[] {
+  // Flatten all arrays into one
+  const flattened_orbs = orb_lists.flat();
+
+  // Shuffle using Fisher-Yates algorithm
+  const shuffled_orbs = [...flattened_orbs];
+  for (let i = shuffled_orbs.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled_orbs[i], shuffled_orbs[j]] = [shuffled_orbs[j], shuffled_orbs[i]];
+  }
+
+  return shuffled_orbs;
+}
+
 // Initialize a new game with all default values
 export function init_game(): Game {
   return {
