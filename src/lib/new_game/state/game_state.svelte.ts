@@ -46,3 +46,17 @@ export function apply_orb(orb: Orb) {
     }
   }
 }
+
+// Pull first orb from playground, apply it, and remove from list
+export function pull_orb() {
+  if (!game_state.game || game_state.game.playground_orbs.length === 0) return;
+
+  // Get first orb
+  const orb = game_state.game.playground_orbs[0];
+
+  // Apply its effects
+  apply_orb(orb);
+
+  // Remove it from playground
+  game_state.game.playground_orbs = game_state.game.playground_orbs.slice(1);
+}

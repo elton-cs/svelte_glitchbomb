@@ -56,6 +56,10 @@ export function flatten_and_shuffle_orbs(orb_lists: Orb[][]): Orb[] {
 export function init_game(): Game {
   const starting_orbs = build_starting_orbs();
   const purchased_orbs: Orb[] = [];
+  const playground_orbs = flatten_and_shuffle_orbs([
+    starting_orbs,
+    purchased_orbs,
+  ]);
 
   return {
     level: 1,
@@ -67,6 +71,6 @@ export function init_game(): Game {
     chips: 0,
     starting_orbs,
     purchased_orbs,
-    playground_orbs: flatten_and_shuffle_orbs([starting_orbs, purchased_orbs]),
+    playground_orbs,
   };
 }
