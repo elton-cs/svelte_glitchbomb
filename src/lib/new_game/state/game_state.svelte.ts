@@ -1,5 +1,5 @@
 import { GameView, type Game } from "./types";
-import { get_starting_orbs } from "./helpers";
+import { init_game as create_new_game } from "./helpers";
 
 export const game_state = $state({
   current_view: GameView.Menu,
@@ -9,17 +9,7 @@ export const game_state = $state({
 // Start a new game
 export function init_game() {
   game_state.current_view = GameView.Game;
-  game_state.game = {
-    level: 1,
-    points: 0,
-    milestone: 10,
-    health: 5,
-    max_health: 5,
-    multiplier: 1,
-    chips: 0,
-    starting_orbs: get_starting_orbs(),
-    purchased_orbs: [],
-  };
+  game_state.game = create_new_game();
 }
 
 // Return to menu and clean up

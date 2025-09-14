@@ -1,4 +1,4 @@
-import { ModifierType, type Orb, type Modifier, type ModifierValue } from "./types";
+import { ModifierType, type Orb, type Modifier, type ModifierValue, type Game } from "./types";
 
 // Helper to create a modifier
 function create_modifier(type: ModifierType, value: number): Modifier {
@@ -71,4 +71,19 @@ export function remove_orb(orbs: Orb[], orb_to_remove: Orb): Orb[] {
   const index = orbs.indexOf(orb_to_remove);
   if (index === -1) return orbs;
   return [...orbs.slice(0, index), ...orbs.slice(index + 1)];
+}
+
+// Initialize a new game with all default values
+export function init_game(): Game {
+  return {
+    level: 1,
+    points: 0,
+    milestone: 10,
+    health: 5,
+    max_health: 5,
+    multiplier: 1,
+    chips: 0,
+    starting_orbs: get_starting_orbs(),
+    purchased_orbs: [],
+  };
 }
