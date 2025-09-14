@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { game_state, go_to_menu } from '../state/game_state.svelte';
+  import { game_state, back_to_menu } from '../state/game_state.svelte';
 
   let game = $derived(game_state.game!);
   let points_progress = $derived((game.points / game.milestone) * 100);
@@ -59,7 +59,7 @@
 
   <!-- Back to Menu Button -->
   <button
-    onclick={go_to_menu}
+    onclick={back_to_menu}
     class="w-full px-4 py-2 bg-black text-white font-bold uppercase tracking-wide border-2 border-white hover:bg-white hover:text-black transition-colors"
   >
     Back to Menu

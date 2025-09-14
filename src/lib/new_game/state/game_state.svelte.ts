@@ -5,29 +5,29 @@ export const game_state = $state({
   game: null as Game | null,
 });
 
-// Navigation functions - atomic, single field mutations
-export function go_to_menu() {
+// Private atomic navigation functions
+function go_to_menu() {
   game_state.current_view = GameView.Menu;
 }
 
-export function go_to_shop() {
+function go_to_shop() {
   game_state.current_view = GameView.Shop;
 }
 
-export function go_to_game() {
+function go_to_game() {
   game_state.current_view = GameView.Game;
 }
 
-export function go_to_win() {
+function go_to_win() {
   game_state.current_view = GameView.Win;
 }
 
-export function go_to_lose() {
+function go_to_lose() {
   game_state.current_view = GameView.Lose;
 }
 
-// Game initialization - atomic functions
-export function create_game() {
+// Private atomic game functions
+function create_game() {
   game_state.game = {
     level: 1,
     points: 0,
@@ -39,62 +39,128 @@ export function create_game() {
   };
 }
 
-export function clear_game() {
+function clear_game() {
   game_state.game = null;
 }
 
-// Composite function using atomic functions
-export function init_game() {
-  create_game();
-  go_to_game();
-}
-
-// Game state mutation functions - atomic
-export function set_level(level: number) {
+// Private atomic mutation functions
+function set_level(level: number) {
   if (game_state.game) game_state.game.level = level;
 }
 
-export function set_points(points: number) {
+function set_points(points: number) {
   if (game_state.game) game_state.game.points = points;
 }
 
-export function set_milestone(milestone: number) {
+function set_milestone(milestone: number) {
   if (game_state.game) game_state.game.milestone = milestone;
 }
 
-export function set_health(health: number) {
+function set_health(health: number) {
   if (game_state.game) game_state.game.health = health;
 }
 
-export function set_max_health(max_health: number) {
+function set_max_health(max_health: number) {
   if (game_state.game) game_state.game.max_health = max_health;
 }
 
-export function set_multiplier(multiplier: number) {
+function set_multiplier(multiplier: number) {
   if (game_state.game) game_state.game.multiplier = multiplier;
 }
 
-export function set_chips(chips: number) {
+function set_chips(chips: number) {
   if (game_state.game) game_state.game.chips = chips;
 }
 
-// Increment/decrement helpers - atomic
-export function add_points(amount: number) {
+// Private atomic increment/decrement helpers
+function add_points(amount: number) {
   if (game_state.game) game_state.game.points += amount;
 }
 
-export function add_chips(amount: number) {
+function add_chips(amount: number) {
   if (game_state.game) game_state.game.chips += amount;
 }
 
-export function add_health(amount: number) {
+function add_health(amount: number) {
   if (game_state.game) {
     game_state.game.health = Math.min(game_state.game.health + amount, game_state.game.max_health);
   }
 }
 
-export function remove_health(amount: number) {
+function remove_health(amount: number) {
   if (game_state.game) {
     game_state.game.health = Math.max(0, game_state.game.health - amount);
+  }
+}
+
+// EXPORTED COMPOSITE FUNCTIONS - These are the only functions that should be used by components
+
+// Start a new game
+export function init_game() {
+  create_game();
+  go_to_game();
+}
+
+// Return to menu and clean up
+export function back_to_menu() {
+  go_to_menu();
+  clear_game();
+}
+
+// Navigate to shop (keeping game state)
+export function open_shop() {
+  go_to_shop();
+}
+
+// Return from shop to game
+export function close_shop() {
+  go_to_game();
+}
+
+// Game over scenarios
+export function trigger_win() {
+  go_to_win();
+}
+
+export function trigger_lose() {
+  go_to_lose();
+  if (game_state.game) {
+    set_health(0);
+  }
+}
+
+// Gameplay actions
+export function earn_points(amount: number) {
+  add_points(amount);
+  // Check for milestone
+  if (game_state.game && game_state.game.points >= game_state.game.milestone) {
+    // Handle level up or win condition
+  }
+}
+
+export function spend_chips(amount: number) {
+  if (game_state.game && game_state.game.chips >= amount) {
+    add_chips(-amount);
+    return true;
+  }
+  return false;
+}
+
+export function take_damage(amount: number) {
+  remove_health(amount);
+  if (game_state.game && game_state.game.health <= 0) {
+    trigger_lose();
+  }
+}
+
+export function heal(amount: number) {
+  add_health(amount);
+}
+
+export function level_up() {
+  if (game_state.game) {
+    set_level(game_state.game.level + 1);
+    set_milestone(game_state.game.milestone + 10);
+    set_points(0);
   }
 }
