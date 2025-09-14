@@ -1,14 +1,9 @@
 <script lang="ts">
-  import { game_state } from '../state/game_state.svelte';
-  import { GameView } from '../state/types';
+  import { game_state, back_to_menu } from '../state/game_state.svelte';
 
   let game = $derived(game_state.game!);
   let points_progress = $derived((game.points / game.milestone) * 100);
   let health_progress = $derived((game.health / game.max_health) * 100);
-
-  function back_to_menu() {
-    game_state.current_view = GameView.Menu;
-  }
 </script>
 
 <div class="bg-black p-4 rounded-lg border border-white">

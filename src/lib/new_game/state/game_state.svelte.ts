@@ -17,3 +17,23 @@ export function init_game() {
   };
   game_state.current_view = GameView.Game;
 }
+
+export function back_to_menu() {
+  game_state.current_view = GameView.Menu;
+}
+
+export function go_to_shop() {
+  game_state.current_view = GameView.Shop;
+}
+
+export function go_to_game() {
+  game_state.current_view = GameView.Game;
+}
+
+export function go_to_win() {
+  game_state.current_view = GameView.Win;
+}
+
+export function go_to_lose() {
+  game_state.current_view = GameView.Lose;
+}
