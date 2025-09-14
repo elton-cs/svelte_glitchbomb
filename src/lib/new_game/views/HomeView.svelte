@@ -1,10 +1,6 @@
 <script lang="ts">
-  import { game_state, init_game } from '../state/game_state.svelte';
-  import { GameView } from '../state/types';
-
-  function get_view_name(view: GameView): string {
-    return GameView[view];
-  }
+  import { init_game } from '../state/game_state.svelte';
+  import CurrentView from '../components/CurrentView.svelte';
 
   function start_game() {
     init_game();
@@ -17,10 +13,7 @@
     <p class="text-sm text-gray-400">Mobile Version</p>
   </div>
 
-  <div class="text-center mb-6">
-    <p class="text-gray-400 text-sm mb-2">Current View</p>
-    <p class="text-xl font-bold text-white">{get_view_name(game_state.current_view)}</p>
-  </div>
+  <CurrentView />
 
   <button
     onclick={start_game}

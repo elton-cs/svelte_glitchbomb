@@ -1,5 +1,5 @@
 <script lang="ts">
-  import HomeScreen from './views/HomeScreen.svelte';
+  import HomeView from './views/HomeView.svelte';
   import GameViewComponent from './views/GameView.svelte';
   import { game_state } from './state/game_state.svelte';
   import { GameView } from './state/types';
@@ -7,7 +7,7 @@
 
 <div class="mobile-view-container">
   {#if game_state.current_view === GameView.Menu}
-    <HomeScreen />
+    <HomeView />
   {:else if game_state.current_view === GameView.Shop}
     <!-- Shop view will go here -->
     <div class="bg-black p-4 rounded-lg border border-white">

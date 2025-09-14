@@ -1,5 +1,6 @@
 <script lang="ts">
   import { game_state, back_to_menu } from '../state/game_state.svelte';
+  import CurrentView from '../components/CurrentView.svelte';
 
   let game = $derived(game_state.game!);
   let points_progress = $derived((game.points / game.milestone) * 100);
@@ -7,6 +8,8 @@
 </script>
 
 <div class="bg-black p-4 rounded-lg border border-white">
+  <CurrentView />
+
   <div class="text-center mb-6">
     <h2 class="text-3xl font-bold text-white">LEVEL {game.level}</h2>
   </div>

@@ -4,7 +4,7 @@ import { ModifierType, type Orb, type Modifier, type Game } from "./types";
 function create_modifier(type: ModifierType, value: number): Modifier {
   return {
     type,
-    value: { value }
+    value: { value },
   };
 }
 
@@ -14,18 +14,18 @@ function create_orb(modifiers: Modifier[]): Orb {
 }
 
 // Get the starting orbs for a new game
-function get_starting_orbs(): Orb[] {
+function build_starting_orbs(): Orb[] {
   const starting_orbs: Orb[] = [
     // 4 Bomb orbs with different values (based on old implementation)
-    create_orb([create_modifier(ModifierType.Bomb, 1)]),  // Bomb 1
-    create_orb([create_modifier(ModifierType.Bomb, 1)]),  // Bomb 1
-    create_orb([create_modifier(ModifierType.Bomb, 2)]),  // Double Bomb
-    create_orb([create_modifier(ModifierType.Bomb, 3)]),  // Triple Bomb
+    create_orb([create_modifier(ModifierType.Bomb, 1)]), // Bomb 1
+    create_orb([create_modifier(ModifierType.Bomb, 1)]), // Bomb 1
+    create_orb([create_modifier(ModifierType.Bomb, 2)]), // Double Bomb
+    create_orb([create_modifier(ModifierType.Bomb, 3)]), // Triple Bomb
 
     // 3 Point orbs with value 5 each
-    create_orb([create_modifier(ModifierType.Point, 5)]),  // Points 5
-    create_orb([create_modifier(ModifierType.Point, 5)]),  // Points 5
-    create_orb([create_modifier(ModifierType.Point, 5)]),  // Points 5
+    create_orb([create_modifier(ModifierType.Point, 5)]), // Points 5
+    create_orb([create_modifier(ModifierType.Point, 5)]), // Points 5
+    create_orb([create_modifier(ModifierType.Point, 5)]), // Points 5
 
     // 1 Health orb
     create_orb([create_modifier(ModifierType.Health, 1)]), // Health 1
@@ -47,7 +47,7 @@ export function init_game(): Game {
     max_health: 5,
     multiplier: 1,
     chips: 0,
-    starting_orbs: get_starting_orbs(),
+    starting_orbs: build_starting_orbs(),
     purchased_orbs: [],
   };
 }
