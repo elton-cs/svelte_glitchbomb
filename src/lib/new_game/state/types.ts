@@ -6,6 +6,26 @@ export enum GameView {
   Lose,
 }
 
+export enum ModifierType {
+  Point,
+  Health,
+  Bomb,
+  Multiplier,
+}
+
+export interface ModifierValue {
+  value: number;
+}
+
+export interface Modifier {
+  type: ModifierType;
+  value: ModifierValue;
+}
+
+export interface Orb {
+  modifiers: Modifier[];
+}
+
 export interface Game {
   level: number;
   points: number;
@@ -14,4 +34,6 @@ export interface Game {
   max_health: number;
   multiplier: number;
   chips: number;
+  starting_orbs: Orb[];
+  purchased_orbs: Orb[];
 }
