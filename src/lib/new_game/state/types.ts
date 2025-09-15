@@ -22,8 +22,17 @@ export interface Modifier {
   value: ModifierValue;
 }
 
+export enum OrbCategory {
+  Bomb,
+  Health,
+  Point,
+  Multiplier,
+  Special,
+}
+
 export interface Orb {
   modifiers: Modifier[];
+  category: OrbCategory;
 }
 
 export interface Game {

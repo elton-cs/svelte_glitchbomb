@@ -18,6 +18,12 @@ export function back_to_menu() {
   game_state.game = null;
 }
 
+// Restart the current game with fresh state
+export function restart_game() {
+  game_state.current_view = GameView.Game;
+  game_state.game = create_new_game();
+}
+
 // Apply orb effects to game state
 export function apply_orb(orb: Orb) {
   if (!game_state.game) return;

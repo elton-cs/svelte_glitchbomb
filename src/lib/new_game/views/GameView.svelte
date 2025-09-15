@@ -1,7 +1,8 @@
 <script lang="ts">
-  import { game_state, back_to_menu, pull_orb } from '../state/game_state.svelte';
+  import { game_state, back_to_menu, pull_orb, restart_game } from '../state/game_state.svelte';
   import CurrentView from '../components/CurrentView.svelte';
   import GameResult from '../components/GameResult.svelte';
+  import PlaygroundOrbs from '../components/PlaygroundOrbs.svelte';
 
   let game = $derived(game_state.game!);
   let points_progress = $derived((game.points / game.milestone) * 100);
@@ -72,6 +73,9 @@
     </div>
   {/if}
 
+  <!-- Playground Orbs Display -->
+  <PlaygroundOrbs />
+
   <!-- Game Actions -->
   <div class="space-y-4">
     <button
@@ -81,6 +85,15 @@
     >
       Pull Orb ({game.playground_orbs.length} left)
     </button>
+
+    {#if show_result}
+      <button
+        onclick={restart_game}
+        class="w-full px-4 py-3 bg-green-600 text-white font-bold uppercase tracking-wide border-2 border-green-600 hover:bg-green-700 hover:border-green-700 transition-colors"
+      >
+        Restart Game
+      </button>
+    {/if}
 
     <button
       onclick={back_to_menu}
