@@ -45,6 +45,21 @@ function create_orb(modifiers: Modifier[], category: OrbCategory): Orb {
   return { modifiers, category };
 }
 
+// Helper to create a shop item with all needed parameters
+function build_shop_item(
+  modifier_type: ModifierType,
+  modifier_value: number,
+  orb_category: OrbCategory,
+  rarity_type: RarityType,
+  price: number,
+): ShopItem {
+  return {
+    orb: create_orb([create_modifier(modifier_type, modifier_value)], orb_category),
+    rarity: RARITY_INFO[rarity_type],
+    price,
+  };
+}
+
 // Get the starting orbs for a new game
 function build_starting_orbs(): Orb[] {
   const starting_orbs: Orb[] = [
@@ -99,136 +114,31 @@ export function flatten_and_shuffle_orbs(orb_lists: Orb[][]): Orb[] {
   return shuffled_orbs;
 }
 
-// Common shop items pool (7 items, select 3)
+// Common shop items pool (8 items, select 3)
 const COMMON_SHOP_ITEMS: ShopItem[] = [
-  {
-    orb: create_orb(
-      [create_modifier(ModifierType.Point, 5)],
-      OrbCategory.Point,
-    ),
-    rarity: RARITY_INFO[RarityType.Common],
-    price: 5,
-  },
-  {
-    orb: create_orb(
-      [create_modifier(ModifierType.Point, 7)],
-      OrbCategory.Point,
-    ),
-    rarity: RARITY_INFO[RarityType.Common],
-    price: 8,
-  },
-  {
-    orb: create_orb(
-      [create_modifier(ModifierType.Point, 8)],
-      OrbCategory.Point,
-    ),
-    rarity: RARITY_INFO[RarityType.Common],
-    price: 5,
-  },
-  {
-    orb: create_orb(
-      [create_modifier(ModifierType.Health, 1)],
-      OrbCategory.Health,
-    ),
-    rarity: RARITY_INFO[RarityType.Common],
-    price: 9,
-  },
-  {
-    orb: create_orb(
-      [create_modifier(ModifierType.Health, 2)],
-      OrbCategory.Health,
-    ),
-    rarity: RARITY_INFO[RarityType.Common],
-    price: 4,
-  },
-  {
-    orb: create_orb(
-      [create_modifier(ModifierType.Multiplier, 0.5)],
-      OrbCategory.Multiplier,
-    ),
-    rarity: RARITY_INFO[RarityType.Common],
-    price: 9,
-  },
-  {
-    orb: create_orb(
-      [create_modifier(ModifierType.PointsPerBombPulled, 4)],
-      OrbCategory.Special,
-    ),
-    rarity: RARITY_INFO[RarityType.Common],
-    price: 6,
-  },
-  {
-    orb: create_orb(
-      [create_modifier(ModifierType.GlitchChips, 15)],
-      OrbCategory.Special,
-    ),
-    rarity: RARITY_INFO[RarityType.Common],
-    price: 5,
-  },
+  build_shop_item(ModifierType.Point, 5, OrbCategory.Point, RarityType.Common, 5),
+  build_shop_item(ModifierType.Point, 7, OrbCategory.Point, RarityType.Common, 8),
+  build_shop_item(ModifierType.Point, 8, OrbCategory.Point, RarityType.Common, 5),
+  build_shop_item(ModifierType.Health, 1, OrbCategory.Health, RarityType.Common, 9),
+  build_shop_item(ModifierType.Health, 2, OrbCategory.Health, RarityType.Common, 4),
+  build_shop_item(ModifierType.Multiplier, 0.5, OrbCategory.Multiplier, RarityType.Common, 9),
+  build_shop_item(ModifierType.PointsPerBombPulled, 4, OrbCategory.Special, RarityType.Common, 6),
+  build_shop_item(ModifierType.GlitchChips, 15, OrbCategory.Special, RarityType.Common, 5),
 ];
 
 // Rare shop items pool (4 items, select 2)
 const RARE_SHOP_ITEMS: ShopItem[] = [
-  {
-    orb: create_orb(
-      [create_modifier(ModifierType.Point, 9)],
-      OrbCategory.Point,
-    ),
-    rarity: RARITY_INFO[RarityType.Rare],
-    price: 13,
-  },
-  {
-    orb: create_orb(
-      [create_modifier(ModifierType.Point, 12)],
-      OrbCategory.Point,
-    ),
-    rarity: RARITY_INFO[RarityType.Rare],
-    price: 12,
-  },
-  {
-    orb: create_orb(
-      [create_modifier(ModifierType.Multiplier, 1.0)],
-      OrbCategory.Multiplier,
-    ),
-    rarity: RARITY_INFO[RarityType.Rare],
-    price: 14,
-  },
-  {
-    orb: create_orb(
-      [create_modifier(ModifierType.Multiplier, 1.5)],
-      OrbCategory.Multiplier,
-    ),
-    rarity: RARITY_INFO[RarityType.Rare],
-    price: 16,
-  },
+  build_shop_item(ModifierType.Point, 9, OrbCategory.Point, RarityType.Rare, 13),
+  build_shop_item(ModifierType.Point, 12, OrbCategory.Point, RarityType.Rare, 12),
+  build_shop_item(ModifierType.Multiplier, 1.0, OrbCategory.Multiplier, RarityType.Rare, 14),
+  build_shop_item(ModifierType.Multiplier, 1.5, OrbCategory.Multiplier, RarityType.Rare, 16),
 ];
 
 // Cosmic shop items pool (3 items, select 1)
 const COSMIC_SHOP_ITEMS: ShopItem[] = [
-  {
-    orb: create_orb(
-      [create_modifier(ModifierType.Health, 3)],
-      OrbCategory.Health,
-    ),
-    rarity: RARITY_INFO[RarityType.Cosmic],
-    price: 21,
-  },
-  {
-    orb: create_orb(
-      [create_modifier(ModifierType.PointsPerAnyOrb, 3)],
-      OrbCategory.Special,
-    ),
-    rarity: RARITY_INFO[RarityType.Cosmic],
-    price: 25,
-  },
-  {
-    orb: create_orb(
-      [create_modifier(ModifierType.PointsPerBombPulled, 6)],
-      OrbCategory.Special,
-    ),
-    rarity: RARITY_INFO[RarityType.Cosmic],
-    price: 30,
-  },
+  build_shop_item(ModifierType.Health, 3, OrbCategory.Health, RarityType.Cosmic, 21),
+  build_shop_item(ModifierType.PointsPerAnyOrb, 3, OrbCategory.Special, RarityType.Cosmic, 25),
+  build_shop_item(ModifierType.PointsPerBombPulled, 6, OrbCategory.Special, RarityType.Cosmic, 30),
 ];
 
 // Utility function to shuffle an array (reusable version of Fisher-Yates)
