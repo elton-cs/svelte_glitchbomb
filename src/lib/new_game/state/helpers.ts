@@ -193,7 +193,7 @@ export function apply_orb(game: Game, orb: Orb): void {
 
   // Award chips if player reaches milestone (wins the game)
   if (game.points >= game.milestone) {
-    const chips_earned = game.points - game.milestone;
+    const chips_earned = game.points;
     game.chips += chips_earned;
   }
 }
