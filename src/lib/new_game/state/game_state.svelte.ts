@@ -25,8 +25,13 @@ export function restart_game() {
 }
 
 // Enter shop after winning - preserve game state and go to shop view
+// For level 7, show Victory view instead
 export function enter_shop() {
-  game_state.current_view = GameView.Shop;
+  if (game_state.game?.level === 7) {
+    game_state.current_view = GameView.Victory;
+  } else {
+    game_state.current_view = GameView.Shop;
+  }
 }
 
 // Continue to next level from shop
@@ -67,4 +72,10 @@ export function pull_orb() {
 export function buy_item(item_index: number): boolean {
   if (!game_state.game) return false;
   return purchase_item(game_state.game, item_index);
+}
+
+// Restart completely from level 1 (for Victory view)
+export function restart_from_beginning() {
+  game_state.current_view = GameView.Game;
+  game_state.game = create_new_game(); // Fresh start - no carried over orbs or chips
 }

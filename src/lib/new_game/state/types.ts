@@ -4,6 +4,7 @@ export enum GameView {
   Game,
   Win,
   Lose,
+  Victory,
 }
 
 export enum ModifierType {
