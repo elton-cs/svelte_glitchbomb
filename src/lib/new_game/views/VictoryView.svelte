@@ -19,35 +19,43 @@
   <div class="bg-gray-900 p-4 rounded border border-gray-600 mb-6">
     <h3 class="text-white font-bold text-center mb-4 uppercase tracking-wide">Final Stats</h3>
 
-    <div class="grid grid-cols-2 gap-4 text-center">
-      <!-- Level -->
-      <div>
-        <div class="text-3xl font-bold text-purple-400 mb-1">{game.level}</div>
-        <div class="text-white text-xs uppercase">Level</div>
+    <div class="space-y-4">
+      <!-- Top Row: 2 items -->
+      <div class="grid grid-cols-2 gap-4 text-center">
+        <!-- Level -->
+        <div>
+          <div class="text-3xl font-bold text-purple-400 mb-1">{game.level}</div>
+          <div class="text-white text-xs uppercase">Level</div>
+        </div>
+
+        <!-- Final Points -->
+        <div>
+          <div class="text-3xl font-bold text-green-400 mb-1">{game.points}</div>
+          <div class="text-white text-xs uppercase">Final Points</div>
+        </div>
       </div>
 
-      <!-- Final Points -->
-      <div>
-        <div class="text-3xl font-bold text-green-400 mb-1">{game.points}</div>
-        <div class="text-white text-xs uppercase">Final Points</div>
+      <!-- Middle Row: 1 item centered -->
+      <div class="flex justify-center">
+        <div class="text-center">
+          <div class="text-3xl font-bold text-red-400 mb-1">{game.health}</div>
+          <div class="text-white text-xs uppercase">Health</div>
+        </div>
       </div>
 
-      <!-- Health -->
-      <div>
-        <div class="text-3xl font-bold text-red-400 mb-1">{game.health}</div>
-        <div class="text-white text-xs uppercase">Health</div>
-      </div>
+      <!-- Bottom Row: 2 items -->
+      <div class="grid grid-cols-2 gap-4 text-center">
+        <!-- Multiplier -->
+        <div>
+          <div class="text-3xl font-bold text-blue-400 mb-1">{game.multiplier}x</div>
+          <div class="text-white text-xs uppercase">Multiplier</div>
+        </div>
 
-      <!-- Multiplier -->
-      <div>
-        <div class="text-3xl font-bold text-blue-400 mb-1">{game.multiplier}x</div>
-        <div class="text-white text-xs uppercase">Multiplier</div>
-      </div>
-
-      <!-- Orbs Purchased -->
-      <div>
-        <div class="text-3xl font-bold text-orange-400 mb-1">{game.purchased_orbs.length}</div>
-        <div class="text-white text-xs uppercase">Orbs Bought</div>
+        <!-- Orbs Purchased -->
+        <div>
+          <div class="text-3xl font-bold text-orange-400 mb-1">{game.purchased_orbs.length}</div>
+          <div class="text-white text-xs uppercase">Orbs Bought</div>
+        </div>
       </div>
     </div>
   </div>
