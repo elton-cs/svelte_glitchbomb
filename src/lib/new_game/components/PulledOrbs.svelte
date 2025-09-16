@@ -1,47 +1,9 @@
 <script lang="ts">
     import { game_state } from "../state/game_state.svelte";
-    import {
-        ModifierType,
-        CATEGORY_INFO,
-        type Orb,
-        type Modifier,
-    } from "../state/types";
+    import { CATEGORY_INFO } from "../state/types";
+    import { get_orb_display_text } from "../state/helpers";
 
     let game = $derived(game_state.current_game!);
-
-    // Get modifier initial from type (for displaying modifier text)
-    function get_modifier_initial(type: ModifierType): string {
-        switch (type) {
-            case ModifierType.Point:
-                return "P";
-            case ModifierType.Health:
-                return "H";
-            case ModifierType.Bomb:
-                return "B";
-            case ModifierType.Multiplier:
-                return "M";
-            case ModifierType.PointsPerAnyOrb:
-                return "A";
-            case ModifierType.PointsPerBombPulled:
-                return "X";
-            case ModifierType.GlitchChips:
-                return "GC";
-            case ModifierType.Moonrocks:
-                return "MR";
-            default:
-                return "?";
-        }
-    }
-
-    // Generate display text for an orb (e.g., "B3", "P5H1", "B3M5")
-    function get_orb_display_text(orb: Orb): string {
-        return orb.modifiers
-            .map(
-                (modifier: Modifier) =>
-                    `${get_modifier_initial(modifier.type)}${modifier.value.value}`,
-            )
-            .join("");
-    }
 </script>
 
 <div class="mb-6">

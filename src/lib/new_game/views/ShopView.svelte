@@ -5,15 +5,17 @@
         buy_item,
         continue_to_next_level,
     } from "../state/game_state.svelte";
-    import { ModifierType, CATEGORY_INFO, type ShopItem } from "../state/types";
-    import { get_level_cost, can_afford_level } from "../state/helpers";
+    import { CATEGORY_INFO, type ShopItem } from "../state/types";
+    import { get_level_cost, can_afford_level, get_modifier_text, get_rarity_name } from "../state/helpers";
     import CurrentView from "../components/CurrentView.svelte";
 
     let game = $derived(game_state.current_game!);
     let next_level = $derived(game.level + 1);
     let next_level_cost = $derived(get_level_cost(next_level));
-    let can_afford_next_level = $derived(can_afford_level(game_state.player, next_level));
-    let error_message = $state('');
+    let can_afford_next_level = $derived(
+        can_afford_level(game_state.player, next_level),
+    );
+    let error_message = $state("");
 
     // Get next level milestone
     function get_next_level_milestone(current_level: number): number {
@@ -26,59 +28,16 @@
     function handle_continue_to_next_level() {
         const success = continue_to_next_level();
         if (!success) {
-            error_message = 'Insufficient moonrocks for next level!';
+            error_message = "Insufficient moonrocks for next level!";
             // Clear error message after 3 seconds
             setTimeout(() => {
-                error_message = '';
+                error_message = "";
             }, 3000);
         } else {
-            error_message = '';
+            error_message = "";
         }
     }
 
-    // Get modifier display text for shop item
-    function get_modifier_text(item: ShopItem): string {
-        return item.orb.modifiers
-            .map((mod) => {
-                const initial = get_modifier_initial(mod.type);
-                return `${initial}${mod.value.value}`;
-            })
-            .join("");
-    }
-
-    // Get modifier initial
-    function get_modifier_initial(type: ModifierType): string {
-        switch (type) {
-            case ModifierType.Point:
-                return "P";
-            case ModifierType.Health:
-                return "H";
-            case ModifierType.Bomb:
-                return "B";
-            case ModifierType.Multiplier:
-                return "M";
-            case ModifierType.PointsPerAnyOrb:
-                return "A";
-            case ModifierType.PointsPerBombPulled:
-                return "X";
-            default:
-                return "?";
-        }
-    }
-
-    // Get rarity name
-    function get_rarity_name(item: ShopItem): string {
-        switch (item.rarity.rarity) {
-            case 0:
-                return "Common";
-            case 1:
-                return "Rare";
-            case 2:
-                return "Cosmic";
-            default:
-                return "Unknown";
-        }
-    }
 
     // Purchase item
     function purchase(index: number) {
@@ -102,11 +61,15 @@
         <!-- Moonrocks and Chips Display -->
         <div class="grid grid-cols-2 gap-4 mb-2">
             <div>
-                <div class="text-purple-400 text-lg font-bold">{game_state.player.moonrocks}</div>
+                <div class="text-purple-400 text-lg font-bold">
+                    {game_state.player.moonrocks}
+                </div>
                 <div class="text-white text-xs uppercase">Moonrocks</div>
             </div>
             <div>
-                <div class="text-yellow-400 text-lg font-bold">{game.chips}</div>
+                <div class="text-yellow-400 text-lg font-bold">
+                    {game.glitchchips}
+                </div>
                 <div class="text-white text-xs uppercase">Chips</div>
             </div>
         </div>
@@ -127,7 +90,7 @@
     <div class="grid grid-cols-2 gap-3 mb-6">
         {#each game.shop_items as item, index}
             {@const category_info = CATEGORY_INFO[item.orb.category]}
-            {@const can_afford = game.chips >= item.price}
+            {@const can_afford = game.glitchchips >= item.price}
             <div class="border border-white rounded p-3 bg-gray-900">
                 <!-- Item Header -->
                 <div class="flex items-center justify-between mb-2">
@@ -165,7 +128,9 @@
 
     <!-- Error Message -->
     {#if error_message}
-        <div class="bg-red-900 border border-red-500 text-red-300 px-4 py-2 rounded mb-4 text-center text-sm">
+        <div
+            class="bg-red-900 border border-red-500 text-red-300 px-4 py-2 rounded mb-4 text-center text-sm"
+        >
             {error_message}
         </div>
     {/if}
@@ -181,8 +146,7 @@
             >
                 {can_afford_next_level
                     ? `Continue to Level ${next_level} (${next_level_cost} Moonrocks)`
-                    : `Insufficient Moonrocks (Need ${next_level_cost})`
-                }
+                    : `Insufficient Moonrocks (Need ${next_level_cost})`}
             </button>
         {:else}
             <button

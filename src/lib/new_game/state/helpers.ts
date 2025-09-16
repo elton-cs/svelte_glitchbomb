@@ -350,3 +350,61 @@ export function cash_out_points(player: Player, points: number): void {
   player.moonrocks += points;
   save_player_to_storage(player);
 }
+
+// Get modifier initial from type (for displaying modifier text)
+export function get_modifier_initial(type: ModifierType): string {
+  switch (type) {
+    case ModifierType.Point:
+      return "P";
+    case ModifierType.Health:
+      return "H";
+    case ModifierType.Bomb:
+      return "B";
+    case ModifierType.Multiplier:
+      return "M";
+    case ModifierType.PointsPerAnyOrb:
+      return "P/O";
+    case ModifierType.PointsPerBombPulled:
+      return "P/B";
+    case ModifierType.GlitchChips:
+      return "GC";
+    case ModifierType.Moonrocks:
+      return "MR";
+    default:
+      return "?";
+  }
+}
+
+// Generate display text for an orb (e.g., "B:3", "P:5H:1", "GC:15")
+export function get_orb_display_text(orb: Orb): string {
+  return orb.modifiers
+    .map(
+      (modifier: Modifier) =>
+        `${get_modifier_initial(modifier.type)}:${modifier.value.value}`,
+    )
+    .join("");
+}
+
+// Get modifier display text for shop item (without colons for shop display)
+export function get_modifier_text(item: ShopItem): string {
+  return item.orb.modifiers
+    .map((mod) => {
+      const initial = get_modifier_initial(mod.type);
+      return `${initial}${mod.value.value}`;
+    })
+    .join("");
+}
+
+// Get rarity name for shop display
+export function get_rarity_name(item: ShopItem): string {
+  switch (item.rarity.rarity) {
+    case 0:
+      return "Common";
+    case 1:
+      return "Rare";
+    case 2:
+      return "Cosmic";
+    default:
+      return "Unknown";
+  }
+}
