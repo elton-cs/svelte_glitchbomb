@@ -117,7 +117,7 @@
         <button
             onclick={pull_orb}
             disabled={game.playground_orbs.length === 0 || show_result}
-            class="w-full px-4 py-3 bg-white text-black font-bold uppercase tracking-wide border-2 border-white hover:bg-gray-200 disabled:bg-gray-600 disabled:text-gray-400 disabled:cursor-not-allowed transition-colors"
+            class="w-full px-4 py-3 bg-black text-white font-bold uppercase tracking-wide border-2 border-white hover:bg-white hover:text-black disabled:bg-gray-600 disabled:text-gray-400 disabled:cursor-not-allowed transition-colors"
         >
             Pull Orb ({game.playground_orbs.length} left)
         </button>
@@ -139,7 +139,7 @@
                     <!-- For levels 1-6: Shop or Cash Out -->
                     <button
                         onclick={enter_shop}
-                        class="w-full px-4 py-3 bg-white text-black font-bold uppercase tracking-wide border-2 border-white hover:bg-black hover:text-white transition-colors"
+                        class="w-full px-4 py-3 bg-black text-white font-bold uppercase tracking-wide border-2 border-white hover:bg-white hover:text-black transition-colors"
                     >
                         Enter Shop & Continue
                     </button>
@@ -153,7 +153,7 @@
                     <!-- For level 7: Only cash out since game is complete -->
                     <button
                         onclick={cash_out_after_win}
-                        class="w-full px-4 py-3 bg-white text-black font-bold uppercase tracking-wide border-2 border-white hover:bg-black hover:text-white transition-colors"
+                        class="w-full px-4 py-3 bg-black text-white font-bold uppercase tracking-wide border-2 border-white hover:bg-white hover:text-black transition-colors"
                     >
                         Cash Out ({game.points} Moonrocks)
                     </button>
@@ -162,13 +162,13 @@
                 <!-- Game over: Cash out or restart -->
                 <button
                     onclick={cash_out_and_quit}
-                    class="w-full px-4 py-3 bg-white text-black font-bold uppercase tracking-wide border-2 border-white hover:bg-black hover:text-white transition-colors"
+                    class="w-full px-4 py-3 bg-black text-white font-bold uppercase tracking-wide border-2 border-white hover:bg-white hover:text-black transition-colors"
                 >
                     Cash Out ({game.points} Moonrocks)
                 </button>
                 <button
                     onclick={restart_game}
-                    class="w-full px-4 py-2 bg-white text-black font-bold uppercase tracking-wide border-2 border-white hover:bg-black hover:text-white transition-colors"
+                    class="w-full px-4 py-2 bg-black text-white font-bold uppercase tracking-wide border-2 border-white hover:bg-white hover:text-black transition-colors"
                 >
                     Restart Game
                 </button>
