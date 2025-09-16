@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { game_state, back_to_menu, pull_orb, restart_game } from '../state/game_state.svelte';
+  import { game_state, back_to_menu, pull_orb, restart_game, enter_shop } from '../state/game_state.svelte';
   import CurrentView from '../components/CurrentView.svelte';
   import GameResult from '../components/GameResult.svelte';
   import OrbCategoryBar from '../components/OrbCategoryBar.svelte';
@@ -91,12 +91,21 @@
     </button>
 
     {#if show_result}
-      <button
-        onclick={restart_game}
-        class="w-full px-4 py-3 bg-white text-black font-bold uppercase tracking-wide border-2 border-white hover:bg-black hover:text-white transition-colors"
-      >
-        Restart Game
-      </button>
+      {#if is_win}
+        <button
+          onclick={enter_shop}
+          class="w-full px-4 py-3 bg-white text-black font-bold uppercase tracking-wide border-2 border-white hover:bg-black hover:text-white transition-colors"
+        >
+          Enter Shop
+        </button>
+      {:else}
+        <button
+          onclick={restart_game}
+          class="w-full px-4 py-3 bg-white text-black font-bold uppercase tracking-wide border-2 border-white hover:bg-black hover:text-white transition-colors"
+        >
+          Restart Game
+        </button>
+      {/if}
     {/if}
 
     <button

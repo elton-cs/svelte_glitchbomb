@@ -1,6 +1,7 @@
 <script lang="ts">
   import HomeView from './views/HomeView.svelte';
   import GameViewComponent from './views/GameView.svelte';
+  import ShopView from './views/ShopView.svelte';
   import { game_state } from './state/game_state.svelte';
   import { GameView } from './state/types';
 </script>
@@ -9,10 +10,7 @@
   {#if game_state.current_view === GameView.Menu}
     <HomeView />
   {:else if game_state.current_view === GameView.Shop}
-    <!-- Shop view will go here -->
-    <div class="bg-black p-4 rounded-lg border border-white">
-      <h2 class="text-2xl font-bold text-white text-center">SHOP</h2>
-    </div>
+    <ShopView />
   {:else if game_state.current_view === GameView.Game}
     <GameViewComponent />
   {:else if game_state.current_view === GameView.Win}

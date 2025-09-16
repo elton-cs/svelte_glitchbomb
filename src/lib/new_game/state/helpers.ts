@@ -1,9 +1,12 @@
 import {
   ModifierType,
   OrbCategory,
+  RarityType,
+  RARITY_INFO,
   type Orb,
   type Modifier,
   type Game,
+  type ShopItem,
 } from "./types";
 
 // Helper to create a modifier
@@ -73,6 +76,49 @@ export function flatten_and_shuffle_orbs(orb_lists: Orb[][]): Orb[] {
   return shuffled_orbs;
 }
 
+// Generate shop items for purchase
+function generate_shop_items(): ShopItem[] {
+  const shop_items: ShopItem[] = [
+    // Common items (cheaper, basic effects)
+    {
+      orb: create_orb([create_modifier(ModifierType.Point, 8)], OrbCategory.Point),
+      rarity: RARITY_INFO[RarityType.Common],
+      price: 5,
+    },
+    {
+      orb: create_orb([create_modifier(ModifierType.Health, 2)], OrbCategory.Health),
+      rarity: RARITY_INFO[RarityType.Common],
+      price: 4,
+    },
+
+    // Rare items (moderate price, better effects)
+    {
+      orb: create_orb([create_modifier(ModifierType.Point, 12)], OrbCategory.Point),
+      rarity: RARITY_INFO[RarityType.Rare],
+      price: 12,
+    },
+    {
+      orb: create_orb([create_modifier(ModifierType.Multiplier, 2)], OrbCategory.Multiplier),
+      rarity: RARITY_INFO[RarityType.Rare],
+      price: 15,
+    },
+
+    // Cosmic items (expensive, powerful effects)
+    {
+      orb: create_orb([create_modifier(ModifierType.PointsPerAnyOrb, 3)], OrbCategory.Special),
+      rarity: RARITY_INFO[RarityType.Cosmic],
+      price: 25,
+    },
+    {
+      orb: create_orb([create_modifier(ModifierType.PointsPerBombPulled, 6)], OrbCategory.Special),
+      rarity: RARITY_INFO[RarityType.Cosmic],
+      price: 30,
+    },
+  ];
+
+  return shop_items;
+}
+
 // Initialize a new game with all default values
 export function init_game(): Game {
   const starting_orbs = build_starting_orbs();
@@ -94,6 +140,7 @@ export function init_game(): Game {
     purchased_orbs,
     playground_orbs,
     pulled_orbs: [],
+    shop_items: generate_shop_items(),
   };
 }
 
@@ -143,4 +190,32 @@ export function apply_orb(game: Game, orb: Orb): void {
         break;
     }
   }
+
+  // Award chips if player reaches milestone (wins the game)
+  if (game.points >= game.milestone) {
+    const chips_earned = game.points - game.milestone;
+    game.chips += chips_earned;
+  }
+}
+
+// Purchase an item from the shop
+export function purchase_item(game: Game, item_index: number): boolean {
+  const item = game.shop_items[item_index];
+  if (!item || game.chips < item.price) {
+    return false; // Not enough chips or invalid item
+  }
+
+  // Deduct chips
+  game.chips -= item.price;
+
+  // Add orb to purchased orbs
+  game.purchased_orbs = [...game.purchased_orbs, item.orb];
+
+  // Regenerate playground with new orb
+  game.playground_orbs = flatten_and_shuffle_orbs([
+    game.starting_orbs,
+    game.purchased_orbs,
+  ]);
+
+  return true; // Purchase successful
 }
