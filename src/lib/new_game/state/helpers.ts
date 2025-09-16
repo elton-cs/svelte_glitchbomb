@@ -119,6 +119,7 @@ const COMMON_SHOP_ITEMS: ShopItem[] = [
   build_shop_item(ModifierType.Point, 5, OrbCategory.Point, RarityType.Common, 5),
   build_shop_item(ModifierType.Point, 7, OrbCategory.Point, RarityType.Common, 8),
   build_shop_item(ModifierType.GlitchChips, 15, OrbCategory.Special, RarityType.Common, 5), 
+  build_shop_item(ModifierType.Moonrocks, 15, OrbCategory.Special, RarityType.Common, 8),
   build_shop_item(ModifierType.PointsPerBombPulled, 4, OrbCategory.Special, RarityType.Common, 6),
   build_shop_item(ModifierType.Health, 1, OrbCategory.Health, RarityType.Common, 9),
   build_shop_item(ModifierType.Multiplier, 0.5, OrbCategory.Multiplier, RarityType.Common, 9),
@@ -135,6 +136,7 @@ const RARE_SHOP_ITEMS: ShopItem[] = [
 // Cosmic shop items pool (3 items, select 1)
 const COSMIC_SHOP_ITEMS: ShopItem[] = [
   build_shop_item(ModifierType.Health, 3, OrbCategory.Health, RarityType.Cosmic, 21),
+  build_shop_item(ModifierType.Moonrocks, 40, OrbCategory.Special, RarityType.Cosmic, 23)
 ];
 
 // Utility function to shuffle an array (reusable version of Fisher-Yates)
