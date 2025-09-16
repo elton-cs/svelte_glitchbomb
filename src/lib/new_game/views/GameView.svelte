@@ -126,9 +126,9 @@
         {#if !show_result}
             <button
                 onclick={cash_out_and_quit}
-                class="w-full px-4 py-2 bg-yellow-600 text-white font-bold uppercase tracking-wide border-2 border-yellow-600 hover:bg-white hover:text-yellow-600 transition-colors"
+                class="w-full px-4 py-2 bg-black text-white font-bold uppercase tracking-wide border-2 border-white hover:bg-white hover:text-black transition-colors"
             >
-                Quit & Cash Out ({game.points} → {game.points} Moonrocks)
+                Cash Out ({game.points} Moonrocks)
             </button>
         {/if}
 
@@ -145,26 +145,26 @@
                     </button>
                     <button
                         onclick={cash_out_after_win}
-                        class="w-full px-4 py-2 bg-yellow-600 text-white font-bold uppercase tracking-wide border-2 border-yellow-600 hover:bg-white hover:text-yellow-600 transition-colors"
+                        class="w-full px-4 py-2 bg-black text-white font-bold uppercase tracking-wide border-2 border-white hover:bg-white hover:text-black transition-colors"
                     >
-                        Cash Out & Quit ({game.points} → {game.points} Moonrocks)
+                        Cash Out ({game.points} Moonrocks)
                     </button>
                 {:else}
                     <!-- For level 7: Only cash out since game is complete -->
                     <button
                         onclick={cash_out_after_win}
-                        class="w-full px-4 py-3 bg-yellow-600 text-white font-bold uppercase tracking-wide border-2 border-yellow-600 hover:bg-white hover:text-yellow-600 transition-colors"
+                        class="w-full px-4 py-3 bg-white text-black font-bold uppercase tracking-wide border-2 border-white hover:bg-black hover:text-white transition-colors"
                     >
-                        Cash Out & Complete ({game.points} → {game.points} Moonrocks)
+                        Cash Out ({game.points} Moonrocks)
                     </button>
                 {/if}
             {:else}
                 <!-- Game over: Cash out or restart -->
                 <button
                     onclick={cash_out_and_quit}
-                    class="w-full px-4 py-3 bg-yellow-600 text-white font-bold uppercase tracking-wide border-2 border-yellow-600 hover:bg-white hover:text-yellow-600 transition-colors"
+                    class="w-full px-4 py-3 bg-white text-black font-bold uppercase tracking-wide border-2 border-white hover:bg-black hover:text-white transition-colors"
                 >
-                    Cash Out & Quit ({game.points} → {game.points} Moonrocks)
+                    Cash Out ({game.points} Moonrocks)
                 </button>
                 <button
                     onclick={restart_game}
