@@ -24,6 +24,10 @@
                 return "A";
             case ModifierType.PointsPerBombPulled:
                 return "X";
+            case ModifierType.GlitchChips:
+                return "GC";
+            case ModifierType.Moonrocks:
+                return "MR";
             default:
                 return "?";
         }
