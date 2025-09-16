@@ -7,10 +7,14 @@ import {
   type Modifier,
   type Game,
   type ShopItem,
+  type Player,
 } from "./types";
 
 // Level milestones for progression
 const LEVEL_MILESTONES = [12, 18, 28, 44, 70, 100, 150];
+
+// Level costs in moonrocks for playing each level
+const LEVEL_COSTS = [10, 1, 2, 4, 6, 9, 13];
 
 // Get milestone for a given level (1-indexed)
 function get_milestone_for_level(level: number): number {
@@ -18,6 +22,14 @@ function get_milestone_for_level(level: number): number {
     return LEVEL_MILESTONES[LEVEL_MILESTONES.length - 1]; // Return last milestone for invalid levels
   }
   return LEVEL_MILESTONES[level - 1]; // Convert to 0-indexed array access
+}
+
+// Get moonrock cost for a given level (1-indexed)
+export function get_level_cost(level: number): number {
+  if (level < 1 || level > LEVEL_COSTS.length) {
+    return LEVEL_COSTS[LEVEL_COSTS.length - 1]; // Return last cost for invalid levels
+  }
+  return LEVEL_COSTS[level - 1]; // Convert to 0-indexed array access
 }
 
 // Helper to create a modifier
@@ -235,4 +247,58 @@ export function purchase_item(game: Game, item_index: number): boolean {
 export function advance_to_next_level(game: Game): Game {
   const next_level = game.level + 1;
   return init_game(next_level, game.purchased_orbs, game.chips);
+}
+
+// Player management functions
+const PLAYER_STORAGE_KEY = 'new_game_player_data';
+
+// Initialize a new player with default moonrocks
+export function init_player(): Player {
+  return {
+    moonrocks: 1000,
+  };
+}
+
+// Load player data from localStorage
+export function load_player_from_storage(): Player {
+  try {
+    const stored_data = localStorage.getItem(PLAYER_STORAGE_KEY);
+    if (stored_data) {
+      const parsed_player = JSON.parse(stored_data);
+      // Validate the data structure
+      if (typeof parsed_player.moonrocks === 'number') {
+        return parsed_player;
+      }
+    }
+  } catch (error) {
+    console.warn('Failed to load player data from localStorage:', error);
+  }
+
+  // Return default player if loading fails
+  return init_player();
+}
+
+// Save player data to localStorage
+export function save_player_to_storage(player: Player): void {
+  try {
+    localStorage.setItem(PLAYER_STORAGE_KEY, JSON.stringify(player));
+  } catch (error) {
+    console.warn('Failed to save player data to localStorage:', error);
+  }
+}
+
+// Check if player can afford to play a level
+export function can_afford_level(player: Player, level: number): boolean {
+  const cost = get_level_cost(level);
+  return player.moonrocks >= cost;
+}
+
+// Deduct moonrocks for playing a level, returns success status
+export function deduct_moonrocks(player: Player, level: number): boolean {
+  const cost = get_level_cost(level);
+  if (player.moonrocks >= cost) {
+    player.moonrocks -= cost;
+    return true;
+  }
+  return false;
 }

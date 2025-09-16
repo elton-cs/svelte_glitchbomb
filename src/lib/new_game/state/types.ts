@@ -79,9 +79,15 @@ export interface OrbRarity {
 }
 
 export const RARITY_INFO: Record<RarityType, OrbRarity> = {
-  [RarityType.Common]: { rarity: RarityType.Common, color: TailwindColor.Gray500 },
+  [RarityType.Common]: {
+    rarity: RarityType.Common,
+    color: TailwindColor.Gray500,
+  },
   [RarityType.Rare]: { rarity: RarityType.Rare, color: TailwindColor.Blue500 },
-  [RarityType.Cosmic]: { rarity: RarityType.Cosmic, color: TailwindColor.Purple500 },
+  [RarityType.Cosmic]: {
+    rarity: RarityType.Cosmic,
+    color: TailwindColor.Purple500,
+  },
 };
 
 export interface Game {
@@ -97,4 +103,8 @@ export interface Game {
   playground_orbs: Orb[];
   pulled_orbs: Orb[];
   shop_items: ShopItem[];
+}
+
+export interface Player {
+  moonrocks: number;
 }
