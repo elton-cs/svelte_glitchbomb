@@ -102,37 +102,58 @@ export function flatten_and_shuffle_orbs(orb_lists: Orb[][]): Orb[] {
 // Common shop items pool (7 items, select 3)
 const COMMON_SHOP_ITEMS: ShopItem[] = [
   {
-    orb: create_orb([create_modifier(ModifierType.Point, 5)], OrbCategory.Point),
+    orb: create_orb(
+      [create_modifier(ModifierType.Point, 5)],
+      OrbCategory.Point,
+    ),
     rarity: RARITY_INFO[RarityType.Common],
     price: 5,
   },
   {
-    orb: create_orb([create_modifier(ModifierType.Point, 7)], OrbCategory.Point),
+    orb: create_orb(
+      [create_modifier(ModifierType.Point, 7)],
+      OrbCategory.Point,
+    ),
     rarity: RARITY_INFO[RarityType.Common],
     price: 8,
   },
   {
-    orb: create_orb([create_modifier(ModifierType.Point, 8)], OrbCategory.Point),
+    orb: create_orb(
+      [create_modifier(ModifierType.Point, 8)],
+      OrbCategory.Point,
+    ),
     rarity: RARITY_INFO[RarityType.Common],
     price: 5,
   },
   {
-    orb: create_orb([create_modifier(ModifierType.Health, 1)], OrbCategory.Health),
+    orb: create_orb(
+      [create_modifier(ModifierType.Health, 1)],
+      OrbCategory.Health,
+    ),
     rarity: RARITY_INFO[RarityType.Common],
     price: 9,
   },
   {
-    orb: create_orb([create_modifier(ModifierType.Health, 2)], OrbCategory.Health),
+    orb: create_orb(
+      [create_modifier(ModifierType.Health, 2)],
+      OrbCategory.Health,
+    ),
     rarity: RARITY_INFO[RarityType.Common],
     price: 4,
   },
   {
-    orb: create_orb([create_modifier(ModifierType.Multiplier, 0.5)], OrbCategory.Multiplier),
+    orb: create_orb(
+      [create_modifier(ModifierType.Multiplier, 0.5)],
+      OrbCategory.Multiplier,
+    ),
     rarity: RARITY_INFO[RarityType.Common],
     price: 9,
   },
   {
-    orb: create_orb([create_modifier(ModifierType.PointsPerBombPulled, 4)], OrbCategory.Special),
+    orb: create_orb(
+      [create_modifier(ModifierType.PointsPerBombPulled, 4)],
+      OrbCategory.Special,
+    ),
     rarity: RARITY_INFO[RarityType.Common],
     price: 6,
   },
@@ -141,22 +162,34 @@ const COMMON_SHOP_ITEMS: ShopItem[] = [
 // Rare shop items pool (4 items, select 2)
 const RARE_SHOP_ITEMS: ShopItem[] = [
   {
-    orb: create_orb([create_modifier(ModifierType.Point, 9)], OrbCategory.Point),
+    orb: create_orb(
+      [create_modifier(ModifierType.Point, 9)],
+      OrbCategory.Point,
+    ),
     rarity: RARITY_INFO[RarityType.Rare],
     price: 13,
   },
   {
-    orb: create_orb([create_modifier(ModifierType.Point, 12)], OrbCategory.Point),
+    orb: create_orb(
+      [create_modifier(ModifierType.Point, 12)],
+      OrbCategory.Point,
+    ),
     rarity: RARITY_INFO[RarityType.Rare],
     price: 12,
   },
   {
-    orb: create_orb([create_modifier(ModifierType.Multiplier, 1.0)], OrbCategory.Multiplier),
+    orb: create_orb(
+      [create_modifier(ModifierType.Multiplier, 1.0)],
+      OrbCategory.Multiplier,
+    ),
     rarity: RARITY_INFO[RarityType.Rare],
     price: 14,
   },
   {
-    orb: create_orb([create_modifier(ModifierType.Multiplier, 1.5)], OrbCategory.Multiplier),
+    orb: create_orb(
+      [create_modifier(ModifierType.Multiplier, 1.5)],
+      OrbCategory.Multiplier,
+    ),
     rarity: RARITY_INFO[RarityType.Rare],
     price: 16,
   },
@@ -165,17 +198,26 @@ const RARE_SHOP_ITEMS: ShopItem[] = [
 // Cosmic shop items pool (3 items, select 1)
 const COSMIC_SHOP_ITEMS: ShopItem[] = [
   {
-    orb: create_orb([create_modifier(ModifierType.Health, 3)], OrbCategory.Health),
+    orb: create_orb(
+      [create_modifier(ModifierType.Health, 3)],
+      OrbCategory.Health,
+    ),
     rarity: RARITY_INFO[RarityType.Cosmic],
     price: 21,
   },
   {
-    orb: create_orb([create_modifier(ModifierType.PointsPerAnyOrb, 3)], OrbCategory.Special),
+    orb: create_orb(
+      [create_modifier(ModifierType.PointsPerAnyOrb, 3)],
+      OrbCategory.Special,
+    ),
     rarity: RARITY_INFO[RarityType.Cosmic],
     price: 25,
   },
   {
-    orb: create_orb([create_modifier(ModifierType.PointsPerBombPulled, 6)], OrbCategory.Special),
+    orb: create_orb(
+      [create_modifier(ModifierType.PointsPerBombPulled, 6)],
+      OrbCategory.Special,
+    ),
     rarity: RARITY_INFO[RarityType.Cosmic],
     price: 30,
   },
@@ -211,7 +253,11 @@ function generate_shop_items(): ShopItem[] {
 }
 
 // Initialize a new game with all default values
-export function init_game(level: number = 1, existing_purchased_orbs: Orb[] = [], existing_chips: number = 0): Game {
+export function init_game(
+  level: number = 1,
+  existing_purchased_orbs: Orb[] = [],
+  existing_chips: number = 0,
+): Game {
   const starting_orbs = build_starting_orbs();
   const purchased_orbs = [...existing_purchased_orbs];
   const playground_orbs = flatten_and_shuffle_orbs([
@@ -226,7 +272,7 @@ export function init_game(level: number = 1, existing_purchased_orbs: Orb[] = []
     health: 5,
     max_health: 5,
     multiplier: 1,
-    chips: existing_chips,
+    glitchchips: existing_chips,
     starting_orbs,
     purchased_orbs,
     playground_orbs,
@@ -246,7 +292,10 @@ export function apply_orb(game: Game, orb: Orb): void {
 
       case ModifierType.Health:
         // Health restores health (maximum is max_health)
-        game.health = Math.min(game.max_health, game.health + modifier.value.value);
+        game.health = Math.min(
+          game.max_health,
+          game.health + modifier.value.value,
+        );
         break;
 
       case ModifierType.Point:
@@ -272,12 +321,17 @@ export function apply_orb(game: Game, orb: Orb): void {
 
       case ModifierType.PointsPerBombPulled:
         // Points per bomb pulled - multiply modifier value by number of previously pulled bomb orbs
-        const bombs_pulled = game.pulled_orbs.filter(pulled_orb =>
-          pulled_orb.modifiers.some(mod => mod.type === ModifierType.Bomb)
+        const bombs_pulled = game.pulled_orbs.filter((pulled_orb) =>
+          pulled_orb.modifiers.some((mod) => mod.type === ModifierType.Bomb),
         ).length;
         const base_bomb_points = modifier.value.value * bombs_pulled;
         const multiplied_bomb_points = base_bomb_points * game.multiplier;
         game.points += multiplied_bomb_points;
+        break;
+
+      case ModifierType.GlitchChips:
+        // GlitchChips directly add to the player's glitchchips
+        game.glitchchips += modifier.value.value;
         break;
     }
   }
@@ -285,19 +339,19 @@ export function apply_orb(game: Game, orb: Orb): void {
   // Award chips if player reaches milestone (wins the game)
   if (game.points >= game.milestone) {
     const chips_earned = game.points;
-    game.chips += chips_earned;
+    game.glitchchips += chips_earned;
   }
 }
 
 // Purchase an item from the shop
 export function purchase_item(game: Game, item_index: number): boolean {
   const item = game.shop_items[item_index];
-  if (!item || game.chips < item.price) {
+  if (!item || game.glitchchips < item.price) {
     return false; // Not enough chips or invalid item
   }
 
   // Deduct chips
-  game.chips -= item.price;
+  game.glitchchips -= item.price;
 
   // Add orb to purchased orbs
   game.purchased_orbs = [...game.purchased_orbs, item.orb];
@@ -314,11 +368,11 @@ export function purchase_item(game: Game, item_index: number): boolean {
 // Advance to the next level, preserving chips and purchased orbs
 export function advance_to_next_level(game: Game): Game {
   const next_level = game.level + 1;
-  return init_game(next_level, game.purchased_orbs, game.chips);
+  return init_game(next_level, game.purchased_orbs, game.glitchchips);
 }
 
 // Player management functions
-const PLAYER_STORAGE_KEY = 'new_game_player_data';
+const PLAYER_STORAGE_KEY = "new_game_player_data";
 
 // Initialize a new player with default moonrocks
 export function init_player(): Player {
@@ -334,12 +388,12 @@ export function load_player_from_storage(): Player {
     if (stored_data) {
       const parsed_player = JSON.parse(stored_data);
       // Validate the data structure
-      if (typeof parsed_player.moonrocks === 'number') {
+      if (typeof parsed_player.moonrocks === "number") {
         return parsed_player;
       }
     }
   } catch (error) {
-    console.warn('Failed to load player data from localStorage:', error);
+    console.warn("Failed to load player data from localStorage:", error);
   }
 
   // Return default player if loading fails
@@ -351,7 +405,7 @@ export function save_player_to_storage(player: Player): void {
   try {
     localStorage.setItem(PLAYER_STORAGE_KEY, JSON.stringify(player));
   } catch (error) {
-    console.warn('Failed to save player data to localStorage:', error);
+    console.warn("Failed to save player data to localStorage:", error);
   }
 }
 

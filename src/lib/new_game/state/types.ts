@@ -14,6 +14,7 @@ export enum ModifierType {
   Multiplier,
   PointsPerAnyOrb,
   PointsPerBombPulled,
+  GlitchChips,
 }
 
 export interface ModifierValue {
@@ -97,7 +98,7 @@ export interface Game {
   health: number;
   max_health: number;
   multiplier: number;
-  chips: number;
+  glitchchips: number;
   starting_orbs: Orb[];
   purchased_orbs: Orb[];
   playground_orbs: Orb[];
