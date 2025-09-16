@@ -176,7 +176,7 @@
                 onclick={handle_continue_to_next_level}
                 disabled={!can_afford_next_level}
                 class="w-full px-4 py-3 font-bold uppercase tracking-wide border-2 transition-colors {can_afford_next_level
-                    ? 'bg-white text-black border-white hover:bg-black hover:text-white'
+                    ? 'bg-black text-white border-white hover:bg-white hover:text-black'
                     : 'bg-gray-600 text-gray-400 border-gray-600 cursor-not-allowed'}"
             >
                 {can_afford_next_level
