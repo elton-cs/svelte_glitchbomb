@@ -48,7 +48,7 @@
 
         <div>
             <div class="text-2xl font-bold text-yellow-400 mb-1">
-                {game.chips}
+                {game.glitchchips}
             </div>
             <div class="text-white text-xs uppercase">Chips</div>
         </div>
