@@ -118,18 +118,16 @@ export function flatten_and_shuffle_orbs(orb_lists: Orb[][]): Orb[] {
 const COMMON_SHOP_ITEMS: ShopItem[] = [
   build_shop_item(ModifierType.Point, 5, OrbCategory.Point, RarityType.Common, 5),
   build_shop_item(ModifierType.Point, 7, OrbCategory.Point, RarityType.Common, 8),
-  build_shop_item(ModifierType.Point, 8, OrbCategory.Point, RarityType.Common, 5),
-  build_shop_item(ModifierType.Health, 1, OrbCategory.Health, RarityType.Common, 9),
-  build_shop_item(ModifierType.Health, 2, OrbCategory.Health, RarityType.Common, 4),
-  build_shop_item(ModifierType.Multiplier, 0.5, OrbCategory.Multiplier, RarityType.Common, 9),
+  build_shop_item(ModifierType.GlitchChips, 15, OrbCategory.Special, RarityType.Common, 5), 
   build_shop_item(ModifierType.PointsPerBombPulled, 4, OrbCategory.Special, RarityType.Common, 6),
-  build_shop_item(ModifierType.GlitchChips, 15, OrbCategory.Special, RarityType.Common, 5),
+  build_shop_item(ModifierType.Health, 1, OrbCategory.Health, RarityType.Common, 9),
+  build_shop_item(ModifierType.Multiplier, 0.5, OrbCategory.Multiplier, RarityType.Common, 9),
 ];
 
 // Rare shop items pool (4 items, select 2)
 const RARE_SHOP_ITEMS: ShopItem[] = [
+  build_shop_item(ModifierType.Point, 8, OrbCategory.Point, RarityType.Rare, 11),
   build_shop_item(ModifierType.Point, 9, OrbCategory.Point, RarityType.Rare, 13),
-  build_shop_item(ModifierType.Point, 12, OrbCategory.Point, RarityType.Rare, 12),
   build_shop_item(ModifierType.Multiplier, 1.0, OrbCategory.Multiplier, RarityType.Rare, 14),
   build_shop_item(ModifierType.Multiplier, 1.5, OrbCategory.Multiplier, RarityType.Rare, 16),
 ];
@@ -137,8 +135,6 @@ const RARE_SHOP_ITEMS: ShopItem[] = [
 // Cosmic shop items pool (3 items, select 1)
 const COSMIC_SHOP_ITEMS: ShopItem[] = [
   build_shop_item(ModifierType.Health, 3, OrbCategory.Health, RarityType.Cosmic, 21),
-  build_shop_item(ModifierType.PointsPerAnyOrb, 3, OrbCategory.Special, RarityType.Cosmic, 25),
-  build_shop_item(ModifierType.PointsPerBombPulled, 6, OrbCategory.Special, RarityType.Cosmic, 30),
 ];
 
 // Utility function to shuffle an array (reusable version of Fisher-Yates)
@@ -200,7 +196,7 @@ export function init_game(
 }
 
 // Apply orb effects to game state
-export function apply_orb(game: Game, orb: Orb): void {
+export function apply_orb(game: Game, orb: Orb, player: Player): void {
   for (const modifier of orb.modifiers) {
     switch (modifier.type) {
       case ModifierType.Bomb:
@@ -250,6 +246,12 @@ export function apply_orb(game: Game, orb: Orb): void {
       case ModifierType.GlitchChips:
         // GlitchChips directly add to the player's glitchchips
         game.glitchchips += modifier.value.value;
+        break;
+
+      case ModifierType.Moonrocks:
+        // Moonrocks directly add to the player's moonrocks
+        player.moonrocks += modifier.value.value;
+        save_player_to_storage(player);
         break;
     }
   }

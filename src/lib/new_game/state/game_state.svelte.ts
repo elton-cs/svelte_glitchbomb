@@ -109,7 +109,7 @@ export function pull_orb() {
   const orb = game_state.current_game.playground_orbs[0];
 
   // Apply its effects using helper function
-  apply_orb(game_state.current_game, orb);
+  apply_orb(game_state.current_game, orb, game_state.player);
 
   // Add to pulled orbs list
   game_state.current_game.pulled_orbs = [
