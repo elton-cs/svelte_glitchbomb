@@ -157,6 +157,14 @@ const COMMON_SHOP_ITEMS: ShopItem[] = [
     rarity: RARITY_INFO[RarityType.Common],
     price: 6,
   },
+  {
+    orb: create_orb(
+      [create_modifier(ModifierType.GlitchChips, 15)],
+      OrbCategory.Special,
+    ),
+    rarity: RARITY_INFO[RarityType.Common],
+    price: 5,
+  },
 ];
 
 // Rare shop items pool (4 items, select 2)
