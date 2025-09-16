@@ -41,7 +41,13 @@
     <div class="text-yellow-400 text-lg font-bold">{level_1_cost} Moonrocks</div>
   </div>
 
-  <!-- Error Message -->
+  <!-- Messages -->
+  {#if game_state.cash_out_message}
+    <div class="bg-green-900 border border-green-500 text-green-300 px-4 py-2 rounded mb-4 text-center text-sm">
+      {game_state.cash_out_message}
+    </div>
+  {/if}
+
   {#if error_message}
     <div class="bg-red-900 border border-red-500 text-red-300 px-4 py-2 rounded mb-4 text-center text-sm">
       {error_message}

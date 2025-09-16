@@ -5,6 +5,8 @@
         pull_orb,
         restart_game,
         enter_shop,
+        cash_out_and_quit,
+        cash_out_after_win,
     } from "../state/game_state.svelte";
     import { GameView } from "../state/types";
     import CurrentView from "../components/CurrentView.svelte";
@@ -100,7 +102,7 @@
     <!-- Game Result Component - Shows when game ends -->
     {#if show_result}
         <div class="mb-6">
-            <GameResult {is_win} />
+            <GameResult {is_win} points={game.points} />
         </div>
     {/if}
 
@@ -120,18 +122,53 @@
             Pull Orb ({game.playground_orbs.length} left)
         </button>
 
+        <!-- Quit & Cash Out Button - Available during active gameplay -->
+        {#if !show_result}
+            <button
+                onclick={cash_out_and_quit}
+                class="w-full px-4 py-2 bg-yellow-600 text-white font-bold uppercase tracking-wide border-2 border-yellow-600 hover:bg-white hover:text-yellow-600 transition-colors"
+            >
+                Quit & Cash Out ({game.points} → {game.points} Moonrocks)
+            </button>
+        {/if}
+
         {#if show_result}
             {#if is_win}
-                <button
-                    onclick={enter_shop}
-                    class="w-full px-4 py-3 bg-white text-black font-bold uppercase tracking-wide border-2 border-white hover:bg-black hover:text-white transition-colors"
-                >
-                    Enter Shop
-                </button>
+                <!-- Two options after winning -->
+                {#if game.level < 7}
+                    <!-- For levels 1-6: Shop or Cash Out -->
+                    <button
+                        onclick={enter_shop}
+                        class="w-full px-4 py-3 bg-white text-black font-bold uppercase tracking-wide border-2 border-white hover:bg-black hover:text-white transition-colors"
+                    >
+                        Enter Shop & Continue
+                    </button>
+                    <button
+                        onclick={cash_out_after_win}
+                        class="w-full px-4 py-2 bg-yellow-600 text-white font-bold uppercase tracking-wide border-2 border-yellow-600 hover:bg-white hover:text-yellow-600 transition-colors"
+                    >
+                        Cash Out & Quit ({game.points} → {game.points} Moonrocks)
+                    </button>
+                {:else}
+                    <!-- For level 7: Only cash out since game is complete -->
+                    <button
+                        onclick={cash_out_after_win}
+                        class="w-full px-4 py-3 bg-yellow-600 text-white font-bold uppercase tracking-wide border-2 border-yellow-600 hover:bg-white hover:text-yellow-600 transition-colors"
+                    >
+                        Cash Out & Complete ({game.points} → {game.points} Moonrocks)
+                    </button>
+                {/if}
             {:else}
+                <!-- Game over: Cash out or restart -->
+                <button
+                    onclick={cash_out_and_quit}
+                    class="w-full px-4 py-3 bg-yellow-600 text-white font-bold uppercase tracking-wide border-2 border-yellow-600 hover:bg-white hover:text-yellow-600 transition-colors"
+                >
+                    Cash Out & Quit ({game.points} → {game.points} Moonrocks)
+                </button>
                 <button
                     onclick={restart_game}
-                    class="w-full px-4 py-3 bg-white text-black font-bold uppercase tracking-wide border-2 border-white hover:bg-black hover:text-white transition-colors"
+                    class="w-full px-4 py-2 bg-white text-black font-bold uppercase tracking-wide border-2 border-white hover:bg-black hover:text-white transition-colors"
                 >
                     Restart Game
                 </button>

@@ -302,3 +302,9 @@ export function deduct_moonrocks(player: Player, level: number): boolean {
   }
   return false;
 }
+
+// Cash out points to moonrocks (1:1 conversion rate)
+export function cash_out_points(player: Player, points: number): void {
+  player.moonrocks += points;
+  save_player_to_storage(player);
+}

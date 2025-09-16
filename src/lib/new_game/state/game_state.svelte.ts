@@ -9,12 +9,14 @@ import {
   can_afford_level,
   deduct_moonrocks,
   get_level_cost,
+  cash_out_points,
 } from "./helpers";
 
 export const game_state = $state({
   current_view: GameView.Menu,
   current_game: null as Game | null,
   player: load_player_from_storage(),
+  cash_out_message: '' as string,
 });
 
 // Start a new game
@@ -146,4 +148,48 @@ export function restart_from_beginning(): boolean {
   game_state.current_view = GameView.Game;
   game_state.current_game = create_new_game(); // Fresh start - no carried over orbs or chips
   return true;
+}
+
+// Cash out current points and return to menu (available during level)
+export function cash_out_and_quit(): void {
+  if (!game_state.current_game) return;
+
+  const points_to_cash_out = game_state.current_game.points;
+
+  // Convert points to moonrocks
+  cash_out_points(game_state.player, points_to_cash_out);
+
+  // Set success message
+  game_state.cash_out_message = `Cashed out ${points_to_cash_out} points for ${points_to_cash_out} moonrocks!`;
+
+  // Return to menu and clean up
+  game_state.current_view = GameView.Menu;
+  game_state.current_game = null;
+
+  // Clear message after 4 seconds
+  setTimeout(() => {
+    game_state.cash_out_message = '';
+  }, 4000);
+}
+
+// Cash out points after winning instead of going to shop
+export function cash_out_after_win(): void {
+  if (!game_state.current_game) return;
+
+  const points_to_cash_out = game_state.current_game.points;
+
+  // Convert points to moonrocks
+  cash_out_points(game_state.player, points_to_cash_out);
+
+  // Set success message
+  game_state.cash_out_message = `Cashed out ${points_to_cash_out} points for ${points_to_cash_out} moonrocks!`;
+
+  // Return to menu and clean up
+  game_state.current_view = GameView.Menu;
+  game_state.current_game = null;
+
+  // Clear message after 4 seconds
+  setTimeout(() => {
+    game_state.cash_out_message = '';
+  }, 4000);
 }
