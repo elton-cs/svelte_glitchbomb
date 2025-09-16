@@ -10,7 +10,7 @@
 
   <!-- Victory Header -->
   <div class="text-center mb-8">
-    <h1 class="text-6xl font-bold text-yellow-400 mb-4">🏆 VICTORY! 🏆</h1>
+    <h1 class="text-6xl font-bold text-yellow-400 mb-4">VICTORY! 🏆</h1>
     <h2 class="text-2xl font-bold text-white mb-2">GAME COMPLETE!</h2>
     <p class="text-gray-300 text-sm">You have conquered all 7 levels!</p>
   </div>
@@ -30,12 +30,6 @@
       <div>
         <div class="text-3xl font-bold text-green-400 mb-1">{game.points}</div>
         <div class="text-white text-xs uppercase">Final Points</div>
-      </div>
-
-      <!-- Total Chips -->
-      <div>
-        <div class="text-3xl font-bold text-yellow-400 mb-1">{game.chips}</div>
-        <div class="text-white text-xs uppercase">Total Chips</div>
       </div>
 
       <!-- Health -->

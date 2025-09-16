@@ -1,5 +1,6 @@
 <script lang="ts">
   import { game_state, back_to_menu, pull_orb, restart_game, enter_shop } from '../state/game_state.svelte';
+  import { GameView } from '../state/types';
   import CurrentView from '../components/CurrentView.svelte';
   import GameResult from '../components/GameResult.svelte';
   import OrbCategoryBar from '../components/OrbCategoryBar.svelte';
@@ -11,6 +12,13 @@
   let is_game_over = $derived(game.health <= 0);
   let is_win = $derived(game.points >= game.milestone);
   let show_result = $derived(is_game_over || is_win);
+
+  // Auto-trigger Victory view for level 7 completion
+  $effect(() => {
+    if (is_win && game.level === 7) {
+      game_state.current_view = GameView.Victory;
+    }
+  });
 </script>
 
 <div class="bg-black p-4 rounded-lg border border-white">
