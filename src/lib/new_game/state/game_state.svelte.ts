@@ -1,5 +1,5 @@
 import { GameView, type Game, type Orb, ModifierType } from "./types";
-import { init_game as create_new_game, apply_orb, purchase_item } from "./helpers";
+import { init_game as create_new_game, apply_orb, purchase_item, advance_to_next_level } from "./helpers";
 
 export const game_state = $state({
   current_view: GameView.Menu,
@@ -24,12 +24,26 @@ export function restart_game() {
   game_state.game = create_new_game();
 }
 
-// Enter shop after winning - reset game state but go to shop view
+// Enter shop after winning - preserve game state and go to shop view
 export function enter_shop() {
-  const current_chips = game_state.game?.chips || 0;
   game_state.current_view = GameView.Shop;
-  game_state.game = create_new_game();
-  game_state.game.chips = current_chips;
+}
+
+// Continue to next level from shop
+export function continue_to_next_level() {
+  if (!game_state.game) return;
+
+  // Check if all levels completed (7 levels total)
+  if (game_state.game.level >= 7) {
+    // All levels completed - could add victory view or return to menu
+    game_state.current_view = GameView.Menu;
+    game_state.game = null;
+    return;
+  }
+
+  // Advance to next level
+  game_state.game = advance_to_next_level(game_state.game);
+  game_state.current_view = GameView.Game;
 }
 
 // Pull first orb from playground, apply it, and remove from list

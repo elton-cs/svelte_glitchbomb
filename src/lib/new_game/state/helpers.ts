@@ -9,6 +9,17 @@ import {
   type ShopItem,
 } from "./types";
 
+// Level milestones for progression
+const LEVEL_MILESTONES = [12, 18, 28, 44, 70, 100, 150];
+
+// Get milestone for a given level (1-indexed)
+function get_milestone_for_level(level: number): number {
+  if (level < 1 || level > LEVEL_MILESTONES.length) {
+    return LEVEL_MILESTONES[LEVEL_MILESTONES.length - 1]; // Return last milestone for invalid levels
+  }
+  return LEVEL_MILESTONES[level - 1]; // Convert to 0-indexed array access
+}
+
 // Helper to create a modifier
 function create_modifier(type: ModifierType, value: number): Modifier {
   return {
@@ -120,22 +131,22 @@ function generate_shop_items(): ShopItem[] {
 }
 
 // Initialize a new game with all default values
-export function init_game(): Game {
+export function init_game(level: number = 1, existing_purchased_orbs: Orb[] = [], existing_chips: number = 0): Game {
   const starting_orbs = build_starting_orbs();
-  const purchased_orbs: Orb[] = [];
+  const purchased_orbs = [...existing_purchased_orbs];
   const playground_orbs = flatten_and_shuffle_orbs([
     starting_orbs,
     purchased_orbs,
   ]);
 
   return {
-    level: 1,
+    level,
     points: 0,
-    milestone: 12,
+    milestone: get_milestone_for_level(level),
     health: 5,
     max_health: 5,
     multiplier: 1,
-    chips: 0,
+    chips: existing_chips,
     starting_orbs,
     purchased_orbs,
     playground_orbs,
@@ -218,4 +229,10 @@ export function purchase_item(game: Game, item_index: number): boolean {
   ]);
 
   return true; // Purchase successful
+}
+
+// Advance to the next level, preserving chips and purchased orbs
+export function advance_to_next_level(game: Game): Game {
+  const next_level = game.level + 1;
+  return init_game(next_level, game.purchased_orbs, game.chips);
 }

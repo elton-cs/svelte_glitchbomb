@@ -1,9 +1,16 @@
 <script lang="ts">
-  import { game_state, back_to_menu, buy_item } from '../state/game_state.svelte';
+  import { game_state, back_to_menu, buy_item, continue_to_next_level } from '../state/game_state.svelte';
   import { ModifierType, CATEGORY_INFO, type ShopItem } from '../state/types';
   import CurrentView from '../components/CurrentView.svelte';
 
   let game = $derived(game_state.game!);
+
+  // Get next level milestone
+  function get_next_level_milestone(current_level: number): number {
+    const milestones = [12, 18, 28, 44, 70, 100, 150];
+    if (current_level >= milestones.length) return 150;
+    return milestones[current_level]; // current_level is 1-indexed, so this gets next milestone
+  }
 
   // Get modifier display text for shop item
   function get_modifier_text(item: ShopItem): string {
@@ -53,7 +60,13 @@
 
   <div class="text-center mb-6">
     <h2 class="text-4xl font-bold text-white mb-2">SHOP</h2>
+    <div class="text-purple-400 text-sm font-bold mb-1">Level {game.level}</div>
     <div class="text-yellow-400 text-lg font-bold">Chips: {game.chips}</div>
+    {#if game.level < 7}
+      <div class="text-gray-400 text-xs mt-1">Next Level Milestone: {get_next_level_milestone(game.level)}</div>
+    {:else}
+      <div class="text-green-400 text-xs mt-1">Final Level Complete!</div>
+    {/if}
   </div>
 
   <!-- Shop Items Grid -->
@@ -89,10 +102,28 @@
     {/each}
   </div>
 
-  <button
-    onclick={back_to_menu}
-    class="w-full px-4 py-2 bg-black text-white font-bold uppercase tracking-wide border-2 border-white hover:bg-white hover:text-black transition-colors"
-  >
-    Back to Menu
-  </button>
+  <div class="space-y-3">
+    {#if game.level < 7}
+      <button
+        onclick={continue_to_next_level}
+        class="w-full px-4 py-3 bg-white text-black font-bold uppercase tracking-wide border-2 border-white hover:bg-black hover:text-white transition-colors"
+      >
+        Continue to Level {game.level + 1}
+      </button>
+    {:else}
+      <button
+        onclick={back_to_menu}
+        class="w-full px-4 py-3 bg-green-500 text-white font-bold uppercase tracking-wide border-2 border-green-500 hover:bg-white hover:text-green-500 transition-colors"
+      >
+        Game Complete! Return to Menu
+      </button>
+    {/if}
+
+    <button
+      onclick={back_to_menu}
+      class="w-full px-4 py-2 bg-black text-white font-bold uppercase tracking-wide border-2 border-white hover:bg-white hover:text-black transition-colors"
+    >
+      Back to Menu
+    </button>
+  </div>
 </div>
