@@ -1,4 +1,10 @@
-import { ModifierType, OrbCategory, type Orb, type Modifier, type Game } from "./types";
+import {
+  ModifierType,
+  OrbCategory,
+  type Orb,
+  type Modifier,
+  type Game,
+} from "./types";
 
 // Helper to create a modifier
 function create_modifier(type: ModifierType, value: number): Modifier {
@@ -31,7 +37,22 @@ function build_starting_orbs(): Orb[] {
     create_orb([create_modifier(ModifierType.Health, 1)], OrbCategory.Health), // Health 1
 
     // 1 Multiplier orb
-    create_orb([create_modifier(ModifierType.Multiplier, 1)], OrbCategory.Multiplier), // Multiplier Boost
+    create_orb(
+      [create_modifier(ModifierType.Multiplier, 1)],
+      OrbCategory.Multiplier,
+    ), // Multiplier Boost
+
+    // 1 PointsPerAnyOrb orb
+    create_orb(
+      [create_modifier(ModifierType.PointsPerAnyOrb, 1)],
+      OrbCategory.Special,
+    ), // Points per any orb (1 point per remaining orb)
+
+    // 1 PointsPerBombPulled orb
+    create_orb(
+      [create_modifier(ModifierType.PointsPerBombPulled, 4)],
+      OrbCategory.Special,
+    ), // Points per bomb pulled (4 points per bomb previously pulled)
   ];
 
   return starting_orbs;
@@ -72,5 +93,54 @@ export function init_game(): Game {
     starting_orbs,
     purchased_orbs,
     playground_orbs,
+    pulled_orbs: [],
   };
+}
+
+// Apply orb effects to game state
+export function apply_orb(game: Game, orb: Orb): void {
+  for (const modifier of orb.modifiers) {
+    switch (modifier.type) {
+      case ModifierType.Bomb:
+        // Bomb deals damage (reduce health, minimum 0)
+        game.health = Math.max(0, game.health - modifier.value.value);
+        break;
+
+      case ModifierType.Health:
+        // Health restores health (maximum is max_health)
+        game.health = Math.min(game.max_health, game.health + modifier.value.value);
+        break;
+
+      case ModifierType.Point:
+        // Points add to score (multiplied by current multiplier)
+        const base_points = modifier.value.value;
+        const multiplied_points = base_points * game.multiplier;
+        game.points += multiplied_points;
+        break;
+
+      case ModifierType.Multiplier:
+        // Multiplier increases the multiplier value
+        game.multiplier += modifier.value.value;
+        break;
+
+      case ModifierType.PointsPerAnyOrb:
+        // Points per any orb - multiply modifier value by remaining orbs count, then by multiplier
+        // Note: We subtract 1 from playground_orbs length because this orb will be removed
+        const remaining_orbs = game.playground_orbs.length - 1;
+        const base_points_awarded = modifier.value.value * remaining_orbs;
+        const multiplied_points_awarded = base_points_awarded * game.multiplier;
+        game.points += multiplied_points_awarded;
+        break;
+
+      case ModifierType.PointsPerBombPulled:
+        // Points per bomb pulled - multiply modifier value by number of previously pulled bomb orbs
+        const bombs_pulled = game.pulled_orbs.filter(pulled_orb =>
+          pulled_orb.modifiers.some(mod => mod.type === ModifierType.Bomb)
+        ).length;
+        const base_bomb_points = modifier.value.value * bombs_pulled;
+        const multiplied_bomb_points = base_bomb_points * game.multiplier;
+        game.points += multiplied_bomb_points;
+        break;
+    }
+  }
 }

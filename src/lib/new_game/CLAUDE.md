@@ -6,7 +6,7 @@ This directory contains a simplified, mobile-first reimplementation of the Glitc
 
 The `new_game` implementation is a streamlined version of the main game that focuses on:
 - Mobile-optimized UI design
-- Simplified game mechanics (4 orb types: Point, Health, Bomb, Multiplier)
+- Simplified game mechanics (6 modifier types: Point, Health, Bomb, Multiplier, PointsPerAnyOrb, PointsPerBombPulled)
 - Modern Svelte 5 syntax with `$state`, `$derived`, and `$effect` runes
 - Snake_case naming convention throughout
 
@@ -28,7 +28,9 @@ new_game/
 ├── components/
 │   ├── CurrentView.svelte      # View state display
 │   ├── GameResult.svelte       # Win/lose messages
-│   └── PlaygroundOrbs.svelte   # Orb visualization
+│   ├── PlaygroundOrbs.svelte   # Orb visualization
+│   ├── PulledOrbs.svelte       # Chronological pulled orbs display
+│   └── OrbCategoryBar.svelte   # Orb distribution by category
 ├── views/
 │   ├── HomeView.svelte    # Menu screen
 │   └── GameView.svelte    # Main gameplay interface
@@ -45,10 +47,13 @@ The new_game directory is integrated into the main Svelte app through:
 ## Key Features
 
 • Orb system with categories (Bomb, Health, Point, Multiplier, Special)
+• 6 modifier types: Point, Health, Bomb, Multiplier, PointsPerAnyOrb, PointsPerBombPulled
 • Win/lose conditions with restart functionality
-• Playground orb visualization showing upcoming orbs
+• Pulled orbs tracking with chronological display
+• Category-based orb distribution visualization
 • Mobile-optimized black/white aesthetic with border-based design
 • Reactive progress bars for points and health
+• Multiplier system affecting all point calculations
 
 ## Development Guidelines
 

@@ -11,6 +11,8 @@ export enum ModifierType {
   Health,
   Bomb,
   Multiplier,
+  PointsPerAnyOrb,
+  PointsPerBombPulled,
 }
 
 export interface ModifierValue {
@@ -30,6 +32,19 @@ export enum OrbCategory {
   Special,
 }
 
+export interface CategoryInfo {
+  initial: string;
+  color: string;
+}
+
+export const CATEGORY_INFO: Record<OrbCategory, CategoryInfo> = {
+  [OrbCategory.Bomb]: { initial: "💣", color: "bg-orange-500" },
+  [OrbCategory.Health]: { initial: "❤️", color: "bg-red-500" },
+  [OrbCategory.Point]: { initial: "⭐️", color: "bg-green-500" },
+  [OrbCategory.Multiplier]: { initial: "⚡️", color: "bg-blue-500" },
+  [OrbCategory.Special]: { initial: "👑", color: "bg-yellow-500" },
+};
+
 export interface Orb {
   modifiers: Modifier[];
   category: OrbCategory;
@@ -46,4 +61,5 @@ export interface Game {
   starting_orbs: Orb[];
   purchased_orbs: Orb[];
   playground_orbs: Orb[];
+  pulled_orbs: Orb[];
 }
