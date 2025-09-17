@@ -5,6 +5,7 @@
     variant?: 'primary' | 'secondary';
     size?: 'small' | 'medium' | 'large';
     class?: string;
+    children?: any;
   }
 
   let {
@@ -12,10 +13,9 @@
     disabled = false,
     variant = 'primary',
     size = 'medium',
-    class: className = ''
+    class: className = '',
+    children
   }: Props = $props();
-
-  let { children } = $props();
 
   // Size classes
   const sizeClasses = {
@@ -43,7 +43,7 @@
 </script>
 
 <button
-  {onclick}
+  onclick={onclick}
   {disabled}
   class={buttonClasses}
 >
