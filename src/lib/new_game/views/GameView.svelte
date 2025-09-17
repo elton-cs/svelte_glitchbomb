@@ -110,13 +110,6 @@
             <!-- Status Effects Display -->
             <StatusEffects />
 
-            <!-- Game Result Component - Shows when game ends -->
-            {#if show_result}
-                <div class="mb-6">
-                    <GameResult {is_win} points={game.points} />
-                </div>
-            {/if}
-
             <!-- Orb Category Distribution -->
             <OrbCategoryBar />
 
@@ -201,4 +194,13 @@
             <HealthDisplay />
         </div>
     </div>
+
+    <!-- Victory/Loss Popup Overlay -->
+    {#if show_result}
+        <div class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
+            <div class="bg-black border-2 border-white rounded-lg p-6 max-w-sm mx-4 text-center">
+                <GameResult {is_win} points={game.points} />
+            </div>
+        </div>
+    {/if}
 </div>
