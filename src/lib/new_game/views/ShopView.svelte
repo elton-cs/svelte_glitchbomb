@@ -96,17 +96,15 @@
                     <div class="text-yellow-400 font-bold mb-2">
                         {item.price} chips
                     </div>
-                    <Button
+                    <button
                         onclick={() => purchase(index)}
                         disabled={!can_afford}
-                        size="small"
+                        class="w-full px-3 py-2 text-xs font-bold uppercase tracking-wide border-2 transition-colors {can_afford
+                            ? 'bg-black text-white border-white hover:bg-white hover:text-black'
+                            : 'bg-gray-600 text-gray-400 border-gray-600 cursor-not-allowed'}"
                     >
                         {can_afford ? "Buy" : "Too Expensive"}
-                    </Button>
-                    <!-- Debug info -->
-                    <div class="text-xs text-red-400 mt-1">
-                        Chips: {game.glitchchips}, Price: {item.price}, Can afford: {can_afford}
-                    </div>
+                    </button>
                 </div>
             </div>
         {/each}
