@@ -4,11 +4,12 @@
         back_to_menu,
         pull_orb,
         restart_game,
-        enter_shop,
+        enter_shop_and_pay,
         cash_out_and_quit,
         cash_out_after_win,
     } from "../state/game_state.svelte";
     import { GameView } from "../state/types";
+    import { get_level_cost, can_afford_level } from "../state/helpers";
     import CurrentView from "../components/CurrentView.svelte";
     import GameResult from "../components/GameResult.svelte";
     import OrbCategoryBar from "../components/OrbCategoryBar.svelte";
@@ -20,6 +21,11 @@
     let is_game_over = $derived(game.health <= 0);
     let is_win = $derived(game.points >= game.milestone);
     let show_result = $derived(is_game_over || is_win);
+
+    // Next level calculations for button display
+    let next_level = $derived(game.level + 1);
+    let next_level_cost = $derived(get_level_cost(next_level));
+    let can_afford_next_level = $derived(can_afford_level(game_state.player, next_level));
 
     // Auto-trigger Victory view for level 7 completion
     $effect(() => {
@@ -128,7 +134,7 @@
                 onclick={cash_out_and_quit}
                 class="w-full px-4 py-2 bg-black text-white font-bold uppercase tracking-wide border-2 border-white hover:bg-white hover:text-black transition-colors"
             >
-                Cash Out ({game.points} Moonrocks)
+                Cash Out (+{game.points} moonrocks)
             </button>
         {/if}
 
@@ -136,18 +142,23 @@
             {#if is_win}
                 <!-- Two options after winning -->
                 {#if game.level < 7}
-                    <!-- For levels 1-6: Shop or Cash Out -->
+                    <!-- For levels 1-6: Next Level or Cash Out -->
                     <button
-                        onclick={enter_shop}
-                        class="w-full px-4 py-3 bg-black text-white font-bold uppercase tracking-wide border-2 border-white hover:bg-white hover:text-black transition-colors"
+                        onclick={enter_shop_and_pay}
+                        disabled={!can_afford_next_level}
+                        class="w-full px-4 py-3 font-bold uppercase tracking-wide border-2 transition-colors {can_afford_next_level
+                            ? 'bg-black text-white border-white hover:bg-white hover:text-black'
+                            : 'bg-gray-600 text-gray-400 border-gray-600 cursor-not-allowed'}"
                     >
-                        Enter Shop & Continue
+                        {can_afford_next_level
+                            ? `Next Level (-${next_level_cost} moonrocks)`
+                            : `Insufficient Moonrocks (-${next_level_cost})`}
                     </button>
                     <button
                         onclick={cash_out_after_win}
                         class="w-full px-4 py-2 bg-black text-white font-bold uppercase tracking-wide border-2 border-white hover:bg-white hover:text-black transition-colors"
                     >
-                        Cash Out ({game.points} Moonrocks)
+                        Cash Out (+{game.points} moonrocks)
                     </button>
                 {:else}
                     <!-- For level 7: Only cash out since game is complete -->
@@ -155,7 +166,7 @@
                         onclick={cash_out_after_win}
                         class="w-full px-4 py-3 bg-black text-white font-bold uppercase tracking-wide border-2 border-white hover:bg-white hover:text-black transition-colors"
                     >
-                        Cash Out ({game.points} Moonrocks)
+                        Cash Out (+{game.points} moonrocks)
                     </button>
                 {/if}
             {:else}

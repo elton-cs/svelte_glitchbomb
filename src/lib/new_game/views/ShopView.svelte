@@ -6,16 +6,11 @@
         continue_to_next_level,
     } from "../state/game_state.svelte";
     import { CATEGORY_INFO, type ShopItem } from "../state/types";
-    import { get_level_cost, can_afford_level, get_modifier_text, get_rarity_name } from "../state/helpers";
+    import { get_modifier_text, get_rarity_name } from "../state/helpers";
     import CurrentView from "../components/CurrentView.svelte";
 
     let game = $derived(game_state.current_game!);
     let next_level = $derived(game.level + 1);
-    let next_level_cost = $derived(get_level_cost(next_level));
-    let can_afford_next_level = $derived(
-        can_afford_level(game_state.player, next_level),
-    );
-    let error_message = $state("");
 
     // Get next level milestone
     function get_next_level_milestone(current_level: number): number {
@@ -24,18 +19,9 @@
         return milestones[current_level]; // current_level is 1-indexed, so this gets next milestone
     }
 
-    // Handle continuing to next level with error handling
+    // Handle continuing to next level (payment already completed)
     function handle_continue_to_next_level() {
-        const success = continue_to_next_level();
-        if (!success) {
-            error_message = "Insufficient moonrocks for next level!";
-            // Clear error message after 3 seconds
-            setTimeout(() => {
-                error_message = "";
-            }, 3000);
-        } else {
-            error_message = "";
-        }
+        continue_to_next_level();
     }
 
 
@@ -75,11 +61,8 @@
         </div>
 
         {#if game.level < 7}
-            <div class="text-gray-400 text-xs mb-1">
+            <div class="text-gray-400 text-xs">
                 Next Level Milestone: {get_next_level_milestone(game.level)}
-            </div>
-            <div class="text-orange-400 text-xs">
-                Next Level Cost: {next_level_cost} Moonrocks
             </div>
         {:else}
             <div class="text-green-400 text-xs mt-1">Final Level Complete!</div>
@@ -126,27 +109,14 @@
         {/each}
     </div>
 
-    <!-- Error Message -->
-    {#if error_message}
-        <div
-            class="bg-red-900 border border-red-500 text-red-300 px-4 py-2 rounded mb-4 text-center text-sm"
-        >
-            {error_message}
-        </div>
-    {/if}
 
     <div class="space-y-3">
         {#if game.level < 7}
             <button
                 onclick={handle_continue_to_next_level}
-                disabled={!can_afford_next_level}
-                class="w-full px-4 py-3 font-bold uppercase tracking-wide border-2 transition-colors {can_afford_next_level
-                    ? 'bg-black text-white border-white hover:bg-white hover:text-black'
-                    : 'bg-gray-600 text-gray-400 border-gray-600 cursor-not-allowed'}"
+                class="w-full px-4 py-3 bg-black text-white font-bold uppercase tracking-wide border-2 border-white hover:bg-white hover:text-black transition-colors"
             >
-                {can_afford_next_level
-                    ? `Continue to Level ${next_level} (${next_level_cost} Moonrocks)`
-                    : `Insufficient Moonrocks (Need ${next_level_cost})`}
+                Continue to Level {next_level}
             </button>
         {:else}
             <button

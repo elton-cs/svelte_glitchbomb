@@ -63,7 +63,38 @@ export function enter_shop() {
   }
 }
 
-// Continue to next level from shop
+// Enter shop after winning and pay for next level upfront
+export function enter_shop_and_pay(): boolean {
+  if (!game_state.current_game) return false;
+
+  // Level 7 is the final level, can't continue further
+  if (game_state.current_game.level >= 7) {
+    game_state.current_view = GameView.Victory;
+    return true;
+  }
+
+  const next_level = game_state.current_game.level + 1;
+
+  // Check if player can afford the next level
+  if (!can_afford_level(game_state.player, next_level)) {
+    return false; // Cannot continue due to insufficient moonrocks
+  }
+
+  // Deduct moonrocks for the next level upfront
+  const success = deduct_moonrocks(game_state.player, next_level);
+  if (!success) {
+    return false; // Failed to deduct moonrocks
+  }
+
+  // Save player data after deducting moonrocks
+  save_player_to_storage(game_state.player);
+
+  // Go to shop view (payment already completed)
+  game_state.current_view = GameView.Shop;
+  return true;
+}
+
+// Continue to next level from shop (moonrocks already paid upfront)
 export function continue_to_next_level(): boolean {
   if (!game_state.current_game) return false;
 
@@ -75,23 +106,7 @@ export function continue_to_next_level(): boolean {
     return true;
   }
 
-  const next_level = game_state.current_game.level + 1;
-
-  // Check if player can afford the next level
-  if (!can_afford_level(game_state.player, next_level)) {
-    return false; // Cannot continue due to insufficient moonrocks
-  }
-
-  // Deduct moonrocks for the next level
-  const success = deduct_moonrocks(game_state.player, next_level);
-  if (!success) {
-    return false; // Failed to deduct moonrocks
-  }
-
-  // Save player data after deducting moonrocks
-  save_player_to_storage(game_state.player);
-
-  // Advance to next level
+  // Advance to next level (no payment needed - already paid upfront)
   game_state.current_game = advance_to_next_level(game_state.current_game);
   game_state.current_view = GameView.Game;
   return true;
