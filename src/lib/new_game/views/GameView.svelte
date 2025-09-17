@@ -15,6 +15,7 @@
     import OrbCategoryBar from "../components/OrbCategoryBar.svelte";
     import PulledOrbs from "../components/PulledOrbs.svelte";
     import StatusEffects from "../components/StatusEffects.svelte";
+    import HealthDisplay from "../components/HealthDisplay.svelte";
 
     let game = $derived(game_state.current_game!);
     let points_progress = $derived((game.points / game.milestone) * 100);
@@ -41,12 +42,15 @@
 </script>
 
 <div class="bg-black p-4 rounded-lg border border-white">
-    <CurrentView />
+    <div class="flex">
+        <!-- Left side: Main game content -->
+        <div class="flex-1 pr-4">
+            <CurrentView />
 
-    <!-- Game Stats - Always Visible -->
-    <div class="text-center mb-6">
-        <h2 class="text-3xl font-bold text-white">LEVEL {game.level}</h2>
-    </div>
+            <!-- Game Stats - Always Visible -->
+            <div class="text-center mb-6">
+                <h2 class="text-3xl font-bold text-white">LEVEL {game.level}</h2>
+            </div>
 
     <div class="grid grid-cols-2 gap-3 text-center mb-4">
         <!-- Top Row: Moonrocks and Chips -->
@@ -97,18 +101,6 @@
         </div>
     </div>
 
-    <!-- Health Bar -->
-    <div class="mb-6">
-        <div class="text-red-400 text-sm font-bold mb-2 text-center uppercase">
-            Health {game.health}/{game.max_health}
-        </div>
-        <div class="bg-gray-800 rounded h-8 border border-gray-600">
-            <div
-                class="bg-red-500 h-full rounded transition-all duration-300"
-                style="width: {Math.min(100, health_progress)}%"
-            ></div>
-        </div>
-    </div>
 
     <!-- Status Effects Display -->
     <StatusEffects />
@@ -199,5 +191,12 @@
         >
             Back to Menu
         </button>
+    </div>
+        </div>
+
+        <!-- Right side: Health display -->
+        <div class="flex-shrink-0 flex items-center">
+            <HealthDisplay />
+        </div>
     </div>
 </div>
