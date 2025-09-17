@@ -47,10 +47,26 @@ export function back_to_menu() {
   game_state.current_game = null;
 }
 
-// Restart the current game with fresh state
-export function restart_game() {
+// Restart the current game with fresh state (costs same as level 1)
+export function restart_game(): boolean {
+  // Check if player can afford level 1 (costs 10 moonrocks)
+  if (!can_afford_level(game_state.player, 1)) {
+    return false; // Cannot restart game due to insufficient moonrocks
+  }
+
+  // Deduct moonrocks for level 1
+  const success = deduct_moonrocks(game_state.player, 1);
+  if (!success) {
+    return false; // Failed to deduct moonrocks
+  }
+
+  // Save player data after deducting moonrocks
+  save_player_to_storage(game_state.player);
+
+  // Restart the game
   game_state.current_view = GameView.Game;
   game_state.current_game = create_new_game();
+  return true;
 }
 
 // Enter shop after winning - preserve game state and go to shop view

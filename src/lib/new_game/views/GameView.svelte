@@ -27,6 +27,10 @@
     let next_level_cost = $derived(get_level_cost(next_level));
     let can_afford_next_level = $derived(can_afford_level(game_state.player, next_level));
 
+    // Restart game calculations (level 1 cost)
+    let restart_cost = $derived(get_level_cost(1));
+    let can_afford_restart = $derived(can_afford_level(game_state.player, 1));
+
     // Auto-trigger Victory view for level 7 completion
     $effect(() => {
         if (is_win && game.level === 7) {
@@ -173,9 +177,14 @@
                 <!-- Game over: Only restart, no cash out allowed -->
                 <button
                     onclick={restart_game}
-                    class="w-full px-4 py-3 bg-black text-white font-bold uppercase tracking-wide border-2 border-white hover:bg-white hover:text-black transition-colors"
+                    disabled={!can_afford_restart}
+                    class="w-full px-4 py-3 font-bold uppercase tracking-wide border-2 transition-colors {can_afford_restart
+                        ? 'bg-black text-white border-white hover:bg-white hover:text-black'
+                        : 'bg-gray-600 text-gray-400 border-gray-600 cursor-not-allowed'}"
                 >
-                    Restart Game
+                    {can_afford_restart
+                        ? `Restart Game (-${restart_cost} moonrocks)`
+                        : `Insufficient Moonrocks (-${restart_cost})`}
                 </button>
             {/if}
         {/if}
