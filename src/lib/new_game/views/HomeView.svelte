@@ -2,6 +2,7 @@
   import { init_game, game_state } from '../state/game_state.svelte';
   import { get_level_cost } from '../state/helpers';
   import CurrentView from '../components/CurrentView.svelte';
+  import Button from '../components/Button.svelte';
 
   let level_1_cost = get_level_cost(1);
   let can_afford = $derived(game_state.player.moonrocks >= level_1_cost);
@@ -54,13 +55,12 @@
     </div>
   {/if}
 
-  <button
+  <Button
     onclick={start_game}
     disabled={!can_afford}
-    class="w-full px-6 py-3 font-bold uppercase tracking-wide border-2 transition-colors {can_afford
-      ? 'bg-white text-black border-white hover:bg-black hover:text-white'
-      : 'bg-gray-600 text-gray-400 border-gray-600 cursor-not-allowed'}"
+    variant="secondary"
+    size="large"
   >
     {can_afford ? 'Start Game' : 'Insufficient Moonrocks'}
-  </button>
+  </Button>
 </div>

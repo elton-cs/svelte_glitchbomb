@@ -6,6 +6,7 @@
     } from "../state/game_state.svelte";
     import { get_level_cost } from "../state/helpers";
     import CurrentView from "../components/CurrentView.svelte";
+    import Button from "../components/Button.svelte";
 
     let game = $derived(game_state.current_game!);
     let restart_cost = get_level_cost(1);
@@ -113,24 +114,22 @@
 
     <!-- Action Buttons -->
     <div class="space-y-4">
-        <button
+        <Button
             onclick={handle_restart}
             disabled={!can_afford_restart}
-            class="w-full px-4 py-3 font-bold uppercase tracking-wide border-2 transition-colors {can_afford_restart
-                ? 'bg-white text-black border-white hover:bg-black hover:text-white'
-                : 'bg-gray-600 text-gray-400 border-gray-600 cursor-not-allowed'}"
+            variant="secondary"
+            size="large"
         >
             {can_afford_restart
                 ? `Restart Game (${restart_cost} Moonrocks)`
                 : `Insufficient Moonrocks (Need ${restart_cost})`
             }
-        </button>
+        </Button>
 
-        <button
+        <Button
             onclick={back_to_menu}
-            class="w-full px-4 py-2 bg-black text-white font-bold uppercase tracking-wide border-2 border-white hover:bg-white hover:text-black transition-colors"
         >
             Main Menu
-        </button>
+        </Button>
     </div>
 </div>

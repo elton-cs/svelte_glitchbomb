@@ -7,6 +7,7 @@
     cash_out_after_win,
   } from "../state/game_state.svelte";
   import { get_level_cost, can_afford_level } from "../state/helpers";
+  import Button from "./Button.svelte";
 
   interface Props {
     is_win: boolean;
@@ -42,31 +43,30 @@
       <div class="space-y-3">
         {#if game.level < 7}
           <!-- For levels 1-6: Next Level or Cash Out -->
-          <button
+          <Button
             onclick={enter_shop_and_pay}
             disabled={!can_afford_next_level}
-            class="w-full px-4 py-3 font-bold uppercase tracking-wide border-2 transition-colors {can_afford_next_level
-              ? 'bg-white text-black border-white hover:bg-black hover:text-white'
-              : 'bg-gray-600 text-gray-400 border-gray-600 cursor-not-allowed'}"
+            variant="secondary"
+            size="large"
           >
             {can_afford_next_level
               ? `Next Level (-${next_level_cost} moonrocks)`
               : `Insufficient Moonrocks (-${next_level_cost})`}
-          </button>
-          <button
+          </Button>
+          <Button
             onclick={cash_out_after_win}
-            class="w-full px-4 py-2 bg-black text-white font-bold uppercase tracking-wide border-2 border-white hover:bg-white hover:text-black transition-colors"
           >
             Cash Out (+{points} moonrocks)
-          </button>
+          </Button>
         {:else}
           <!-- For level 7: Only cash out since game is complete -->
-          <button
+          <Button
             onclick={cash_out_after_win}
-            class="w-full px-4 py-3 bg-white text-black font-bold uppercase tracking-wide border-2 border-white hover:bg-black hover:text-white transition-colors"
+            variant="secondary"
+            size="large"
           >
             Cash Out (+{points} moonrocks)
-          </button>
+          </Button>
         {/if}
       </div>
     {:else}
@@ -83,24 +83,22 @@
 
       <!-- Loss buttons -->
       <div class="space-y-3">
-        <button
+        <Button
           onclick={restart_game}
           disabled={!can_afford_restart}
-          class="w-full px-4 py-3 font-bold uppercase tracking-wide border-2 transition-colors {can_afford_restart
-            ? 'bg-white text-black border-white hover:bg-black hover:text-white'
-            : 'bg-gray-600 text-gray-400 border-gray-600 cursor-not-allowed'}"
+          variant="secondary"
+          size="large"
         >
           {can_afford_restart
             ? `Restart Game (-${restart_cost} moonrocks)`
             : `Insufficient Moonrocks (-${restart_cost})`}
-        </button>
+        </Button>
 
-        <button
+        <Button
           onclick={back_to_menu}
-          class="w-full px-4 py-2 bg-black text-white font-bold uppercase tracking-wide border-2 border-white hover:bg-white hover:text-black transition-colors"
         >
           Back to Menu
-        </button>
+        </Button>
       </div>
     {/if}
   </div>

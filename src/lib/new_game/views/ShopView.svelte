@@ -8,6 +8,7 @@
     import { CATEGORY_INFO, type ShopItem } from "../state/types";
     import { get_modifier_text, get_rarity_name } from "../state/helpers";
     import CurrentView from "../components/CurrentView.svelte";
+    import Button from "../components/Button.svelte";
 
     let game = $derived(game_state.current_game!);
     let next_level = $derived(game.level + 1);
@@ -95,15 +96,14 @@
                     <div class="text-yellow-400 font-bold mb-2">
                         {item.price} chips
                     </div>
-                    <button
+                    <Button
                         onclick={() => purchase(index)}
                         disabled={!can_afford}
-                        class="w-full px-3 py-2 text-xs font-bold uppercase tracking-wide border transition-colors {can_afford
-                            ? 'bg-white text-black border-white hover:bg-black hover:text-white'
-                            : 'bg-gray-600 text-gray-400 border-gray-600 cursor-not-allowed'}"
+                        variant="secondary"
+                        size="small"
                     >
                         {can_afford ? "Buy" : "Too Expensive"}
-                    </button>
+                    </Button>
                 </div>
             </div>
         {/each}
@@ -112,26 +112,26 @@
 
     <div class="space-y-3">
         {#if game.level < 7}
-            <button
+            <Button
                 onclick={handle_continue_to_next_level}
-                class="w-full px-4 py-3 bg-black text-white font-bold uppercase tracking-wide border-2 border-white hover:bg-white hover:text-black transition-colors"
+                size="large"
             >
                 Continue to Level {next_level}
-            </button>
+            </Button>
         {:else}
-            <button
+            <Button
                 onclick={back_to_menu}
-                class="w-full px-4 py-3 bg-green-500 text-white font-bold uppercase tracking-wide border-2 border-green-500 hover:bg-white hover:text-green-500 transition-colors"
+                size="large"
+                class="bg-green-500 border-green-500 hover:bg-white hover:text-green-500"
             >
                 Game Complete! Return to Menu
-            </button>
+            </Button>
         {/if}
 
-        <button
+        <Button
             onclick={back_to_menu}
-            class="w-full px-4 py-2 bg-black text-white font-bold uppercase tracking-wide border-2 border-white hover:bg-white hover:text-black transition-colors"
         >
             Back to Menu
-        </button>
+        </Button>
     </div>
 </div>

@@ -12,6 +12,7 @@
     import StatusEffects from "../components/StatusEffects.svelte";
     import HealthDisplay from "../components/HealthDisplay.svelte";
     import BombDisplay from "../components/BombDisplay.svelte";
+    import Button from "../components/Button.svelte";
 
     let game = $derived(game_state.current_game!);
     let points_progress = $derived((game.points / game.milestone) * 100);
@@ -106,30 +107,28 @@
 
     <!-- Game Actions -->
     <div class="space-y-4">
-        <button
+        <Button
             onclick={pull_orb}
             disabled={game.playground_orbs.length === 0 || show_result}
-            class="w-full px-4 py-3 bg-black text-white font-bold uppercase tracking-wide border-2 border-white hover:bg-white hover:text-black disabled:bg-gray-600 disabled:text-gray-400 disabled:cursor-not-allowed transition-colors"
+            size="large"
         >
             Pull Orb ({game.playground_orbs.length} left)
-        </button>
+        </Button>
 
         <!-- Quit & Cash Out Button - Available during active gameplay -->
         {#if !show_result}
-            <button
+            <Button
                 onclick={cash_out_and_quit}
-                class="w-full px-4 py-2 bg-black text-white font-bold uppercase tracking-wide border-2 border-white hover:bg-white hover:text-black transition-colors"
             >
                 Cash Out (+{game.points} moonrocks)
-            </button>
+            </Button>
         {/if}
 
-        <button
+        <Button
             onclick={back_to_menu}
-            class="w-full px-4 py-2 bg-black text-white font-bold uppercase tracking-wide border-2 border-white hover:bg-white hover:text-black transition-colors"
         >
             Back to Menu
-        </button>
+        </Button>
     </div>
 
     <!-- Victory/Loss Popup Overlay -->
