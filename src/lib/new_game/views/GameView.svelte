@@ -45,12 +45,12 @@
 <div class="bg-black p-4 rounded-lg border border-white">
     <div class="flex">
         <!-- Left edge: Bomb display -->
-        <div class="flex-shrink-0 flex items-center pr-4">
+        <div class="w-12 flex items-center justify-center">
             <BombDisplay />
         </div>
 
         <!-- Center: Main game content -->
-        <div class="flex-1 px-4">
+        <div class="flex-1 px-6">
             <CurrentView />
 
             <!-- Game Stats - Always Visible -->
@@ -201,7 +201,7 @@
         </div>
 
         <!-- Right edge: Health display -->
-        <div class="flex-shrink-0 flex items-center pl-4">
+        <div class="w-12 flex items-center justify-center">
             <HealthDisplay />
         </div>
     </div>

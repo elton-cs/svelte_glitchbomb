@@ -34,8 +34,8 @@
         <div class="bomb-container">
             <svg
                 fill={is_pulled ? '#ef4444' : '#374151'}
-                width="24"
-                height="24"
+                width="28"
+                height="28"
                 viewBox="0 0 32 32"
                 version="1.1"
                 xmlns="http://www.w3.org/2000/svg"
@@ -51,9 +51,15 @@
 <style>
     .bomb-display {
         min-height: 120px;
+        width: 32px;
     }
 
     .bomb-container {
         filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 </style>
