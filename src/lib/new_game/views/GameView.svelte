@@ -10,7 +10,6 @@
     } from "../state/game_state.svelte";
     import { GameView } from "../state/types";
     import { get_level_cost, can_afford_level } from "../state/helpers";
-    import CurrentView from "../components/CurrentView.svelte";
     import GameResult from "../components/GameResult.svelte";
     import OrbCategoryBar from "../components/OrbCategoryBar.svelte";
     import PulledOrbs from "../components/PulledOrbs.svelte";
@@ -51,7 +50,8 @@
 
         <!-- Center: Main game content -->
         <div class="flex-1 px-6">
-            <CurrentView />
+            <!-- Pulled Orbs Display -->
+            <PulledOrbs />
 
             <div class="grid grid-cols-2 gap-3 text-center mb-4">
                 <!-- Top Row: Moonrocks and Chips -->
@@ -111,9 +111,6 @@
                     <GameResult {is_win} points={game.points} />
                 </div>
             {/if}
-
-            <!-- Pulled Orbs Display -->
-            <PulledOrbs />
 
             <!-- Orb Category Distribution -->
             <OrbCategoryBar />
