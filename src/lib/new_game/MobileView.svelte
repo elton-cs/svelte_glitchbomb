@@ -16,12 +16,12 @@
     <GameViewComponent />
   {:else if game_state.current_view === GameView.Win}
     <!-- Win view will go here -->
-    <div class="bg-black p-6 rounded-lg border border-white max-w-md mx-auto">
+    <div class="bg-black p-6 rounded-lg border border-white max-w-md mx-auto min-h-[600px]">
       <h2 class="text-2xl font-bold text-green-400 text-center">VICTORY!</h2>
     </div>
   {:else if game_state.current_view === GameView.Lose}
     <!-- Lose view will go here -->
-    <div class="bg-black p-6 rounded-lg border border-white max-w-md mx-auto">
+    <div class="bg-black p-6 rounded-lg border border-white max-w-md mx-auto min-h-[600px]">
       <h2 class="text-2xl font-bold text-red-400 text-center">GAME OVER</h2>
     </div>
   {:else if game_state.current_view === GameView.Victory}

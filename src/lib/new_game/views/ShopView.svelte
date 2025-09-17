@@ -35,7 +35,7 @@
     }
 </script>
 
-<div class="bg-black p-6 rounded-lg border border-white max-w-md mx-auto">
+<div class="bg-black p-6 rounded-lg border border-white max-w-md mx-auto min-h-[600px]">
     <CurrentView />
 
     <div class="text-center mb-6">
