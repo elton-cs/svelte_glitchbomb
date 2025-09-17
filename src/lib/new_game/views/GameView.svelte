@@ -42,21 +42,15 @@
     });
 </script>
 
-<div class="bg-black p-4 rounded-lg border border-white">
-    <!-- Vertical stack layout - mobile only -->
-    <div class="flex flex-col space-y-4 max-w-sm mx-auto">
-        <!-- Top: Health and Bomb displays in horizontal row -->
-        <div class="flex justify-between items-center">
-            <div class="flex items-center">
-                <BombDisplay />
-            </div>
-            <div class="flex items-center">
-                <HealthDisplay />
-            </div>
+<div class="bg-black p-4 rounded-lg border border-white max-w-sm mx-auto">
+    <div class="flex">
+        <!-- Left edge: Bomb display -->
+        <div class="w-12 flex items-center justify-center">
+            <BombDisplay />
         </div>
 
-        <!-- Main game content -->
-        <div class="w-full">
+        <!-- Center: Main game content -->
+        <div class="flex-1 px-6">
             <CurrentView />
 
             <!-- Game Stats - Always Visible -->
@@ -203,6 +197,11 @@
                     Back to Menu
                 </button>
             </div>
+        </div>
+
+        <!-- Right edge: Health display -->
+        <div class="w-12 flex items-center justify-center">
+            <HealthDisplay />
         </div>
     </div>
 </div>
