@@ -21,14 +21,14 @@
             {@const orb = game.pulled_orbs[index]}
             {@const categoryInfo = CATEGORY_INFO[orb.category]}
             <div
-                class="{categoryInfo.color} border border-white px-3 py-2 rounded text-black text-sm font-mono font-bold flex-shrink-0"
+                class="{categoryInfo.color} border border-white w-12 h-12 rounded-full text-black text-xs font-mono font-bold flex-shrink-0 flex items-center justify-center"
             >
                 {get_orb_display_text(orb)}
             </div>
         {:else}
-            <!-- Placeholder box -->
+            <!-- Placeholder circle -->
             <div
-                class="bg-gray-800 border border-gray-600 px-3 py-2 rounded text-gray-500 text-sm font-mono font-bold flex-shrink-0"
+                class="bg-gray-800 border border-gray-600 w-12 h-12 rounded-full text-gray-500 text-xs font-mono font-bold flex-shrink-0 flex items-center justify-center"
             >
                 ?
             </div>
@@ -40,7 +40,7 @@
         {#each game.pulled_orbs.slice(3) as orb, index}
             {@const categoryInfo = CATEGORY_INFO[orb.category]}
             <div
-                class="{categoryInfo.color} border border-white px-3 py-2 rounded text-black text-sm font-mono font-bold flex-shrink-0"
+                class="{categoryInfo.color} border border-white w-12 h-12 rounded-full text-black text-xs font-mono font-bold flex-shrink-0 flex items-center justify-center"
             >
                 {get_orb_display_text(orb)}
             </div>
