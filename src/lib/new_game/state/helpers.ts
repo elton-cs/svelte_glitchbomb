@@ -218,7 +218,7 @@ export function apply_orb(game: Game, orb: Orb, player: Player): void {
         // Points add to score (multiplied by current multiplier)
         const base_points = modifier.value.value;
         const multiplied_points = base_points * game.multiplier;
-        game.points += multiplied_points;
+        game.points += Math.floor(multiplied_points);
         break;
 
       case ModifierType.Multiplier:
@@ -232,7 +232,7 @@ export function apply_orb(game: Game, orb: Orb, player: Player): void {
         const remaining_orbs = game.playground_orbs.length - 1;
         const base_points_awarded = modifier.value.value * remaining_orbs;
         const multiplied_points_awarded = base_points_awarded * game.multiplier;
-        game.points += multiplied_points_awarded;
+        game.points += Math.floor(multiplied_points_awarded);
         break;
 
       case ModifierType.PointsPerBombPulled:
@@ -242,7 +242,7 @@ export function apply_orb(game: Game, orb: Orb, player: Player): void {
         ).length;
         const base_bomb_points = modifier.value.value * bombs_pulled;
         const multiplied_bomb_points = base_bomb_points * game.multiplier;
-        game.points += multiplied_bomb_points;
+        game.points += Math.floor(multiplied_bomb_points);
         break;
 
       case ModifierType.GlitchChips:
@@ -260,7 +260,7 @@ export function apply_orb(game: Game, orb: Orb, player: Player): void {
 
   // Award chips if player reaches milestone (wins the game)
   if (game.points >= game.milestone) {
-    const chips_earned = game.points;
+    const chips_earned = Math.floor(game.points);
     game.glitchchips += chips_earned;
   }
 }
