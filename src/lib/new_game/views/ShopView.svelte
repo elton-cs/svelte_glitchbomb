@@ -6,7 +6,7 @@
         continue_to_next_level,
     } from "../state/game_state.svelte";
     import { CATEGORY_INFO, type ShopItem } from "../state/types";
-    import { get_modifier_text, get_rarity_name, get_orb_display, get_tier_border_color } from "../state/helpers";
+    import { get_modifier_text, get_rarity_name, get_orb_display, get_tier_border_color, get_shop_item_display_name } from "../state/helpers";
     import CurrentView from "../components/CurrentView.svelte";
     import Button from "../components/Button.svelte";
 
@@ -42,7 +42,7 @@
 
             return {
                 id: `shop_item_${index}`,
-                name: get_rarity_name(item),
+                name: get_shop_item_display_name(item.name),
                 modifier_text: get_modifier_text(item),
                 cost: item.price,
                 base_cost: item.base_price,

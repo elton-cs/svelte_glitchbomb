@@ -642,6 +642,52 @@ export function get_rarity_name(item: ShopItem): string {
   }
 }
 
+// Get human-readable item name from ShopItemName enum
+export function get_shop_item_display_name(shop_item_name: ShopItemName): string {
+  switch (shop_item_name) {
+    // Common items
+    case ShopItemName.POINT_5_COMMON:
+      return "Point Orb";
+    case ShopItemName.POINT_7_COMMON:
+      return "Greater Point";
+    case ShopItemName.GLITCHCHIPS_15_COMMON:
+      return "Chip Cache";
+    case ShopItemName.MOONROCKS_15_COMMON:
+      return "Moon Crystal";
+    case ShopItemName.POINTSPERBOMBPULLED_4_COMMON:
+      return "Bomb Tracker";
+    case ShopItemName.POINTSPERPOINTORB_2_COMMON:
+      return "Point Synergy";
+    case ShopItemName.HEALTH_1_COMMON:
+      return "Health Orb";
+    case ShopItemName.MULTIPLIER_0_5_COMMON:
+      return "Minor Amplifier";
+    case ShopItemName.REWINDPOINT_1_COMMON:
+      return "Point Recall";
+
+    // Rare items
+    case ShopItemName.POINT_8_RARE:
+      return "Superior Point";
+    case ShopItemName.POINT_9_RARE:
+      return "Elite Point";
+    case ShopItemName.MULTIPLIER_1_0_RARE:
+      return "Amplifier";
+    case ShopItemName.MULTIPLIER_1_5_RARE:
+      return "Greater Amplifier";
+
+    // Cosmic items
+    case ShopItemName.HEALTH_3_COSMIC:
+      return "Vitality Core";
+    case ShopItemName.MOONROCKS_40_COSMIC:
+      return "Lunar Fortune";
+    case ShopItemName.BOMBIMMUNITY_3_COSMIC:
+      return "Bomb Shield";
+
+    default:
+      return "Unknown Item";
+  }
+}
+
 // Orb display interface for shop UI
 export interface OrbDisplay {
   text: string;
