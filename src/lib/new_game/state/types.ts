@@ -21,6 +21,11 @@ export enum ModifierType {
   BombImmunity,
 }
 
+export interface BombImmunityEffect {
+  is_active: boolean;
+  turns_remaining: number;
+}
+
 export interface ModifierValue {
   value: number;
 }
@@ -103,12 +108,12 @@ export interface Game {
   max_health: number;
   multiplier: number;
   glitchchips: number;
-  bomb_immunity_turns: number;
   starting_orbs: Orb[];
   purchased_orbs: Orb[];
   playground_orbs: Orb[];
   pulled_orbs: Orb[];
   shop_items: ShopItem[];
+  bomb_immunity_effect: BombImmunityEffect;
 }
 
 export interface Player {

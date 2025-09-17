@@ -8,6 +8,7 @@ import {
   type Game,
   type ShopItem,
   type Player,
+  type BombImmunityEffect,
 } from "./types";
 
 // Level milestones for progression
@@ -192,7 +193,7 @@ export function init_game(
     max_health: 5,
     multiplier: 1,
     glitchchips: existing_chips,
-    bomb_immunity_turns: 0,
+    bomb_immunity_effect: { is_active: false, turns_remaining: 0 },
     starting_orbs,
     purchased_orbs,
     playground_orbs,
@@ -203,13 +204,11 @@ export function init_game(
 
 // Apply orb effects to game state
 export function apply_orb(game: Game, orb: Orb, player: Player): void {
-  let bomb_immunity_orb_pulled = false;
-
   for (const modifier of orb.modifiers) {
     switch (modifier.type) {
       case ModifierType.Bomb:
         // Check for bomb immunity
-        if (game.bomb_immunity_turns > 0) {
+        if (game.bomb_immunity_effect.is_active && game.bomb_immunity_effect.turns_remaining > 0) {
           // Bomb is blocked by immunity - return it to the bag
           game.playground_orbs.push(orb);
         } else {
@@ -306,9 +305,8 @@ export function apply_orb(game: Game, orb: Orb, player: Player): void {
         break;
 
       case ModifierType.BombImmunity:
-        // Add immunity turns based on modifier value
-        game.bomb_immunity_turns += modifier.value.value;
-        bomb_immunity_orb_pulled = true;
+        // Activate bomb immunity with stacking
+        activate_bomb_immunity(game.bomb_immunity_effect, modifier.value.value);
         break;
     }
   }
@@ -319,9 +317,12 @@ export function apply_orb(game: Game, orb: Orb, player: Player): void {
     game.glitchchips += chips_earned;
   }
 
-  // Decrement bomb immunity at the end of the turn (if active and not just gained)
-  if (game.bomb_immunity_turns > 0 && !bomb_immunity_orb_pulled) {
-    game.bomb_immunity_turns--;
+  // Decrement bomb immunity at the end of every turn (if active)
+  if (game.bomb_immunity_effect.is_active) {
+    game.bomb_immunity_effect.turns_remaining--;
+    if (game.bomb_immunity_effect.turns_remaining === 0) {
+      game.bomb_immunity_effect.is_active = false;
+    }
   }
 }
 
@@ -411,6 +412,12 @@ export function deduct_moonrocks(player: Player, level: number): boolean {
 export function cash_out_points(player: Player, points: number): void {
   player.moonrocks += points;
   save_player_to_storage(player);
+}
+
+// Helper function for bomb immunity activation
+function activate_bomb_immunity(effect: BombImmunityEffect, mod_value: number): void {
+  effect.is_active = true;
+  effect.turns_remaining = effect.turns_remaining + mod_value + 1; // Stack with existing + 1 for current turn
 }
 
 // Get modifier initial from type (for displaying modifier text)
