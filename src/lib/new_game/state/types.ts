@@ -71,10 +71,37 @@ export interface Orb {
   category: OrbCategory;
 }
 
+export enum ShopItemName {
+  // Common items (9 total)
+  POINT_5_COMMON,
+  POINT_7_COMMON,
+  GLITCHCHIPS_15_COMMON,
+  MOONROCKS_15_COMMON,
+  POINTSPERBOMBPULLED_4_COMMON,
+  POINTSPERPOINTORB_2_COMMON,
+  HEALTH_1_COMMON,
+  MULTIPLIER_0_5_COMMON,
+  REWINDPOINT_1_COMMON,
+
+  // Rare items (4 total)
+  POINT_8_RARE,
+  POINT_9_RARE,
+  MULTIPLIER_1_0_RARE,
+  MULTIPLIER_1_5_RARE,
+
+  // Cosmic items (3 total)
+  HEALTH_3_COSMIC,
+  MOONROCKS_40_COSMIC,
+  BOMBIMMUNITY_3_COSMIC,
+}
+
 export interface ShopItem {
+  name: ShopItemName;
   orb: Orb;
   rarity: OrbRarity;
-  price: number;
+  base_price: number;
+  purchase_count: number;
+  price: number; // Current calculated price
 }
 
 export enum RarityType {

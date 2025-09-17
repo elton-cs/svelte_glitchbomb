@@ -3,6 +3,7 @@ import {
   OrbCategory,
   RarityType,
   RARITY_INFO,
+  ShopItemName,
   type Orb,
   type Modifier,
   type Game,
@@ -46,18 +47,31 @@ function create_orb(modifiers: Modifier[], category: OrbCategory): Orb {
   return { modifiers, category };
 }
 
+// Calculate current price with 20% increase per purchase (rounded up)
+export function calculate_current_price(base_price: number, purchase_count: number): number {
+  return Math.ceil(base_price * Math.pow(1.2, purchase_count));
+}
+
 // Helper to create a shop item with all needed parameters
 function build_shop_item(
+  name: ShopItemName,
   modifier_type: ModifierType,
   modifier_value: number,
   orb_category: OrbCategory,
   rarity_type: RarityType,
-  price: number,
+  base_price: number,
+  purchase_count: number = 0,
 ): ShopItem {
   return {
-    orb: create_orb([create_modifier(modifier_type, modifier_value)], orb_category),
+    name,
+    orb: create_orb(
+      [create_modifier(modifier_type, modifier_value)],
+      orb_category,
+    ),
     rarity: RARITY_INFO[rarity_type],
-    price,
+    base_price,
+    purchase_count,
+    price: calculate_current_price(base_price, purchase_count),
   };
 }
 
@@ -117,30 +131,142 @@ export function flatten_and_shuffle_orbs(orb_lists: Orb[][]): Orb[] {
 
 // Common shop items pool (9 items, select 3)
 const COMMON_SHOP_ITEMS: ShopItem[] = [
-  build_shop_item(ModifierType.Point, 5, OrbCategory.Point, RarityType.Common, 5),
-  build_shop_item(ModifierType.Point, 7, OrbCategory.Point, RarityType.Common, 8),
-  build_shop_item(ModifierType.GlitchChips, 15, OrbCategory.Special, RarityType.Common, 5),
-  build_shop_item(ModifierType.Moonrocks, 15, OrbCategory.Special, RarityType.Common, 8),
-  build_shop_item(ModifierType.PointsPerBombPulled, 4, OrbCategory.Special, RarityType.Common, 6),
-  build_shop_item(ModifierType.PointsPerPointOrb, 2, OrbCategory.Point, RarityType.Common, 9),
-  build_shop_item(ModifierType.Health, 1, OrbCategory.Health, RarityType.Common, 9),
-  build_shop_item(ModifierType.Multiplier, 0.5, OrbCategory.Multiplier, RarityType.Common, 9),
-  build_shop_item(ModifierType.RewindPoint, 1, OrbCategory.Special, RarityType.Common, 8),
+  build_shop_item(
+    ShopItemName.POINT_5_COMMON,
+    ModifierType.Point,
+    5,
+    OrbCategory.Point,
+    RarityType.Common,
+    5,
+  ),
+  build_shop_item(
+    ShopItemName.POINT_7_COMMON,
+    ModifierType.Point,
+    7,
+    OrbCategory.Point,
+    RarityType.Common,
+    8,
+  ),
+  build_shop_item(
+    ShopItemName.GLITCHCHIPS_15_COMMON,
+    ModifierType.GlitchChips,
+    15,
+    OrbCategory.Special,
+    RarityType.Common,
+    5,
+  ),
+  build_shop_item(
+    ShopItemName.MOONROCKS_15_COMMON,
+    ModifierType.Moonrocks,
+    15,
+    OrbCategory.Special,
+    RarityType.Common,
+    8,
+  ),
+  build_shop_item(
+    ShopItemName.POINTSPERBOMBPULLED_4_COMMON,
+    ModifierType.PointsPerBombPulled,
+    4,
+    OrbCategory.Special,
+    RarityType.Common,
+    6,
+  ),
+  build_shop_item(
+    ShopItemName.POINTSPERPOINTORB_2_COMMON,
+    ModifierType.PointsPerPointOrb,
+    2,
+    OrbCategory.Point,
+    RarityType.Common,
+    9,
+  ),
+  build_shop_item(
+    ShopItemName.HEALTH_1_COMMON,
+    ModifierType.Health,
+    1,
+    OrbCategory.Health,
+    RarityType.Common,
+    9,
+  ),
+  build_shop_item(
+    ShopItemName.MULTIPLIER_0_5_COMMON,
+    ModifierType.Multiplier,
+    0.5,
+    OrbCategory.Multiplier,
+    RarityType.Common,
+    9,
+  ),
+  build_shop_item(
+    ShopItemName.REWINDPOINT_1_COMMON,
+    ModifierType.RewindPoint,
+    1,
+    OrbCategory.Special,
+    RarityType.Common,
+    8,
+  ),
 ];
 
 // Rare shop items pool (4 items, select 2)
 const RARE_SHOP_ITEMS: ShopItem[] = [
-  build_shop_item(ModifierType.Point, 8, OrbCategory.Point, RarityType.Rare, 11),
-  build_shop_item(ModifierType.Point, 9, OrbCategory.Point, RarityType.Rare, 13),
-  build_shop_item(ModifierType.Multiplier, 1.0, OrbCategory.Multiplier, RarityType.Rare, 14),
-  build_shop_item(ModifierType.Multiplier, 1.5, OrbCategory.Multiplier, RarityType.Rare, 16),
+  build_shop_item(
+    ShopItemName.POINT_8_RARE,
+    ModifierType.Point,
+    8,
+    OrbCategory.Point,
+    RarityType.Rare,
+    11,
+  ),
+  build_shop_item(
+    ShopItemName.POINT_9_RARE,
+    ModifierType.Point,
+    9,
+    OrbCategory.Point,
+    RarityType.Rare,
+    13,
+  ),
+  build_shop_item(
+    ShopItemName.MULTIPLIER_1_0_RARE,
+    ModifierType.Multiplier,
+    1.0,
+    OrbCategory.Multiplier,
+    RarityType.Rare,
+    14,
+  ),
+  build_shop_item(
+    ShopItemName.MULTIPLIER_1_5_RARE,
+    ModifierType.Multiplier,
+    1.5,
+    OrbCategory.Multiplier,
+    RarityType.Rare,
+    16,
+  ),
 ];
 
 // Cosmic shop items pool (3 items, select 1)
 const COSMIC_SHOP_ITEMS: ShopItem[] = [
-  build_shop_item(ModifierType.Health, 3, OrbCategory.Health, RarityType.Cosmic, 21),
-  build_shop_item(ModifierType.Moonrocks, 40, OrbCategory.Special, RarityType.Cosmic, 23),
-  build_shop_item(ModifierType.BombImmunity, 3, OrbCategory.Special, RarityType.Cosmic, 24)
+  build_shop_item(
+    ShopItemName.HEALTH_3_COSMIC,
+    ModifierType.Health,
+    3,
+    OrbCategory.Health,
+    RarityType.Cosmic,
+    21,
+  ),
+  build_shop_item(
+    ShopItemName.MOONROCKS_40_COSMIC,
+    ModifierType.Moonrocks,
+    40,
+    OrbCategory.Special,
+    RarityType.Cosmic,
+    23,
+  ),
+  build_shop_item(
+    ShopItemName.BOMBIMMUNITY_3_COSMIC,
+    ModifierType.BombImmunity,
+    3,
+    OrbCategory.Special,
+    RarityType.Cosmic,
+    24,
+  ),
 ];
 
 // Utility function to shuffle an array (reusable version of Fisher-Yates)
@@ -154,20 +280,40 @@ function shuffle_array<T>(array: T[]): T[] {
 }
 
 // Generate shop items for purchase with randomized selection
-function generate_shop_items(): ShopItem[] {
+function generate_shop_items(existing_shop_items: ShopItem[] = []): ShopItem[] {
+  // Create a map of existing purchase counts by item name
+  const purchase_counts_map = new Map<ShopItemName, number>();
+  for (const item of existing_shop_items) {
+    purchase_counts_map.set(item.name, item.purchase_count);
+  }
+
   const selected_items: ShopItem[] = [];
+
+  // Helper function to apply existing purchase count to a shop item
+  const apply_purchase_count = (item: ShopItem): ShopItem => {
+    const existing_count = purchase_counts_map.get(item.name) || 0;
+    return build_shop_item(
+      item.name,
+      item.orb.modifiers[0].type,
+      item.orb.modifiers[0].value.value,
+      item.orb.category,
+      item.rarity.rarity,
+      item.base_price,
+      existing_count
+    );
+  };
 
   // Select 3 random common items
   const shuffled_common = shuffle_array(COMMON_SHOP_ITEMS);
-  selected_items.push(...shuffled_common.slice(0, 3));
+  selected_items.push(...shuffled_common.slice(0, 3).map(apply_purchase_count));
 
   // Select 2 random rare items
   const shuffled_rare = shuffle_array(RARE_SHOP_ITEMS);
-  selected_items.push(...shuffled_rare.slice(0, 2));
+  selected_items.push(...shuffled_rare.slice(0, 2).map(apply_purchase_count));
 
   // Select 1 random cosmic item
   const shuffled_cosmic = shuffle_array(COSMIC_SHOP_ITEMS);
-  selected_items.push(...shuffled_cosmic.slice(0, 1));
+  selected_items.push(...shuffled_cosmic.slice(0, 1).map(apply_purchase_count));
 
   return selected_items;
 }
@@ -177,6 +323,7 @@ export function init_game(
   level: number = 1,
   existing_purchased_orbs: Orb[] = [],
   existing_chips: number = 0,
+  existing_shop_items: ShopItem[] = [],
 ): Game {
   const starting_orbs = build_starting_orbs();
   const purchased_orbs = [...existing_purchased_orbs];
@@ -198,7 +345,7 @@ export function init_game(
     purchased_orbs,
     playground_orbs,
     pulled_orbs: [],
-    shop_items: generate_shop_items(),
+    shop_items: generate_shop_items(existing_shop_items),
   };
 }
 
@@ -208,7 +355,10 @@ export function apply_orb(game: Game, orb: Orb, player: Player): void {
     switch (modifier.type) {
       case ModifierType.Bomb:
         // Check for bomb immunity
-        if (game.bomb_immunity_effect.is_active && game.bomb_immunity_effect.turns_remaining > 0) {
+        if (
+          game.bomb_immunity_effect.is_active &&
+          game.bomb_immunity_effect.turns_remaining > 0
+        ) {
           // Bomb is blocked by immunity - return it to the bag
           game.playground_orbs.push(orb);
         } else {
@@ -263,7 +413,8 @@ export function apply_orb(game: Game, orb: Orb, player: Player): void {
           orb.modifiers.some((mod) => mod.type === ModifierType.Point),
         ).length;
         const base_point_orb_points = modifier.value.value * point_orbs_count;
-        const multiplied_point_orb_points = base_point_orb_points * game.multiplier;
+        const multiplied_point_orb_points =
+          base_point_orb_points * game.multiplier;
         game.points += Math.floor(multiplied_point_orb_points);
         break;
 
@@ -284,7 +435,7 @@ export function apply_orb(game: Game, orb: Orb, player: Player): void {
         const point_orbs_with_values = game.pulled_orbs
           .map((orb, index) => {
             const point_modifier = orb.modifiers.find(
-              (mod) => mod.type === ModifierType.Point
+              (mod) => mod.type === ModifierType.Point,
             );
             if (point_modifier) {
               return { orb, value: point_modifier.value.value, index };
@@ -296,7 +447,7 @@ export function apply_orb(game: Game, orb: Orb, player: Player): void {
         // If there are any point orbs, find the one with the lowest value
         if (point_orbs_with_values.length > 0) {
           const lowest_point_orb = point_orbs_with_values.reduce((min, curr) =>
-            curr.value < min.value ? curr : min
+            curr.value < min.value ? curr : min,
           );
 
           // Add the lowest point orb back to the playground
@@ -339,6 +490,10 @@ export function purchase_item(game: Game, item_index: number): boolean {
   // Add orb to purchased orbs
   game.purchased_orbs = [...game.purchased_orbs, item.orb];
 
+  // Increment purchase count and recalculate price
+  item.purchase_count += 1;
+  item.price = calculate_current_price(item.base_price, item.purchase_count);
+
   // Regenerate playground with new orb
   game.playground_orbs = flatten_and_shuffle_orbs([
     game.starting_orbs,
@@ -351,7 +506,7 @@ export function purchase_item(game: Game, item_index: number): boolean {
 // Advance to the next level, preserving chips and purchased orbs
 export function advance_to_next_level(game: Game): Game {
   const next_level = game.level + 1;
-  return init_game(next_level, game.purchased_orbs, game.glitchchips);
+  return init_game(next_level, game.purchased_orbs, game.glitchchips, game.shop_items);
 }
 
 // Player management functions
@@ -415,7 +570,10 @@ export function cash_out_points(player: Player, points: number): void {
 }
 
 // Helper function for bomb immunity activation
-function activate_bomb_immunity(effect: BombImmunityEffect, mod_value: number): void {
+function activate_bomb_immunity(
+  effect: BombImmunityEffect,
+  mod_value: number,
+): void {
   effect.is_active = true;
   effect.turns_remaining = effect.turns_remaining + mod_value + 1; // Stack with existing + 1 for current turn
 }
