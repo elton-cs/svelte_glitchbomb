@@ -124,6 +124,7 @@ const COMMON_SHOP_ITEMS: ShopItem[] = [
   build_shop_item(ModifierType.PointsPerPointOrb, 2, OrbCategory.Point, RarityType.Common, 9),
   build_shop_item(ModifierType.Health, 1, OrbCategory.Health, RarityType.Common, 9),
   build_shop_item(ModifierType.Multiplier, 0.5, OrbCategory.Multiplier, RarityType.Common, 9),
+  build_shop_item(ModifierType.RewindPoint, 1, OrbCategory.Special, RarityType.Common, 8),
 ];
 
 // Rare shop items pool (4 items, select 2)
@@ -267,6 +268,32 @@ export function apply_orb(game: Game, orb: Orb, player: Player): void {
         player.moonrocks += modifier.value.value;
         save_player_to_storage(player);
         break;
+
+      case ModifierType.RewindPoint:
+        // RewindPoint returns the lowest-value point orb back to the bag
+        // Find all pulled orbs that have a Point modifier
+        const point_orbs_with_values = game.pulled_orbs
+          .map((orb, index) => {
+            const point_modifier = orb.modifiers.find(
+              (mod) => mod.type === ModifierType.Point
+            );
+            if (point_modifier) {
+              return { orb, value: point_modifier.value.value, index };
+            }
+            return null;
+          })
+          .filter((item) => item !== null);
+
+        // If there are any point orbs, find the one with the lowest value
+        if (point_orbs_with_values.length > 0) {
+          const lowest_point_orb = point_orbs_with_values.reduce((min, curr) =>
+            curr.value < min.value ? curr : min
+          );
+
+          // Add the lowest point orb back to the playground
+          game.playground_orbs.push(lowest_point_orb.orb);
+        }
+        break;
     }
   }
 
@@ -386,6 +413,8 @@ export function get_modifier_initial(type: ModifierType): string {
       return "GC";
     case ModifierType.Moonrocks:
       return "MR";
+    case ModifierType.RewindPoint:
+      return "RP";
     default:
       return "?";
   }

@@ -17,6 +17,7 @@ export enum ModifierType {
   PointsPerPointOrb,
   GlitchChips,
   Moonrocks,
+  RewindPoint,
 }
 
 export interface ModifierValue {
