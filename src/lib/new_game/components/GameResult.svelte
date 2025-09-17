@@ -19,14 +19,14 @@
     {:else}
       <h2 class="text-4xl font-bold text-red-400 mb-2">GAME OVER</h2>
       <p class="text-white text-lg mb-2">Your health reached zero!</p>
-      {#if points > 0}
-        <div class="bg-yellow-900 border border-yellow-600 rounded p-3 mb-2">
-          <p class="text-yellow-300 text-sm">You earned <span class="font-bold">{points} points</span></p>
-          <p class="text-yellow-300 text-xs">Cash out for <span class="font-bold">{points} moonrocks</span></p>
-        </div>
-      {:else}
-        <p class="text-gray-400 text-sm">No points earned this round</p>
-      {/if}
+      <div class="bg-red-900 border border-red-600 rounded p-3 mb-2">
+        <p class="text-red-300 text-sm">All moonrocks spent are lost!</p>
+        {#if points > 0}
+          <p class="text-red-300 text-xs">You earned <span class="font-bold">{points} points</span> but cannot cash them out</p>
+        {:else}
+          <p class="text-red-300 text-xs">No points earned this round</p>
+        {/if}
+      </div>
     {/if}
   </div>
 </div>

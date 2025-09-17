@@ -159,16 +159,10 @@
                     </button>
                 {/if}
             {:else}
-                <!-- Game over: Cash out or restart -->
-                <button
-                    onclick={cash_out_and_quit}
-                    class="w-full px-4 py-3 bg-black text-white font-bold uppercase tracking-wide border-2 border-white hover:bg-white hover:text-black transition-colors"
-                >
-                    Cash Out ({game.points} Moonrocks)
-                </button>
+                <!-- Game over: Only restart, no cash out allowed -->
                 <button
                     onclick={restart_game}
-                    class="w-full px-4 py-2 bg-black text-white font-bold uppercase tracking-wide border-2 border-white hover:bg-white hover:text-black transition-colors"
+                    class="w-full px-4 py-3 bg-black text-white font-bold uppercase tracking-wide border-2 border-white hover:bg-white hover:text-black transition-colors"
                 >
                     Restart Game
                 </button>
