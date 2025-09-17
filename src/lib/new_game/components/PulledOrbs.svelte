@@ -6,7 +6,7 @@
     let game = $derived(game_state.current_game!);
 </script>
 
-<div class="flex gap-2 overflow-x-auto scrollbar-hide mb-4 pb-2">
+<div class="flex gap-2 overflow-x-auto scrollbar-hide mb-4 pb-2 justify-center">
     <!-- Show first 3 orbs or placeholders -->
     {#each Array(3) as _, index}
         {#if index < game.pulled_orbs.length}
