@@ -114,13 +114,14 @@ export function flatten_and_shuffle_orbs(orb_lists: Orb[][]): Orb[] {
   return shuffled_orbs;
 }
 
-// Common shop items pool (8 items, select 3)
+// Common shop items pool (9 items, select 3)
 const COMMON_SHOP_ITEMS: ShopItem[] = [
   build_shop_item(ModifierType.Point, 5, OrbCategory.Point, RarityType.Common, 5),
   build_shop_item(ModifierType.Point, 7, OrbCategory.Point, RarityType.Common, 8),
-  build_shop_item(ModifierType.GlitchChips, 15, OrbCategory.Special, RarityType.Common, 5), 
+  build_shop_item(ModifierType.GlitchChips, 15, OrbCategory.Special, RarityType.Common, 5),
   build_shop_item(ModifierType.Moonrocks, 15, OrbCategory.Special, RarityType.Common, 8),
   build_shop_item(ModifierType.PointsPerBombPulled, 4, OrbCategory.Special, RarityType.Common, 6),
+  build_shop_item(ModifierType.PointsPerPointOrb, 2, OrbCategory.Point, RarityType.Common, 9),
   build_shop_item(ModifierType.Health, 1, OrbCategory.Health, RarityType.Common, 9),
   build_shop_item(ModifierType.Multiplier, 0.5, OrbCategory.Multiplier, RarityType.Common, 9),
 ];
@@ -243,6 +244,17 @@ export function apply_orb(game: Game, orb: Orb, player: Player): void {
         const base_bomb_points = modifier.value.value * bombs_pulled;
         const multiplied_bomb_points = base_bomb_points * game.multiplier;
         game.points += Math.floor(multiplied_bomb_points);
+        break;
+
+      case ModifierType.PointsPerPointOrb:
+        // Points per point orb - multiply modifier value by number of point orbs in bag
+        const all_orbs_in_bag = [...game.starting_orbs, ...game.purchased_orbs];
+        const point_orbs_count = all_orbs_in_bag.filter((orb) =>
+          orb.modifiers.some((mod) => mod.type === ModifierType.Point),
+        ).length;
+        const base_point_orb_points = modifier.value.value * point_orbs_count;
+        const multiplied_point_orb_points = base_point_orb_points * game.multiplier;
+        game.points += Math.floor(multiplied_point_orb_points);
         break;
 
       case ModifierType.GlitchChips:
@@ -368,6 +380,8 @@ export function get_modifier_initial(type: ModifierType): string {
       return "P/O";
     case ModifierType.PointsPerBombPulled:
       return "P/B";
+    case ModifierType.PointsPerPointOrb:
+      return "P/P";
     case ModifierType.GlitchChips:
       return "GC";
     case ModifierType.Moonrocks:
