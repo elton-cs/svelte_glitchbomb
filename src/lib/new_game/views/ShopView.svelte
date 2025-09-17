@@ -9,6 +9,7 @@
     import { get_modifier_text, get_rarity_name, get_orb_display, get_tier_border_color, get_shop_item_display_name } from "../state/helpers";
     import CurrentView from "../components/CurrentView.svelte";
     import Button from "../components/Button.svelte";
+    import ChipIcon from "../components/ChipIcon.svelte";
 
     let game = $derived(game_state.current_game!);
     let next_level = $derived(game.level + 1);
@@ -71,7 +72,7 @@
         </div>
         <div class="text-right">
             <div class="text-sm font-bold text-yellow-400 flex items-center gap-1">
-                BALANCE: <span class="text-lg">{game.glitchchips}</span> <span class="text-lg">🪙</span>
+                BALANCE: <span class="text-lg">{game.glitchchips}</span> <ChipIcon size="md" class="text-yellow-400" />
             </div>
             <div class="text-xs text-purple-400">
                 MOONROCKS: {game_state.player.moonrocks}
@@ -122,7 +123,7 @@
                                                             {item.available && item.can_purchase
                                                               ? 'group-hover:text-black'
                                                               : ''}">{item.orb_display.text}</div>
-                                                <span class="text-sm {item.available && item.can_purchase ? item.orb_display.color : 'text-gray-600'} transition-colors {item.available && item.can_purchase ? 'group-hover:text-black' : ''}">🪙</span>
+                                                <ChipIcon size="sm" class="{item.available && item.can_purchase ? item.orb_display.color : 'text-gray-600'} transition-colors {item.available && item.can_purchase ? 'group-hover:text-black' : ''}" />
                                             </div>
                                         {:else}
                                             <div class="text-sm font-bold {item.available && item.can_purchase ? item.orb_display.color : 'text-gray-600'} transition-colors
@@ -144,7 +145,7 @@
                                         <div class="text-xs opacity-60 line-through">{item.base_cost}</div>
                                     {/if}
                                     <div class="text-lg font-bold {item.available && item.can_purchase ? 'text-white group-hover:text-black' : 'text-gray-600'} transition-colors">{item.cost}</div>
-                                    <span class="text-lg {item.available && item.can_purchase ? 'text-white' : 'text-gray-600'} transition-colors {item.available && item.can_purchase ? 'group-hover:text-black' : ''}">🪙</span>
+                                    <ChipIcon size="md" class="{item.available && item.can_purchase ? 'text-white' : 'text-gray-600'} transition-colors {item.available && item.can_purchase ? 'group-hover:text-black' : ''}" />
                                 {:else if !item.available && item.cost === 0}
                                     <div class="text-sm opacity-60 text-gray-500">CLOSED</div>
                                 {:else if !item.available}

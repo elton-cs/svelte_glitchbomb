@@ -48,7 +48,10 @@ function create_orb(modifiers: Modifier[], category: OrbCategory): Orb {
 }
 
 // Calculate current price with 20% increase per purchase (rounded up)
-export function calculate_current_price(base_price: number, purchase_count: number): number {
+export function calculate_current_price(
+  base_price: number,
+  purchase_count: number,
+): number {
   return Math.ceil(base_price * Math.pow(1.2, purchase_count));
 }
 
@@ -299,7 +302,7 @@ function generate_shop_items(existing_shop_items: ShopItem[] = []): ShopItem[] {
       item.orb.category,
       item.rarity.rarity,
       item.base_price,
-      existing_count
+      existing_count,
     );
   };
 
@@ -506,7 +509,12 @@ export function purchase_item(game: Game, item_index: number): boolean {
 // Advance to the next level, preserving chips and purchased orbs
 export function advance_to_next_level(game: Game): Game {
   const next_level = game.level + 1;
-  return init_game(next_level, game.purchased_orbs, game.glitchchips, game.shop_items);
+  return init_game(
+    next_level,
+    game.purchased_orbs,
+    game.glitchchips,
+    game.shop_items,
+  );
 }
 
 // Player management functions
@@ -643,48 +651,50 @@ export function get_rarity_name(item: ShopItem): string {
 }
 
 // Get human-readable item name from ShopItemName enum
-export function get_shop_item_display_name(shop_item_name: ShopItemName): string {
+export function get_shop_item_display_name(
+  shop_item_name: ShopItemName,
+): string {
   switch (shop_item_name) {
     // Common items
     case ShopItemName.POINT_5_COMMON:
-      return "Point Orb";
+      return "Point";
     case ShopItemName.POINT_7_COMMON:
-      return "Greater Point";
+      return "Point";
     case ShopItemName.GLITCHCHIPS_15_COMMON:
-      return "Chip Cache";
+      return "Glitchchips";
     case ShopItemName.MOONROCKS_15_COMMON:
-      return "Moon Crystal";
+      return "Moonrocks";
     case ShopItemName.POINTSPERBOMBPULLED_4_COMMON:
-      return "Bomb Tracker";
+      return "Point per Bomb";
     case ShopItemName.POINTSPERPOINTORB_2_COMMON:
-      return "Point Synergy";
+      return "Point per Point";
     case ShopItemName.HEALTH_1_COMMON:
-      return "Health Orb";
+      return "Health";
     case ShopItemName.MULTIPLIER_0_5_COMMON:
-      return "Minor Amplifier";
+      return "Multiplier";
     case ShopItemName.REWINDPOINT_1_COMMON:
-      return "Point Recall";
+      return "Rewind Point";
 
     // Rare items
     case ShopItemName.POINT_8_RARE:
-      return "Superior Point";
+      return "Point";
     case ShopItemName.POINT_9_RARE:
-      return "Elite Point";
+      return "Point";
     case ShopItemName.MULTIPLIER_1_0_RARE:
-      return "Amplifier";
+      return "Multiplier";
     case ShopItemName.MULTIPLIER_1_5_RARE:
-      return "Greater Amplifier";
+      return "Multiplier";
 
     // Cosmic items
     case ShopItemName.HEALTH_3_COSMIC:
-      return "Vitality Core";
+      return "Health";
     case ShopItemName.MOONROCKS_40_COSMIC:
-      return "Lunar Fortune";
+      return "Moonrocks";
     case ShopItemName.BOMBIMMUNITY_3_COSMIC:
-      return "Bomb Shield";
+      return "Bomb Immunity";
 
     default:
-      return "Unknown Item";
+      return "Unknown???";
   }
 }
 
@@ -701,13 +711,13 @@ export interface OrbDisplay {
 export function get_tier_border_color(rarity_type: RarityType): string {
   switch (rarity_type) {
     case RarityType.Common:
-      return 'border-gray-400';
+      return "border-gray-400";
     case RarityType.Rare:
-      return 'border-blue-500';
+      return "border-blue-500";
     case RarityType.Cosmic:
-      return 'border-purple-500';
+      return "border-purple-500";
     default:
-      return 'border-white';
+      return "border-white";
   }
 }
 
@@ -725,78 +735,80 @@ export function get_orb_display(item: ShopItem): OrbDisplay {
       // All points-related orbs use the POINTS category emoji and color
       let text = amount.toString();
       if (modifier_type === ModifierType.PointsPerAnyOrb) text = `${amount}/RC`;
-      if (modifier_type === ModifierType.PointsPerBombPulled) text = `${amount}/B`;
-      if (modifier_type === ModifierType.PointsPerPointOrb) text = `${amount}/P`;
+      if (modifier_type === ModifierType.PointsPerBombPulled)
+        text = `${amount}/B`;
+      if (modifier_type === ModifierType.PointsPerPointOrb)
+        text = `${amount}/P`;
       return {
         text,
-        icon: '⭐️',
-        color: 'text-green-400',
-        border_color: 'border-green-400'
+        icon: "⭐️",
+        color: "text-green-400",
+        border_color: "border-green-400",
       };
 
     case ModifierType.Multiplier:
       return {
         text: amount.toString(),
-        icon: '⚡️',
-        color: 'text-blue-400',
-        border_color: 'border-blue-400'
+        icon: "⚡️",
+        color: "text-blue-400",
+        border_color: "border-blue-400",
       };
 
     case ModifierType.Health:
       return {
         text: amount.toString(),
-        icon: '❤️',
-        color: 'text-red-500',
-        border_color: 'border-red-500'
+        icon: "❤️",
+        color: "text-red-500",
+        border_color: "border-red-500",
       };
 
     case ModifierType.Bomb:
       return {
         text: amount.toString(),
-        icon: '💣',
-        color: 'text-orange-500',
-        border_color: 'border-orange-500'
+        icon: "💣",
+        color: "text-orange-500",
+        border_color: "border-orange-500",
       };
 
     case ModifierType.GlitchChips:
       return {
         text: amount.toString(),
-        icon: '👑',
-        color: 'text-yellow-400',
-        border_color: 'border-yellow-400',
-        is_chip_orb: true
+        icon: "👑",
+        color: "text-yellow-400",
+        border_color: "border-yellow-400",
+        is_chip_orb: true,
       };
 
     case ModifierType.Moonrocks:
       return {
         text: `${amount}🌙`,
-        icon: '👑',
-        color: 'text-yellow-400',
-        border_color: 'border-yellow-400'
+        icon: "👑",
+        color: "text-yellow-400",
+        border_color: "border-yellow-400",
       };
 
     case ModifierType.RewindPoint:
       return {
         text: amount.toString(),
-        icon: '👑',
-        color: 'text-yellow-400',
-        border_color: 'border-yellow-400'
+        icon: "👑",
+        color: "text-yellow-400",
+        border_color: "border-yellow-400",
       };
 
     case ModifierType.BombImmunity:
       return {
         text: amount.toString(),
-        icon: '👑',
-        color: 'text-yellow-400',
-        border_color: 'border-yellow-400'
+        icon: "👑",
+        color: "text-yellow-400",
+        border_color: "border-yellow-400",
       };
 
     default:
       return {
         text: amount.toString(),
-        icon: '?',
-        color: 'text-white',
-        border_color: 'border-white'
+        icon: "?",
+        color: "text-white",
+        border_color: "border-white",
       };
   }
 }
