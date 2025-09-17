@@ -30,17 +30,18 @@
 </script>
 
 <div class="bg-black p-6 rounded-lg border border-white w-full min-h-[600px]">
-    <div class="flex">
-        <!-- Left edge: Bomb display -->
-        <div class="w-12 flex items-center justify-center">
+    <!-- Pulled Orbs Display -->
+    <PulledOrbs />
+
+    <!-- Horizontal Stats Container: Bomb + Stats + Health -->
+    <div class="flex items-center gap-4 mb-6">
+        <!-- Left: Bomb display -->
+        <div class="flex-shrink-0">
             <BombDisplay />
         </div>
 
-        <!-- Center: Main game content -->
-        <div class="flex-1 px-6">
-            <!-- Pulled Orbs Display -->
-            <PulledOrbs />
-
+        <!-- Center: Stats Grid -->
+        <div class="flex-1">
             <div class="grid grid-cols-2 gap-3 text-center mb-4">
                 <!-- Top Row: Moonrocks and Chips -->
                 <div>
@@ -58,81 +59,77 @@
                 </div>
             </div>
 
-            <div class="mb-6">
-                <!-- Stats Grid with Progress Bar -->
-                <div class="grid grid-cols-2 gap-3 text-center mb-4">
-                    <!-- Bottom Row: Multiplier and Level -->
-                    <div>
-                        <div class="text-2xl font-bold text-blue-400 mb-1">
-                            {game.multiplier}x
-                        </div>
-                        <div class="text-white text-xs uppercase">Mult</div>
+            <div class="grid grid-cols-2 gap-3 text-center mb-4">
+                <!-- Bottom Row: Multiplier and Level -->
+                <div>
+                    <div class="text-2xl font-bold text-blue-400 mb-1">
+                        {game.multiplier}x
                     </div>
-
-                    <div>
-                        <div class="text-2xl font-bold text-green-400 mb-1">
-                            {game.level}
-                        </div>
-                        <div class="text-white text-xs uppercase">Level</div>
-                    </div>
+                    <div class="text-white text-xs uppercase">Mult</div>
                 </div>
 
-                <!-- Points Progress Bar -->
                 <div>
-                    <div
-                        class="text-green-400 text-sm font-bold mb-2 text-center uppercase"
-                    >
-                        Points {game.points}/{game.milestone}
+                    <div class="text-2xl font-bold text-green-400 mb-1">
+                        {game.level}
                     </div>
-                    <div class="bg-gray-800 rounded h-8 border border-gray-600">
-                        <div
-                            class="bg-white h-full rounded transition-all duration-300"
-                            style="width: {Math.min(100, points_progress)}%"
-                        ></div>
-                    </div>
+                    <div class="text-white text-xs uppercase">Level</div>
                 </div>
             </div>
 
-            <!-- Status Effects Display -->
-            <StatusEffects />
-
-            <!-- Orb Category Distribution -->
-            <OrbCategoryBar />
-
-            <!-- Game Actions -->
-            <div class="space-y-4">
-                <button
-                    onclick={pull_orb}
-                    disabled={game.playground_orbs.length === 0 || show_result}
-                    class="w-full px-4 py-3 bg-black text-white font-bold uppercase tracking-wide border-2 border-white hover:bg-white hover:text-black disabled:bg-gray-600 disabled:text-gray-400 disabled:cursor-not-allowed transition-colors"
+            <!-- Points Progress Bar -->
+            <div>
+                <div
+                    class="text-green-400 text-sm font-bold mb-2 text-center uppercase"
                 >
-                    Pull Orb ({game.playground_orbs.length} left)
-                </button>
-
-                <!-- Quit & Cash Out Button - Available during active gameplay -->
-                {#if !show_result}
-                    <button
-                        onclick={cash_out_and_quit}
-                        class="w-full px-4 py-2 bg-black text-white font-bold uppercase tracking-wide border-2 border-white hover:bg-white hover:text-black transition-colors"
-                    >
-                        Cash Out (+{game.points} moonrocks)
-                    </button>
-                {/if}
-
-
-                <button
-                    onclick={back_to_menu}
-                    class="w-full px-4 py-2 bg-black text-white font-bold uppercase tracking-wide border-2 border-white hover:bg-white hover:text-black transition-colors"
-                >
-                    Back to Menu
-                </button>
+                    Points {game.points}/{game.milestone}
+                </div>
+                <div class="bg-gray-800 rounded h-8 border border-gray-600">
+                    <div
+                        class="bg-white h-full rounded transition-all duration-300"
+                        style="width: {Math.min(100, points_progress)}%"
+                    ></div>
+                </div>
             </div>
         </div>
 
-        <!-- Right edge: Health display -->
-        <div class="w-12 flex items-center justify-center">
+        <!-- Right: Health display -->
+        <div class="flex-shrink-0">
             <HealthDisplay />
         </div>
+    </div>
+
+    <!-- Status Effects Display -->
+    <StatusEffects />
+
+    <!-- Orb Category Distribution -->
+    <OrbCategoryBar />
+
+    <!-- Game Actions -->
+    <div class="space-y-4">
+        <button
+            onclick={pull_orb}
+            disabled={game.playground_orbs.length === 0 || show_result}
+            class="w-full px-4 py-3 bg-black text-white font-bold uppercase tracking-wide border-2 border-white hover:bg-white hover:text-black disabled:bg-gray-600 disabled:text-gray-400 disabled:cursor-not-allowed transition-colors"
+        >
+            Pull Orb ({game.playground_orbs.length} left)
+        </button>
+
+        <!-- Quit & Cash Out Button - Available during active gameplay -->
+        {#if !show_result}
+            <button
+                onclick={cash_out_and_quit}
+                class="w-full px-4 py-2 bg-black text-white font-bold uppercase tracking-wide border-2 border-white hover:bg-white hover:text-black transition-colors"
+            >
+                Cash Out (+{game.points} moonrocks)
+            </button>
+        {/if}
+
+        <button
+            onclick={back_to_menu}
+            class="w-full px-4 py-2 bg-black text-white font-bold uppercase tracking-wide border-2 border-white hover:bg-white hover:text-black transition-colors"
+        >
+            Back to Menu
+        </button>
     </div>
 
     <!-- Victory/Loss Popup Overlay -->
