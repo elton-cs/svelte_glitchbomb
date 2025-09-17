@@ -103,6 +103,10 @@
                     >
                         {can_afford ? "Buy" : "Too Expensive"}
                     </Button>
+                    <!-- Debug info -->
+                    <div class="text-xs text-red-400 mt-1">
+                        Chips: {game.glitchchips}, Price: {item.price}, Can afford: {can_afford}
+                    </div>
                 </div>
             </div>
         {/each}
