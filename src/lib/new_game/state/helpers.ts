@@ -138,7 +138,8 @@ const RARE_SHOP_ITEMS: ShopItem[] = [
 // Cosmic shop items pool (3 items, select 1)
 const COSMIC_SHOP_ITEMS: ShopItem[] = [
   build_shop_item(ModifierType.Health, 3, OrbCategory.Health, RarityType.Cosmic, 21),
-  build_shop_item(ModifierType.Moonrocks, 40, OrbCategory.Special, RarityType.Cosmic, 23)
+  build_shop_item(ModifierType.Moonrocks, 40, OrbCategory.Special, RarityType.Cosmic, 23),
+  build_shop_item(ModifierType.BombImmunity, 3, OrbCategory.Special, RarityType.Cosmic, 24)
 ];
 
 // Utility function to shuffle an array (reusable version of Fisher-Yates)
@@ -191,6 +192,7 @@ export function init_game(
     max_health: 5,
     multiplier: 1,
     glitchchips: existing_chips,
+    bomb_immunity_turns: 0,
     starting_orbs,
     purchased_orbs,
     playground_orbs,
@@ -204,8 +206,14 @@ export function apply_orb(game: Game, orb: Orb, player: Player): void {
   for (const modifier of orb.modifiers) {
     switch (modifier.type) {
       case ModifierType.Bomb:
-        // Bomb deals damage (reduce health, minimum 0)
-        game.health = Math.max(0, game.health - modifier.value.value);
+        // Check for bomb immunity
+        if (game.bomb_immunity_turns > 0) {
+          // Bomb is blocked by immunity - return it to the bag
+          game.playground_orbs.push(orb);
+        } else {
+          // No immunity - bomb deals damage (reduce health, minimum 0)
+          game.health = Math.max(0, game.health - modifier.value.value);
+        }
         break;
 
       case ModifierType.Health:
@@ -294,6 +302,11 @@ export function apply_orb(game: Game, orb: Orb, player: Player): void {
           game.playground_orbs.push(lowest_point_orb.orb);
         }
         break;
+
+      case ModifierType.BombImmunity:
+        // Add immunity turns based on modifier value
+        game.bomb_immunity_turns += modifier.value.value;
+        break;
     }
   }
 
@@ -301,6 +314,11 @@ export function apply_orb(game: Game, orb: Orb, player: Player): void {
   if (game.points >= game.milestone) {
     const chips_earned = Math.floor(game.points);
     game.glitchchips += chips_earned;
+  }
+
+  // Decrement bomb immunity at the end of the turn (if active)
+  if (game.bomb_immunity_turns > 0) {
+    game.bomb_immunity_turns--;
   }
 }
 
@@ -415,6 +433,8 @@ export function get_modifier_initial(type: ModifierType): string {
       return "MR";
     case ModifierType.RewindPoint:
       return "RP";
+    case ModifierType.BombImmunity:
+      return "BI";
     default:
       return "?";
   }

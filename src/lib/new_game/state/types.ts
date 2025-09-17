@@ -18,6 +18,7 @@ export enum ModifierType {
   GlitchChips,
   Moonrocks,
   RewindPoint,
+  BombImmunity,
 }
 
 export interface ModifierValue {
@@ -102,6 +103,7 @@ export interface Game {
   max_health: number;
   multiplier: number;
   glitchchips: number;
+  bomb_immunity_turns: number;
   starting_orbs: Orb[];
   purchased_orbs: Orb[];
   playground_orbs: Orb[];

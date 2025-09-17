@@ -14,6 +14,7 @@
     import GameResult from "../components/GameResult.svelte";
     import OrbCategoryBar from "../components/OrbCategoryBar.svelte";
     import PulledOrbs from "../components/PulledOrbs.svelte";
+    import StatusEffects from "../components/StatusEffects.svelte";
 
     let game = $derived(game_state.current_game!);
     let points_progress = $derived((game.points / game.milestone) * 100);
@@ -108,6 +109,9 @@
             ></div>
         </div>
     </div>
+
+    <!-- Status Effects Display -->
+    <StatusEffects />
 
     <!-- Game Result Component - Shows when game ends -->
     {#if show_result}
