@@ -3,7 +3,7 @@
 </script>
 
 <div class="bg-black min-h-screen p-4 flex justify-center">
-  <div class="flex-grow max-w-[800px]">
+  <div class="flex-grow max-w-[400px]">
     <MobileView />
   </div>
 </div>
