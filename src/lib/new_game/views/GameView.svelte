@@ -53,11 +53,6 @@
         <div class="flex-1 px-6">
             <CurrentView />
 
-            <!-- Game Stats - Always Visible -->
-            <div class="text-center mb-6">
-                <h2 class="text-3xl font-bold text-white">LEVEL {game.level}</h2>
-            </div>
-
             <div class="grid grid-cols-2 gap-3 text-center mb-4">
                 <!-- Top Row: Moonrocks and Chips -->
                 <div>
