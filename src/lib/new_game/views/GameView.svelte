@@ -16,6 +16,7 @@
     import PulledOrbs from "../components/PulledOrbs.svelte";
     import StatusEffects from "../components/StatusEffects.svelte";
     import HealthDisplay from "../components/HealthDisplay.svelte";
+    import BombDisplay from "../components/BombDisplay.svelte";
 
     let game = $derived(game_state.current_game!);
     let points_progress = $derived((game.points / game.milestone) * 100);
@@ -43,8 +44,13 @@
 
 <div class="bg-black p-4 rounded-lg border border-white">
     <div class="flex">
-        <!-- Left side: Main game content -->
-        <div class="flex-1 pr-4">
+        <!-- Left edge: Bomb display -->
+        <div class="flex-shrink-0 flex items-center pr-4">
+            <BombDisplay />
+        </div>
+
+        <!-- Center: Main game content -->
+        <div class="flex-1 px-4">
             <CurrentView />
 
             <!-- Game Stats - Always Visible -->
@@ -194,8 +200,8 @@
     </div>
         </div>
 
-        <!-- Right side: Health display -->
-        <div class="flex-shrink-0 flex items-center">
+        <!-- Right edge: Health display -->
+        <div class="flex-shrink-0 flex items-center pl-4">
             <HealthDisplay />
         </div>
     </div>
