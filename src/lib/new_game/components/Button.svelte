@@ -31,7 +31,7 @@
   };
 
   // Disabled classes
-  const disabledClasses = 'bg-gray-600 text-gray-400 border-gray-600 cursor-not-allowed';
+  const disabledClasses = 'bg-gray-600 text-gray-400 border-gray-600 cursor-not-allowed hover:bg-gray-600 hover:text-gray-400';
 
   // Combine all classes
   const buttonClasses = `
