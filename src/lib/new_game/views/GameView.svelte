@@ -43,14 +43,20 @@
 </script>
 
 <div class="bg-black p-4 rounded-lg border border-white">
-    <div class="flex">
-        <!-- Left edge: Bomb display -->
-        <div class="w-12 flex items-center justify-center">
-            <BombDisplay />
+    <!-- Vertical stack layout - mobile only -->
+    <div class="flex flex-col space-y-4 max-w-sm mx-auto">
+        <!-- Top: Health and Bomb displays in horizontal row -->
+        <div class="flex justify-between items-center">
+            <div class="flex items-center">
+                <BombDisplay />
+            </div>
+            <div class="flex items-center">
+                <HealthDisplay />
+            </div>
         </div>
 
-        <!-- Center: Main game content -->
-        <div class="flex-1 px-6">
+        <!-- Main game content -->
+        <div class="w-full">
             <CurrentView />
 
             <!-- Game Stats - Always Visible -->
@@ -58,151 +64,145 @@
                 <h2 class="text-3xl font-bold text-white">LEVEL {game.level}</h2>
             </div>
 
-    <div class="grid grid-cols-2 gap-3 text-center mb-4">
-        <!-- Top Row: Moonrocks and Chips -->
-        <div>
-            <div class="text-2xl font-bold text-purple-400 mb-1">
-                {game_state.player.moonrocks}
+            <div class="grid grid-cols-2 gap-3 text-center mb-4">
+                <!-- Top Row: Moonrocks and Chips -->
+                <div>
+                    <div class="text-2xl font-bold text-purple-400 mb-1">
+                        {game_state.player.moonrocks}
+                    </div>
+                    <div class="text-white text-xs uppercase">Moonrocks</div>
+                </div>
+
+                <div>
+                    <div class="text-2xl font-bold text-yellow-400 mb-1">
+                        {game.glitchchips}
+                    </div>
+                    <div class="text-white text-xs uppercase">Chips</div>
+                </div>
             </div>
-            <div class="text-white text-xs uppercase">Moonrocks</div>
-        </div>
 
-        <div>
-            <div class="text-2xl font-bold text-yellow-400 mb-1">
-                {game.glitchchips}
+            <div class="grid grid-cols-2 gap-3 text-center mb-6">
+                <!-- Bottom Row: Multiplier and Level -->
+                <div>
+                    <div class="text-2xl font-bold text-blue-400 mb-1">
+                        {game.multiplier}x
+                    </div>
+                    <div class="text-white text-xs uppercase">Mult</div>
+                </div>
+
+                <div>
+                    <div class="text-2xl font-bold text-green-400 mb-1">
+                        {game.level}
+                    </div>
+                    <div class="text-white text-xs uppercase">Level</div>
+                </div>
             </div>
-            <div class="text-white text-xs uppercase">Chips</div>
-        </div>
-    </div>
 
-    <div class="grid grid-cols-2 gap-3 text-center mb-6">
-        <!-- Bottom Row: Multiplier and Level -->
-        <div>
-            <div class="text-2xl font-bold text-blue-400 mb-1">
-                {game.multiplier}x
+            <!-- Points Progress Bar -->
+            <div class="mb-6">
+                <div
+                    class="text-green-400 text-sm font-bold mb-2 text-center uppercase"
+                >
+                    Points {game.points}/{game.milestone}
+                </div>
+                <div class="bg-gray-800 rounded h-8 border border-gray-600">
+                    <div
+                        class="bg-white h-full rounded transition-all duration-300"
+                        style="width: {Math.min(100, points_progress)}%"
+                    ></div>
+                </div>
             </div>
-            <div class="text-white text-xs uppercase">Mult</div>
-        </div>
 
-        <div>
-            <div class="text-2xl font-bold text-green-400 mb-1">
-                {game.level}
-            </div>
-            <div class="text-white text-xs uppercase">Level</div>
-        </div>
-    </div>
+            <!-- Status Effects Display -->
+            <StatusEffects />
 
-    <!-- Points Progress Bar -->
-    <div class="mb-6">
-        <div
-            class="text-green-400 text-sm font-bold mb-2 text-center uppercase"
-        >
-            Points {game.points}/{game.milestone}
-        </div>
-        <div class="bg-gray-800 rounded h-8 border border-gray-600">
-            <div
-                class="bg-white h-full rounded transition-all duration-300"
-                style="width: {Math.min(100, points_progress)}%"
-            ></div>
-        </div>
-    </div>
+            <!-- Game Result Component - Shows when game ends -->
+            {#if show_result}
+                <div class="mb-6">
+                    <GameResult {is_win} points={game.points} />
+                </div>
+            {/if}
 
+            <!-- Pulled Orbs Display -->
+            <PulledOrbs />
 
-    <!-- Status Effects Display -->
-    <StatusEffects />
+            <!-- Orb Category Distribution -->
+            <OrbCategoryBar />
 
-    <!-- Game Result Component - Shows when game ends -->
-    {#if show_result}
-        <div class="mb-6">
-            <GameResult {is_win} points={game.points} />
-        </div>
-    {/if}
+            <!-- Game Actions -->
+            <div class="space-y-4">
+                <button
+                    onclick={pull_orb}
+                    disabled={game.playground_orbs.length === 0 || show_result}
+                    class="w-full px-4 py-3 bg-black text-white font-bold uppercase tracking-wide border-2 border-white hover:bg-white hover:text-black disabled:bg-gray-600 disabled:text-gray-400 disabled:cursor-not-allowed transition-colors"
+                >
+                    Pull Orb ({game.playground_orbs.length} left)
+                </button>
 
-    <!-- Pulled Orbs Display -->
-    <PulledOrbs />
-
-    <!-- Orb Category Distribution -->
-    <OrbCategoryBar />
-
-    <!-- Game Actions -->
-    <div class="space-y-4">
-        <button
-            onclick={pull_orb}
-            disabled={game.playground_orbs.length === 0 || show_result}
-            class="w-full px-4 py-3 bg-black text-white font-bold uppercase tracking-wide border-2 border-white hover:bg-white hover:text-black disabled:bg-gray-600 disabled:text-gray-400 disabled:cursor-not-allowed transition-colors"
-        >
-            Pull Orb ({game.playground_orbs.length} left)
-        </button>
-
-        <!-- Quit & Cash Out Button - Available during active gameplay -->
-        {#if !show_result}
-            <button
-                onclick={cash_out_and_quit}
-                class="w-full px-4 py-2 bg-black text-white font-bold uppercase tracking-wide border-2 border-white hover:bg-white hover:text-black transition-colors"
-            >
-                Cash Out (+{game.points} moonrocks)
-            </button>
-        {/if}
-
-        {#if show_result}
-            {#if is_win}
-                <!-- Two options after winning -->
-                {#if game.level < 7}
-                    <!-- For levels 1-6: Next Level or Cash Out -->
+                <!-- Quit & Cash Out Button - Available during active gameplay -->
+                {#if !show_result}
                     <button
-                        onclick={enter_shop_and_pay}
-                        disabled={!can_afford_next_level}
-                        class="w-full px-4 py-3 font-bold uppercase tracking-wide border-2 transition-colors {can_afford_next_level
-                            ? 'bg-black text-white border-white hover:bg-white hover:text-black'
-                            : 'bg-gray-600 text-gray-400 border-gray-600 cursor-not-allowed'}"
-                    >
-                        {can_afford_next_level
-                            ? `Next Level (-${next_level_cost} moonrocks)`
-                            : `Insufficient Moonrocks (-${next_level_cost})`}
-                    </button>
-                    <button
-                        onclick={cash_out_after_win}
+                        onclick={cash_out_and_quit}
                         class="w-full px-4 py-2 bg-black text-white font-bold uppercase tracking-wide border-2 border-white hover:bg-white hover:text-black transition-colors"
                     >
                         Cash Out (+{game.points} moonrocks)
                     </button>
-                {:else}
-                    <!-- For level 7: Only cash out since game is complete -->
-                    <button
-                        onclick={cash_out_after_win}
-                        class="w-full px-4 py-3 bg-black text-white font-bold uppercase tracking-wide border-2 border-white hover:bg-white hover:text-black transition-colors"
-                    >
-                        Cash Out (+{game.points} moonrocks)
-                    </button>
                 {/if}
-            {:else}
-                <!-- Game over: Only restart, no cash out allowed -->
+
+                {#if show_result}
+                    {#if is_win}
+                        <!-- Two options after winning -->
+                        {#if game.level < 7}
+                            <!-- For levels 1-6: Next Level or Cash Out -->
+                            <button
+                                onclick={enter_shop_and_pay}
+                                disabled={!can_afford_next_level}
+                                class="w-full px-4 py-3 font-bold uppercase tracking-wide border-2 transition-colors {can_afford_next_level
+                                    ? 'bg-black text-white border-white hover:bg-white hover:text-black'
+                                    : 'bg-gray-600 text-gray-400 border-gray-600 cursor-not-allowed'}"
+                            >
+                                {can_afford_next_level
+                                    ? `Next Level (-${next_level_cost} moonrocks)`
+                                    : `Insufficient Moonrocks (-${next_level_cost})`}
+                            </button>
+                            <button
+                                onclick={cash_out_after_win}
+                                class="w-full px-4 py-2 bg-black text-white font-bold uppercase tracking-wide border-2 border-white hover:bg-white hover:text-black transition-colors"
+                            >
+                                Cash Out (+{game.points} moonrocks)
+                            </button>
+                        {:else}
+                            <!-- For level 7: Only cash out since game is complete -->
+                            <button
+                                onclick={cash_out_after_win}
+                                class="w-full px-4 py-3 bg-black text-white font-bold uppercase tracking-wide border-2 border-white hover:bg-white hover:text-black transition-colors"
+                            >
+                                Cash Out (+{game.points} moonrocks)
+                            </button>
+                        {/if}
+                    {:else}
+                        <!-- Game over: Only restart, no cash out allowed -->
+                        <button
+                            onclick={restart_game}
+                            disabled={!can_afford_restart}
+                            class="w-full px-4 py-3 font-bold uppercase tracking-wide border-2 transition-colors {can_afford_restart
+                                ? 'bg-black text-white border-white hover:bg-white hover:text-black'
+                                : 'bg-gray-600 text-gray-400 border-gray-600 cursor-not-allowed'}"
+                        >
+                            {can_afford_restart
+                                ? `Restart Game (-${restart_cost} moonrocks)`
+                                : `Insufficient Moonrocks (-${restart_cost})`}
+                        </button>
+                    {/if}
+                {/if}
+
                 <button
-                    onclick={restart_game}
-                    disabled={!can_afford_restart}
-                    class="w-full px-4 py-3 font-bold uppercase tracking-wide border-2 transition-colors {can_afford_restart
-                        ? 'bg-black text-white border-white hover:bg-white hover:text-black'
-                        : 'bg-gray-600 text-gray-400 border-gray-600 cursor-not-allowed'}"
+                    onclick={back_to_menu}
+                    class="w-full px-4 py-2 bg-black text-white font-bold uppercase tracking-wide border-2 border-white hover:bg-white hover:text-black transition-colors"
                 >
-                    {can_afford_restart
-                        ? `Restart Game (-${restart_cost} moonrocks)`
-                        : `Insufficient Moonrocks (-${restart_cost})`}
+                    Back to Menu
                 </button>
-            {/if}
-        {/if}
-
-        <button
-            onclick={back_to_menu}
-            class="w-full px-4 py-2 bg-black text-white font-bold uppercase tracking-wide border-2 border-white hover:bg-white hover:text-black transition-colors"
-        >
-            Back to Menu
-        </button>
-    </div>
-        </div>
-
-        <!-- Right edge: Health display -->
-        <div class="w-12 flex items-center justify-center">
-            <HealthDisplay />
+            </div>
         </div>
     </div>
 </div>

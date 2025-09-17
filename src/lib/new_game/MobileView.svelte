@@ -7,7 +7,7 @@
   import { GameView } from './state/types';
 </script>
 
-<div class="mobile-view-container">
+<div class="mobile-view-container w-full flex justify-center">
   {#if game_state.current_view === GameView.Menu}
     <HomeView />
   {:else if game_state.current_view === GameView.Shop}
@@ -16,12 +16,12 @@
     <GameViewComponent />
   {:else if game_state.current_view === GameView.Win}
     <!-- Win view will go here -->
-    <div class="bg-black p-4 rounded-lg border border-white">
+    <div class="bg-black p-4 rounded-lg border border-white max-w-sm mx-auto">
       <h2 class="text-2xl font-bold text-green-400 text-center">VICTORY!</h2>
     </div>
   {:else if game_state.current_view === GameView.Lose}
     <!-- Lose view will go here -->
-    <div class="bg-black p-4 rounded-lg border border-white">
+    <div class="bg-black p-4 rounded-lg border border-white max-w-sm mx-auto">
       <h2 class="text-2xl font-bold text-red-400 text-center">GAME OVER</h2>
     </div>
   {:else if game_state.current_view === GameView.Victory}
