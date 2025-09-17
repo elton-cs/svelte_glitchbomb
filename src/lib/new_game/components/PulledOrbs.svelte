@@ -4,9 +4,17 @@
     import { get_orb_display_text } from "../state/helpers";
 
     let game = $derived(game_state.current_game!);
+    let container: HTMLDivElement;
+
+    // Auto-scroll to the right when new orbs are pulled
+    $effect(() => {
+        if (container && game.pulled_orbs.length > 3) {
+            container.scrollLeft = container.scrollWidth;
+        }
+    });
 </script>
 
-<div class="flex gap-2 overflow-x-auto scrollbar-hide mb-4 pb-2 justify-center">
+<div bind:this={container} class="flex gap-2 overflow-x-auto scrollbar-hide mb-4 pb-2 justify-center">
     <!-- Show first 3 orbs or placeholders -->
     {#each Array(3) as _, index}
         {#if index < game.pulled_orbs.length}
