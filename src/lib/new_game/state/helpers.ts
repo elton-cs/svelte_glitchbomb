@@ -203,6 +203,8 @@ export function init_game(
 
 // Apply orb effects to game state
 export function apply_orb(game: Game, orb: Orb, player: Player): void {
+  let bomb_immunity_orb_pulled = false;
+
   for (const modifier of orb.modifiers) {
     switch (modifier.type) {
       case ModifierType.Bomb:
@@ -306,6 +308,7 @@ export function apply_orb(game: Game, orb: Orb, player: Player): void {
       case ModifierType.BombImmunity:
         // Add immunity turns based on modifier value
         game.bomb_immunity_turns += modifier.value.value;
+        bomb_immunity_orb_pulled = true;
         break;
     }
   }
@@ -316,8 +319,8 @@ export function apply_orb(game: Game, orb: Orb, player: Player): void {
     game.glitchchips += chips_earned;
   }
 
-  // Decrement bomb immunity at the end of the turn (if active)
-  if (game.bomb_immunity_turns > 0) {
+  // Decrement bomb immunity at the end of the turn (if active and not just gained)
+  if (game.bomb_immunity_turns > 0 && !bomb_immunity_orb_pulled) {
     game.bomb_immunity_turns--;
   }
 }
