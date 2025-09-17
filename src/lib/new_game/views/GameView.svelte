@@ -134,8 +134,8 @@
 
     <!-- Victory/Loss Popup Overlay -->
     {#if show_result}
-        <div class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
-            <div class="bg-black border-2 border-white rounded-lg p-6 max-w-sm mx-4 text-center">
+        <div class="fixed inset-0 flex items-center justify-center z-50 pointer-events-none">
+            <div class="bg-black border-2 border-white rounded-lg p-6 max-w-sm mx-4 text-center pointer-events-auto">
                 <GameResult {is_win} points={game.points} />
             </div>
         </div>
