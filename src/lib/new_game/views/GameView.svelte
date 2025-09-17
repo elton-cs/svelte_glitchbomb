@@ -42,7 +42,7 @@
     });
 </script>
 
-<div class="bg-black p-4 rounded-lg border border-white max-w-sm mx-auto">
+<div class="bg-black p-6 rounded-lg border border-white max-w-md mx-auto">
     <div class="flex">
         <!-- Left edge: Bomb display -->
         <div class="w-12 flex items-center justify-center">

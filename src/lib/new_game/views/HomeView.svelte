@@ -21,7 +21,7 @@
   }
 </script>
 
-<div class="bg-black p-4 rounded-lg border border-white max-w-sm mx-auto">
+<div class="bg-black p-6 rounded-lg border border-white max-w-md mx-auto">
   <div class="text-center mb-6">
     <h1 class="text-4xl font-bold text-white mb-2">GLITCH BOMB</h1>
     <p class="text-sm text-gray-400">Mobile Version</p>
