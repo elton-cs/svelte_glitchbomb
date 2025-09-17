@@ -6,23 +6,15 @@
     let game = $derived(game_state.current_game!);
 </script>
 
-<div class="mb-6">
-    <div class="text-white text-sm font-bold mb-3 text-center uppercase">
-        Pulled Orbs
+{#if game.pulled_orbs.length > 0}
+    <div class="flex gap-2 overflow-x-auto scrollbar-hide mb-4 pb-2">
+        {#each game.pulled_orbs as orb, index}
+            {@const categoryInfo = CATEGORY_INFO[orb.category]}
+            <div
+                class="{categoryInfo.color} border border-white px-3 py-2 rounded text-black text-sm font-mono font-bold flex-shrink-0"
+            >
+                {get_orb_display_text(orb)}
+            </div>
+        {/each}
     </div>
-
-    {#if game.pulled_orbs.length === 0}
-        <div class="text-center text-gray-400 text-sm">No orbs pulled yet</div>
-    {:else}
-        <div class="flex flex-wrap gap-2 justify-start">
-            {#each game.pulled_orbs as orb, index}
-                {@const categoryInfo = CATEGORY_INFO[orb.category]}
-                <div
-                    class="{categoryInfo.color} border border-white px-3 py-2 rounded text-black text-sm font-mono font-bold"
-                >
-                    {get_orb_display_text(orb)}
-                </div>
-            {/each}
-        </div>
-    {/if}
-</div>
+{/if}
