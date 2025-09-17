@@ -46,7 +46,6 @@
           <Button
             onclick={enter_shop_and_pay}
             disabled={!can_afford_next_level}
-            variant="secondary"
             size="large"
           >
             {can_afford_next_level
@@ -62,7 +61,6 @@
           <!-- For level 7: Only cash out since game is complete -->
           <Button
             onclick={cash_out_after_win}
-            variant="secondary"
             size="large"
           >
             Cash Out (+{points} moonrocks)
@@ -86,7 +84,6 @@
         <Button
           onclick={restart_game}
           disabled={!can_afford_restart}
-          variant="secondary"
           size="large"
         >
           {can_afford_restart

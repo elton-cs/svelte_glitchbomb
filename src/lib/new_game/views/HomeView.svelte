@@ -58,7 +58,6 @@
   <Button
     onclick={start_game}
     disabled={!can_afford}
-    variant="secondary"
     size="large"
   >
     {can_afford ? 'Start Game' : 'Insufficient Moonrocks'}

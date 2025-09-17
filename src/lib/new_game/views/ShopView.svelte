@@ -99,7 +99,6 @@
                     <Button
                         onclick={() => purchase(index)}
                         disabled={!can_afford}
-                        variant="secondary"
                         size="small"
                     >
                         {can_afford ? "Buy" : "Too Expensive"}

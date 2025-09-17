@@ -117,7 +117,6 @@
         <Button
             onclick={handle_restart}
             disabled={!can_afford_restart}
-            variant="secondary"
             size="large"
         >
             {can_afford_restart
