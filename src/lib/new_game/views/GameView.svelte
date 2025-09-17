@@ -27,7 +27,9 @@
     // Next level calculations for button display
     let next_level = $derived(game.level + 1);
     let next_level_cost = $derived(get_level_cost(next_level));
-    let can_afford_next_level = $derived(can_afford_level(game_state.player, next_level));
+    let can_afford_next_level = $derived(
+        can_afford_level(game_state.player, next_level),
+    );
 
     // Restart game calculations (level 1 cost)
     let restart_cost = $derived(get_level_cost(1));
@@ -70,35 +72,38 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-2 gap-3 text-center mb-6">
-                <!-- Bottom Row: Multiplier and Level -->
-                <div>
-                    <div class="text-2xl font-bold text-blue-400 mb-1">
-                        {game.multiplier}x
-                    </div>
-                    <div class="text-white text-xs uppercase">Mult</div>
-                </div>
-
-                <div>
-                    <div class="text-2xl font-bold text-green-400 mb-1">
-                        {game.level}
-                    </div>
-                    <div class="text-white text-xs uppercase">Level</div>
-                </div>
-            </div>
-
-            <!-- Points Progress Bar -->
             <div class="mb-6">
-                <div
-                    class="text-green-400 text-sm font-bold mb-2 text-center uppercase"
-                >
-                    Points {game.points}/{game.milestone}
+                <!-- Stats Grid with Progress Bar -->
+                <div class="grid grid-cols-2 gap-3 text-center mb-4">
+                    <!-- Bottom Row: Multiplier and Level -->
+                    <div>
+                        <div class="text-2xl font-bold text-blue-400 mb-1">
+                            {game.multiplier}x
+                        </div>
+                        <div class="text-white text-xs uppercase">Mult</div>
+                    </div>
+
+                    <div>
+                        <div class="text-2xl font-bold text-green-400 mb-1">
+                            {game.level}
+                        </div>
+                        <div class="text-white text-xs uppercase">Level</div>
+                    </div>
                 </div>
-                <div class="bg-gray-800 rounded h-8 border border-gray-600">
+
+                <!-- Points Progress Bar -->
+                <div>
                     <div
-                        class="bg-white h-full rounded transition-all duration-300"
-                        style="width: {Math.min(100, points_progress)}%"
-                    ></div>
+                        class="text-green-400 text-sm font-bold mb-2 text-center uppercase"
+                    >
+                        Points {game.points}/{game.milestone}
+                    </div>
+                    <div class="bg-gray-800 rounded h-8 border border-gray-600">
+                        <div
+                            class="bg-white h-full rounded transition-all duration-300"
+                            style="width: {Math.min(100, points_progress)}%"
+                        ></div>
+                    </div>
                 </div>
             </div>
 
