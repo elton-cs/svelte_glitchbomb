@@ -33,12 +33,16 @@
                 />
             </div>
         {:else}
-            <!-- Placeholder circle -->
-            <div
-                class="bg-gray-800 border border-gray-600 rounded-full text-gray-500 text-sm font-mono font-bold flex-shrink-0 flex items-center justify-center"
-                style="width: 64px; height: 64px;"
-            >
-                ?
+            <!-- Placeholder orb -->
+            <div class="flex-shrink-0">
+                <SingleOrb
+                    main_color="#374151"
+                    accent_color="#1f2937"
+                    emoji="?"
+                    text=""
+                    show_info={false}
+                    size={64}
+                />
             </div>
         {/if}
     {/each}
