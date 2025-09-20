@@ -41,17 +41,17 @@
             visibility: 'visible'
         });
 
-        // Animate orb pulling up from bag
+        // Animate orb pulling up from bag (move higher and grow bigger)
         gsap.to(orb_element, {
-            y: -40,
-            scale: 0.8,
+            y: -80,
+            scale: 2.5,
             duration: 0.8,
             ease: "power2.out",
             onComplete: () => {
                 animation_phase = 'presenting';
-                // Scale up for presentation
+                // Scale up even more for presentation
                 gsap.to(orb_element, {
-                    scale: 1.2,
+                    scale: 3.0,
                     duration: 0.3,
                     ease: "back.out(1.7)"
                 });
