@@ -826,3 +826,21 @@ export function give_free_moonrocks(player: Player, amount: number): void {
   player.moonrocks += amount;
   save_player_to_storage(player);
 }
+
+// Get hex colors based on orb category for SVG orbs
+export function get_orb_colors(category: OrbCategory): { main: string; accent: string } {
+  switch (category) {
+    case OrbCategory.Bomb:
+      return { main: "#fb923c", accent: "#ea580c" }; // orange-400/600
+    case OrbCategory.Health:
+      return { main: "#f87171", accent: "#dc2626" }; // red-400/600
+    case OrbCategory.Point:
+      return { main: "#4ade80", accent: "#16a34a" }; // green-400/600
+    case OrbCategory.Multiplier:
+      return { main: "#60a5fa", accent: "#2563eb" }; // blue-400/600
+    case OrbCategory.Special:
+      return { main: "#fbbf24", accent: "#d97706" }; // yellow-400/600
+    default:
+      return { main: "#B399C8", accent: "#8967AA" }; // default purple
+  }
+}

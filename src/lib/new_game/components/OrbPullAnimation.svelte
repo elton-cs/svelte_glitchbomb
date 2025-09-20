@@ -4,7 +4,7 @@
     import type { Orb, Game } from '../state/types';
     import { OrbCategory, CATEGORY_INFO } from '../state/types';
     import { pull_orb, game_state } from '../state/game_state.svelte';
-    import { peek_next_orb, get_orb_display_text } from '../state/helpers';
+    import { peek_next_orb, get_orb_display_text, get_orb_colors } from '../state/helpers';
     import SingleOrb from './SingleOrb.svelte';
 
     interface Props {
@@ -22,24 +22,6 @@
     let current_orb: Orb | null = $state(null);
     let animation_phase = $state<'idle' | 'pulling' | 'presenting' | 'consuming'>('idle');
     let show_orb_info = $state(false);
-
-    // Function to get hex colors based on orb category
-    function get_orb_colors(category: OrbCategory): { main: string; accent: string } {
-        switch (category) {
-            case OrbCategory.Bomb:
-                return { main: "#fb923c", accent: "#ea580c" }; // orange-400/600
-            case OrbCategory.Health:
-                return { main: "#f87171", accent: "#dc2626" }; // red-400/600
-            case OrbCategory.Point:
-                return { main: "#4ade80", accent: "#16a34a" }; // green-400/600
-            case OrbCategory.Multiplier:
-                return { main: "#60a5fa", accent: "#2563eb" }; // blue-400/600
-            case OrbCategory.Special:
-                return { main: "#fbbf24", accent: "#d97706" }; // yellow-400/600
-            default:
-                return { main: "#B399C8", accent: "#8967AA" }; // default purple
-        }
-    }
 
     // Reactive orb colors based on current orb category
     let orb_colors = $derived(() => {

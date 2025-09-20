@@ -1,7 +1,8 @@
 <script lang="ts">
     import { game_state } from "../state/game_state.svelte";
     import { CATEGORY_INFO } from "../state/types";
-    import { get_orb_display_text } from "../state/helpers";
+    import { get_orb_display_text, get_orb_colors } from "../state/helpers";
+    import SingleOrb from "./SingleOrb.svelte";
 
     let game = $derived(game_state.current_game!);
     let container: HTMLDivElement;
@@ -19,11 +20,17 @@
     {#each Array(3) as _, index}
         {#if index < game.pulled_orbs.length}
             {@const orb = game.pulled_orbs[index]}
-            {@const categoryInfo = CATEGORY_INFO[orb.category]}
-            <div
-                class="{categoryInfo.color} border border-white w-12 h-12 rounded-full text-black text-xs font-mono font-bold flex-shrink-0 flex items-center justify-center"
-            >
-                {get_orb_display_text(orb)}
+            {@const colors = get_orb_colors(orb.category)}
+            {@const emoji = CATEGORY_INFO[orb.category].initial}
+            <div class="flex-shrink-0">
+                <SingleOrb
+                    main_color={colors.main}
+                    accent_color={colors.accent}
+                    emoji={emoji}
+                    text={get_orb_display_text(orb)}
+                    show_info={true}
+                    size={48}
+                />
             </div>
         {:else}
             <!-- Placeholder circle -->
@@ -38,11 +45,17 @@
     <!-- Show additional orbs beyond the first 3 if any -->
     {#if game.pulled_orbs.length > 3}
         {#each game.pulled_orbs.slice(3) as orb, index}
-            {@const categoryInfo = CATEGORY_INFO[orb.category]}
-            <div
-                class="{categoryInfo.color} border border-white w-12 h-12 rounded-full text-black text-xs font-mono font-bold flex-shrink-0 flex items-center justify-center"
-            >
-                {get_orb_display_text(orb)}
+            {@const colors = get_orb_colors(orb.category)}
+            {@const emoji = CATEGORY_INFO[orb.category].initial}
+            <div class="flex-shrink-0">
+                <SingleOrb
+                    main_color={colors.main}
+                    accent_color={colors.accent}
+                    emoji={emoji}
+                    text={get_orb_display_text(orb)}
+                    show_info={true}
+                    size={48}
+                />
             </div>
         {/each}
     {/if}
