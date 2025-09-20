@@ -15,35 +15,31 @@
     });
 </script>
 
-<div bind:this={container} class="flex gap-1 overflow-x-auto scrollbar-hide mb-4 pb-2 justify-center">
+<div bind:this={container} class="flex gap-0 overflow-x-auto scrollbar-hide mb-4 pb-2 justify-center">
     <!-- Show first 3 orbs or placeholders -->
     {#each Array(3) as _, index}
         {#if index < game.pulled_orbs.length}
             {@const orb = game.pulled_orbs[index]}
             {@const colors = get_orb_colors(orb.category)}
             {@const emoji = CATEGORY_INFO[orb.category].initial}
-            <div class="flex-shrink-0">
-                <SingleOrb
-                    main_color={colors.main}
-                    accent_color={colors.accent}
-                    emoji={emoji}
-                    text={get_orb_display_text(orb)}
-                    show_info={true}
-                    size={64}
-                />
-            </div>
+            <SingleOrb
+                main_color={colors.main}
+                accent_color={colors.accent}
+                emoji={emoji}
+                text={get_orb_display_text(orb)}
+                show_info={true}
+                size={64}
+            />
         {:else}
             <!-- Placeholder orb -->
-            <div class="flex-shrink-0">
-                <SingleOrb
-                    main_color="#374151"
-                    accent_color="#1f2937"
-                    emoji="?"
-                    text=""
-                    show_info={false}
-                    size={64}
-                />
-            </div>
+            <SingleOrb
+                main_color="#374151"
+                accent_color="#1f2937"
+                emoji="?"
+                text=""
+                show_info={false}
+                size={64}
+            />
         {/if}
     {/each}
 
@@ -52,16 +48,14 @@
         {#each game.pulled_orbs.slice(3) as orb, index}
             {@const colors = get_orb_colors(orb.category)}
             {@const emoji = CATEGORY_INFO[orb.category].initial}
-            <div class="flex-shrink-0">
-                <SingleOrb
-                    main_color={colors.main}
-                    accent_color={colors.accent}
-                    emoji={emoji}
-                    text={get_orb_display_text(orb)}
-                    show_info={true}
-                    size={64}
-                />
-            </div>
+            <SingleOrb
+                main_color={colors.main}
+                accent_color={colors.accent}
+                emoji={emoji}
+                text={get_orb_display_text(orb)}
+                show_info={true}
+                size={64}
+            />
         {/each}
     {/if}
 </div>

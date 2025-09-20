@@ -17,8 +17,9 @@
 <svg
     width={size}
     height={size}
-    viewBox="0 0 72 72"
+    viewBox="13 10 46 46"
     xmlns="http://www.w3.org/2000/svg"
+    class="flex-shrink-0"
 >
     <g id="color">
         <circle cx="36" cy="32.8" r="22.2" fill={main_color}/>
