@@ -10,6 +10,7 @@ import {
   deduct_moonrocks,
   get_level_cost,
   cash_out_points,
+  give_free_moonrocks,
 } from "./helpers";
 
 export const game_state = $state({
@@ -218,6 +219,22 @@ export function cash_out_after_win(): void {
   // Return to menu and clean up
   game_state.current_view = GameView.Menu;
   game_state.current_game = null;
+
+  // Clear message after 4 seconds
+  setTimeout(() => {
+    game_state.cash_out_message = '';
+  }, 4000);
+}
+
+// Give free moonrocks as a gift (100 moonrocks)
+export function claim_gift(): void {
+  const gift_amount = 100;
+
+  // Give moonrocks to player
+  give_free_moonrocks(game_state.player, gift_amount);
+
+  // Set success message
+  game_state.cash_out_message = `🎁 Gift claimed! +${gift_amount} moonrocks!`;
 
   // Clear message after 4 seconds
   setTimeout(() => {

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { init_game, game_state } from '../state/game_state.svelte';
+  import { init_game, game_state, claim_gift } from '../state/game_state.svelte';
   import { get_level_cost } from '../state/helpers';
   import CurrentView from '../components/CurrentView.svelte';
   import Button from '../components/Button.svelte';
@@ -55,11 +55,21 @@
     </div>
   {/if}
 
-  <Button
-    onclick={start_game}
-    disabled={!can_afford}
-    size="large"
-  >
-    {can_afford ? 'Start Game' : 'Insufficient Moonrocks'}
-  </Button>
+  <!-- Action Buttons -->
+  <div class="space-y-4">
+    <Button
+      onclick={start_game}
+      disabled={!can_afford}
+      size="large"
+    >
+      {can_afford ? 'Start Game' : 'Insufficient Moonrocks'}
+    </Button>
+
+    <!-- Gift Button -->
+    <Button
+      onclick={claim_gift}
+    >
+      🎁 Claim Gift (+100 Moonrocks)
+    </Button>
+  </div>
 </div>

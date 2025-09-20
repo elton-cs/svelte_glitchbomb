@@ -820,3 +820,9 @@ export function peek_next_orb(game: Game): Orb | null {
   }
   return game.playground_orbs[0];
 }
+
+// Give free moonrocks to the player (gift functionality)
+export function give_free_moonrocks(player: Player, amount: number): void {
+  player.moonrocks += amount;
+  save_player_to_storage(player);
+}
