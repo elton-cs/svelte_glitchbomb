@@ -812,3 +812,11 @@ export function get_orb_display(item: ShopItem): OrbDisplay {
       };
   }
 }
+
+// Peek at the next orb without removing it (for animation purposes)
+export function peek_next_orb(game: Game): Orb | null {
+  if (game.playground_orbs.length === 0) {
+    return null;
+  }
+  return game.playground_orbs[0];
+}

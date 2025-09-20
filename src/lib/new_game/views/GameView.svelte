@@ -13,6 +13,7 @@
     import HealthDisplay from "../components/HealthDisplay.svelte";
     import BombDisplay from "../components/BombDisplay.svelte";
     import Button from "../components/Button.svelte";
+    import OrbPullAnimation from "../components/OrbPullAnimation.svelte";
 
     let game = $derived(game_state.current_game!);
     let points_progress = $derived((game.points / game.milestone) * 100);
@@ -107,13 +108,11 @@
 
     <!-- Game Actions -->
     <div class="space-y-4">
-        <Button
-            onclick={pull_orb}
+        <!-- Orb Pull Animation -->
+        <OrbPullAnimation
             disabled={game.playground_orbs.length === 0 || show_result}
-            size="large"
-        >
-            Pull Orb ({game.playground_orbs.length} left)
-        </Button>
+            orbs_remaining={game.playground_orbs.length}
+        />
 
         <!-- Quit & Cash Out Button - Available during active gameplay -->
         {#if !show_result}
