@@ -844,3 +844,21 @@ export function get_orb_colors(category: OrbCategory): { main: string; accent: s
       return { main: "#B399C8", accent: "#8967AA" }; // default purple
   }
 }
+
+// Get asset path based on orb category for pixel art orbs
+export function get_orb_asset_path(category: OrbCategory): string {
+  switch (category) {
+    case OrbCategory.Bomb:
+      return "src/assets/orange.png";
+    case OrbCategory.Health:
+      return "src/assets/red.png";
+    case OrbCategory.Point:
+      return "src/assets/green.png";
+    case OrbCategory.Multiplier:
+      return "src/assets/blue.png";
+    case OrbCategory.Special:
+      return "src/assets/gold.png";
+    default:
+      return "src/assets/blue.png"; // default to blue if unknown
+  }
+}
