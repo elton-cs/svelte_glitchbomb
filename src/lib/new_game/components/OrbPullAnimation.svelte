@@ -56,14 +56,16 @@
         animation_phase = 'shaking';
 
         // Start with shake animation
-        gsap.to(bag_element, {
-            rotation: 15,
-            duration: 0.05,
-            ease: "power2.inOut",
-            yoyo: true,
-            repeat: 19, // 20 total shakes for more dramatic effect
-            onComplete: () => {
-                // Reset bag rotation and switch to open bag
+        gsap.fromTo(bag_element,
+            { rotation: -30 },
+            {
+                rotation: 30,
+                duration: 0.05,
+                ease: "power2.inOut",
+                yoyo: true,
+                repeat: 19, // 20 total shakes for more dramatic effect
+                onComplete: () => {
+                    // Reset bag rotation and switch to open bag
                 gsap.set(bag_element, { rotation: 0 });
                 bag_is_open = true;
                 animation_phase = 'pulling';
@@ -98,8 +100,9 @@
                         });
                     }
                 });
+                }
             }
-        });
+        );
     }
 
     function consume_orb() {
