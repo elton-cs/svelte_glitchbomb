@@ -20,9 +20,12 @@
 
     let is_animating = $state(false);
     let current_orb: Orb | null = $state(null);
-    let animation_phase = $state<'idle' | 'pulling' | 'presenting' | 'consuming'>('idle');
+    let animation_phase = $state<'idle' | 'shaking' | 'pulling' | 'presenting' | 'consuming'>('idle');
     let show_orb_info = $state(false);
+    let bag_is_open = $state(false);
 
+    // Reactive bag image source based on open/closed state
+    let bag_src = $derived(bag_is_open ? "src/assets/pixelbag_open.png" : "src/assets/pixelbag_close.png");
 
     // Reactive orb emoji based on current orb category
     let orb_emoji = $derived(() => {
@@ -50,34 +53,49 @@
         if (!current_orb) return;
 
         is_animating = true;
-        animation_phase = 'pulling';
+        animation_phase = 'shaking';
 
-        // Reset orb position to inside bag and hide info
-        show_orb_info = false;
-        gsap.set(orb_element, {
-            x: 0,
-            y: 30, // Start inside bag
-            scale: 0.50, // Start at half the previous size
-            opacity: 1,
-            visibility: 'visible'
-        });
-
-        // Animate orb pulling up from bag (move much higher and grow bigger)
-        gsap.to(orb_element, {
-            y: -250,
-            scale: 2.5,
-            duration: 0.8,
-            ease: "power2.in",
+        // Start with shake animation
+        gsap.to(bag_element, {
+            rotation: 5,
+            duration: 0.1,
+            ease: "power2.inOut",
+            yoyo: true,
+            repeat: 9, // 10 total shakes (0.1s * 10 = 1s total, but with yoyo it's 0.5s)
             onComplete: () => {
-                animation_phase = 'presenting';
-                // Scale up even more for presentation
+                // Reset bag rotation and switch to open bag
+                gsap.set(bag_element, { rotation: 0 });
+                bag_is_open = true;
+                animation_phase = 'pulling';
+
+                // Reset orb position to inside bag and hide info
+                show_orb_info = false;
+                gsap.set(orb_element, {
+                    x: 0,
+                    y: 30, // Start inside bag
+                    scale: 0.50, // Start at half the previous size
+                    opacity: 1,
+                    visibility: 'visible'
+                });
+
+                // Animate orb pulling up from bag (move much higher and grow bigger)
                 gsap.to(orb_element, {
-                    scale: 3.0,
-                    duration: 0.3,
-                    ease: "back.out(1.7)",
+                    y: -250,
+                    scale: 2.5,
+                    duration: 0.8,
+                    ease: "power2.in",
                     onComplete: () => {
-                        // Show orb info after bounce animation completes
-                        show_orb_info = true;
+                        animation_phase = 'presenting';
+                        // Scale up even more for presentation
+                        gsap.to(orb_element, {
+                            scale: 3.0,
+                            duration: 0.3,
+                            ease: "back.out(1.7)",
+                            onComplete: () => {
+                                // Show orb info after bounce animation completes
+                                show_orb_info = true;
+                            }
+                        });
                     }
                 });
             }
@@ -106,6 +124,7 @@
                 current_orb = null;
                 is_animating = false;
                 animation_phase = 'idle';
+                bag_is_open = false; // Close the bag
 
                 // Hide orb element
                 gsap.set(orb_element, {
@@ -150,7 +169,7 @@
             onclick={start_pull_animation}
         >
             <img
-                src="src/assets/pixelbag_open.png"
+                src={bag_src}
                 alt="Orb Bag"
                 width="240"
                 height="240"
@@ -163,7 +182,9 @@
     <!-- Status Text -->
     <div class="text-white text-center">
         {#if is_animating}
-            {#if animation_phase === 'pulling'}
+            {#if animation_phase === 'shaking'}
+                <div class="text-sm font-bold uppercase">Opening...</div>
+            {:else if animation_phase === 'pulling'}
                 <div class="text-sm font-bold uppercase">Pulling...</div>
             {:else if animation_phase === 'presenting'}
                 <div class="text-sm font-bold uppercase">Click the orb!</div>
