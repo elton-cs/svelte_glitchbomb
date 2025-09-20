@@ -60,10 +60,10 @@
             { rotation: -30 },
             {
                 rotation: 30,
-                duration: 0.05,
+                duration: 0.08,
                 ease: "power2.inOut",
                 yoyo: true,
-                repeat: 19, // 20 total shakes for more dramatic effect
+                repeat: 5, // 6 total movements (3 complete shakes)
                 onComplete: () => {
                     // Reset bag rotation and switch to open bag
                 gsap.set(bag_element, { rotation: 0 });
