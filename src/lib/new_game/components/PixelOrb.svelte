@@ -21,6 +21,7 @@
         src={orb_src}
         alt="Orb"
         class="w-full h-full object-contain"
+        style="image-rendering: pixelated; image-rendering: -moz-crisp-edges; image-rendering: crisp-edges;"
     />
 
     <!-- Orb Info Overlay (shown when show_info is true) -->

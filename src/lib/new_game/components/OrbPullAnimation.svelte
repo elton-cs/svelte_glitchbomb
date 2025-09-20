@@ -155,6 +155,7 @@
                 width="120"
                 height="120"
                 class="filter drop-shadow-lg"
+                style="image-rendering: pixelated; image-rendering: -moz-crisp-edges; image-rendering: crisp-edges;"
             />
         </div>
     </div>
