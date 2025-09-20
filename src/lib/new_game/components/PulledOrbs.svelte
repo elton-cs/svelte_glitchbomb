@@ -35,7 +35,8 @@
         {:else}
             <!-- Placeholder circle -->
             <div
-                class="bg-gray-800 border border-gray-600 w-16 h-16 rounded-full text-gray-500 text-sm font-mono font-bold flex-shrink-0 flex items-center justify-center"
+                class="bg-gray-800 border border-gray-600 rounded-full text-gray-500 text-sm font-mono font-bold flex-shrink-0 flex items-center justify-center"
+                style="width: 64px; height: 64px;"
             >
                 ?
             </div>
