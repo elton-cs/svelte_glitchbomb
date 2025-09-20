@@ -2,6 +2,7 @@
     import { onMount } from 'svelte';
     import { gsap } from 'gsap';
     import type { Orb, Game } from '../state/types';
+    import { OrbCategory, CATEGORY_INFO } from '../state/types';
     import { pull_orb, game_state } from '../state/game_state.svelte';
     import { peek_next_orb } from '../state/helpers';
 
@@ -19,6 +20,32 @@
     let is_animating = $state(false);
     let current_orb: Orb | null = $state(null);
     let animation_phase = $state<'idle' | 'pulling' | 'presenting' | 'consuming'>('idle');
+
+    // Function to get hex colors based on orb category
+    function get_orb_colors(category: OrbCategory): { main: string; accent: string } {
+        switch (category) {
+            case OrbCategory.Bomb:
+                return { main: "#fb923c", accent: "#ea580c" }; // orange-400/600
+            case OrbCategory.Health:
+                return { main: "#f87171", accent: "#dc2626" }; // red-400/600
+            case OrbCategory.Point:
+                return { main: "#4ade80", accent: "#16a34a" }; // green-400/600
+            case OrbCategory.Multiplier:
+                return { main: "#60a5fa", accent: "#2563eb" }; // blue-400/600
+            case OrbCategory.Special:
+                return { main: "#fbbf24", accent: "#d97706" }; // yellow-400/600
+            default:
+                return { main: "#B399C8", accent: "#8967AA" }; // default purple
+        }
+    }
+
+    // Reactive orb colors based on current orb category
+    let orb_colors = $derived(() => {
+        if (current_orb) {
+            return get_orb_colors(current_orb.category);
+        }
+        return { main: "#B399C8", accent: "#8967AA" }; // default purple
+    });
 
 
     function start_pull_animation() {
@@ -115,8 +142,8 @@
                 class="filter drop-shadow-md"
             >
                 <g id="color">
-                    <circle cx="36" cy="32.8" r="22.2" fill="#B399C8"/>
-                    <path fill="#8967AA" d="M58.2,33c0,12.3-9.7,22.1-22,22.1c11.6-8,14.8-16.8,14.4-24.5c0-0.3,0-0.5-0.1-0.8c-0.2-1.7-0.5-3.4-1.1-5 c-0.1-0.2-0.1-0.4-0.2-0.6c-0.7-2-1.7-3.8-2.7-5.4c-0.2-0.3-0.3-0.5-0.5-0.7c-0.6-0.9-1.3-1.8-2.1-2.5c-0.2-0.2-0.3-0.4-0.5-0.5 c-0.2-0.2-0.4-0.4-0.6-0.6c-0.2-0.2-0.4-0.3-0.6-0.5c-0.1-0.1-0.2-0.2-0.3-0.3c-0.2-0.2-0.4-0.3-0.5-0.4c-0.8-0.6-1.7-1.2-2.5-1.6 c-0.1-0.1-0.3-0.1-0.4-0.2c-0.3-0.1-0.7-0.3-1-0.4C37.3,11,37.1,11,37,11s-0.2,0-0.3,0s-0.2,0-0.3,0h0.1 C48.6,11.1,58.2,20.9,58.2,33z"/>
+                    <circle cx="36" cy="32.8" r="22.2" fill={orb_colors().main}/>
+                    <path fill={orb_colors().accent} d="M58.2,33c0,12.3-9.7,22.1-22,22.1c11.6-8,14.8-16.8,14.4-24.5c0-0.3,0-0.5-0.1-0.8c-0.2-1.7-0.5-3.4-1.1-5 c-0.1-0.2-0.1-0.4-0.2-0.6c-0.7-2-1.7-3.8-2.7-5.4c-0.2-0.3-0.3-0.5-0.5-0.7c-0.6-0.9-1.3-1.8-2.1-2.5c-0.2-0.2-0.3-0.4-0.5-0.5 c-0.2-0.2-0.4-0.4-0.6-0.6c-0.2-0.2-0.4-0.3-0.6-0.5c-0.1-0.1-0.2-0.2-0.3-0.3c-0.2-0.2-0.4-0.3-0.5-0.4c-0.8-0.6-1.7-1.2-2.5-1.6 c-0.1-0.1-0.3-0.1-0.4-0.2c-0.3-0.1-0.7-0.3-1-0.4C37.3,11,37.1,11,37,11s-0.2,0-0.3,0s-0.2,0-0.3,0h0.1 C48.6,11.1,58.2,20.9,58.2,33z"/>
                     <path fill="none" stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" d="M19.4,30.7c0.1-0.5,0.2-1.1,0.3-1.6"/>
                     <path fill="none" stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" d="M21.4,24.6c1.5-2.7,3.6-4.9,6.2-6.4"/>
                 </g>
