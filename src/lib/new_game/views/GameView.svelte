@@ -103,9 +103,6 @@
     <!-- Status Effects Display -->
     <StatusEffects />
 
-    <!-- Orb Category Distribution -->
-    <OrbCategoryBar />
-
     <!-- Game Actions -->
     <div class="space-y-4">
         <!-- Orb Pull Animation -->
@@ -113,6 +110,9 @@
             disabled={game.playground_orbs.length === 0 || show_result}
             orbs_remaining={game.playground_orbs.length}
         />
+
+        <!-- Orb Category Distribution -->
+        <OrbCategoryBar />
 
         <!-- Quit & Cash Out Button - Available during active gameplay -->
         {#if !show_result}
