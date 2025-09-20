@@ -15,7 +15,7 @@
     });
 </script>
 
-<div bind:this={container} class="flex gap-2 overflow-x-auto scrollbar-hide mb-4 pb-2 justify-center">
+<div bind:this={container} class="flex gap-1 overflow-x-auto scrollbar-hide mb-4 pb-2 justify-center">
     <!-- Show first 3 orbs or placeholders -->
     {#each Array(3) as _, index}
         {#if index < game.pulled_orbs.length}
@@ -29,13 +29,13 @@
                     emoji={emoji}
                     text={get_orb_display_text(orb)}
                     show_info={true}
-                    size={48}
+                    size={64}
                 />
             </div>
         {:else}
             <!-- Placeholder circle -->
             <div
-                class="bg-gray-800 border border-gray-600 w-12 h-12 rounded-full text-gray-500 text-xs font-mono font-bold flex-shrink-0 flex items-center justify-center"
+                class="bg-gray-800 border border-gray-600 w-16 h-16 rounded-full text-gray-500 text-sm font-mono font-bold flex-shrink-0 flex items-center justify-center"
             >
                 ?
             </div>
@@ -54,7 +54,7 @@
                     emoji={emoji}
                     text={get_orb_display_text(orb)}
                     show_info={true}
-                    size={48}
+                    size={64}
                 />
             </div>
         {/each}
