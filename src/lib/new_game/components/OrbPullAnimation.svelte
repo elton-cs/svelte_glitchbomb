@@ -180,9 +180,9 @@
                         <!-- Category Emoji -->
                         <text
                             x="36"
-                            y="28"
+                            y="30"
                             text-anchor="middle"
-                            font-size="16"
+                            font-size="8"
                             font-family="system-ui, -apple-system, sans-serif"
                         >
                             {orb_emoji()}
@@ -191,9 +191,9 @@
                         <!-- Orb Details (e.g., "B:2") -->
                         <text
                             x="36"
-                            y="42"
+                            y="38"
                             text-anchor="middle"
-                            font-size="12"
+                            font-size="6"
                             font-weight="bold"
                             fill="#FFFFFF"
                             font-family="system-ui, -apple-system, sans-serif"
