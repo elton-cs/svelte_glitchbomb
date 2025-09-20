@@ -4,7 +4,7 @@
     import type { Orb, Game } from '../state/types';
     import { OrbCategory, CATEGORY_INFO } from '../state/types';
     import { pull_orb, game_state } from '../state/game_state.svelte';
-    import { peek_next_orb } from '../state/helpers';
+    import { peek_next_orb, get_orb_display_text } from '../state/helpers';
 
     interface Props {
         disabled: boolean;
@@ -20,6 +20,7 @@
     let is_animating = $state(false);
     let current_orb: Orb | null = $state(null);
     let animation_phase = $state<'idle' | 'pulling' | 'presenting' | 'consuming'>('idle');
+    let show_orb_info = $state(false);
 
     // Function to get hex colors based on orb category
     function get_orb_colors(category: OrbCategory): { main: string; accent: string } {
@@ -47,6 +48,22 @@
         return { main: "#B399C8", accent: "#8967AA" }; // default purple
     });
 
+    // Reactive orb emoji based on current orb category
+    let orb_emoji = $derived(() => {
+        if (current_orb) {
+            return CATEGORY_INFO[current_orb.category].initial;
+        }
+        return "❓"; // default
+    });
+
+    // Reactive orb text based on current orb modifiers
+    let orb_text = $derived(() => {
+        if (current_orb) {
+            return get_orb_display_text(current_orb);
+        }
+        return "?";
+    });
+
 
     function start_pull_animation() {
         if (disabled || is_animating || orbs_remaining === 0) return;
@@ -59,7 +76,8 @@
         is_animating = true;
         animation_phase = 'pulling';
 
-        // Reset orb position to inside bag
+        // Reset orb position to inside bag and hide info
+        show_orb_info = false;
         gsap.set(orb_element, {
             x: 0,
             y: 60, // Start inside bag
@@ -80,7 +98,11 @@
                 gsap.to(orb_element, {
                     scale: 3.0,
                     duration: 0.3,
-                    ease: "back.out(1.7)"
+                    ease: "back.out(1.7)",
+                    onComplete: () => {
+                        // Show orb info after bounce animation completes
+                        show_orb_info = true;
+                    }
                 });
             }
         });
@@ -90,6 +112,7 @@
         if (animation_phase !== 'presenting') return;
 
         animation_phase = 'consuming';
+        show_orb_info = false; // Hide info during consumption
 
         // Animate orb flying up and fading out
         gsap.to(orb_element, {
@@ -150,6 +173,35 @@
                 <g id="line">
                     <circle cx="36" cy="32.8" r="22.2" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"/>
                 </g>
+
+                <!-- Orb Info Text (shown after bounce animation) -->
+                {#if show_orb_info}
+                    <g id="orb-info">
+                        <!-- Category Emoji -->
+                        <text
+                            x="36"
+                            y="28"
+                            text-anchor="middle"
+                            font-size="16"
+                            font-family="system-ui, -apple-system, sans-serif"
+                        >
+                            {orb_emoji()}
+                        </text>
+
+                        <!-- Orb Details (e.g., "B:2") -->
+                        <text
+                            x="36"
+                            y="42"
+                            text-anchor="middle"
+                            font-size="12"
+                            font-weight="bold"
+                            fill="#FFFFFF"
+                            font-family="system-ui, -apple-system, sans-serif"
+                        >
+                            {orb_text()}
+                        </text>
+                    </g>
+                {/if}
             </svg>
         </div>
 
