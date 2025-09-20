@@ -57,11 +57,11 @@
 
         // Start with shake animation
         gsap.to(bag_element, {
-            rotation: 5,
-            duration: 0.1,
+            rotation: 15,
+            duration: 0.05,
             ease: "power2.inOut",
             yoyo: true,
-            repeat: 9, // 10 total shakes (0.1s * 10 = 1s total, but with yoyo it's 0.5s)
+            repeat: 19, // 20 total shakes for more dramatic effect
             onComplete: () => {
                 // Reset bag rotation and switch to open bag
                 gsap.set(bag_element, { rotation: 0 });
