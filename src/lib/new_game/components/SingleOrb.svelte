@@ -19,7 +19,6 @@
     height={size}
     viewBox="0 0 72 72"
     xmlns="http://www.w3.org/2000/svg"
-    class="filter drop-shadow-md"
 >
     <g id="color">
         <circle cx="36" cy="32.8" r="22.2" fill={main_color}/>
