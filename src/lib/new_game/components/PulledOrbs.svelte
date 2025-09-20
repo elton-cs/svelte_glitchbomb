@@ -28,7 +28,7 @@
                 emoji={emoji}
                 text={get_orb_display_text(orb)}
                 show_info={true}
-                size={64}
+                size={48}
             />
         {:else}
             <!-- Placeholder orb -->
@@ -38,7 +38,7 @@
                 emoji="?"
                 text=""
                 show_info={false}
-                size={64}
+                size={48}
             />
         {/if}
     {/each}
@@ -54,7 +54,7 @@
                 emoji={emoji}
                 text={get_orb_display_text(orb)}
                 show_info={true}
-                size={64}
+                size={48}
             />
         {/each}
     {/if}
