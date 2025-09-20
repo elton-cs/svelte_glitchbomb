@@ -95,3 +95,9 @@ The shop uses a "ShopDeck" system where:
 - Game log is capped at 30 entries to prevent memory growth
 - State updates use reactive patterns optimized for Svelte 5
 - Build uses Vite's optimized bundling and tree-shaking
+
+### New Game Implementation (src/lib/new_game/)
+
+- **Naming Convention**: ALL variables and function names in `src/lib/new_game/` MUST use snake_case (not camelCase)
+- **Svelte 5 Syntax**: Use `$state`, `$derived`, and `$effect` runes instead of Svelte 4's `$:` reactive statements
+- **Styling**: Match the black/white minimal aesthetic from the old implementation with border-based design

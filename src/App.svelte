@@ -3,7 +3,7 @@
   import Playground from './lib/components/Playground.svelte'
   import PlayerView from './lib/components/PlayerView.svelte'
   
-  let activeTab = $state('data')
+  let activeTab = $state('player')
   let devMode = $state(false)
   
   function toggleDevMode() {
