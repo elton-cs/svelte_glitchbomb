@@ -56,18 +56,18 @@
         show_orb_info = false;
         gsap.set(orb_element, {
             x: 0,
-            y: 60, // Start inside bag
-            scale: 0.15, // Start at half the previous size
+            y: 30, // Start inside bag
+            scale: 0.50, // Start at half the previous size
             opacity: 1,
             visibility: 'visible'
         });
 
         // Animate orb pulling up from bag (move much higher and grow bigger)
         gsap.to(orb_element, {
-            y: -200,
+            y: -250,
             scale: 2.5,
             duration: 0.8,
-            ease: "power2.out",
+            ease: "power2.in",
             onComplete: () => {
                 animation_phase = 'presenting';
                 // Scale up even more for presentation
@@ -152,8 +152,8 @@
             <img
                 src="src/assets/pixelbag_open.png"
                 alt="Orb Bag"
-                width="120"
-                height="120"
+                width="240"
+                height="240"
                 class="filter drop-shadow-lg"
                 style="image-rendering: pixelated; image-rendering: -moz-crisp-edges; image-rendering: crisp-edges;"
             />
