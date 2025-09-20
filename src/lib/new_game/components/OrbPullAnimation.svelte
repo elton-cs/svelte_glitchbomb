@@ -57,7 +57,7 @@
         gsap.set(orb_element, {
             x: 0,
             y: 60, // Start inside bag
-            scale: 0.3,
+            scale: 0.15, // Start at half the previous size
             opacity: 1,
             visibility: 'visible'
         });
