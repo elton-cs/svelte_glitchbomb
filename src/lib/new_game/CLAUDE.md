@@ -63,3 +63,4 @@ The new_game directory is integrated into the main Svelte app through:
 • Use Svelte 5 runes for reactivity
 • Maintain mobile-first responsive design principles
 • **MANDATORY**: Always commit changes with small and concise git commit messages describing the changes
+• **NEVER run `npm run dev`**: After making changes, ALWAYS use `npm run build` instead of dev server
