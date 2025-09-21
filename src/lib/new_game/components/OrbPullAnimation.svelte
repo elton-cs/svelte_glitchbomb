@@ -25,7 +25,7 @@
     let bag_is_open = $state(false);
 
     // Reactive bag image source based on open/closed state
-    let bag_src = $derived(bag_is_open ? "src/assets/pixelbag_open.png" : "src/assets/pixelbag_close.png");
+    let bag_src = $derived(bag_is_open ? "/newgameassets/pixelbag_open.png" : "/newgameassets/pixelbag_close.png");
 
     // Reactive orb emoji based on current orb category
     let orb_emoji = $derived(() => {

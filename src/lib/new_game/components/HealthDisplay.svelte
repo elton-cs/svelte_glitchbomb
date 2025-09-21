@@ -15,7 +15,7 @@
     {#each health_hearts() as is_filled, index}
         <div class="heart-container">
             <img
-                src="/src/assets/{is_filled ? 'red_heart' : 'black_heart'}.png"
+                src="/newgameassets/{is_filled ? 'red_heart' : 'black_heart'}.png"
                 alt="{is_filled ? 'Full' : 'Empty'} Heart"
                 width="32"
                 height="32"

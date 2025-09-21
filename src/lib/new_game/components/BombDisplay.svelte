@@ -65,7 +65,7 @@
     {#each bomb_display() as bomb_info, index}
         <div class="bomb-container">
             <img
-                src="/src/assets/bomb{bomb_info.bomb_type}.png"
+                src="/newgameassets/bomb{bomb_info.bomb_type}.png"
                 alt="Bomb {bomb_info.bomb_type}"
                 width="40"
                 height="40"

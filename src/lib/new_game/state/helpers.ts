@@ -849,16 +849,16 @@ export function get_orb_colors(category: OrbCategory): { main: string; accent: s
 export function get_orb_asset_path(category: OrbCategory): string {
   switch (category) {
     case OrbCategory.Bomb:
-      return "src/assets/orange.png";
+      return "/newgameassets/orange.png";
     case OrbCategory.Health:
-      return "src/assets/red.png";
+      return "/newgameassets/red.png";
     case OrbCategory.Point:
-      return "src/assets/green.png";
+      return "/newgameassets/green.png";
     case OrbCategory.Multiplier:
-      return "src/assets/blue.png";
+      return "/newgameassets/blue.png";
     case OrbCategory.Special:
-      return "src/assets/gold.png";
+      return "/newgameassets/gold.png";
     default:
-      return "src/assets/blue.png"; // default to blue if unknown
+      return "/newgameassets/blue.png"; // default to blue if unknown
   }
 }
