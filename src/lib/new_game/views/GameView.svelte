@@ -35,63 +35,72 @@
     <!-- Pulled Orbs Display -->
     <PulledOrbs />
 
-    <!-- Horizontal Stats Container: Bomb + Stats + Health -->
+    <!-- Stats Grid -->
+    <div class="grid grid-cols-2 gap-3 text-center mb-6">
+        <!-- Top Row: Moonrocks and Chips -->
+        <div>
+            <div class="text-2xl font-bold text-purple-400 mb-1">
+                {game_state.player.moonrocks}
+            </div>
+            <div class="text-white text-xs uppercase">Moonrocks</div>
+        </div>
+
+        <div>
+            <div class="text-2xl font-bold text-yellow-400 mb-1">
+                {game.glitchchips}
+            </div>
+            <div class="text-white text-xs uppercase">Chips</div>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-2 gap-3 text-center mb-6">
+        <!-- Bottom Row: Multiplier and Level -->
+        <div>
+            <div class="text-2xl font-bold text-blue-400 mb-1">
+                {game.multiplier}x
+            </div>
+            <div class="text-white text-xs uppercase">Mult</div>
+        </div>
+
+        <div>
+            <div class="text-2xl font-bold text-green-400 mb-1">
+                {game.level}
+            </div>
+            <div class="text-white text-xs uppercase">Level</div>
+        </div>
+    </div>
+
+    <!-- Points Progress Bar -->
+    <div class="mb-6">
+        <div
+            class="text-green-400 text-sm font-bold mb-2 text-center uppercase"
+        >
+            Points {game.points}/{game.milestone}
+        </div>
+        <div class="bg-gray-800 rounded h-8 border border-gray-600">
+            <div
+                class="bg-white h-full rounded transition-all duration-300"
+                style="width: {Math.min(100, points_progress)}%"
+            ></div>
+        </div>
+    </div>
+
+    <!-- Status Effects Display -->
+    <StatusEffects />
+
+    <!-- Game Actions Container: Bomb + Orb Pull + Health -->
     <div class="flex items-center gap-4 mb-6">
         <!-- Left: Bomb display -->
         <div class="flex-shrink-0">
             <BombDisplay />
         </div>
 
-        <!-- Center: Stats Grid -->
-        <div class="flex-1">
-            <div class="grid grid-cols-2 gap-3 text-center mb-4">
-                <!-- Top Row: Moonrocks and Chips -->
-                <div>
-                    <div class="text-2xl font-bold text-purple-400 mb-1">
-                        {game_state.player.moonrocks}
-                    </div>
-                    <div class="text-white text-xs uppercase">Moonrocks</div>
-                </div>
-
-                <div>
-                    <div class="text-2xl font-bold text-yellow-400 mb-1">
-                        {game.glitchchips}
-                    </div>
-                    <div class="text-white text-xs uppercase">Chips</div>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-2 gap-3 text-center mb-4">
-                <!-- Bottom Row: Multiplier and Level -->
-                <div>
-                    <div class="text-2xl font-bold text-blue-400 mb-1">
-                        {game.multiplier}x
-                    </div>
-                    <div class="text-white text-xs uppercase">Mult</div>
-                </div>
-
-                <div>
-                    <div class="text-2xl font-bold text-green-400 mb-1">
-                        {game.level}
-                    </div>
-                    <div class="text-white text-xs uppercase">Level</div>
-                </div>
-            </div>
-
-            <!-- Points Progress Bar -->
-            <div>
-                <div
-                    class="text-green-400 text-sm font-bold mb-2 text-center uppercase"
-                >
-                    Points {game.points}/{game.milestone}
-                </div>
-                <div class="bg-gray-800 rounded h-8 border border-gray-600">
-                    <div
-                        class="bg-white h-full rounded transition-all duration-300"
-                        style="width: {Math.min(100, points_progress)}%"
-                    ></div>
-                </div>
-            </div>
+        <!-- Center: Orb Pull Animation -->
+        <div class="flex-1 flex justify-center">
+            <OrbPullAnimation
+                disabled={game.playground_orbs.length === 0 || show_result}
+                orbs_remaining={game.playground_orbs.length}
+            />
         </div>
 
         <!-- Right: Health display -->
@@ -100,16 +109,8 @@
         </div>
     </div>
 
-    <!-- Status Effects Display -->
-    <StatusEffects />
-
     <!-- Game Actions -->
     <div class="space-y-4">
-        <!-- Orb Pull Animation -->
-        <OrbPullAnimation
-            disabled={game.playground_orbs.length === 0 || show_result}
-            orbs_remaining={game.playground_orbs.length}
-        />
 
         <!-- Orb Category Distribution -->
         <OrbCategoryBar />
