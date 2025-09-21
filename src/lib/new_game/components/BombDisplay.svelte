@@ -70,6 +70,7 @@
                 width="28"
                 height="28"
                 class="bomb-image transition-all duration-300 {bomb_info.is_pulled ? 'pulled' : 'unpulled'}"
+                style="image-rendering: pixelated; image-rendering: -moz-crisp-edges; image-rendering: crisp-edges;"
             />
         </div>
     {/each}
