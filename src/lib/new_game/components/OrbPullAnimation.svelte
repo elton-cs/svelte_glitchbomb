@@ -203,7 +203,6 @@
                 <div class="text-sm font-bold uppercase">Pulling...</div>
             {:else if animation_phase === 'presenting'}
                 <div class="text-sm font-bold uppercase">Click the orb!</div>
-                <div class="text-xs text-gray-400 mt-1">Click to consume orb</div>
             {:else if animation_phase === 'consuming'}
                 <div class="text-sm font-bold uppercase">Consuming...</div>
             {/if}
