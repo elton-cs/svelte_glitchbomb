@@ -4,46 +4,73 @@
 
     let game = $derived(game_state.current_game!);
 
-    // Count total bombs in the game (starting + purchased)
-    let total_bombs_in_bag = $derived(() => {
+    // Count bombs by damage value in the bag (starting + purchased)
+    let bombs_by_type = $derived(() => {
         const all_orbs = [...game.starting_orbs, ...game.purchased_orbs];
-        return all_orbs.filter(orb =>
-            orb.modifiers.some(mod => mod.type === ModifierType.Bomb)
-        ).length;
+        const bomb_counts = { 1: 0, 2: 0, 3: 0 };
+
+        all_orbs.forEach(orb => {
+            const bomb_modifier = orb.modifiers.find(mod => mod.type === ModifierType.Bomb);
+            if (bomb_modifier) {
+                const damage_value = bomb_modifier.value.value;
+                if (damage_value >= 1 && damage_value <= 3) {
+                    bomb_counts[damage_value as 1 | 2 | 3]++;
+                }
+            }
+        });
+
+        return bomb_counts;
     });
 
-    // Count bombs that have been pulled
-    let bombs_pulled = $derived(() => {
-        return game.pulled_orbs.filter(orb =>
-            orb.modifiers.some(mod => mod.type === ModifierType.Bomb)
-        ).length;
+    // Count pulled bombs by damage value
+    let pulled_bombs_by_type = $derived(() => {
+        const pulled_counts = { 1: 0, 2: 0, 3: 0 };
+
+        game.pulled_orbs.forEach(orb => {
+            const bomb_modifier = orb.modifiers.find(mod => mod.type === ModifierType.Bomb);
+            if (bomb_modifier) {
+                const damage_value = bomb_modifier.value.value;
+                if (damage_value >= 1 && damage_value <= 3) {
+                    pulled_counts[damage_value as 1 | 2 | 3]++;
+                }
+            }
+        });
+
+        return pulled_counts;
     });
 
-    // Generate bomb display array (true = pulled, false = not pulled)
+    // Generate bomb display array with type information
     let bomb_display = $derived(() => {
         const display = [];
-        for (let i = 0; i < total_bombs_in_bag(); i++) {
-            display.push(i < bombs_pulled());
+
+        // For each bomb type (1, 2, 3)
+        for (let bomb_type = 1; bomb_type <= 3; bomb_type++) {
+            const total_of_type = bombs_by_type()[bomb_type as 1 | 2 | 3];
+            const pulled_of_type = pulled_bombs_by_type()[bomb_type as 1 | 2 | 3];
+
+            // Add each bomb of this type to display
+            for (let i = 0; i < total_of_type; i++) {
+                display.push({
+                    bomb_type: bomb_type,
+                    is_pulled: i < pulled_of_type
+                });
+            }
         }
+
         return display;
     });
 </script>
 
 <div class="bomb-display flex flex-col-reverse items-center gap-1">
-    {#each bomb_display() as is_pulled, index}
+    {#each bomb_display() as bomb_info, index}
         <div class="bomb-container">
-            <svg
-                fill={is_pulled ? '#ef4444' : '#374151'}
+            <img
+                src="/src/assets/bomb{bomb_info.bomb_type}.png"
+                alt="Bomb {bomb_info.bomb_type}"
                 width="28"
                 height="28"
-                viewBox="0 0 32 32"
-                version="1.1"
-                xmlns="http://www.w3.org/2000/svg"
-                class="transition-all duration-300"
-            >
-                <title>bomb</title>
-                <path d="M9.178 10.601c-2.768 1.568-4.606 4.492-4.608 7.846v0c0 0.414 0.336 0.75 0.75 0.75s0.75-0.336 0.75-0.75v0c0.002-2.794 1.533-5.231 3.802-6.518l0.037-0.019c0.231-0.131 0.385-0.375 0.385-0.655 0-0.414-0.336-0.75-0.75-0.75-0.134 0-0.26 0.035-0.369 0.097l0.004-0.002zM28.514 4.079h-1.582v-1.582c0-0.414-0.336-0.75-0.75-0.75s-0.75 0.336-0.75 0.75v0 1.582h-1.582c-0.414 0-0.75 0.336-0.75 0.75s0.336 0.75 0.75 0.75v0h0.59l-1.64 1.694-2.087-1.862c-0.132-0.118-0.307-0.19-0.5-0.19-0.244 0-0.462 0.117-0.599 0.298l-0.001 0.002-1.213 1.616c-1.419-0.627-3.075-0.992-4.815-0.992-0.011 0-0.023 0-0.034 0h0.002c-6.788 0.004-12.289 5.507-12.289 12.296 0 6.791 5.505 12.296 12.296 12.296s12.296-5.505 12.296-12.296c0-2.148-0.551-4.167-1.518-5.924l0.032 0.064 1.537-1.441c0.146-0.137 0.236-0.332 0.236-0.547 0-0.222-0.096-0.421-0.249-0.559l-0.001-0.001-1.972-1.76 1.511-1.561v0.45c0 0.414 0.336 0.75 0.75 0.75s0.75-0.336 0.75-0.75v0-1.582h1.582c0.414 0 0.75-0.336 0.75-0.75s-0.336-0.75-0.75-0.75v0zM22.781 12.83c0.986 1.597 1.569 3.532 1.569 5.604 0 5.959-4.831 10.79-10.79 10.79s-10.79-4.831-10.79-10.79c0-5.959 4.831-10.79 10.79-10.79 1.728 0 3.36 0.406 4.808 1.128l-0.063-0.028c0.096 0.048 0.21 0.076 0.33 0.076 0.245 0 0.462-0.117 0.599-0.298l0.001-0.002 1.086-1.446 3.959 3.531-1.373 1.287c-0.146 0.137-0.237 0.332-0.237 0.547 0 0.144 0.041 0.279 0.111 0.394l-0.002-0.003z"></path>
-            </svg>
+                class="bomb-image transition-all duration-300 {bomb_info.is_pulled ? 'pulled' : 'unpulled'}"
+            />
         </div>
     {/each}
 </div>
@@ -61,5 +88,17 @@
         display: flex;
         align-items: center;
         justify-content: center;
+    }
+
+    .bomb-image {
+        transition: filter 0.3s ease;
+    }
+
+    .bomb-image.unpulled {
+        filter: grayscale(100%) brightness(0.5);
+    }
+
+    .bomb-image.pulled {
+        filter: none;
     }
 </style>
