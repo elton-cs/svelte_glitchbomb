@@ -67,8 +67,8 @@
             <img
                 src="/src/assets/bomb{bomb_info.bomb_type}.png"
                 alt="Bomb {bomb_info.bomb_type}"
-                width="32"
-                height="32"
+                width="40"
+                height="40"
                 class="bomb-image transition-all duration-300 {bomb_info.is_pulled ? 'pulled' : 'unpulled'}"
                 style="image-rendering: pixelated; image-rendering: -moz-crisp-edges; image-rendering: crisp-edges;"
             />
