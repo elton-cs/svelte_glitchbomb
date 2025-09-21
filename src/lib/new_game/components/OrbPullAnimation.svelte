@@ -2,7 +2,7 @@
     import { onMount } from 'svelte';
     import { gsap } from 'gsap';
     import type { Orb, Game } from '../state/types';
-    import { OrbCategory, CATEGORY_INFO } from '../state/types';
+    import { OrbCategory, CATEGORY_INFO, ModifierType } from '../state/types';
     import { pull_orb, game_state } from '../state/game_state.svelte';
     import { peek_next_orb, get_orb_display_text } from '../state/helpers';
     import PixelOrb from './PixelOrb.svelte';
@@ -41,6 +41,19 @@
             return get_orb_display_text(current_orb);
         }
         return "?";
+    });
+
+    // Reactive orb category with fallback based on modifiers
+    let orb_category = $derived(() => {
+        if (current_orb) {
+            // If the orb has bomb modifiers, ensure it's categorized as bomb
+            const has_bomb_modifier = current_orb.modifiers.some(mod => mod.type === ModifierType.Bomb);
+            if (has_bomb_modifier && current_orb.category !== OrbCategory.Bomb) {
+                return OrbCategory.Bomb;
+            }
+            return current_orb.category;
+        }
+        return OrbCategory.Point;
     });
 
 
@@ -156,7 +169,7 @@
             onclick={consume_orb}
         >
             <PixelOrb
-                category={current_orb?.category || OrbCategory.Point}
+                category={orb_category()}
                 emoji={orb_emoji()}
                 text={orb_text()}
                 show_info={show_orb_info}
