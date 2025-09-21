@@ -17,8 +17,8 @@
             <img
                 src="/src/assets/{is_filled ? 'red_heart' : 'black_heart'}.png"
                 alt="{is_filled ? 'Full' : 'Empty'} Heart"
-                width="28"
-                height="28"
+                width="32"
+                height="32"
                 class="heart-image transition-all duration-300"
                 style="image-rendering: pixelated; image-rendering: -moz-crisp-edges; image-rendering: crisp-edges;"
             />

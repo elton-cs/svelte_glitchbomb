@@ -186,8 +186,8 @@
             <img
                 src={bag_src}
                 alt="Orb Bag"
-                width="240"
-                height="240"
+                width="180"
+                height="180"
                 class="filter drop-shadow-lg"
                 style="image-rendering: pixelated; image-rendering: -moz-crisp-edges; image-rendering: crisp-edges;"
             />
