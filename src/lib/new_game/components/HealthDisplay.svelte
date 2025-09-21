@@ -11,7 +11,7 @@
     });
 </script>
 
-<div class="health-display flex flex-col-reverse items-center justify-evenly">
+<div class="health-display flex flex-col-reverse items-center space-y-reverse space-y-2">
     {#each health_hearts() as is_filled, index}
         <div class="heart-container">
             <img

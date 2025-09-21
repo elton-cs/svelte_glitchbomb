@@ -61,7 +61,7 @@
     });
 </script>
 
-<div class="bomb-display flex flex-col-reverse items-center justify-evenly">
+<div class="bomb-display flex flex-col-reverse items-center space-y-reverse space-y-2">
     {#each bomb_display() as bomb_info, index}
         <div class="bomb-container">
             <img
