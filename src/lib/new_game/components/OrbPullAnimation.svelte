@@ -129,7 +129,6 @@
             y: -200,
             scale: 0.5,
             opacity: 0,
-            rotation: 360,
             duration: 0.6,
             ease: "power2.in",
             onComplete: () => {
