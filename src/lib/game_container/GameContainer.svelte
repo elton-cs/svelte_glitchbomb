@@ -9,11 +9,11 @@
   import GlitchHeader from "./comps/GlitchHeader.svelte";
   import PlayerStatsSection from "./comps/PlayerStatsSection.svelte";
   import ActionButtons from "./comps/ActionButtons.svelte";
+  import ProfitLossPanel from "./comps/ProfitLossPanel.svelte";
 
   // import ActionsPanel from "../components/ActionsPanel.svelte";
   // import OrbBagSection from "../components/OrbBagSection.svelte";
   // import MarketplaceView from "../components/MarketplaceView.svelte";
-  // import ProfitLossPanel from "../components/ProfitLossPanel.svelte";
   // import GameLogSection from "../components/GameLogSection.svelte";
   // import MatrixDisarrayWarning from "../components/MatrixDisarrayWarning.svelte";
 
@@ -90,8 +90,13 @@
   });
 </script>
 
-<div class="flex flex-col p-2 h-full w-full justify-between">
+<div
+  class="flex flex-col p-2 h-full w-full justify-between min-h-0 overflow-hidden"
+>
   <GlitchHeader {gameState} />
   <PlayerStatsSection {gameState} />
+  <div class="flex-1 min-h-0 flex flex-col">
+    <ProfitLossPanel {gameState} />
+  </div>
   <ActionButtons {gameState} />
 </div>
