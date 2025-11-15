@@ -91,7 +91,7 @@
 </script>
 
 <div
-  class="flex flex-col p-2 h-full w-full justify-between min-h-0 overflow-hidden"
+  class="flex flex-col p-2 gap-2 h-full w-full justify-between min-h-0 overflow-hidden"
 >
   <GlitchHeader {gameState} />
   <PlayerStatsSection {gameState} />
