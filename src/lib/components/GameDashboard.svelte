@@ -1,15 +1,17 @@
 <script lang="ts">
-  import { createInitialGameState, addStructuredLogEntry } from '../game/state.js';
+  import { tweened } from 'svelte/motion';
+  import { cubicOut } from 'svelte/easing';
+  import { createInitialGameState, claimFreeBytes, saveGlitchbytes, addStructuredLogEntry } from '../game/state.js';
   import { continueToMarketplace, cashOutPostLevel } from '../game/game.js';
   import { addOrbsToBag } from '../game/orbs.js';
   import { audioManager } from '../utils/audio.js';
-  import GlitchHeader from './GlitchHeader.svelte';
-  import PlayerStatsSection from './PlayerStatsSection.svelte';
+  import StatsDisplay from './StatsDisplay.svelte';
   import ActionsPanel from './ActionsPanel.svelte';
-  import OrbBagSection from './OrbBagSection.svelte';
   import MarketplaceView from './MarketplaceView.svelte';
-  import ProfitLossPanel from './ProfitLossPanel.svelte';
+  import PlayerStatsSection from './PlayerStatsSection.svelte';
+  import OrbBagSection from './OrbBagSection.svelte';
   import GameLogSection from './GameLogSection.svelte';
+  import ProfitLossPanel from './ProfitLossPanel.svelte';
   import MatrixDisarrayWarning from './MatrixDisarrayWarning.svelte';
 
   interface Props {
@@ -18,9 +20,6 @@
 
   let { devMode }: Props = $props();
   let gameState = $state(createInitialGameState());
-  
-  // Active tab state
-  let activeTab = $state<'stats' | 'rift' | 'shop' | 'profit' | 'log'>('stats');
   
   // Matrix disarray warning state
   let showMatrixWarning = $state(false);
@@ -49,6 +48,56 @@
     showMatrixWarning = false;
     cashOutPostLevel(gameState);
   }
+  
+  // Track previous value to detect increase/decrease
+  let previousGlitchBytes = $state(gameState.playerStats.glitchbytes);
+  let animationColor = $state<'neutral' | 'increase' | 'decrease'>('neutral');
+  
+  // Animated glitch bytes counter
+  const animatedGlitchBytes = tweened(gameState.playerStats.glitchbytes, {
+    duration: 800,
+    easing: cubicOut
+  });
+  
+  function handleClaimBytes() {
+    const newAmount = claimFreeBytes(gameState.playerStats.glitchbytes);
+    gameState.playerStats.glitchbytes = newAmount;
+  }
+  
+  function resetGlitchbytes() {
+    gameState.playerStats.glitchbytes = 0;
+  }
+  
+  // Save glitchbytes whenever they change
+  $effect(() => {
+    saveGlitchbytes(gameState.playerStats.glitchbytes);
+  });
+  
+  // Update animated glitch bytes when value changes
+  $effect(() => {
+    const currentValue = gameState.playerStats.glitchbytes;
+    
+    // Skip comparison on initial load (when both values are the same initially)
+    if (previousGlitchBytes !== currentValue) {
+      // Determine color based on change direction
+      if (currentValue > previousGlitchBytes) {
+        animationColor = 'increase';
+      } else if (currentValue < previousGlitchBytes) {
+        animationColor = 'decrease';
+      }
+      
+      // Reset color after animation completes
+      setTimeout(() => {
+        animationColor = 'neutral';
+      }, 800); // Match animation duration
+    }
+    
+    // Update previous value and start animation
+    previousGlitchBytes = currentValue;
+    animatedGlitchBytes.set(currentValue);
+  });
+  
+  const canClaimBytes = $derived(gameState.playerStats.glitchbytes < 100);
   
   // Initialize background music when component mounts
   $effect(() => {
@@ -90,105 +139,86 @@
   
 </script>
 
-<div class="bg-black p-3 flex flex-col min-h-screen">
-  <div class="max-w-7xl mx-auto flex-1 flex flex-col w-full relative">
+<div class="bg-black p-3">
+  <div class="max-w-7xl mx-auto">
 
-    <!-- Glitch Bytes Header -->
-    <GlitchHeader {gameState} {devMode} />
-
-    <!-- Tab Content (Middle Panel) -->
-    <div class="flex-1 mb-4">
-      {#if activeTab === 'stats'}
-        <PlayerStatsSection {gameState} />
-      {:else if activeTab === 'rift'}
-        <OrbBagSection {gameState} />
-      {:else if activeTab === 'shop'}
-        <MarketplaceView {gameState} />
-      {:else if activeTab === 'profit'}
-        <ProfitLossPanel {gameState} />
-      {:else if activeTab === 'log'}
-        <GameLogSection {gameState} />
-      {/if}
-    </div>
-
-    <!-- Actions Panel -->
-    <div class="mb-4">
-      <ActionsPanel {gameState} bind:showMatrixWarning />
-    </div>
-
-    <!-- Bottom Tab Bar -->
-    <div class="bg-black border-t border-white p-3">
-      <div class="flex justify-center gap-2 flex-wrap">
-        <button 
-          class="px-4 py-2 rounded font-medium text-xs sm:text-sm transition-colors border border-white uppercase tracking-wide"
-          class:bg-white={activeTab === 'stats'}
-          class:text-black={activeTab === 'stats'}
-          class:bg-black={activeTab !== 'stats'}
-          class:text-white={activeTab !== 'stats'}
-          class:hover:bg-white={activeTab !== 'stats'}
-          class:hover:text-black={activeTab !== 'stats'}
-          onclick={() => activeTab = 'stats'}
-        >
-          Stats
-        </button>
-        <button 
-          class="px-4 py-2 rounded font-medium text-xs sm:text-sm transition-colors border border-white uppercase tracking-wide"
-          class:bg-white={activeTab === 'rift'}
-          class:text-black={activeTab === 'rift'}
-          class:bg-black={activeTab !== 'rift'}
-          class:text-white={activeTab !== 'rift'}
-          class:hover:bg-white={activeTab !== 'rift'}
-          class:hover:text-black={activeTab !== 'rift'}
-          onclick={() => activeTab = 'rift'}
-        >
-          Rift
-        </button>
-        <button 
-          class="px-4 py-2 rounded font-medium text-xs sm:text-sm transition-colors border border-white uppercase tracking-wide"
-          class:bg-white={activeTab === 'shop'}
-          class:text-black={activeTab === 'shop'}
-          class:bg-black={activeTab !== 'shop'}
-          class:text-white={activeTab !== 'shop'}
-          class:hover:bg-white={activeTab !== 'shop'}
-          class:hover:text-black={activeTab !== 'shop'}
-          onclick={() => activeTab = 'shop'}
-        >
-          Shop
-        </button>
-        <button 
-          class="px-4 py-2 rounded font-medium text-xs sm:text-sm transition-colors border border-white uppercase tracking-wide"
-          class:bg-white={activeTab === 'profit'}
-          class:text-black={activeTab === 'profit'}
-          class:bg-black={activeTab !== 'profit'}
-          class:text-white={activeTab !== 'profit'}
-          class:hover:bg-white={activeTab !== 'profit'}
-          class:hover:text-black={activeTab !== 'profit'}
-          onclick={() => activeTab = 'profit'}
-        >
-          Profit
-        </button>
-        <button 
-          class="px-4 py-2 rounded font-medium text-xs sm:text-sm transition-colors border border-white uppercase tracking-wide"
-          class:bg-white={activeTab === 'log'}
-          class:text-black={activeTab === 'log'}
-          class:bg-black={activeTab !== 'log'}
-          class:text-white={activeTab !== 'log'}
-          class:hover:bg-white={activeTab !== 'log'}
-          class:hover:text-black={activeTab !== 'log'}
-          onclick={() => activeTab = 'log'}
-        >
-          Log
-        </button>
+    <!-- Top Bar with Glitch Bytes -->
+    <div class="bg-black p-3 rounded-lg shadow-sm border border-white mb-4">
+      <div class="flex flex-col md:grid md:grid-cols-3 items-center gap-3 md:gap-0">
+        <!-- Left: Empty space on desktop -->
+        <div class="hidden md:block"></div>
+        
+        <!-- Center: Glitch Bytes Display -->
+        <div class="text-center">
+          <div class="text-3xl md:text-4xl font-bold mb-1 flex items-center justify-center gap-2 {animationColor === 'increase' ? 'text-green-400' : animationColor === 'decrease' ? 'text-red-400' : 'text-white'}">
+            {Math.round($animatedGlitchBytes)}<span class="text-3xl md:text-4xl">👾</span>
+          </div>
+          <div class="text-white text-xs tracking-wide">GLITCH BYTES</div>
+        </div>
+        
+        <!-- Right: Action Buttons -->
+        {#if devMode}
+          <div class="flex flex-col items-center md:items-end gap-2">
+            <div class="text-xs text-gray-400 uppercase tracking-wide">dev tools</div>
+            <div class="flex gap-2">
+              {#if canClaimBytes}
+                <button 
+                  onclick={handleClaimBytes}
+                  class="bg-black hover:bg-white hover:text-black border border-white text-white text-xs font-medium py-1 px-2 rounded transition-colors whitespace-nowrap"
+                >
+                  CLAIM FREE
+                </button>
+              {/if}
+              <button 
+                onclick={resetGlitchbytes}
+                class="bg-black hover:bg-white hover:text-black border border-white text-white text-xs font-medium py-1 px-2 rounded transition-colors whitespace-nowrap"
+              >
+                RESET
+              </button>
+            </div>
+          </div>
+        {/if}
       </div>
     </div>
 
-    <!-- Matrix Disarray Warning Modal - Overlays entire game area -->
-    {#if showMatrixWarning}
-      <MatrixDisarrayWarning 
-        onAccept={handleAcceptDisarray}
-        onCacheOut={handleCacheOutFromWarning}
-        playerPoints={gameState.playerStats.points}
-      />
-    {/if}
+    <!-- Main Game UI - Responsive Layout -->
+    <div class="flex flex-col md:grid md:grid-cols-3 md:grid-rows-2 gap-4 min-h-[800px] md:h-[800px] relative">
+      <!-- Mobile: Stack vertically, Desktop: 2x3 Grid -->
+      
+      <!-- Top Row: Actions | Player Stats | P/L -->
+      <div class="flex flex-col min-h-[200px] md:h-full">
+        <ActionsPanel {gameState} bind:showMatrixWarning />
+      </div>
+
+      <div class="flex flex-col min-h-[250px] md:h-full">
+        <PlayerStatsSection {gameState} />
+      </div>
+
+      <div class="flex flex-col min-h-[250px] md:h-full">
+        <ProfitLossPanel {gameState} />
+      </div>
+
+      <!-- Bottom Row: Mod Shop | Glitch Rift | Game Log -->
+      <div class="flex flex-col min-h-[250px] md:h-full">
+        <MarketplaceView {gameState} />
+      </div>
+
+      <div class="flex flex-col min-h-[200px] md:h-full">
+        <OrbBagSection {gameState} />
+      </div>
+
+      <div class="flex flex-col min-h-[200px] md:h-full">
+        <GameLogSection {gameState} />
+      </div>
+      
+      <!-- Matrix Disarray Warning Modal - Overlays entire game area -->
+      {#if showMatrixWarning}
+        <MatrixDisarrayWarning 
+          onAccept={handleAcceptDisarray}
+          onCacheOut={handleCacheOutFromWarning}
+          playerPoints={gameState.playerStats.points}
+        />
+      {/if}
+    </div>
   </div>
 </div>

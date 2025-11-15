@@ -11,7 +11,7 @@
 </script>
 
 <!-- Player Stats Panel -->
-<div class="bg-black p-3 rounded-lg shadow-sm border border-white flex flex-col">
+<div class="bg-black p-3 rounded-lg shadow-sm border border-white h-full flex flex-col">
   
   <!-- Game Title -->
   <div class="text-center mb-4">
