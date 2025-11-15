@@ -63,18 +63,24 @@
 </script>
 
 <!-- Glitch Bytes Display -->
-<div class="bg-black p-3 rounded-lg border border-white">
-  <div class="flex items-center justify-center">
+<div class="bg-black p-2 rounded-lg border border-white">
+  <div class="flex flex-col sm:grid sm:grid-cols-3 items-center gap-3 sm:gap-0">
+    <!-- Left: Empty space on desktop -->
+    <div class="hidden sm:block"></div>
+
+    <!-- Center: Glitch Bytes Display -->
     <div class="text-center">
       <div
-        class="text-4xl font-bold mb-1 flex items-center justify-center gap-2 {animationColor ===
+        class="text-3xl sm:text-4xl font-bold mb-1 flex items-center justify-center gap-2 {animationColor ===
         'increase'
           ? 'text-green-400'
           : animationColor === 'decrease'
             ? 'text-red-400'
             : 'text-white'}"
       >
-        {Math.round($animatedGlitchBytes)}<span class="text-4xl">👾</span>
+        {Math.round($animatedGlitchBytes)}<span class="text-3xl sm:text-4xl"
+          >👾</span
+        >
       </div>
       <div class="text-white text-xs tracking-wide">GLITCH BYTES</div>
     </div>
