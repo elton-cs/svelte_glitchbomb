@@ -8,6 +8,7 @@
   import { canAffordLevel, getLevelEntryCost } from "../../game/economics.js";
   import type { GameState } from "../../game/types.js";
   import { audioManager } from "../../utils/audio.js";
+  import SingleActionButton from "./SingleActionButton.svelte";
 
   interface Props {
     gameState: GameState;
@@ -82,36 +83,21 @@
 </script>
 
 <div class="flex gap-2 p-2 border rounded-lg">
-  <button
-    onclick={handleStartGame}
-    disabled={!canStartGame || gameState.phase !== "menu"}
-    class="flex-1 py-3 px-4 rounded text-base font-medium transition-colors border
-           {canStartGame && gameState.phase === 'menu'
-      ? 'bg-black text-white border-white hover:bg-white hover:text-black'
-      : 'bg-black text-gray-500 border-gray-500 cursor-not-allowed'}"
-  >
-    START GAME
-  </button>
+  <SingleActionButton
+    label="START GAME"
+    onClick={handleStartGame}
+    isEnabled={canStartGame && gameState.phase === "menu"}
+  />
 
-  <button
-    onclick={handleExecute}
-    disabled={!canPullOrb || gameState.phase !== "level"}
-    class="flex-1 py-3 px-4 rounded text-base font-medium transition-colors border
-           {canPullOrb && gameState.phase === 'level'
-      ? 'bg-black text-white border-white hover:bg-white hover:text-black'
-      : 'bg-black text-gray-500 border-gray-500 cursor-not-allowed'}"
-  >
-    EXECUTE
-  </button>
+  <SingleActionButton
+    label="EXECUTE"
+    onClick={handleExecute}
+    isEnabled={canPullOrb && gameState.phase === "level"}
+  />
 
-  <button
-    onclick={handleCashOut}
-    disabled={!canCashOut}
-    class="flex-1 py-3 px-4 rounded text-base font-medium transition-colors border
-           {canCashOut
-      ? 'bg-black text-white border-white hover:bg-white hover:text-black'
-      : 'bg-black text-gray-500 border-gray-500 cursor-not-allowed'}"
-  >
-    CASH OUT
-  </button>
+  <SingleActionButton
+    label="CASH OUT"
+    onClick={handleCashOut}
+    isEnabled={canCashOut}
+  />
 </div>
