@@ -8,6 +8,7 @@
   import { audioManager } from "../utils/audio.js";
   import GlitchHeader from "./comps/GlitchHeader.svelte";
   import PlayerStatsSection from "./comps/PlayerStatsSection.svelte";
+  import ActionButtons from "./comps/ActionButtons.svelte";
 
   // import ActionsPanel from "../components/ActionsPanel.svelte";
   // import OrbBagSection from "../components/OrbBagSection.svelte";
@@ -89,7 +90,8 @@
   });
 </script>
 
-<div class="flex flex-col gap-4 m-2 justify-between">
+<div class="flex flex-col p-2 h-full w-full justify-between">
   <GlitchHeader {gameState} />
   <PlayerStatsSection {gameState} />
+  <ActionButtons {gameState} />
 </div>
