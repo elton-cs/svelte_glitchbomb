@@ -129,11 +129,9 @@
 <div
   class="bg-black p-3 rounded-lg shadow-sm border border-white h-full flex flex-col min-h-0"
 >
-  <h2 class="text-sm font-bold mb-2 text-white flex-shrink-0">PROFIT/LOSS</h2>
-
-  <!-- Compact P/L Header -->
+  <!-- P/L Header -->
   <div class="mb-2 flex justify-between items-center flex-shrink-0">
-    <div class="text-xs text-gray-400">
+    <div class="text-sm font-bold text-white">
       P/L: {gameState.playerStats.points}/{gameState.phase === "menu"
         ? 0
         : getCumulativeLevelCost(gameState.currentLevel)}
