@@ -4,6 +4,4 @@
   let devMode = $state(false);
 </script>
 
-<div class="min-h-screen bg-black">
-  <GameContainer />
-</div>
+<GameContainer />

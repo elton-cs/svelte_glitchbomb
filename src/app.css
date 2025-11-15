@@ -14,9 +14,20 @@
   font-size: 15px; /* This affects rem calculations */
 }
 
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 body {
   @apply bg-black text-white;
   font-family: 'NewFont', monospace;
+}
+
+#app {
+  height: 100%;
+  width: 100%;
 }
 
 /* Apply custom font to all elements but preserve Tailwind sizing */

@@ -7,14 +7,14 @@
   import { addOrbsToBag } from "../game/orbs.js";
   import { audioManager } from "../utils/audio.js";
   import GlitchHeader from "./comps/GlitchHeader.svelte";
+  import PlayerStatsSection from "./comps/PlayerStatsSection.svelte";
 
-  import PlayerStatsSection from "../components/PlayerStatsSection.svelte";
-  import ActionsPanel from "../components/ActionsPanel.svelte";
-  import OrbBagSection from "../components/OrbBagSection.svelte";
-  import MarketplaceView from "../components/MarketplaceView.svelte";
-  import ProfitLossPanel from "../components/ProfitLossPanel.svelte";
-  import GameLogSection from "../components/GameLogSection.svelte";
-  import MatrixDisarrayWarning from "../components/MatrixDisarrayWarning.svelte";
+  // import ActionsPanel from "../components/ActionsPanel.svelte";
+  // import OrbBagSection from "../components/OrbBagSection.svelte";
+  // import MarketplaceView from "../components/MarketplaceView.svelte";
+  // import ProfitLossPanel from "../components/ProfitLossPanel.svelte";
+  // import GameLogSection from "../components/GameLogSection.svelte";
+  // import MatrixDisarrayWarning from "../components/MatrixDisarrayWarning.svelte";
 
   let gameState = $state(createInitialGameState());
 
@@ -89,6 +89,7 @@
   });
 </script>
 
-<div>
-  <GlitchHeader {gameState} devMode={false} />
+<div class="flex flex-col gap-4 m-2 justify-between">
+  <GlitchHeader {gameState} />
+  <PlayerStatsSection {gameState} />
 </div>

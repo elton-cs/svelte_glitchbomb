@@ -6,10 +6,9 @@
 
   interface Props {
     gameState: GameState;
-    devMode: boolean;
   }
 
-  let { gameState, devMode }: Props = $props();
+  let { gameState }: Props = $props();
 
   // Track previous value to detect increase/decrease
   let previousGlitchBytes = $state(gameState.playerStats.glitchbytes);
