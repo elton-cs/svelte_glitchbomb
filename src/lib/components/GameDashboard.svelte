@@ -3,9 +3,13 @@
   import { continueToMarketplace, cashOutPostLevel } from '../game/game.js';
   import { addOrbsToBag } from '../game/orbs.js';
   import { audioManager } from '../utils/audio.js';
-  import LevelTab from './LevelTab.svelte';
-  import ShopTab from './ShopTab.svelte';
-  import InfoTab from './InfoTab.svelte';
+  import GlitchHeader from './GlitchHeader.svelte';
+  import PlayerStatsSection from './PlayerStatsSection.svelte';
+  import ActionsPanel from './ActionsPanel.svelte';
+  import OrbBagSection from './OrbBagSection.svelte';
+  import MarketplaceView from './MarketplaceView.svelte';
+  import ProfitLossPanel from './ProfitLossPanel.svelte';
+  import GameLogSection from './GameLogSection.svelte';
   import MatrixDisarrayWarning from './MatrixDisarrayWarning.svelte';
 
   interface Props {
@@ -16,7 +20,7 @@
   let gameState = $state(createInitialGameState());
   
   // Active tab state
-  let activeTab = $state<'level' | 'shop' | 'info'>('level');
+  let activeTab = $state<'shop' | 'info'>('shop');
   
   // Matrix disarray warning state
   let showMatrixWarning = $state(false);
@@ -87,43 +91,47 @@
 </script>
 
 <div class="bg-black p-3 flex flex-col min-h-screen">
-  <div class="max-w-7xl mx-auto flex-1 flex flex-col w-full">
+  <div class="max-w-7xl mx-auto flex-1 flex flex-col w-full relative">
+
+    <!-- Glitch Bytes Header -->
+    <GlitchHeader {gameState} {devMode} />
+
+    <!-- Player Stats Section -->
+    <div class="mb-4">
+      <PlayerStatsSection {gameState} />
+    </div>
+
+    <!-- Actions Panel -->
+    <div class="mb-4">
+      <ActionsPanel {gameState} bind:showMatrixWarning />
+    </div>
 
     <!-- Tab Content -->
-    <div class="flex-1 mb-4 relative">
-      {#if activeTab === 'level'}
-        <LevelTab {gameState} {devMode} bind:showMatrixWarning />
-      {:else if activeTab === 'shop'}
-        <ShopTab {gameState} {devMode} />
+    <div class="flex-1 mb-4">
+      {#if activeTab === 'shop'}
+        <div class="flex flex-col lg:grid lg:grid-cols-2 gap-4 h-full">
+          <div class="flex flex-col min-h-[200px]">
+            <OrbBagSection {gameState} />
+          </div>
+          <div class="flex flex-col min-h-[250px]">
+            <MarketplaceView {gameState} />
+          </div>
+        </div>
       {:else if activeTab === 'info'}
-        <InfoTab {gameState} {devMode} />
-      {/if}
-      
-      <!-- Matrix Disarray Warning Modal - Overlays entire game area -->
-      {#if showMatrixWarning}
-        <MatrixDisarrayWarning 
-          onAccept={handleAcceptDisarray}
-          onCacheOut={handleCacheOutFromWarning}
-          playerPoints={gameState.playerStats.points}
-        />
+        <div class="flex flex-col lg:grid lg:grid-cols-2 gap-4 h-full">
+          <div class="flex flex-col min-h-[250px]">
+            <ProfitLossPanel {gameState} />
+          </div>
+          <div class="flex flex-col min-h-[200px]">
+            <GameLogSection {gameState} />
+          </div>
+        </div>
       {/if}
     </div>
 
     <!-- Bottom Tab Bar -->
     <div class="bg-black border-t border-white p-3">
       <div class="flex justify-center gap-2">
-        <button 
-          class="px-6 py-3 rounded font-medium text-sm transition-colors border border-white uppercase tracking-wide"
-          class:bg-white={activeTab === 'level'}
-          class:text-black={activeTab === 'level'}
-          class:bg-black={activeTab !== 'level'}
-          class:text-white={activeTab !== 'level'}
-          class:hover:bg-white={activeTab !== 'level'}
-          class:hover:text-black={activeTab !== 'level'}
-          onclick={() => activeTab = 'level'}
-        >
-          Level
-        </button>
         <button 
           class="px-6 py-3 rounded font-medium text-sm transition-colors border border-white uppercase tracking-wide"
           class:bg-white={activeTab === 'shop'}
@@ -150,5 +158,14 @@
         </button>
       </div>
     </div>
+
+    <!-- Matrix Disarray Warning Modal - Overlays entire game area -->
+    {#if showMatrixWarning}
+      <MatrixDisarrayWarning 
+        onAccept={handleAcceptDisarray}
+        onCacheOut={handleCacheOutFromWarning}
+        playerPoints={gameState.playerStats.points}
+      />
+    {/if}
   </div>
 </div>
