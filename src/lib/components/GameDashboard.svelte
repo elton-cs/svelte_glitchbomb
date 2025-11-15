@@ -20,7 +20,7 @@
   let gameState = $state(createInitialGameState());
   
   // Active tab state
-  let activeTab = $state<'shop' | 'info'>('shop');
+  let activeTab = $state<'stats' | 'rift' | 'shop' | 'profit' | 'log'>('stats');
   
   // Matrix disarray warning state
   let showMatrixWarning = $state(false);
@@ -96,9 +96,19 @@
     <!-- Glitch Bytes Header -->
     <GlitchHeader {gameState} {devMode} />
 
-    <!-- Player Stats Section -->
-    <div class="mb-4">
-      <PlayerStatsSection {gameState} />
+    <!-- Tab Content (Middle Panel) -->
+    <div class="flex-1 mb-4">
+      {#if activeTab === 'stats'}
+        <PlayerStatsSection {gameState} />
+      {:else if activeTab === 'rift'}
+        <OrbBagSection {gameState} />
+      {:else if activeTab === 'shop'}
+        <MarketplaceView {gameState} />
+      {:else if activeTab === 'profit'}
+        <ProfitLossPanel {gameState} />
+      {:else if activeTab === 'log'}
+        <GameLogSection {gameState} />
+      {/if}
     </div>
 
     <!-- Actions Panel -->
@@ -106,34 +116,35 @@
       <ActionsPanel {gameState} bind:showMatrixWarning />
     </div>
 
-    <!-- Tab Content -->
-    <div class="flex-1 mb-4">
-      {#if activeTab === 'shop'}
-        <div class="flex flex-col lg:grid lg:grid-cols-2 gap-4 h-full">
-          <div class="flex flex-col min-h-[200px]">
-            <OrbBagSection {gameState} />
-          </div>
-          <div class="flex flex-col min-h-[250px]">
-            <MarketplaceView {gameState} />
-          </div>
-        </div>
-      {:else if activeTab === 'info'}
-        <div class="flex flex-col lg:grid lg:grid-cols-2 gap-4 h-full">
-          <div class="flex flex-col min-h-[250px]">
-            <ProfitLossPanel {gameState} />
-          </div>
-          <div class="flex flex-col min-h-[200px]">
-            <GameLogSection {gameState} />
-          </div>
-        </div>
-      {/if}
-    </div>
-
     <!-- Bottom Tab Bar -->
     <div class="bg-black border-t border-white p-3">
-      <div class="flex justify-center gap-2">
+      <div class="flex justify-center gap-2 flex-wrap">
         <button 
-          class="px-6 py-3 rounded font-medium text-sm transition-colors border border-white uppercase tracking-wide"
+          class="px-4 py-2 rounded font-medium text-xs sm:text-sm transition-colors border border-white uppercase tracking-wide"
+          class:bg-white={activeTab === 'stats'}
+          class:text-black={activeTab === 'stats'}
+          class:bg-black={activeTab !== 'stats'}
+          class:text-white={activeTab !== 'stats'}
+          class:hover:bg-white={activeTab !== 'stats'}
+          class:hover:text-black={activeTab !== 'stats'}
+          onclick={() => activeTab = 'stats'}
+        >
+          Stats
+        </button>
+        <button 
+          class="px-4 py-2 rounded font-medium text-xs sm:text-sm transition-colors border border-white uppercase tracking-wide"
+          class:bg-white={activeTab === 'rift'}
+          class:text-black={activeTab === 'rift'}
+          class:bg-black={activeTab !== 'rift'}
+          class:text-white={activeTab !== 'rift'}
+          class:hover:bg-white={activeTab !== 'rift'}
+          class:hover:text-black={activeTab !== 'rift'}
+          onclick={() => activeTab = 'rift'}
+        >
+          Rift
+        </button>
+        <button 
+          class="px-4 py-2 rounded font-medium text-xs sm:text-sm transition-colors border border-white uppercase tracking-wide"
           class:bg-white={activeTab === 'shop'}
           class:text-black={activeTab === 'shop'}
           class:bg-black={activeTab !== 'shop'}
@@ -145,16 +156,28 @@
           Shop
         </button>
         <button 
-          class="px-6 py-3 rounded font-medium text-sm transition-colors border border-white uppercase tracking-wide"
-          class:bg-white={activeTab === 'info'}
-          class:text-black={activeTab === 'info'}
-          class:bg-black={activeTab !== 'info'}
-          class:text-white={activeTab !== 'info'}
-          class:hover:bg-white={activeTab !== 'info'}
-          class:hover:text-black={activeTab !== 'info'}
-          onclick={() => activeTab = 'info'}
+          class="px-4 py-2 rounded font-medium text-xs sm:text-sm transition-colors border border-white uppercase tracking-wide"
+          class:bg-white={activeTab === 'profit'}
+          class:text-black={activeTab === 'profit'}
+          class:bg-black={activeTab !== 'profit'}
+          class:text-white={activeTab !== 'profit'}
+          class:hover:bg-white={activeTab !== 'profit'}
+          class:hover:text-black={activeTab !== 'profit'}
+          onclick={() => activeTab = 'profit'}
         >
-          Info
+          Profit
+        </button>
+        <button 
+          class="px-4 py-2 rounded font-medium text-xs sm:text-sm transition-colors border border-white uppercase tracking-wide"
+          class:bg-white={activeTab === 'log'}
+          class:text-black={activeTab === 'log'}
+          class:bg-black={activeTab !== 'log'}
+          class:text-white={activeTab !== 'log'}
+          class:hover:bg-white={activeTab !== 'log'}
+          class:hover:text-black={activeTab !== 'log'}
+          onclick={() => activeTab = 'log'}
+        >
+          Log
         </button>
       </div>
     </div>
