@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { tweened } from 'svelte/motion';
-  import { cubicOut } from 'svelte/easing';
-  import { saveGlitchbytes, claimFreeBytes } from '../game/state.js';
-  import type { GameState } from '../game/types.js';
+  import { tweened } from "svelte/motion";
+  import { cubicOut } from "svelte/easing";
+  import { saveGlitchbytes, claimFreeBytes } from "../game/state.js";
+  import type { GameState } from "../game/types.js";
 
   interface Props {
     gameState: GameState;
@@ -13,12 +13,12 @@
 
   // Track previous value to detect increase/decrease
   let previousGlitchBytes = $state(gameState.playerStats.glitchbytes);
-  let animationColor = $state<'neutral' | 'increase' | 'decrease'>('neutral');
+  let animationColor = $state<"neutral" | "increase" | "decrease">("neutral");
 
   // Animated glitch bytes counter
   const animatedGlitchBytes = tweened(gameState.playerStats.glitchbytes, {
     duration: 800,
-    easing: cubicOut
+    easing: cubicOut,
   });
 
   function handleClaimBytes() {
@@ -43,14 +43,14 @@
     if (previousGlitchBytes !== currentValue) {
       // Determine color based on change direction
       if (currentValue > previousGlitchBytes) {
-        animationColor = 'increase';
+        animationColor = "increase";
       } else if (currentValue < previousGlitchBytes) {
-        animationColor = 'decrease';
+        animationColor = "decrease";
       }
 
       // Reset color after animation completes
       setTimeout(() => {
-        animationColor = 'neutral';
+        animationColor = "neutral";
       }, 800); // Match animation duration
     }
 
@@ -63,40 +63,20 @@
 </script>
 
 <!-- Glitch Bytes Display -->
-<div class="bg-black p-3 rounded-lg shadow-sm border border-white mb-4">
-  <div class="flex flex-col sm:grid sm:grid-cols-3 items-center gap-3 sm:gap-0">
-    <!-- Left: Empty space on desktop -->
-    <div class="hidden sm:block"></div>
-
-    <!-- Center: Glitch Bytes Display -->
+<div class="bg-black p-3 rounded-lg border border-white">
+  <div class="flex items-center justify-center">
     <div class="text-center">
-      <div class="text-3xl sm:text-4xl font-bold mb-1 flex items-center justify-center gap-2 {animationColor === 'increase' ? 'text-green-400' : animationColor === 'decrease' ? 'text-red-400' : 'text-white'}">
-        {Math.round($animatedGlitchBytes)}<span class="text-3xl sm:text-4xl">👾</span>
+      <div
+        class="text-4xl font-bold mb-1 flex items-center justify-center gap-2 {animationColor ===
+        'increase'
+          ? 'text-green-400'
+          : animationColor === 'decrease'
+            ? 'text-red-400'
+            : 'text-white'}"
+      >
+        {Math.round($animatedGlitchBytes)}<span class="text-4xl">👾</span>
       </div>
       <div class="text-white text-xs tracking-wide">GLITCH BYTES</div>
     </div>
-
-    <!-- Right: Action Buttons -->
-    {#if devMode}
-      <div class="flex flex-col items-center sm:items-end gap-2">
-        <div class="text-xs text-gray-400 uppercase tracking-wide">dev tools</div>
-        <div class="flex gap-2">
-          {#if canClaimBytes}
-            <button
-              onclick={handleClaimBytes}
-              class="bg-black hover:bg-white hover:text-black border border-white text-white text-xs font-medium py-1 px-2 rounded transition-colors whitespace-nowrap"
-            >
-              CLAIM FREE
-            </button>
-          {/if}
-          <button
-            onclick={resetGlitchbytes}
-            class="bg-black hover:bg-white hover:text-black border border-white text-white text-xs font-medium py-1 px-2 rounded transition-colors whitespace-nowrap"
-          >
-            RESET
-          </button>
-        </div>
-      </div>
-    {/if}
   </div>
 </div>
