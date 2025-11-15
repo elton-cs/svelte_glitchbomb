@@ -10,6 +10,7 @@
   import PlayerStatsSection from "./comps/PlayerStatsSection.svelte";
   import ActionButtons from "./comps/ActionButtons.svelte";
   import ProfitLossPanel from "./comps/ProfitLossPanel.svelte";
+  import TabViewSelector from "./comps/TabViewSelector.svelte";
 
   // import ActionsPanel from "../components/ActionsPanel.svelte";
   // import OrbBagSection from "../components/OrbBagSection.svelte";
@@ -99,4 +100,5 @@
     <ProfitLossPanel {gameState} />
   </div>
   <ActionButtons {gameState} />
+  <TabViewSelector />
 </div>
