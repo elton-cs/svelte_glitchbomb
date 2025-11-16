@@ -7,6 +7,8 @@
   }
 
   let { label, onClick, isEnabled, subtitle }: Props = $props();
+
+  const labelParts = $derived(label.split(' '));
 </script>
 
 <button
@@ -18,7 +20,11 @@
            : 'bg-black text-gray-500 border-gray-500 cursor-not-allowed'}"
 >
   <div class="text-center flex flex-col justify-center h-full">
-    <div class="font-medium">{label}</div>
+    <div class="font-medium flex flex-col">
+      {#each labelParts as part}
+        <div>{part}</div>
+      {/each}
+    </div>
     {#if subtitle}
       <div class="text-[10px] sm:text-sm opacity-75 mt-0.5 sm:mt-1">{@html subtitle}</div>
     {/if}

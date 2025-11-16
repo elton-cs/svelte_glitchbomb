@@ -115,16 +115,17 @@
   );
 </script>
 
-<div class="flex gap-1 sm:gap-2 p-1 sm:p-2 border rounded-lg items-stretch">
+<div
+  class="flex gap-1 sm:gap-2 p-1 sm:p-2 border rounded-lg items-stretch action-button-container"
+>
   <SingleActionButton
     label="START GAME"
     onClick={handleStartGame}
-    isEnabled={canStartGame && (gameState.phase === "menu" || gameState.phase === "gameover")}
-    subtitle={
-      gameState.phase === "gameover" && canStartGame
-        ? `(-${getLevelEntryCost(1)} 👾)`
-        : undefined
-    }
+    isEnabled={canStartGame &&
+      (gameState.phase === "menu" || gameState.phase === "gameover")}
+    subtitle={gameState.phase === "gameover" && canStartGame
+      ? `(-${getLevelEntryCost(1)} 👾)`
+      : undefined}
   />
 
   <SingleActionButton
@@ -143,17 +144,23 @@
     label="ENTER SHOP"
     onClick={handleEnterShop}
     isEnabled={canEnterShop}
-    subtitle={canEnterShop ? `(+${gameState.playerStats.points} 👾)` : undefined}
+    subtitle={canEnterShop
+      ? `(+${gameState.playerStats.points} 👾)`
+      : undefined}
   />
 
   <SingleActionButton
     label="NEXT LEVEL"
     onClick={handleNextLevel}
     isEnabled={canProceed && gameState.phase === "marketplace"}
-    subtitle={
-      canProceed && gameState.phase === "marketplace"
-        ? `(-${nextLevelCost} 👾)`
-        : undefined
-    }
+    subtitle={canProceed && gameState.phase === "marketplace"
+      ? `(-${nextLevelCost} 👾)`
+      : undefined}
   />
 </div>
+
+<style>
+  :global(.action-button-container button) {
+    min-height: 128px !important;
+  }
+</style>
