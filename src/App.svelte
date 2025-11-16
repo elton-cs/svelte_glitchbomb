@@ -5,6 +5,12 @@
   let devMode = $state(false);
 </script>
 
+<style>
+  :global(body) {
+    touch-action: manipulation;
+  }
+</style>
+
 <!-- Mobile: show GameContainer -->
 <div
   class="md:hidden flex flex-col p-2 gap-2 h-full w-full justify-between min-h-0 overflow-hidden"

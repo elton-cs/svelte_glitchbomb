@@ -72,7 +72,7 @@
     <div class="flex items-center justify-between gap-1 sm:gap-2">
       <button
         onclick={resetGlitchbytes}
-        class="px-2 sm:px-3 py-0.5 sm:py-1 text-xs sm:text-sm font-medium bg-black text-red-400 border border-red-400 hover:bg-red-400 hover:text-black rounded transition-colors"
+        class="px-3 sm:px-4 py-3 sm:py-4 text-sm sm:text-base font-medium bg-black text-red-400 border border-red-400 hover:bg-red-400 hover:text-black rounded transition-colors aspect-square flex items-center justify-center min-h-[48px] sm:min-h-[64px]"
       >
         RESET
       </button>
@@ -88,7 +88,7 @@
       </div>
       <button
         onclick={claimGlitchbytes}
-        class="px-2 sm:px-3 py-0.5 sm:py-1 text-xs sm:text-sm font-medium bg-black text-green-400 border border-green-400 hover:bg-green-400 hover:text-black rounded transition-colors"
+        class="px-3 sm:px-4 py-3 sm:py-4 text-sm sm:text-base font-medium bg-black text-green-400 border border-green-400 hover:bg-green-400 hover:text-black rounded transition-colors aspect-square flex items-center justify-center min-h-[48px] sm:min-h-[64px]"
       >
         CLAIM
       </button>
