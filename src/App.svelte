@@ -1,11 +1,12 @@
 <script lang="ts">
   import GameContainer from "./lib/game_container/GameContainer.svelte";
-  // import GameDashboard from "./lib/components/GameDashboard.svelte";
 
   let devMode = $state(false);
 </script>
 
-<GameContainer />
+<div class="flex h-full w-full">
+  <GameContainer />
+</div>
 
 <style>
   :global(body) {

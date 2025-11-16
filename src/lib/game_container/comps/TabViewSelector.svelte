@@ -7,15 +7,15 @@
   let { activeTab = $bindable(), disabled = false }: Props = $props();
 </script>
 
-<div class="flex bg-white rounded-lg border border-white overflow-hidden">
+<div class="flex justify-between rounded-lg border p-1 gap-1">
   <button
-    disabled={disabled}
-    class="flex-1 px-2 py-1.5 text-xs font-medium transition-colors rounded-l-lg border
+    {disabled}
+    class="flex-1 p-2 text-xs font-medium transition-colors rounded
            {disabled
       ? 'text-gray-500 border-gray-500 cursor-not-allowed'
       : activeTab === 'profit'
-      ? 'text-black border-transparent'
-      : 'text-white border-white hover:bg-white hover:text-black'}"
+        ? 'text-black bg-white'
+        : 'text-white border-white hover:bg-white hover:text-black'}"
     onclick={() => {
       if (!disabled) {
         activeTab = "profit";
@@ -25,13 +25,13 @@
     PROFIT
   </button>
   <button
-    disabled={disabled}
-    class="flex-1 px-2 py-1.5 text-xs font-medium transition-colors border
+    {disabled}
+    class="flex-1 p-2 text-xs font-medium transition-colors rounded
            {disabled
       ? 'text-gray-500 border-gray-500 cursor-not-allowed'
       : activeTab === 'probability'
-      ? 'text-black border-transparent'
-      : 'text-white border-white hover:bg-white hover:text-black'}"
+        ? 'text-black bg-white'
+        : 'text-white border-white hover:bg-white hover:text-black'}"
     onclick={() => {
       if (!disabled) {
         activeTab = "probability";
@@ -41,13 +41,13 @@
     PROBABILITY
   </button>
   <button
-    disabled={disabled}
-    class="flex-1 px-2 py-1.5 text-xs font-medium transition-colors border
+    {disabled}
+    class="flex-1 p-2 text-xs font-medium transition-colors rounded
            {disabled
       ? 'text-gray-500 border-gray-500 cursor-not-allowed'
       : activeTab === 'log'
-      ? 'text-black border-transparent'
-      : 'text-white border-white hover:bg-white hover:text-black'}"
+        ? 'text-black bg-white'
+        : 'text-white border-white hover:bg-white hover:text-black'}"
     onclick={() => {
       if (!disabled) {
         activeTab = "log";
@@ -57,13 +57,13 @@
     LOG
   </button>
   <button
-    disabled={disabled}
-    class="flex-1 px-2 py-1.5 text-xs font-medium transition-colors rounded-r-lg border
+    {disabled}
+    class="flex-1 p-2 text-xs font-medium transition-colors rounded
            {disabled
       ? 'text-gray-500 border-gray-500 cursor-not-allowed'
       : activeTab === 'shop'
-      ? 'text-black border-transparent'
-      : 'text-white border-white hover:bg-white hover:text-black'}"
+        ? 'text-black bg-white'
+        : 'text-white border-white hover:bg-white hover:text-black'}"
     onclick={() => {
       if (!disabled) {
         activeTab = "shop";
