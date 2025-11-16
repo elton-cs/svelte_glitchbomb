@@ -3,21 +3,31 @@
     label: string;
     onClick: () => void;
     isEnabled: boolean;
+    isGlowing?: boolean;
     subtitle?: string;
   }
 
-  let { label, onClick, isEnabled, subtitle }: Props = $props();
+  let {
+    label,
+    onClick,
+    isEnabled,
+    isGlowing = false,
+    subtitle,
+  }: Props = $props();
 
-  const labelParts = $derived(label.split(' '));
+  const labelParts = $derived(label.split(" "));
 </script>
 
 <button
   onclick={onClick}
   disabled={!isEnabled}
-  class="flex-1 min-h-[64px] py-4 px-3 rounded text-xs font-medium transition-colors border
+  class="flex-1 min-h-[64px] py-4 px-3 rounded text-xs font-medium transition-all border
          {isEnabled
-           ? 'text-white border-white hover:bg-white hover:text-black'
-           : 'text-gray-500 border-gray-500 cursor-not-allowed'}"
+    ? 'text-white border-white hover:bg-white hover:text-black'
+    : 'text-gray-500 border-gray-500 cursor-not-allowed'}
+         {isGlowing
+    ? 'shadow-[0_0_20px_rgba(74,222,128,0.8)] bg-green-400/20 border-green-400'
+    : ''}"
 >
   <div class="text-center flex flex-col justify-center h-full">
     <div class="font-medium flex flex-col">
@@ -30,4 +40,3 @@
     {/if}
   </div>
 </button>
-

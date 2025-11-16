@@ -21,65 +21,112 @@
 
   let { gameState, activeTab = $bindable(), onEnterShop }: Props = $props();
 
+  let buttonsCooldown = $state(false);
+  let cooldownTimeout: ReturnType<typeof setTimeout> | null = null;
+  let glowingButtonId = $state<string | null>(null);
+  let displayPhase = $state<GameState["phase"] | null>(null);
+
+  // Track phase for display purposes - update immediately when not in cooldown
+  $effect(() => {
+    if (!buttonsCooldown) {
+      displayPhase = gameState.phase;
+    }
+  });
+
+  function withCooldown(action: () => void, buttonId: string) {
+    if (buttonsCooldown) return;
+
+    // Capture current phase before action changes it
+    displayPhase = gameState.phase;
+    buttonsCooldown = true;
+    glowingButtonId = buttonId;
+    action();
+
+    if (cooldownTimeout) {
+      clearTimeout(cooldownTimeout);
+    }
+
+    cooldownTimeout = setTimeout(() => {
+      buttonsCooldown = false;
+      glowingButtonId = null;
+      // Update display phase to match actual phase after cooldown
+      displayPhase = gameState.phase;
+      cooldownTimeout = null;
+    }, 300);
+  }
+
   function handleStartGame() {
-    audioManager.playSoundEffect("nextlevel", 0.5);
-    startNewGame(gameState);
+    withCooldown(() => {
+      audioManager.playSoundEffect("nextlevel", 0.5);
+      startNewGame(gameState);
+    }, "startGame");
   }
 
   function handleExecute() {
-    audioManager.playSoundEffect("click", 0.3);
-    pullOrb(gameState);
+    withCooldown(() => {
+      audioManager.playSoundEffect("click", 0.3);
+      pullOrb(gameState);
+    }, "pullOrb");
   }
 
   function handleCashOut() {
-    audioManager.playSoundEffect("click", 0.3);
-    if (gameState.phase === "level") {
-      if (
-        confirm(
-          `Cache out ${gameState.playerStats.points} points for glitchbytes? You'll lose progress and glitchbytes spent on this level.`
-        )
-      ) {
-        cashOutMidLevel(gameState);
+    withCooldown(() => {
+      audioManager.playSoundEffect("click", 0.3);
+      if (gameState.phase === "level") {
+        if (
+          confirm(
+            `Cache out ${gameState.playerStats.points} points for glitchbytes? You'll lose progress and glitchbytes spent on this level.`
+          )
+        ) {
+          cashOutMidLevel(gameState);
+        }
+      } else if (gameState.phase === "marketplace") {
+        if (
+          confirm(
+            `Cache out ${gameState.playerStats.points} points for glitchbytes and end the run?`
+          )
+        ) {
+          cashOutPostLevel(gameState);
+        }
+      } else if (gameState.phase === "confirmation") {
+        if (
+          confirm(
+            `Cache out ${gameState.playerStats.points} points for glitchbytes and end the run?`
+          )
+        ) {
+          cashOutPostLevel(gameState);
+        }
       }
-    } else if (gameState.phase === "marketplace") {
-      if (
-        confirm(
-          `Cache out ${gameState.playerStats.points} points for glitchbytes and end the run?`
-        )
-      ) {
-        cashOutPostLevel(gameState);
-      }
-    } else if (gameState.phase === "confirmation") {
-      if (
-        confirm(
-          `Cache out ${gameState.playerStats.points} points for glitchbytes and end the run?`
-        )
-      ) {
-        cashOutPostLevel(gameState);
-      }
-    }
+    }, "cashOut");
   }
 
   function handleEnterShop() {
-    audioManager.playSoundEffect("click", 0.3);
-    if (onEnterShop) {
-      onEnterShop();
-    } else {
-      // Fallback to direct behavior if callback not provided
-      continueToMarketplace(gameState);
-      activeTab = "shop";
-    }
+    withCooldown(() => {
+      audioManager.playSoundEffect("click", 0.3);
+      if (onEnterShop) {
+        onEnterShop();
+      } else {
+        // Fallback to direct behavior if callback not provided
+        continueToMarketplace(gameState);
+        activeTab = "shop";
+      }
+    }, "enterShop");
   }
 
   function handleNextLevel() {
-    audioManager.playSoundEffect("nextlevel", 0.5);
-    proceedToNextLevel(gameState);
-    // Switch to profit tab when proceeding to next level
-    activeTab = "profit";
+    withCooldown(() => {
+      audioManager.playSoundEffect("nextlevel", 0.5);
+      proceedToNextLevel(gameState);
+      // Switch to profit tab when proceeding to next level
+      activeTab = "profit";
+    }, "nextLevel");
   }
 
+  // Use displayPhase for button visibility, fallback to actual phase
+  const currentPhase = $derived(displayPhase ?? gameState.phase);
+
   const canStartGame = $derived(
-    (gameState.phase === "menu" || gameState.phase === "gameover") &&
+    (currentPhase === "menu" || currentPhase === "gameover") &&
       canAffordLevel(gameState.playerStats.glitchbytes, 1)
   );
 
@@ -93,21 +140,21 @@
   );
 
   const canPullOrb = $derived(
-    gameState.phase === "level" && totalAvailableOrbs > 0
+    currentPhase === "level" && totalAvailableOrbs > 0
   );
 
   const canCashOut = $derived(
-    (gameState.phase === "level" && gameState.gameStarted) ||
-      (gameState.phase === "marketplace" &&
+    (currentPhase === "level" && gameState.gameStarted) ||
+      (currentPhase === "marketplace" &&
         gameState.levelCompleted &&
         !gameState.committedToNextLevel) ||
-      gameState.phase === "confirmation"
+      currentPhase === "confirmation"
   );
 
-  const canEnterShop = $derived(gameState.phase === "confirmation");
+  const canEnterShop = $derived(currentPhase === "confirmation");
 
   const canProceed = $derived(
-    gameState.phase === "marketplace" &&
+    currentPhase === "marketplace" &&
       !isLastLevel(gameState.currentLevel) &&
       canAffordLevel(
         gameState.playerStats.glitchbytes,
@@ -123,45 +170,59 @@
 <div
   class="flex gap-1 p-1 border rounded-lg items-stretch action-button-container"
 >
-  <SingleActionButton
-    label="START GAME"
-    onClick={handleStartGame}
-    isEnabled={canStartGame &&
-      (gameState.phase === "menu" || gameState.phase === "gameover")}
-    subtitle={gameState.phase === "gameover" && canStartGame
-      ? `(-${getLevelEntryCost(1)} 👾)`
-      : undefined}
-  />
+  {#if canStartGame && (currentPhase === "menu" || currentPhase === "gameover")}
+    <SingleActionButton
+      label="START GAME"
+      onClick={handleStartGame}
+      isEnabled={!buttonsCooldown}
+      isGlowing={glowingButtonId === "startGame"}
+      subtitle={currentPhase === "gameover" && canStartGame
+        ? `(-${getLevelEntryCost(1)} 👾)`
+        : undefined}
+    />
+  {/if}
 
-  <SingleActionButton
-    label="PULL ORB"
-    onClick={handleExecute}
-    isEnabled={canPullOrb && gameState.phase === "level"}
-  />
+  {#if canPullOrb && currentPhase === "level"}
+    <SingleActionButton
+      label="PULL ORB"
+      onClick={handleExecute}
+      isEnabled={!buttonsCooldown}
+      isGlowing={glowingButtonId === "pullOrb"}
+    />
+  {/if}
 
-  <SingleActionButton
-    label="CASH OUT"
-    onClick={handleCashOut}
-    isEnabled={canCashOut}
-  />
+  {#if canCashOut}
+    <SingleActionButton
+      label="CASH OUT"
+      onClick={handleCashOut}
+      isEnabled={!buttonsCooldown}
+      isGlowing={glowingButtonId === "cashOut"}
+    />
+  {/if}
 
-  <SingleActionButton
-    label="ENTER SHOP"
-    onClick={handleEnterShop}
-    isEnabled={canEnterShop}
-    subtitle={canEnterShop
-      ? `(+${gameState.playerStats.points} 👾)`
-      : undefined}
-  />
+  {#if canEnterShop}
+    <SingleActionButton
+      label="ENTER SHOP"
+      onClick={handleEnterShop}
+      isEnabled={!buttonsCooldown}
+      isGlowing={glowingButtonId === "enterShop"}
+      subtitle={canEnterShop
+        ? `(+${gameState.playerStats.points} 👾)`
+        : undefined}
+    />
+  {/if}
 
-  <SingleActionButton
-    label="NEXT LEVEL"
-    onClick={handleNextLevel}
-    isEnabled={canProceed && gameState.phase === "marketplace"}
-    subtitle={canProceed && gameState.phase === "marketplace"
-      ? `(-${nextLevelCost} 👾)`
-      : undefined}
-  />
+  {#if canProceed && currentPhase === "marketplace"}
+    <SingleActionButton
+      label="NEXT LEVEL"
+      onClick={handleNextLevel}
+      isEnabled={!buttonsCooldown}
+      isGlowing={glowingButtonId === "nextLevel"}
+      subtitle={canProceed && currentPhase === "marketplace"
+        ? `(-${nextLevelCost} 👾)`
+        : undefined}
+    />
+  {/if}
 </div>
 
 <style>
