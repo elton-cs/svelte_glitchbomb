@@ -10,6 +10,28 @@
 
   let { gameState }: Props = $props();
 
+  let buttonsCooldown = $state(false);
+  let cooldownTimeout: ReturnType<typeof setTimeout> | null = null;
+  let glowingButtonId = $state<string | null>(null);
+
+  function withCooldown(action: () => void, buttonId: string) {
+    if (buttonsCooldown) return;
+
+    buttonsCooldown = true;
+    glowingButtonId = buttonId;
+    action();
+
+    if (cooldownTimeout) {
+      clearTimeout(cooldownTimeout);
+    }
+
+    cooldownTimeout = setTimeout(() => {
+      buttonsCooldown = false;
+      glowingButtonId = null;
+      cooldownTimeout = null;
+    }, 300);
+  }
+
   function handleSinglePurchase(orbType: "health" | "point") {
     purchaseOrb(gameState, orbType, 1);
   }
@@ -20,8 +42,10 @@
 
   // Helper function to play buy sound with purchase action
   function playBuyAndPurchase(shopItemId: string) {
-    audioManager.playSoundEffect("buy", 0.4);
-    handleShopItemPurchase(shopItemId);
+    withCooldown(() => {
+      audioManager.playSoundEffect("buy", 0.4);
+      handleShopItemPurchase(shopItemId);
+    }, shopItemId);
   }
 
   // Get orb display text and styling for each shop item type
@@ -239,21 +263,26 @@
         disabled={!item.available ||
           !item.canPurchase ||
           gameState.phase !== "marketplace" ||
-          !gameState.marketplace.available}
+          !gameState.marketplace.available ||
+          buttonsCooldown}
         onclick={item.available &&
         item.canPurchase &&
         gameState.phase === "marketplace" &&
         gameState.marketplace.available &&
-        item.isShopItem
+        item.isShopItem &&
+        !buttonsCooldown
           ? () => playBuyAndPurchase(item.id)
           : undefined}
-        class="group relative p-1 rounded text-xs font-medium transition-colors border {item.borderColor} min-h-0 overflow-hidden
+        class="group relative p-1 rounded text-xs font-medium transition-all border {item.borderColor} min-h-0 overflow-hidden
                {item.available &&
         item.canPurchase &&
         gameState.phase === 'marketplace' &&
         gameState.marketplace.available
           ? 'text-white hover:bg-white hover:text-black'
-          : 'bg-gray-900 text-gray-600 cursor-not-allowed opacity-50'}"
+          : 'bg-gray-900 text-gray-600 cursor-not-allowed opacity-50'}
+               {glowingButtonId === item.id
+          ? 'shadow-[0_0_20px_rgba(74,222,128,0.8)] bg-green-400/20 border-green-400'
+          : ''}"
       >
         <!-- Purchase count badge -->
         {#if item.purchaseCount > 0}
