@@ -1,7 +1,7 @@
 <script lang="ts">
   import { tweened } from "svelte/motion";
   import { cubicOut } from "svelte/easing";
-  import { saveGlitchbytes } from "../../game/state";
+  import { saveGlitchbytes, resetGameSession } from "../../game/state";
   import type { GameState } from "../../game/types";
 
   interface Props {
@@ -21,9 +21,9 @@
   });
 
   function resetGlitchbytes() {
-    if (confirm("Reset moonrocks to 1000? This will overwrite your current balance.")) {
-      gameState.playerStats.glitchbytes = 1000;
+    if (confirm("Reset moonrocks to 1000 and restart the game? This will clear all progress.")) {
       saveGlitchbytes(1000);
+      resetGameSession(gameState, 1000);
     }
   }
 
