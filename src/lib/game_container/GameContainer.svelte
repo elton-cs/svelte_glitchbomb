@@ -176,7 +176,13 @@
   <GlitchHeader {gameState} />
   <PlayerStatsSection {gameState} />
   <div class="flex-1 min-h-0 flex flex-col">
-    {#if activeTab === "profit"}
+    {#if showMatrixWarning}
+      <MatrixDisarrayWarning
+        onAccept={handleAcceptDisarray}
+        onCacheOut={handleCacheOutFromWarning}
+        playerPoints={gameState.playerStats.points}
+      />
+    {:else if activeTab === "profit"}
       <ProfitLossPanel {gameState} />
     {:else if activeTab === "probability"}
       <OrbBagSection {gameState} />
@@ -192,14 +198,6 @@
     onEnterShop={handleEnterShopClick}
   />
   <TabViewSelector bind:activeTab />
-
-  {#if showMatrixWarning}
-    <MatrixDisarrayWarning
-      onAccept={handleAcceptDisarray}
-      onCacheOut={handleCacheOutFromWarning}
-      playerPoints={gameState.playerStats.points}
-    />
-  {/if}
 
   {#if showRedFlash}
     <div class="red-flash-overlay"></div>

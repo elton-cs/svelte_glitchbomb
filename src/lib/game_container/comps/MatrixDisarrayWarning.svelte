@@ -44,39 +44,36 @@
   });
 </script>
 
-<!-- Backdrop overlay -->
-<div class="absolute inset-0 flex items-center justify-center z-50 p-4">
-  <!-- Warning modal -->
-  <div
-    class="bg-black border-2 border-red-500 rounded-lg p-5 w-[28rem] shadow-lg shadow-red-500/50"
-  >
-    <!-- Header -->
-    <div class="text-center mb-3">
-      <div class="text-red-500 text-xl font-bold mb-1 tracking-wider">
-        ⚠️ MATRIX DISARRAY ⚠️
-      </div>
-      <div class="text-red-400 text-sm font-mono tracking-wider">
-        SYSTEM OVERLOAD DETECTED
-      </div>
+<div
+  class="bg-black p-2 rounded-lg border-2 border-red-500 h-full flex flex-col"
+>
+  <!-- Header -->
+  <div class="text-center mb-3">
+    <div class="text-red-500 text-sm font-bold tracking-wider">
+      ⚠️ MATRIX DISARRAY ⚠️
     </div>
+    <div class="text-red-400 text-xs font-mono tracking-wider">
+      SYSTEM OVERLOAD DETECTED
+    </div>
+  </div>
 
+  <!-- Content -->
+  <div
+    class="flex-1 flex flex-col justify-center items-center gap-4 max-w-md mx-auto w-full"
+  >
     <!-- Warning message -->
-    <div
-      class="bg-red-900 bg-opacity-20 border border-red-500 rounded p-3 mb-4"
-    >
-      <div class="text-red-100 text-sm leading-relaxed font-mono">
-        <div class="mb-2">
+    <div class="bg-red-900/20 border border-red-500 rounded p-3 w-full">
+      <div class="text-red-100 text-sm font-mono space-y-2">
+        <div>
           <span class="text-red-400 font-bold">WARNING:</span> Proceeding beyond
           Level 3 will destabilize the quantum matrix.
         </div>
-
-        <div class="mb-2 text-red-300">
+        <div class="text-red-300">
           Consequence: An additional <span class="text-red-500 font-bold"
             >2-DAMAGE BOMB ORB</span
           > will be injected into your glitch rift.
         </div>
-
-        <div class="text-red-400 text-sm">
+        <div class="text-red-400 text-xs">
           This bomb will persist through Levels 4 through 7. Continue at your
           own risk.
         </div>
@@ -84,31 +81,27 @@
     </div>
 
     <!-- Action buttons -->
-    <div class="flex gap-2">
+    <div class="flex gap-2 w-full">
       <button
         onclick={handleCacheOut}
-        class="flex-1 bg-black hover:bg-white hover:text-black border-2 border-white text-white text-sm font-bold py-3 px-4 rounded transition-all"
+        class="flex-1 bg-black hover:bg-white hover:text-black border-2 border-white text-white text-sm font-bold py-3 px-4 rounded transition-all text-center"
       >
-        <div class="text-center">
-          <div>CACHE OUT</div>
-          <div class="text-xs opacity-75">(+{playerPoints} 👾)</div>
-        </div>
+        <div>CACHE OUT</div>
+        <div class="text-xs opacity-75">(+{playerPoints} 👾)</div>
       </button>
 
       <button
         onclick={handleAccept}
-        class="flex-1 bg-red-900 hover:bg-red-700 border-2 border-red-500 text-red-100 text-sm font-bold py-3 px-4 rounded transition-all shadow-lg shadow-red-500/30"
+        class="flex-1 bg-red-900 hover:bg-red-700 border-2 border-red-500 text-red-100 text-sm font-bold py-3 px-4 rounded transition-all text-center"
       >
-        <div class="text-center">
-          <div>ACCEPT DISARRAY</div>
-          <div class="text-xs opacity-75">CONTINUE PLAY</div>
-        </div>
+        <div>ACCEPT DISARRAY</div>
+        <div class="text-xs opacity-75">CONTINUE PLAY</div>
       </button>
     </div>
 
-    <!-- Footer glitch text -->
+    <!-- Footer -->
     <div
-      class="mt-3 text-center text-red-500 text-sm font-mono opacity-60 tracking-widest"
+      class="text-center text-red-500 text-xs font-mono opacity-60 tracking-widest"
     >
       [LEVEL_3_MATRIX_BREACH_PROTOCOL]
     </div>
