@@ -58,8 +58,9 @@
 </script>
 
 <div class="p-1 rounded-lg border border-white">
-  <div class="text-center">
-    <div class="flex items-center justify-center gap-2">
+  <div class="flex items-center justify-between gap-1">
+    <div class="flex-1"></div>
+    <div class="text-center">
       <div
         class="text-2xl font-bold m-0.5 flex items-center justify-center gap-1 {animationColor ===
         'increase'
@@ -70,13 +71,13 @@
       >
         {Math.round($animatedGlitchBytes)}<span class="text-2xl">👾</span>
       </div>
-      <button
-        onclick={resetGlitchbytes}
-        class="px-2 py-1 text-xs font-medium text-white border border-white hover:bg-white hover:text-black rounded transition-colors"
-      >
-        RESET
-      </button>
+      <div class="text-white text-[10px]">MOONROCKS</div>
     </div>
-    <div class="text-white text-[10px]">MOONROCKS</div>
+    <button
+      onclick={resetGlitchbytes}
+      class="px-3 py-3 text-sm font-medium text-white border border-white hover:bg-white hover:text-black rounded transition-colors aspect-square flex items-center justify-center min-h-[48px]"
+    >
+      RESET
+    </button>
   </div>
 </div>
