@@ -95,7 +95,7 @@
         return `<span class="text-blue-500">CHIPS</span> > +${effect.chips} ${chipIcon}`;
 
       case "glitchbytes":
-        return `<span class="text-cyan-500">GLITCH BYTES</span> > +${effect.glitchbytes} 👾`;
+        return `<span class="text-cyan-500">MOONROCKS</span> > +${effect.glitchbytes} 👾`;
 
       default:
         return `<span class="text-yellow-400">SPECIAL</span> > ${orbType} orb pulled`;
@@ -146,7 +146,7 @@
         return `<span class="text-blue-500">CHIPS</span> > +${chipsGained} ${chipIcon}`;
 
       case "cash_out":
-        return `<span class="text-cyan-500">GLITCH BYTES</span> > +${pointsConverted} 👾`;
+        return `<span class="text-cyan-500">MOONROCKS</span> > +${pointsConverted} 👾`;
 
       default:
         return `<span class="text-blue-500">CHIPS</span> > Points conversion`;
@@ -168,7 +168,7 @@
 
       case "cash_out":
         if (details?.glitchbytesEarned) {
-          return `<span class="text-cyan-500">GLITCH BYTES</span> > +${details.glitchbytesEarned} 👾`;
+          return `<span class="text-cyan-500">MOONROCKS</span> > +${details.glitchbytesEarned} 👾`;
         }
         return `<span class="text-cyan-400">SYSTEM</span> > Cashed out`;
 

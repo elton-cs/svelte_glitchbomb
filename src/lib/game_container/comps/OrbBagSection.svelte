@@ -102,7 +102,7 @@
     },
     {
       type: "glitchbytes" as const,
-      name: "GLITCH BYTES",
+      name: "MOONROCKS",
       icon: "👾",
       color: "text-gray-300",
     },

@@ -73,6 +73,6 @@
     >
       {Math.round($animatedGlitchBytes)}<span class="text-4xl">👾</span>
     </div>
-    <div class="text-white text-xs">GLITCH BYTES</div>
+    <div class="text-white text-xs">MOONROCKS</div>
   </div>
 </div>
