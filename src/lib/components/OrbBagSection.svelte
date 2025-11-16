@@ -155,7 +155,7 @@
     <div class="text-xs text-white font-mono min-h-4">{calculationDisplay || 'hover for details'}</div>
   </div>
   
-  <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 text-sm flex-1 overflow-y-auto">
+  <div class="grid grid-cols-5 gap-2 text-sm flex-1 overflow-y-auto">
     <!-- Bomb -->
     <OrbTypeDisplay
       orbType="bomb"

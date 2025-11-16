@@ -144,14 +144,14 @@
 
     <!-- Top Bar with Glitch Bytes -->
     <div class="bg-black p-3 rounded-lg shadow-sm border border-white mb-4">
-      <div class="flex flex-col sm:grid sm:grid-cols-3 items-center gap-3 sm:gap-0">
+      <div class="flex flex-col md:grid md:grid-cols-3 items-center gap-3 md:gap-0">
         <!-- Left: Empty space on desktop -->
-        <div class="hidden sm:block"></div>
+        <div class="hidden md:block"></div>
         
         <!-- Center: Glitch Bytes Display -->
         <div class="text-center">
-          <div class="text-3xl sm:text-4xl font-bold mb-1 flex items-center justify-center gap-2 {animationColor === 'increase' ? 'text-green-400' : animationColor === 'decrease' ? 'text-red-400' : 'text-white'}">
-            {Math.round($animatedGlitchBytes)}<span class="text-3xl sm:text-4xl">👾</span>
+          <div class="text-3xl md:text-4xl font-bold mb-1 flex items-center justify-center gap-2 {animationColor === 'increase' ? 'text-green-400' : animationColor === 'decrease' ? 'text-red-400' : 'text-white'}">
+            {Math.round($animatedGlitchBytes)}<span class="text-3xl md:text-4xl">👾</span>
           </div>
           <div class="text-white text-xs tracking-wide">GLITCH BYTES</div>
         </div>
@@ -179,7 +179,7 @@
     </div>
 
     <!-- Main Game UI - Responsive Layout -->
-    <div class="flex flex-col lg:grid lg:grid-cols-3 lg:grid-rows-2 gap-4 min-h-[800px] lg:h-[800px] relative">
+    <div class="flex flex-col md:grid md:grid-cols-3 md:grid-rows-2 gap-4 min-h-[800px] md:h-[800px] relative">
       <!-- Mobile: Stack vertically, Desktop: 2x3 Grid -->
       
       <!-- Top Row: Actions | Player Stats | P/L -->
@@ -187,24 +187,24 @@
         <ActionsPanel {gameState} {devMode} bind:showMatrixWarning />
       </div>
 
-      <div class="flex flex-col min-h-[250px] lg:h-full">
+      <div class="flex flex-col min-h-[250px] md:h-full">
         <PlayerStatsSection {gameState} />
       </div>
 
-      <div class="flex flex-col min-h-[250px] lg:h-full">
+      <div class="flex flex-col min-h-[250px] md:h-full">
         <ProfitLossPanel {gameState} />
       </div>
 
       <!-- Bottom Row: Mod Shop | Glitch Rift | Game Log -->
-      <div class="flex flex-col min-h-[250px] lg:h-full">
+      <div class="flex flex-col min-h-[250px] md:h-full">
         <MarketplaceView {gameState} />
       </div>
 
-      <div class="flex flex-col min-h-[200px] lg:h-full">
+      <div class="flex flex-col min-h-[200px] md:h-full">
         <OrbBagSection {gameState} />
       </div>
 
-      <div class="flex flex-col min-h-[200px] lg:h-full">
+      <div class="flex flex-col min-h-[200px] md:h-full">
         <GameLogSection {gameState} />
       </div>
       

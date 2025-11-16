@@ -28,7 +28,7 @@ export const COMMON_SHOP_ITEMS: ShopItem[] = [
   },
   {
     id: 'common_glitchbytes_15',
-    name: 'GLITCH BYTES',
+    name: 'MOONROCKS',
     description: '+15 GB',
     type: 'glitchbytes',
     amount: 15,
@@ -108,7 +108,7 @@ export const COSMIC_SHOP_ITEMS: ShopItem[] = [
   },
   {
     id: 'cosmic_glitchbytes_40',
-    name: 'GLITCH BYTES',
+    name: 'MOONROCKS',
     description: '+40 GB',
     type: 'glitchbytes',
     amount: 40,

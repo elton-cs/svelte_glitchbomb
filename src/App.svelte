@@ -59,37 +59,17 @@
           </button>
         </div>
 
-        <!-- Center: Empty space -->
-        <div></div>
+  let devMode = $state(false);
+</script>
 
-        <!-- Right side: Dev Button -->
-        <div>
-          <button 
-            onclick={toggleDevMode}
-            class="px-4 py-2 rounded font-medium text-sm transition-colors border border-white uppercase tracking-wide"
-            class:bg-white={devMode}
-            class:text-black={devMode}
-            class:bg-black={!devMode}
-            class:text-white={!devMode}
-            class:hover:bg-white={!devMode}
-            class:hover:text-black={!devMode}
-          >
-            <span class="hidden sm:inline">DEV</span>
-            <span class="sm:hidden">D</span>
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
+<!-- Desktop: show GameDashboard, hide GameContainer -->
+<div class="hidden md:block">
+  <GameDashboard {devMode} />
+</div>
 
-  <!-- Tab Content -->
-  <div class="flex-1">
-    {#if activeTab === 'player'}
-      <PlayerView />
-    {:else if activeTab === 'data'}
-      <GameDashboard {devMode} />
-    {:else if activeTab === 'playground'}
-      <Playground />
-    {/if}
-  </div>
+<!-- Mobile: show GameContainer, hide GameDashboard -->
+<div
+  class="md:hidden flex flex-col p-2 gap-2 h-full w-full justify-between min-h-0 overflow-hidden"
+>
+  <GameContainer />
 </div>
