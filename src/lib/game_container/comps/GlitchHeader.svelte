@@ -21,7 +21,11 @@
   });
 
   function resetGlitchbytes() {
-    if (confirm("Reset moonrocks to 1000 and restart the game? This will clear all progress.")) {
+    if (
+      confirm(
+        "Reset moonrocks to 1000 and restart the game? This will clear all progress."
+      )
+    ) {
       saveGlitchbytes(1000);
       resetGameSession(gameState, 1000);
     }
@@ -76,7 +80,7 @@
     <div class="flex justify-end">
       <button
         onclick={resetGlitchbytes}
-        class="px-3 py-3 text-sm font-medium text-white border border-white hover:bg-white hover:text-black rounded transition-colors aspect-square flex items-center justify-center min-h-[48px]"
+        class="p-3 text-sm font-medium text-red-400 border border-red-400 hover:bg-red-400 hover:text-black rounded transition-colors aspect-square flex items-center justify-center min-h-[48px]"
       >
         RESET
       </button>
