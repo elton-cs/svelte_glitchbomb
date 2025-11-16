@@ -67,32 +67,32 @@
   const canClaimBytes = $derived(gameState.playerStats.glitchbytes < 100);
 </script>
 
-<div class="bg-black p-2 rounded-lg border border-white">
+<div class="bg-black p-1 sm:p-2 rounded-lg border border-white">
   <div class="text-center">
-    <div class="flex items-center justify-between gap-2">
+    <div class="flex items-center justify-between gap-1 sm:gap-2">
       <button
         onclick={resetGlitchbytes}
-        class="px-3 py-1 text-sm font-medium bg-black text-red-400 border border-red-400 hover:bg-red-400 hover:text-black rounded transition-colors"
+        class="px-2 sm:px-3 py-0.5 sm:py-1 text-xs sm:text-sm font-medium bg-black text-red-400 border border-red-400 hover:bg-red-400 hover:text-black rounded transition-colors"
       >
         RESET
       </button>
       <div
-        class="text-4xl font-bold m-1 flex items-center justify-center gap-2 {animationColor ===
+        class="text-2xl sm:text-4xl font-bold m-0.5 sm:m-1 flex items-center justify-center gap-1 sm:gap-2 {animationColor ===
         'increase'
           ? 'text-green-400'
           : animationColor === 'decrease'
             ? 'text-red-400'
             : 'text-white'}"
       >
-        {Math.round($animatedGlitchBytes)}<span class="text-4xl">👾</span>
+        {Math.round($animatedGlitchBytes)}<span class="text-2xl sm:text-4xl">👾</span>
       </div>
       <button
         onclick={claimGlitchbytes}
-        class="px-3 py-1 text-sm font-medium bg-black text-green-400 border border-green-400 hover:bg-green-400 hover:text-black rounded transition-colors"
+        class="px-2 sm:px-3 py-0.5 sm:py-1 text-xs sm:text-sm font-medium bg-black text-green-400 border border-green-400 hover:bg-green-400 hover:text-black rounded transition-colors"
       >
         CLAIM
       </button>
     </div>
-    <div class="text-white text-xs">MOONROCKS</div>
+    <div class="text-white text-[10px] sm:text-xs">MOONROCKS</div>
   </div>
 </div>

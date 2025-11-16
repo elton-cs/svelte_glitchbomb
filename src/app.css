@@ -11,7 +11,14 @@
 /* Base theme with scaled up font sizes */
 :root {
   /* Scale up all Tailwind font sizes */
-  font-size: 15px; /* This affects rem calculations */
+  font-size: 12px; /* Smaller base for mobile */
+}
+
+/* Responsive font sizing */
+@media (min-width: 640px) {
+  :root {
+    font-size: 15px; /* Larger base for tablets and up */
+  }
 }
 
 html, body {
