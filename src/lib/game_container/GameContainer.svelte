@@ -14,12 +14,7 @@
   import GameLogSection from "./comps/GameLogSection.svelte";
   import MarketplaceView from "./comps/MarketplaceView.svelte";
   import TabViewSelector from "./comps/TabViewSelector.svelte";
-
-  // import ActionsPanel from "../components/ActionsPanel.svelte";
-  // import OrbBagSection from "../components/OrbBagSection.svelte";
-  // import MarketplaceView from "../components/MarketplaceView.svelte";
-  // import GameLogSection from "../components/GameLogSection.svelte";
-  // import MatrixDisarrayWarning from "../components/MatrixDisarrayWarning.svelte";
+  import MatrixDisarrayWarning from "./comps/MatrixDisarrayWarning.svelte";
 
   let gameState = $state(createInitialGameState());
 
@@ -51,13 +46,26 @@
       },
     });
 
-    // Continue to marketplace normally
+    // Continue to marketplace and switch to shop tab
     continueToMarketplace(gameState);
+    activeTab = "shop";
   }
 
   function handleCacheOutFromWarning() {
     showMatrixWarning = false;
     cashOutPostLevel(gameState);
+  }
+
+  function handleEnterShopClick() {
+    // Only show the matrix disarray warning once after level 3 completion
+    // Check if we just completed level 3 and haven't shown the warning yet
+    if (gameState.currentLevel === 3 && !gameState.matrixDisarrayActive) {
+      showMatrixWarning = true;
+    } else {
+      // Otherwise, proceed directly to shop
+      continueToMarketplace(gameState);
+      activeTab = "shop";
+    }
   }
 
   // Watch for bomb pulls and trigger screen shake
@@ -104,23 +112,31 @@
     audioManager.preloadSoundEffect("click", "/sounds/click.wav", 0.3);
     audioManager.preloadSoundEffect("click2", "/sounds/click2.wav", 0.3);
     audioManager.preloadSoundEffect("click3", "/sounds/click3.wav", 0.3);
-    
+
     // Game action sounds
     audioManager.preloadSoundEffect("buy", "/sounds/buy.wav", 0.4);
     audioManager.preloadSoundEffect("pointsbar", "/sounds/pointsbar.wav", 0.3);
-    
+
     // Bomb sounds
     audioManager.preloadSoundEffect("bomb1", "/sounds/bomb1.wav", 0.5);
     audioManager.preloadSoundEffect("bomb2", "/sounds/bomb2.wav", 0.5);
     audioManager.preloadSoundEffect("alarmloop", "/sounds/alarmloop.wav", 0.4);
-    
+
     // Special event sounds
     audioManager.preloadSoundEffect("endgame", "/sounds/endgame.wav", 0.6);
     audioManager.preloadSoundEffect("levelup", "/sounds/levelup.wav", 0.7);
     audioManager.preloadSoundEffect("nextlevel", "/sounds/nextlevel.wav", 0.5);
-    audioManager.preloadSoundEffect("multiplier", "/sounds/multiplier.wav", 0.6);
-    audioManager.preloadSoundEffect("specialpull", "/sounds/specialpull.wav", 0.4);
-    
+    audioManager.preloadSoundEffect(
+      "multiplier",
+      "/sounds/multiplier.wav",
+      0.6
+    );
+    audioManager.preloadSoundEffect(
+      "specialpull",
+      "/sounds/specialpull.wav",
+      0.4
+    );
+
     // Graph/stats sounds
     audioManager.preloadSoundEffect("graphup1", "/sounds/graphup1.wav", 0.4);
     audioManager.preloadSoundEffect("graphup2", "/sounds/graphup2.wav", 0.4);
@@ -130,12 +146,12 @@
     function handleFirstInteraction() {
       audioManager.enableAudioOnUserInteraction();
       audioManager.playBackgroundMusic();
-      
+
       // Remove listeners after first interaction
       document.removeEventListener("click", handleFirstInteraction);
       document.removeEventListener("keydown", handleFirstInteraction);
       document.removeEventListener("touchstart", handleFirstInteraction);
-      
+
       console.log("Audio enabled - Web Audio API ready");
     }
 
@@ -170,8 +186,20 @@
       <MarketplaceView {gameState} />
     {/if}
   </div>
-  <ActionButtons {gameState} bind:activeTab />
+  <ActionButtons
+    {gameState}
+    bind:activeTab
+    onEnterShop={handleEnterShopClick}
+  />
   <TabViewSelector bind:activeTab />
+
+  {#if showMatrixWarning}
+    <MatrixDisarrayWarning
+      onAccept={handleAcceptDisarray}
+      onCacheOut={handleCacheOutFromWarning}
+      playerPoints={gameState.playerStats.points}
+    />
+  {/if}
 
   {#if showRedFlash}
     <div class="red-flash-overlay"></div>

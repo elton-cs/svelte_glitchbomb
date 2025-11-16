@@ -16,9 +16,10 @@
   interface Props {
     gameState: GameState;
     activeTab: "profit" | "probability" | "log" | "shop";
+    onEnterShop?: () => void;
   }
 
-  let { gameState, activeTab = $bindable() }: Props = $props();
+  let { gameState, activeTab = $bindable(), onEnterShop }: Props = $props();
 
   function handleStartGame() {
     audioManager.playSoundEffect("nextlevel", 0.5);
@@ -61,9 +62,13 @@
 
   function handleEnterShop() {
     audioManager.playSoundEffect("click", 0.3);
-    continueToMarketplace(gameState);
-    // Switch to shop tab when entering shop
-    activeTab = "shop";
+    if (onEnterShop) {
+      onEnterShop();
+    } else {
+      // Fallback to direct behavior if callback not provided
+      continueToMarketplace(gameState);
+      activeTab = "shop";
+    }
   }
 
   function handleNextLevel() {
