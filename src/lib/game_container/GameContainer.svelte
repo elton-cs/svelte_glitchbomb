@@ -29,6 +29,11 @@
   // Matrix disarray warning state
   let showMatrixWarning = $state(false);
 
+  // Screen shake state for bomb pulls
+  let isShaking = $state(false);
+  // Red flash overlay state for bomb pulls
+  let showRedFlash = $state(false);
+
   function handleAcceptDisarray() {
     showMatrixWarning = false;
     gameState.matrixDisarrayActive = true;
@@ -54,6 +59,38 @@
     showMatrixWarning = false;
     cashOutPostLevel(gameState);
   }
+
+  // Watch for bomb pulls and trigger screen shake
+  let previousLogLength = $state(0);
+  $effect(() => {
+    const logEntries = gameState.gameLog;
+    const currentLength = logEntries.length;
+
+    // Only check if a new entry was added
+    if (currentLength > previousLogLength && currentLength > 0) {
+      const lastEntry = logEntries[currentLength - 1];
+      if (
+        lastEntry.type === "orb_pulled" &&
+        lastEntry.data.orbType === "bomb"
+      ) {
+        // Trigger screen shake
+        isShaking = true;
+        setTimeout(() => {
+          isShaking = false;
+        }, 500); // Shake duration matches animation
+
+        // Trigger red flash overlay
+        showRedFlash = true;
+        setTimeout(() => {
+          showRedFlash = false;
+        }, 300); // Flash duration
+      }
+      previousLogLength = currentLength;
+    } else if (currentLength < previousLogLength) {
+      // Log was cleared, reset tracking
+      previousLogLength = currentLength;
+    }
+  });
 
   // Initialize background music when component mounts
   $effect(() => {
@@ -95,7 +132,8 @@
 </script>
 
 <div
-  class="flex flex-col p-2 gap-2 h-full w-full justify-between min-h-0 overflow-hidden"
+  class="flex flex-col p-2 gap-2 h-full w-full justify-between min-h-0 overflow-hidden relative"
+  class:shake={isShaking}
 >
   <GlitchHeader {gameState} />
   <PlayerStatsSection {gameState} />
@@ -112,4 +150,8 @@
   </div>
   <ActionButtons {gameState} bind:activeTab />
   <TabViewSelector bind:activeTab />
+
+  {#if showRedFlash}
+    <div class="red-flash-overlay"></div>
+  {/if}
 </div>

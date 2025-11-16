@@ -34,3 +34,51 @@ body {
 * {
   font-family: 'NewFont', monospace !important;
 }
+
+/* Screen shake animation for bomb pulls */
+@keyframes shake {
+  0%, 100% {
+    transform: translate(0, 0);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: translate(-8px, -6px);
+  }
+  20%, 40%, 60%, 80% {
+    transform: translate(8px, 6px);
+  }
+  15%, 35%, 55%, 75% {
+    transform: translate(-6px, 8px);
+  }
+  25%, 45%, 65%, 85% {
+    transform: translate(6px, -8px);
+  }
+}
+
+.shake {
+  animation: shake 0.5s ease-in-out;
+}
+
+/* Red flash overlay for bomb pulls */
+.red-flash-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 0, 0, 0.4);
+  pointer-events: none;
+  z-index: 1000;
+  animation: redFlash 0.3s ease-out;
+}
+
+@keyframes redFlash {
+  0% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 0.4;
+  }
+  100% {
+    opacity: 0;
+  }
+}
