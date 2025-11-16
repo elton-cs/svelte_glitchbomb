@@ -166,7 +166,7 @@
 
 <!-- Glitch Rift - Command Display -->
 <div
-  class="bg-black p-3 rounded-lg shadow-sm border border-white h-full flex flex-col {gameState.phase ===
+  class="p-3 rounded-lg shadow-sm border border-white h-full flex flex-col {gameState.phase ===
     'level' || gameState.phase === 'confirmation'
     ? ''
     : 'opacity-60 pointer-events-none'}"
@@ -244,7 +244,7 @@
             {#each gameState.orbBag[pointType.type].available as orb}
               <div class="relative group">
                 <div
-                  class="min-w-8 h-8 px-1 border border-white bg-black hover:bg-white hover:text-black flex items-center justify-center text-sm font-bold transition-colors text-green-400"
+                  class="min-w-8 h-8 px-1 border border-white hover:bg-white hover:text-black flex items-center justify-center text-sm font-bold transition-colors text-green-400"
                   role="button"
                   tabindex="0"
                   onmouseenter={() =>
@@ -336,7 +336,7 @@
             {#each gameState.orbBag[specialType.type].available as orb}
               <div class="relative group">
                 <div
-                  class="min-w-8 h-8 px-1 border border-white bg-black hover:bg-white hover:text-black flex items-center justify-center text-sm font-bold transition-colors text-yellow-400"
+                  class="min-w-8 h-8 px-1 border border-white hover:bg-white hover:text-black flex items-center justify-center text-sm font-bold transition-colors text-yellow-400"
                   role="button"
                   tabindex="0"
                   onmouseenter={() =>

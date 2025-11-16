@@ -44,12 +44,10 @@
   });
 </script>
 
-<div
-  class="bg-black p-2 rounded-lg border-2 border-red-500 h-full flex flex-col"
->
+<div class="p-2 rounded-lg border-2 border-red-500 h-full flex flex-col">
   <!-- Header -->
   <div class="text-center mb-3">
-    <div class="text-red-500 text-sm font-bold tracking-wider">
+    <div class="text-red-500 font-bold tracking-wider">
       ⚠️ MATRIX DISARRAY ⚠️
     </div>
     <div class="text-red-400 text-xs font-mono tracking-wider">
@@ -63,7 +61,7 @@
   >
     <!-- Warning message -->
     <div class="bg-red-900/20 border border-red-500 rounded p-3 w-full">
-      <div class="text-red-100 text-sm font-mono space-y-2">
+      <div class="text-red-100 font-mono space-y-2">
         <div>
           <span class="text-red-400 font-bold">WARNING:</span> Proceeding beyond
           Level 3 will destabilize the quantum matrix.
@@ -84,7 +82,7 @@
     <div class="flex gap-2 w-full">
       <button
         onclick={handleCacheOut}
-        class="flex-1 bg-black hover:bg-white hover:text-black border-2 border-white text-white text-sm font-bold py-3 px-4 rounded transition-all text-center"
+        class="flex-1 hover:bg-white hover:text-black border-2 border-white text-white font-bold py-3 px-4 rounded transition-all text-center"
       >
         <div>CACHE OUT</div>
         <div class="text-xs opacity-75">(+{playerPoints} 👾)</div>
@@ -92,7 +90,7 @@
 
       <button
         onclick={handleAccept}
-        class="flex-1 bg-red-900 hover:bg-red-700 border-2 border-red-500 text-red-100 text-sm font-bold py-3 px-4 rounded transition-all text-center"
+        class="flex-1 bg-red-900 hover:bg-red-700 border-2 border-red-500 text-red-100 font-bold py-3 px-4 rounded transition-all text-center"
       >
         <div>ACCEPT DISARRAY</div>
         <div class="text-xs opacity-75">CONTINUE PLAY</div>

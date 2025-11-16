@@ -121,7 +121,7 @@
 </script>
 
 <div
-  class="flex gap-1 sm:gap-2 p-1 sm:p-2 border rounded-lg items-stretch action-button-container"
+  class="flex gap-1 p-1 border rounded-lg items-stretch action-button-container"
 >
   <SingleActionButton
     label="START GAME"

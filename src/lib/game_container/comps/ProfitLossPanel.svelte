@@ -127,16 +127,16 @@
 </script>
 
 <div
-  class="bg-black p-2 sm:p-3 rounded-lg shadow-sm border border-white h-full flex flex-col min-h-0"
+  class="p-2 rounded-lg shadow-sm border border-white h-full flex flex-col min-h-0"
 >
   <!-- P/L Header -->
-  <div class="mb-1 sm:mb-2 flex justify-between items-center flex-shrink-0">
-    <div class="text-xs sm:text-sm font-bold text-white">
+  <div class="mb-1 flex justify-between items-center flex-shrink-0">
+    <div class="text-xs font-bold text-white">
       P/L: {gameState.playerStats.points}/{gameState.phase === "menu"
         ? 0
         : getCumulativeLevelCost(gameState.currentLevel)}
     </div>
-    <div class="text-xs sm:text-sm font-bold {profitLossClass()}">
+    <div class="text-xs font-bold {profitLossClass()}">
       {currentProfitLoss() >= 0 ? "+" : ""}{currentProfitLoss()}
     </div>
   </div>
@@ -145,7 +145,7 @@
   <div class="flex-1 flex flex-col min-h-0 overflow-hidden">
     {#if chartData().points.length > 0}
       <div
-        class="flex-1 bg-black rounded border border-white p-1 sm:p-2 overflow-hidden min-h-0"
+        class="flex-1 rounded border border-white p-1 overflow-hidden min-h-0"
       >
         <svg
           width="100%"

@@ -67,32 +67,32 @@
   const canClaimBytes = $derived(gameState.playerStats.glitchbytes < 100);
 </script>
 
-<div class="bg-black p-1 sm:p-2 rounded-lg border border-white">
+<div class="p-1 rounded-lg border border-white">
   <div class="text-center">
-    <div class="flex items-center justify-between gap-1 sm:gap-2">
+    <div class="flex items-center justify-between gap-1">
       <button
         onclick={resetGlitchbytes}
-        class="px-3 sm:px-4 py-3 sm:py-4 text-sm sm:text-base font-medium bg-black text-red-400 border border-red-400 hover:bg-red-400 hover:text-black rounded transition-colors aspect-square flex items-center justify-center min-h-[48px] sm:min-h-[64px]"
+        class="p-3 text-sm font-medium text-red-400 border border-red-400 hover:bg-red-400 hover:text-black rounded transition-colors aspect-square flex items-center justify-center min-h-[48px]"
       >
         RESET
       </button>
       <div
-        class="text-2xl sm:text-4xl font-bold m-0.5 sm:m-1 flex items-center justify-center gap-1 sm:gap-2 {animationColor ===
+        class="text-2xl font-bold m-0.5 flex items-center justify-center gap-1 {animationColor ===
         'increase'
           ? 'text-green-400'
           : animationColor === 'decrease'
             ? 'text-red-400'
             : 'text-white'}"
       >
-        {Math.round($animatedGlitchBytes)}<span class="text-2xl sm:text-4xl">👾</span>
+        {Math.round($animatedGlitchBytes)}<span class="text-2xl">👾</span>
       </div>
       <button
         onclick={claimGlitchbytes}
-        class="px-3 sm:px-4 py-3 sm:py-4 text-sm sm:text-base font-medium bg-black text-green-400 border border-green-400 hover:bg-green-400 hover:text-black rounded transition-colors aspect-square flex items-center justify-center min-h-[48px] sm:min-h-[64px]"
+        class="px-3 py-3 text-sm font-medium text-green-400 border border-green-400 hover:bg-green-400 hover:text-black rounded transition-colors aspect-square flex items-center justify-center min-h-[48px]"
       >
         CLAIM
       </button>
     </div>
-    <div class="text-white text-[10px] sm:text-xs">MOONROCKS</div>
+    <div class="text-white text-[10px]">MOONROCKS</div>
   </div>
 </div>
