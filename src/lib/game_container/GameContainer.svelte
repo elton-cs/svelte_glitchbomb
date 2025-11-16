@@ -92,36 +92,58 @@
     }
   });
 
-  // Initialize background music when component mounts
+  // Initialize audio system when component mounts
   $effect(() => {
-    audioManager.initializeBackgroundMusic("/sounds/thepilot.mp3").then(() => {
+    // Initialize background music (using AAC for better compression)
+    audioManager.initializeBackgroundMusic("/sounds/thepilot.aac").then(() => {
       audioManager.playBackgroundMusic();
     });
 
-    // Preload sound effects
-    audioManager.preloadSoundEffect("click", "/sounds/click.wav");
-    audioManager.preloadSoundEffect("buy", "/sounds/buy.wav");
-    audioManager.preloadSoundEffect("pointsbar", "/sounds/pointsbar.wav");
-    audioManager.preloadSoundEffect("bomb1", "/sounds/bomb1.wav");
-    audioManager.preloadSoundEffect("endgame", "/sounds/endgame.wav");
-    audioManager.preloadSoundEffect("levelup", "/sounds/levelup.wav");
-    audioManager.preloadSoundEffect("nextlevel", "/sounds/nextlevel.wav");
-    audioManager.preloadSoundEffect("multiplier", "/sounds/multiplier.wav");
-    audioManager.preloadSoundEffect("specialpull", "/sounds/specialpull.wav");
+    // Preload all sound effects with Web Audio API
+    // UI sounds
+    audioManager.preloadSoundEffect("click", "/sounds/click.wav", 0.3);
+    audioManager.preloadSoundEffect("click2", "/sounds/click2.wav", 0.3);
+    audioManager.preloadSoundEffect("click3", "/sounds/click3.wav", 0.3);
+    
+    // Game action sounds
+    audioManager.preloadSoundEffect("buy", "/sounds/buy.wav", 0.4);
+    audioManager.preloadSoundEffect("pointsbar", "/sounds/pointsbar.wav", 0.3);
+    
+    // Bomb sounds
+    audioManager.preloadSoundEffect("bomb1", "/sounds/bomb1.wav", 0.5);
+    audioManager.preloadSoundEffect("bomb2", "/sounds/bomb2.wav", 0.5);
+    audioManager.preloadSoundEffect("alarmloop", "/sounds/alarmloop.wav", 0.4);
+    
+    // Special event sounds
+    audioManager.preloadSoundEffect("endgame", "/sounds/endgame.wav", 0.6);
+    audioManager.preloadSoundEffect("levelup", "/sounds/levelup.wav", 0.7);
+    audioManager.preloadSoundEffect("nextlevel", "/sounds/nextlevel.wav", 0.5);
+    audioManager.preloadSoundEffect("multiplier", "/sounds/multiplier.wav", 0.6);
+    audioManager.preloadSoundEffect("specialpull", "/sounds/specialpull.wav", 0.4);
+    
+    // Graph/stats sounds
+    audioManager.preloadSoundEffect("graphup1", "/sounds/graphup1.wav", 0.4);
+    audioManager.preloadSoundEffect("graphup2", "/sounds/graphup2.wav", 0.4);
 
-    // Add global click listener to enable audio on first user interaction
+    // Add global listeners to enable audio on first user interaction
+    // This is required by browser autoplay policies
     function handleFirstInteraction() {
       audioManager.enableAudioOnUserInteraction();
       audioManager.playBackgroundMusic();
+      
+      // Remove listeners after first interaction
       document.removeEventListener("click", handleFirstInteraction);
       document.removeEventListener("keydown", handleFirstInteraction);
       document.removeEventListener("touchstart", handleFirstInteraction);
+      
+      console.log("Audio enabled - Web Audio API ready");
     }
 
     document.addEventListener("click", handleFirstInteraction);
     document.addEventListener("keydown", handleFirstInteraction);
     document.addEventListener("touchstart", handleFirstInteraction);
 
+    // Cleanup function
     return () => {
       audioManager.cleanup();
       document.removeEventListener("click", handleFirstInteraction);
