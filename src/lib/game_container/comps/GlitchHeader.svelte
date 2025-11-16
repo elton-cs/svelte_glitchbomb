@@ -27,6 +27,12 @@
 
   function resetGlitchbytes() {
     gameState.playerStats.glitchbytes = 0;
+    saveGlitchbytes(0);
+  }
+
+  function claimGlitchbytes() {
+    gameState.playerStats.glitchbytes = 1000;
+    saveGlitchbytes(1000);
   }
 
   // Save glitchbytes whenever they change
@@ -63,15 +69,29 @@
 
 <div class="bg-black p-2 rounded-lg border border-white">
   <div class="text-center">
-    <div
-      class="text-4xl font-bold m-1 flex items-center justify-center gap-2 {animationColor ===
-      'increase'
-        ? 'text-green-400'
-        : animationColor === 'decrease'
-          ? 'text-red-400'
-          : 'text-white'}"
-    >
-      {Math.round($animatedGlitchBytes)}<span class="text-4xl">👾</span>
+    <div class="flex items-center justify-between gap-2">
+      <button
+        onclick={resetGlitchbytes}
+        class="px-3 py-1 text-sm font-medium bg-black text-red-400 border border-red-400 hover:bg-red-400 hover:text-black rounded transition-colors"
+      >
+        RESET
+      </button>
+      <div
+        class="text-4xl font-bold m-1 flex items-center justify-center gap-2 {animationColor ===
+        'increase'
+          ? 'text-green-400'
+          : animationColor === 'decrease'
+            ? 'text-red-400'
+            : 'text-white'}"
+      >
+        {Math.round($animatedGlitchBytes)}<span class="text-4xl">👾</span>
+      </div>
+      <button
+        onclick={claimGlitchbytes}
+        class="px-3 py-1 text-sm font-medium bg-black text-green-400 border border-green-400 hover:bg-green-400 hover:text-black rounded transition-colors"
+      >
+        CLAIM
+      </button>
     </div>
     <div class="text-white text-xs">MOONROCKS</div>
   </div>
