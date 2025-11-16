@@ -132,7 +132,7 @@
 </script>
 
 <div
-  class="flex flex-col p-2 gap-2 h-full w-full justify-between min-h-0 overflow-hidden relative"
+  class="flex flex-col p-1 sm:p-2 gap-1 sm:gap-2 h-full w-full justify-between min-h-0 overflow-hidden relative"
   class:shake={isShaking}
 >
   <GlitchHeader {gameState} />

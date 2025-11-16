@@ -10,7 +10,7 @@
 <div class="flex bg-white rounded-lg border border-white overflow-hidden">
   <button
     disabled={disabled}
-    class="flex-1 px-4 py-3 text-sm font-medium transition-colors rounded-l-lg border
+    class="flex-1 px-2 sm:px-4 py-1.5 sm:py-3 text-xs sm:text-sm font-medium transition-colors rounded-l-lg border
            {disabled
       ? 'bg-black text-gray-500 border-gray-500 cursor-not-allowed'
       : activeTab === 'profit'
@@ -26,7 +26,7 @@
   </button>
   <button
     disabled={disabled}
-    class="flex-1 px-4 py-3 text-sm font-medium transition-colors border
+    class="flex-1 px-2 sm:px-4 py-1.5 sm:py-3 text-xs sm:text-sm font-medium transition-colors border
            {disabled
       ? 'bg-black text-gray-500 border-gray-500 cursor-not-allowed'
       : activeTab === 'probability'
@@ -42,7 +42,7 @@
   </button>
   <button
     disabled={disabled}
-    class="flex-1 px-4 py-3 text-sm font-medium transition-colors border
+    class="flex-1 px-2 sm:px-4 py-1.5 sm:py-3 text-xs sm:text-sm font-medium transition-colors border
            {disabled
       ? 'bg-black text-gray-500 border-gray-500 cursor-not-allowed'
       : activeTab === 'log'
@@ -58,7 +58,7 @@
   </button>
   <button
     disabled={disabled}
-    class="flex-1 px-4 py-3 text-sm font-medium transition-colors rounded-r-lg border
+    class="flex-1 px-2 sm:px-4 py-1.5 sm:py-3 text-xs sm:text-sm font-medium transition-colors rounded-r-lg border
            {disabled
       ? 'bg-black text-gray-500 border-gray-500 cursor-not-allowed'
       : activeTab === 'shop'

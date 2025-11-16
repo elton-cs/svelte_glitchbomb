@@ -115,7 +115,7 @@
   );
 </script>
 
-<div class="flex gap-2 p-2 border rounded-lg">
+<div class="flex gap-1 sm:gap-2 p-1 sm:p-2 border rounded-lg items-stretch">
   <SingleActionButton
     label="START GAME"
     onClick={handleStartGame}
