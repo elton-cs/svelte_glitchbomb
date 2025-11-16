@@ -1,10 +1,14 @@
 # Glitch Bomb
 
-A bag-building, luck-based game built with Svelte 5 and TypeScript. Manage your command collection, survive bomb draws, and progress through increasingly challenging levels to earn glitchbytes.
+A bag-building, luck-based game built with Svelte 5 and TypeScript. Manage your command collection, survive bomb draws, and progress through increasingly challenging levels to earn moonrocks.
 
 ## Game Overview
 
 Glitch Bomb is a strategic luck game where you pull commands from a bag to score points and reach level milestones. Balance risk and reward as you decide when to cash out your progress or push forward for bigger payouts.
+
+**v0.2.0 introduces dual implementations:**
+- **Data View**: Original comprehensive dashboard with full feature set and multi-view interface
+- **Player View**: New mobile-first game reimplementation optimized for streamlined gameplay
 
 ## Core Game Features
 
@@ -57,6 +61,13 @@ Glitch Bomb is a strategic luck game where you pull commands from a bag to score
 - **Chip Commands** 💾: Award chips currency directly
 - **Glitchbyte Commands** 👽: Award glitchbytes currency directly
 
+### Advanced Modifiers *(v0.2.0)*
+- **Points Per Point Orb** 🔗: Bonus points based on point orbs remaining in bag
+- **GlitchChips** 💾: Direct chip rewards when orb is pulled
+- **Moonrocks** 🌙: Direct moonrocks rewards when orb is pulled
+- **Rewind Point** ⏪: Returns lowest-value point orb back to bag
+- **Bomb Immunity** 🛡️: 3-turn protection from bomb damage with stacking
+
 ## Shop Items by Rarity
 
 ### **COMMON** (Cost 5-9 chips)
@@ -99,11 +110,79 @@ npm run check    # Type checking
 ```
 src/
 ├── lib/
-│   ├── components/     # UI components (5 main dashboard sections)
-│   ├── game/          # Core game logic
-│   └── utils/         # Utility functions
+│   ├── components/     # Original UI components (5 main dashboard sections)
+│   ├── game/          # Original core game logic
+│   ├── new_game/      # Mobile-first reimplementation (v0.2.0)
+│   │   ├── components/    # Mobile UI components
+│   │   ├── views/         # Game views (Home, Shop, Game, Victory)
+│   │   └── state/         # Game state management with helpers
+│   └── utils/         # Shared utility functions
 └── assets/            # Static assets
 ```
+
+## What's New in v0.2.0
+
+### 🚀 **Complete Mobile Game Reimplementation** *(NEW)*
+- **New Game Architecture**: Complete mobile-first reimplementation in `src/lib/new_game/` using modern Svelte 5 runes
+- **Player View Integration**: Access the new mobile game through the "Player View" tab in the main application
+- **Snake Case Convention**: Consistent snake_case naming throughout the new implementation for better code clarity
+- **Mobile-Optimized UI**: 400px max-width design specifically optimized for mobile devices with vertical layouts
+
+### 🎯 **Enhanced Modifier System** *(EXPANDED)*
+- **11 Modifier Types**: Expanded from 6 to 11 modifier types including new strategic options:
+  - **PointsPerPointOrb**: Awards points based on point orbs remaining in bag
+  - **GlitchChips**: Direct chip currency rewards when orb is pulled
+  - **Moonrocks**: Direct moonrocks currency rewards when orb is pulled
+  - **RewindPoint**: Returns lowest-value point orb back to bag
+  - **BombImmunity**: 3-turn protection from bomb damage with stacking support
+- **Advanced Status Effects**: Bomb immunity system with turn-based countdown and visual indicators
+- **Intelligent Calculations**: All point calculations now use Math.floor for consistent integer results
+
+### 💰 **Moonrocks Economy Revolution** *(NEW)*
+- **Persistent Currency**: Moonrocks replace glitchbytes as the primary persistent currency across game sessions
+- **Pay-Upfront Model**: Level costs (10 moonrocks for level 1) deducted when entering shop, not when leaving
+- **Cash Out System**: Convert accumulated points to moonrocks at 1:1 ratio during gameplay
+- **Economic Balance**: Restart games cost 10 moonrocks (same as starting new), game over results in full loss
+
+### 🛒 **Sophisticated Shop Redesign** *(ENHANCED)*
+- **16 Total Items**: 9 Common, 4 Rare, 3 Cosmic items with strategic variety
+- **Dynamic Pricing**: 20% price increases persist across levels within same game session
+- **Visual Shop Redesign**: Card-based layout with descriptive item names instead of rarity-based naming
+- **ChipIcon Integration**: Custom SVG chip icons replace text representations throughout shop interface
+- **Affordability Feedback**: Clear visual indicators for purchasable vs unaffordable items
+
+### 🎮 **Enhanced Mobile Game Experience**
+- **Circular Orb Visualization**: Converted square orb displays to circles for better mobile aesthetics
+- **Pulled Orbs Timeline**: Horizontal scrollable display showing chronological order of pulled orbs
+- **Visual Health/Bomb Displays**: Custom SVG-based vertical health and bomb counters
+- **Auto-Scroll Features**: Automatically scroll to show latest pulled orb for better user experience
+- **Status Effects Display**: Real-time bomb immunity and other effect indicators
+
+### 🎨 **User Interface Improvements**
+- **Popup Game Results**: Victory/loss screens now overlay the game view instead of replacing it
+- **Interactive Result Screens**: Game over popups include restart and return to menu buttons
+- **Button Standardization**: Consistent black/white button theming with hover states across entire application
+- **Mobile Layout Optimization**: Flexible layouts that work seamlessly across different screen sizes
+- **Enhanced Visual Hierarchy**: Better spacing, typography, and component organization
+
+### 🏆 **7-Level Progression System** *(MAINTAINED)*
+- **Level Progression**: Maintained 7-level system with victory screen at completion
+- **Shop Between Levels**: Purchase modifiers between each level for strategic progression
+- **Balanced Difficulty**: Progressive challenges while maintaining mobile-friendly gameplay
+
+### 🔧 **Technical Architecture Improvements**
+- **Modern Svelte 5**: Full utilization of `$state`, `$derived`, and `$effect` runes for better reactivity
+- **Clean Code Architecture**: Strict separation between components and game logic in `state/helpers.ts`
+- **Type Safety**: Comprehensive TypeScript type system with proper interfaces and enums
+- **Component Reusability**: Modular component design with reusable Button, ChipIcon, and display components
+- **State Management**: Centralized game state management with localStorage persistence for moonrocks
+
+### 🎯 **Quality of Life Enhancements**
+- **Visual Command Categories**: Color-coded orb categories (Bomb, Health, Point, Multiplier, Special)
+- **Progress Visualization**: Real-time progress bars and status displays
+- **Consistent Iconography**: Unified emoji and icon system throughout the interface
+- **Responsive Design**: Optimized for both mobile and desktop viewing
+- **Error Prevention**: Proper validation and affordability checks throughout the game flow
 
 ## What's New in v0.1.9
 
