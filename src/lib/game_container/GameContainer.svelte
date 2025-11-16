@@ -12,6 +12,7 @@
   import ProfitLossPanel from "./comps/ProfitLossPanel.svelte";
   import OrbBagSection from "./comps/OrbBagSection.svelte";
   import GameLogSection from "./comps/GameLogSection.svelte";
+  import MarketplaceView from "./comps/MarketplaceView.svelte";
   import TabViewSelector from "./comps/TabViewSelector.svelte";
 
   // import ActionsPanel from "../components/ActionsPanel.svelte";
@@ -23,7 +24,7 @@
   let gameState = $state(createInitialGameState());
 
   // Active tab state for middle panel
-  let activeTab = $state<"profit" | "probability" | "log">("profit");
+  let activeTab = $state<"profit" | "probability" | "log" | "shop">("profit");
 
   // Matrix disarray warning state
   let showMatrixWarning = $state(false);
@@ -105,8 +106,10 @@
       <OrbBagSection {gameState} />
     {:else if activeTab === "log"}
       <GameLogSection {gameState} />
+    {:else if activeTab === "shop"}
+      <MarketplaceView {gameState} />
     {/if}
   </div>
-  <ActionButtons {gameState} />
+  <ActionButtons {gameState} bind:activeTab />
   <TabViewSelector bind:activeTab />
 </div>

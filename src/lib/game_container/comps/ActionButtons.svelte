@@ -4,17 +4,21 @@
     pullOrb,
     cashOutMidLevel,
     cashOutPostLevel,
+    continueToMarketplace,
+    proceedToNextLevel,
   } from "../../game/game.js";
   import { canAffordLevel, getLevelEntryCost } from "../../game/economics.js";
+  import { isLastLevel, getNextLevel } from "../../game/levels.js";
   import type { GameState } from "../../game/types.js";
   import { audioManager } from "../../utils/audio.js";
   import SingleActionButton from "./SingleActionButton.svelte";
 
   interface Props {
     gameState: GameState;
+    activeTab: "profit" | "probability" | "log" | "shop";
   }
 
-  let { gameState }: Props = $props();
+  let { gameState, activeTab = $bindable() }: Props = $props();
 
   function handleStartGame() {
     audioManager.playSoundEffect("nextlevel", 0.5);
@@ -55,8 +59,22 @@
     }
   }
 
+  function handleEnterShop() {
+    audioManager.playSoundEffect("click", 0.3);
+    continueToMarketplace(gameState);
+    // Switch to shop tab when entering shop
+    activeTab = "shop";
+  }
+
+  function handleNextLevel() {
+    audioManager.playSoundEffect("nextlevel", 0.5);
+    proceedToNextLevel(gameState);
+    // Switch to profit tab when proceeding to next level
+    activeTab = "profit";
+  }
+
   const canStartGame = $derived(
-    gameState.phase === "menu" &&
+    (gameState.phase === "menu" || gameState.phase === "gameover") &&
       canAffordLevel(gameState.playerStats.glitchbytes, 1)
   );
 
@@ -80,17 +98,37 @@
         !gameState.committedToNextLevel) ||
       gameState.phase === "confirmation"
   );
+
+  const canEnterShop = $derived(gameState.phase === "confirmation");
+
+  const canProceed = $derived(
+    gameState.phase === "marketplace" &&
+      !isLastLevel(gameState.currentLevel) &&
+      canAffordLevel(
+        gameState.playerStats.glitchbytes,
+        getNextLevel(gameState.currentLevel)
+      )
+  );
+
+  const nextLevelCost = $derived(
+    getLevelEntryCost(getNextLevel(gameState.currentLevel))
+  );
 </script>
 
 <div class="flex gap-2 p-2 border rounded-lg">
   <SingleActionButton
     label="START GAME"
     onClick={handleStartGame}
-    isEnabled={canStartGame && gameState.phase === "menu"}
+    isEnabled={canStartGame && (gameState.phase === "menu" || gameState.phase === "gameover")}
+    subtitle={
+      gameState.phase === "gameover" && canStartGame
+        ? `(-${getLevelEntryCost(1)} 👾)`
+        : undefined
+    }
   />
 
   <SingleActionButton
-    label="EXECUTE"
+    label="PULL ORB"
     onClick={handleExecute}
     isEnabled={canPullOrb && gameState.phase === "level"}
   />
@@ -99,5 +137,23 @@
     label="CASH OUT"
     onClick={handleCashOut}
     isEnabled={canCashOut}
+  />
+
+  <SingleActionButton
+    label="ENTER SHOP"
+    onClick={handleEnterShop}
+    isEnabled={canEnterShop}
+    subtitle={canEnterShop ? `(+${gameState.playerStats.points} 👾)` : undefined}
+  />
+
+  <SingleActionButton
+    label="NEXT LEVEL"
+    onClick={handleNextLevel}
+    isEnabled={canProceed && gameState.phase === "marketplace"}
+    subtitle={
+      canProceed && gameState.phase === "marketplace"
+        ? `(-${nextLevelCost} 👾)`
+        : undefined
+    }
   />
 </div>

@@ -1,43 +1,75 @@
 <script lang="ts">
   interface Props {
-    activeTab: "profit" | "probability" | "log";
+    activeTab: "profit" | "probability" | "log" | "shop";
+    disabled?: boolean;
   }
 
-  let { activeTab = $bindable() }: Props = $props();
+  let { activeTab = $bindable(), disabled = false }: Props = $props();
 </script>
 
 <div class="flex bg-white rounded-lg border border-white overflow-hidden">
   <button
-    class="flex-1 px-4 py-3 text-sm font-medium transition-colors rounded-l-lg
-           {activeTab === 'profit'
-      ? 'text-black'
-      : 'bg-black text-white hover:bg-white hover:text-black'}"
+    disabled={disabled}
+    class="flex-1 px-4 py-3 text-sm font-medium transition-colors rounded-l-lg border
+           {disabled
+      ? 'bg-black text-gray-500 border-gray-500 cursor-not-allowed'
+      : activeTab === 'profit'
+      ? 'text-black border-transparent'
+      : 'bg-black text-white border-white hover:bg-white hover:text-black'}"
     onclick={() => {
-      activeTab = "profit";
+      if (!disabled) {
+        activeTab = "profit";
+      }
     }}
   >
     PROFIT
   </button>
   <button
-    class="flex-1 px-4 py-3 text-sm font-medium transition-colors
-           {activeTab === 'probability'
-      ? 'text-black'
-      : 'bg-black text-white hover:bg-white hover:text-black'}"
+    disabled={disabled}
+    class="flex-1 px-4 py-3 text-sm font-medium transition-colors border
+           {disabled
+      ? 'bg-black text-gray-500 border-gray-500 cursor-not-allowed'
+      : activeTab === 'probability'
+      ? 'text-black border-transparent'
+      : 'bg-black text-white border-white hover:bg-white hover:text-black'}"
     onclick={() => {
-      activeTab = "probability";
+      if (!disabled) {
+        activeTab = "probability";
+      }
     }}
   >
     PROBABILITY
   </button>
   <button
-    class="flex-1 px-4 py-3 text-sm font-medium transition-colors rounded-r-lg
-           {activeTab === 'log'
-      ? 'text-black'
-      : 'bg-black text-white hover:bg-white hover:text-black'}"
+    disabled={disabled}
+    class="flex-1 px-4 py-3 text-sm font-medium transition-colors border
+           {disabled
+      ? 'bg-black text-gray-500 border-gray-500 cursor-not-allowed'
+      : activeTab === 'log'
+      ? 'text-black border-transparent'
+      : 'bg-black text-white border-white hover:bg-white hover:text-black'}"
     onclick={() => {
-      activeTab = "log";
+      if (!disabled) {
+        activeTab = "log";
+      }
     }}
   >
     LOG
+  </button>
+  <button
+    disabled={disabled}
+    class="flex-1 px-4 py-3 text-sm font-medium transition-colors rounded-r-lg border
+           {disabled
+      ? 'bg-black text-gray-500 border-gray-500 cursor-not-allowed'
+      : activeTab === 'shop'
+      ? 'text-black border-transparent'
+      : 'bg-black text-white border-white hover:bg-white hover:text-black'}"
+    onclick={() => {
+      if (!disabled) {
+        activeTab = "shop";
+      }
+    }}
+  >
+    SHOP
   </button>
 </div>
