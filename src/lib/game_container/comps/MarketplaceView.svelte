@@ -249,9 +249,7 @@
         : "(CLOSED)"}
     </h2>
     <div class="text-xs font-bold text-yellow-400 flex items-center gap-0.5">
-      BALANCE: <span class="text-lg"
-        >{gameState.playerStats.chips}</span
-      >
+      BALANCE: <span class="text-lg">{gameState.playerStats.chips}</span>
       <ChipIcon size="md" class="text-yellow-400" />
     </div>
   </div>
@@ -281,7 +279,7 @@
           ? 'text-white hover:bg-white hover:text-black'
           : 'bg-gray-900 text-gray-600 cursor-not-allowed opacity-50'}
                {glowingButtonId === item.id
-          ? 'shadow-[0_0_20px_rgba(74,222,128,0.8)] bg-green-400/20 border-green-400'
+          ? 'bg-white border-green-400 text-black'
           : ''}"
       >
         <!-- Purchase count badge -->
@@ -310,7 +308,9 @@
             <div class="flex-1 flex flex-col justify-between">
               <div class="flex-1 flex flex-col justify-start">
                 {#if item.name}
-                  <div class="font-bold uppercase text-[10px] leading-tight mb-1">
+                  <div
+                    class="font-bold uppercase text-[10px] leading-tight mb-1"
+                  >
                     {item.name}
                   </div>
                 {/if}

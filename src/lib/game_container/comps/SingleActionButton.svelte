@@ -25,9 +25,7 @@
          {isEnabled
     ? 'text-white border-white hover:bg-white hover:text-black'
     : 'text-gray-500 border-gray-500 cursor-not-allowed'}
-         {isGlowing
-    ? 'shadow-[0_0_20px_rgba(74,222,128,0.8)] bg-green-400/20 border-green-400'
-    : ''}"
+         {isGlowing ? 'bg-white border-green-400 text-black' : ''}"
 >
   <div class="text-center flex flex-col justify-center h-full">
     <div class="font-medium flex flex-col">
