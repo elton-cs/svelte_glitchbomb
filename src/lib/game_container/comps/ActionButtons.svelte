@@ -182,21 +182,21 @@
     />
   {/if}
 
-  {#if canPullOrb && currentPhase === "level"}
-    <SingleActionButton
-      label="PULL ORB"
-      onClick={handleExecute}
-      isEnabled={!buttonsCooldown}
-      isGlowing={glowingButtonId === "pullOrb"}
-    />
-  {/if}
-
   {#if canCashOut}
     <SingleActionButton
       label="CASH OUT"
       onClick={handleCashOut}
       isEnabled={!buttonsCooldown}
       isGlowing={glowingButtonId === "cashOut"}
+    />
+  {/if}
+
+  {#if canPullOrb && currentPhase === "level"}
+    <SingleActionButton
+      label="PULL ORB"
+      onClick={handleExecute}
+      isEnabled={!buttonsCooldown}
+      isGlowing={glowingButtonId === "pullOrb"}
     />
   {/if}
 

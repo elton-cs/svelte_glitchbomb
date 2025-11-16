@@ -1,7 +1,7 @@
 <script lang="ts">
   import { tweened } from "svelte/motion";
   import { cubicOut } from "svelte/easing";
-  import { saveGlitchbytes, claimFreeBytes } from "../../game/state";
+  import { saveGlitchbytes } from "../../game/state";
   import type { GameState } from "../../game/types";
 
   interface Props {
@@ -19,21 +19,6 @@
     duration: 800,
     easing: cubicOut,
   });
-
-  function handleClaimBytes() {
-    const newAmount = claimFreeBytes(gameState.playerStats.glitchbytes);
-    gameState.playerStats.glitchbytes = newAmount;
-  }
-
-  function resetGlitchbytes() {
-    gameState.playerStats.glitchbytes = 0;
-    saveGlitchbytes(0);
-  }
-
-  function claimGlitchbytes() {
-    gameState.playerStats.glitchbytes = 1000;
-    saveGlitchbytes(1000);
-  }
 
   // Save glitchbytes whenever they change
   $effect(() => {
@@ -63,35 +48,19 @@
     previousGlitchBytes = currentValue;
     animatedGlitchBytes.set(currentValue);
   });
-
-  const canClaimBytes = $derived(gameState.playerStats.glitchbytes < 100);
 </script>
 
 <div class="p-1 rounded-lg border border-white">
   <div class="text-center">
-    <div class="flex items-center justify-between gap-1">
-      <button
-        onclick={resetGlitchbytes}
-        class="p-3 text-sm font-medium text-red-400 border border-red-400 hover:bg-red-400 hover:text-black rounded transition-colors aspect-square flex items-center justify-center min-h-[48px]"
-      >
-        RESET
-      </button>
-      <div
-        class="text-2xl font-bold m-0.5 flex items-center justify-center gap-1 {animationColor ===
-        'increase'
-          ? 'text-green-400'
-          : animationColor === 'decrease'
-            ? 'text-red-400'
-            : 'text-white'}"
-      >
-        {Math.round($animatedGlitchBytes)}<span class="text-2xl">👾</span>
-      </div>
-      <button
-        onclick={claimGlitchbytes}
-        class="px-3 py-3 text-sm font-medium text-green-400 border border-green-400 hover:bg-green-400 hover:text-black rounded transition-colors aspect-square flex items-center justify-center min-h-[48px]"
-      >
-        CLAIM
-      </button>
+    <div
+      class="text-2xl font-bold m-0.5 flex items-center justify-center gap-1 {animationColor ===
+      'increase'
+        ? 'text-green-400'
+        : animationColor === 'decrease'
+          ? 'text-red-400'
+          : 'text-white'}"
+    >
+      {Math.round($animatedGlitchBytes)}<span class="text-2xl">👾</span>
     </div>
     <div class="text-white text-[10px]">MOONROCKS</div>
   </div>

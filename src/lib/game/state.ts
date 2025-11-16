@@ -10,7 +10,11 @@ export function loadGlitchbytes(): number {
   if (typeof localStorage === 'undefined') return GAME_CONFIG.initialGlitchbytes;
   
   const stored = localStorage.getItem(GLITCHBYTES_STORAGE_KEY);
-  if (stored === null) return GAME_CONFIG.initialGlitchbytes;
+  if (stored === null) {
+    // First time user - save default value to localStorage
+    saveGlitchbytes(GAME_CONFIG.initialGlitchbytes);
+    return GAME_CONFIG.initialGlitchbytes;
+  }
   
   const parsed = parseInt(stored, 10);
   return isNaN(parsed) ? GAME_CONFIG.initialGlitchbytes : parsed;

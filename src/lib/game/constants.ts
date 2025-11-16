@@ -1,7 +1,7 @@
 import type { GameConfig } from './types.js';
 
 export const GAME_CONFIG: GameConfig = {
-  initialGlitchbytes: 0,
+  initialGlitchbytes: 1000,
   levelMilestones: [12, 18, 28, 44, 70, 100, 150],
   levelCosts: [10, 1, 2, 4, 6, 9, 13],
   orbCosts: {
