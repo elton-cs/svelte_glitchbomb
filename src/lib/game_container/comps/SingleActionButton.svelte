@@ -1,10 +1,12 @@
 <script lang="ts">
+  import type { Snippet } from "svelte";
+
   interface Props {
     label: string;
     onClick: () => void;
     isEnabled: boolean;
     isGlowing?: boolean;
-    subtitle?: string;
+    subtitle?: string | Snippet;
   }
 
   let {
@@ -28,7 +30,11 @@
   <div class="text-center flex flex-col justify-center h-full">
     <div class="font-medium">{label}</div>
     {#if subtitle}
-      <div class="text-md opacity-75 mt-0.5">{@html subtitle}</div>
+      {#if typeof subtitle === "string"}
+        <div class="text-md opacity-75 mt-0.5">{@html subtitle}</div>
+      {:else}
+        {@render subtitle()}
+      {/if}
     {/if}
   </div>
 </button>

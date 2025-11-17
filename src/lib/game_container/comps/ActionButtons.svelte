@@ -12,6 +12,7 @@
   import type { GameState } from "../../game/types.js";
   import { audioManager } from "../../utils/audio.js";
   import SingleActionButton from "./SingleActionButton.svelte";
+  import ChipIcon from "./ChipIcon.svelte";
 
   interface Props {
     gameState: GameState;
@@ -217,10 +218,15 @@
       onClick={handleEnterShop}
       isEnabled={!buttonsCooldown}
       isGlowing={glowingButtonId === "enterShop"}
-      subtitle={canEnterShop
-        ? `(+${gameState.playerStats.points} 👾)`
-        : undefined}
-    />
+    >
+      {#snippet subtitle()}
+        <div class="text-md opacity-75 mt-0.5 flex items-center justify-center gap-1">
+          <span>(+{gameState.playerStats.points}</span>
+          <ChipIcon size="lg" class="inline text-yellow-400" />
+          <span>)</span>
+        </div>
+      {/snippet}
+    </SingleActionButton>
   {/if}
 
   {#if canProceed && currentPhase === "marketplace"}
