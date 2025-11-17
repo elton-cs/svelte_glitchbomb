@@ -3,6 +3,7 @@
   import { cubicOut } from "svelte/easing";
   import { saveGlitchbytes, resetGameSession } from "../../game/state";
   import type { GameState } from "../../game/types";
+  import Controller from "@cartridge/controller";
 
   interface Props {
     gameState: GameState;
@@ -19,6 +20,18 @@
     duration: 800,
     easing: cubicOut,
   });
+
+  // Initialize Cartridge Controller
+  let controller = new Controller({});
+
+  async function connect() {
+    try {
+      const account = await controller.connect();
+      console.log("Connecting to Controller...");
+    } catch (error) {
+      console.error("Failed to connect to Controller:", error);
+    }
+  }
 
   function resetGlitchbytes() {
     if (
@@ -65,6 +78,7 @@
   <div class="grid grid-cols-3 items-center gap-1">
     <div class="flex justify-start">
       <button
+        onclick={connect}
         class="p-3 text-sm font-medium text-blue-400 border border-blue-400 hover:bg-blue-400 hover:text-black rounded transition-colors flex items-center justify-center w-[90px] h-[48px]"
       >
         CONNECT
