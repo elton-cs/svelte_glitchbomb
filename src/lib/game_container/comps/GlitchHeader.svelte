@@ -29,6 +29,34 @@
 
   let connectedUsername = $state<string | undefined>(undefined);
 
+  // Easter egg: click moonrocks 5 times to skip to victory
+  let clickCount = $state(0);
+  let clickTimeout: ReturnType<typeof setTimeout> | null = null;
+
+  function handleMoonrocksClick() {
+    clickCount++;
+    
+    // Clear existing timeout
+    if (clickTimeout) {
+      clearTimeout(clickTimeout);
+    }
+    
+    // Reset click count after 2 seconds of inactivity
+    clickTimeout = setTimeout(() => {
+      clickCount = 0;
+    }, 2000);
+    
+    // Trigger victory on 5 clicks
+    if (clickCount >= 5) {
+      console.log("🎉 Easter egg activated! Skipping to victory...");
+      skipToVictory();
+      clickCount = 0;
+      if (clickTimeout) {
+        clearTimeout(clickTimeout);
+      }
+    }
+  }
+
   async function connect() {
     try {
       const account = await controller.connect();
@@ -109,8 +137,9 @@
       </button>
     </div>
     <div class="text-center">
-      <div
-        class="text-2xl font-bold m-0.5 flex items-center justify-center gap-1 {animationColor ===
+      <button
+        onclick={handleMoonrocksClick}
+        class="text-2xl font-bold m-0.5 flex items-center justify-center gap-1 cursor-pointer hover:scale-105 transition-transform {animationColor ===
         'increase'
           ? 'text-green-400'
           : animationColor === 'decrease'
@@ -118,7 +147,7 @@
             : 'text-white'}"
       >
         {Math.round($animatedGlitchBytes)}<span class="text-2xl">👾</span>
-      </div>
+      </button>
       <div class="text-white text-[10px]">MOONROCKS</div>
     </div>
     <div class="flex justify-end">
