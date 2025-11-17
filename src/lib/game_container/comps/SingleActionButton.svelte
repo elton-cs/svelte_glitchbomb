@@ -1,10 +1,12 @@
 <script lang="ts">
+  import type { Snippet } from "svelte";
+
   interface Props {
     label: string;
     onClick: () => void;
     isEnabled: boolean;
     isGlowing?: boolean;
-    subtitle?: string;
+    subtitle?: string | Snippet;
   }
 
   let {
@@ -14,34 +16,32 @@
     isGlowing = false,
     subtitle,
   }: Props = $props();
-
-  const labelParts = $derived(label.split(" "));
 </script>
 
 <button
   onclick={onClick}
   disabled={!isEnabled}
-  class="button-3d flex-1 min-h-[64px] p-4 rounded text-xs font-medium transition-all border-2
+  class="button-3d w-full min-h-[80px] p-1 rounded text-xl font-medium transition-all border-2
          {isEnabled
     ? 'bg-black text-white border-white hover:bg-white hover:text-black active:bg-gray-300 active:text-black'
     : 'text-gray-500 border-gray-500 cursor-not-allowed opacity-60'}
          {isGlowing ? 'shadow-glow' : ''}"
 >
   <div class="text-center flex flex-col justify-center h-full">
-    <div class="font-medium flex flex-col">
-      {#each labelParts as part}
-        <div>{part}</div>
-      {/each}
-    </div>
+    <div class="font-medium">{label}</div>
     {#if subtitle}
-      <div class="text-[10px] opacity-75 mt-0.5">{@html subtitle}</div>
+      {#if typeof subtitle === "string"}
+        <div class="text-md opacity-75 mt-0.5">{@html subtitle}</div>
+      {:else}
+        {@render subtitle()}
+      {/if}
     {/if}
   </div>
 </button>
 
 <style>
   .button-3d {
-    box-shadow: 
+    box-shadow:
       0 -2px 0 0 rgba(255, 255, 255, 0.2) inset,
       0 2px 0 0 rgba(0, 0, 0, 0.3) inset,
       0 6px 0 0 rgba(80, 80, 80, 0.9),
@@ -51,7 +51,7 @@
   }
 
   .button-3d:not(:disabled):hover {
-    box-shadow: 
+    box-shadow:
       0 -2px 0 0 rgba(255, 255, 255, 0.3) inset,
       0 2px 0 0 rgba(0, 0, 0, 0.3) inset,
       0 8px 0 0 rgba(80, 80, 80, 1),
@@ -60,20 +60,20 @@
   }
 
   .button-3d:not(:disabled):active {
-    box-shadow: 
+    box-shadow:
       0 2px 4px 0 rgba(0, 0, 0, 0.5) inset,
       0 1px 0 0 rgba(60, 60, 60, 0.6);
     transform: translateY(4px);
   }
 
   .button-3d:disabled {
-    box-shadow: 
+    box-shadow:
       0 2px 0 0 rgba(100, 100, 100, 0.1),
       0 3px 6px -2px rgba(0, 0, 0, 0.2);
   }
 
   .shadow-glow {
-    box-shadow: 
+    box-shadow:
       0 -2px 0 0 rgba(255, 255, 255, 0.3) inset,
       0 2px 0 0 rgba(0, 0, 0, 0.3) inset,
       0 6px 0 0 rgba(80, 80, 80, 0.9),

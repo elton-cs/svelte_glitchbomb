@@ -12,6 +12,7 @@
   import type { GameState } from "../../game/types.js";
   import { audioManager } from "../../utils/audio.js";
   import SingleActionButton from "./SingleActionButton.svelte";
+  import ChipIcon from "./ChipIcon.svelte";
   import { useConvexClient } from "convex-svelte";
   import { api } from "../../../convex/_generated/api";
 
@@ -23,9 +24,21 @@
     controller: any; // Controller type from @cartridge/controller
     controllerAccount?: any;
     onEnterShop?: () => void;
+    onCashOutRequest?: (
+      phase: "level" | "marketplace" | "confirmation"
+    ) => void;
+    showingConfirmation?: boolean;
   }
 
-  let { gameState, activeTab = $bindable(), controller, controllerAccount, onEnterShop }: Props = $props();
+  let {
+    gameState,
+    activeTab = $bindable(),
+    controller,
+    controllerAccount,
+    onEnterShop,
+    onCashOutRequest,
+    showingConfirmation = false,
+  }: Props = $props();
 
   let buttonsCooldown = $state(false);
   let cooldownTimeout: ReturnType<typeof setTimeout> | null = null;
@@ -113,54 +126,11 @@
     }, "pullOrb");
   }
 
-  async function handleCashOut() {
-    withCooldown(async () => {
-      audioManager.playSoundEffect("click", 0.3);
-      let didCashOut = false;
-      
-      if (gameState.phase === "level") {
-        if (
-          confirm(
-            `Cache out ${gameState.playerStats.points} points for glitchbytes? You'll lose progress and glitchbytes spent on this level.`
-          )
-        ) {
-          cashOutMidLevel(gameState);
-          didCashOut = true;
-        }
-      } else if (gameState.phase === "marketplace") {
-        if (
-          confirm(
-            `Cache out ${gameState.playerStats.points} points for glitchbytes and end the run?`
-          )
-        ) {
-          cashOutPostLevel(gameState);
-          didCashOut = true;
-        }
-      } else if (gameState.phase === "confirmation") {
-        if (
-          confirm(
-            `Cache out ${gameState.playerStats.points} points for glitchbytes and end the run?`
-          )
-        ) {
-          cashOutPostLevel(gameState);
-          didCashOut = true;
-        }
-      }
-      
-      // Update game state in Convex if controller is connected and cash out happened
-      if (didCashOut && controllerAccount) {
-        try {
-          const walletAddress = controllerAccount.address;
-          await client.mutation(api.games.updateGame, {
-            walletAddress,
-            gameState,
-          });
-          console.log("Game state updated after cashing out");
-        } catch (error) {
-          console.error("Failed to update game state:", error);
-        }
-      }
-    }, "cashOut");
+  function handleCashOut() {
+    audioManager.playSoundEffect("click", 0.3);
+    onCashOutRequest?.(
+      gameState.phase as "level" | "marketplace" | "confirmation"
+    );
   }
 
   async function handleEnterShop() {
@@ -258,12 +228,20 @@
   );
 </script>
 
-<div class="flex gap-4 p-2 rounded-lg items-stretch action-button-container">
-  {#if canStartGame && (currentPhase === "menu" || currentPhase === "gameover")}
+<div class="flex gap-4 p-2 rounded-lg items-stretch">
+  {#if currentPhase === "victory" && canStartGame}
+    <SingleActionButton
+      label="CONGRATS YOU WIN! PLAY AGAIN?"
+      onClick={handleStartGame}
+      isEnabled={!buttonsCooldown && !showingConfirmation}
+      isGlowing={glowingButtonId === "startGame"}
+      subtitle={`(-${getLevelEntryCost(1)} 👾)`}
+    />
+  {:else if canStartGame && (currentPhase === "menu" || currentPhase === "gameover")}
     <SingleActionButton
       label="START GAME"
       onClick={handleStartGame}
-      isEnabled={!buttonsCooldown}
+      isEnabled={!buttonsCooldown && !showingConfirmation}
       isGlowing={glowingButtonId === "startGame"}
       subtitle={currentPhase === "gameover" && canStartGame
         ? `(-${getLevelEntryCost(1)} 👾)`
@@ -273,10 +251,13 @@
 
   {#if canCashOut}
     <SingleActionButton
-      label="CASH OUT"
+      label="CACHE OUT"
       onClick={handleCashOut}
-      isEnabled={!buttonsCooldown}
-      isGlowing={glowingButtonId === "cashOut"}
+      isEnabled={!showingConfirmation}
+      isGlowing={false}
+      subtitle={canCashOut
+        ? `(+${gameState.playerStats.points} 👾)`
+        : undefined}
     />
   {/if}
 
@@ -284,7 +265,7 @@
     <SingleActionButton
       label="PULL ORB"
       onClick={handleExecute}
-      isEnabled={!buttonsCooldown}
+      isEnabled={!buttonsCooldown && !showingConfirmation}
       isGlowing={glowingButtonId === "pullOrb"}
     />
   {/if}
@@ -293,19 +274,26 @@
     <SingleActionButton
       label="ENTER SHOP"
       onClick={handleEnterShop}
-      isEnabled={!buttonsCooldown}
+      isEnabled={!buttonsCooldown && !showingConfirmation}
       isGlowing={glowingButtonId === "enterShop"}
-      subtitle={canEnterShop
-        ? `(+${gameState.playerStats.points} 👾)`
-        : undefined}
-    />
+    >
+      {#snippet subtitle()}
+        <div
+          class="text-md opacity-75 mt-0.5 flex items-center justify-center gap-1"
+        >
+          <span>(+{gameState.playerStats.points}</span>
+          <ChipIcon size="lg" class="inline text-yellow-400" />
+          <span>)</span>
+        </div>
+      {/snippet}
+    </SingleActionButton>
   {/if}
 
   {#if canProceed && currentPhase === "marketplace"}
     <SingleActionButton
       label="NEXT LEVEL"
       onClick={handleNextLevel}
-      isEnabled={!buttonsCooldown}
+      isEnabled={!buttonsCooldown && !showingConfirmation}
       isGlowing={glowingButtonId === "nextLevel"}
       subtitle={canProceed && currentPhase === "marketplace"
         ? `(-${nextLevelCost} 👾)`

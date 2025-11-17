@@ -12,9 +12,10 @@
     gameState: GameState;
     controller: any; // Controller type from @cartridge/controller
     controllerAccount?: any;
+    skipToVictory: () => void;
   }
 
-  let { gameState, controller, controllerAccount = $bindable() }: Props = $props();
+  let { gameState, controller, controllerAccount = $bindable(), skipToVictory }: Props = $props();
 
   // Track previous value to detect increase/decrease
   let previousGlitchBytes = $state(gameState.playerStats.glitchbytes);

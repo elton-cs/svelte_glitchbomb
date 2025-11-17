@@ -3,11 +3,12 @@
     createInitialGameState,
     addStructuredLogEntry,
   } from "../game/state.js";
-  import { continueToMarketplace, cashOutPostLevel } from "../game/game.js";
+  import { continueToMarketplace, cashOutPostLevel, cashOutMidLevel } from "../game/game.js";
   import { addOrbsToBag } from "../game/orbs.js";
   import { audioManager } from "../utils/audio.js";
   import { setupConvex } from "convex-svelte";
   import Controller from "@cartridge/controller";
+  import confetti from "canvas-confetti";
   import GlitchHeader from "./comps/GlitchHeader.svelte";
   import PlayerStatsSection from "./comps/PlayerStatsSection.svelte";
   import ActionButtons from "./comps/ActionButtons.svelte";
@@ -17,6 +18,7 @@
   import MarketplaceView from "./comps/MarketplaceView.svelte";
   import TabViewSelector from "./comps/TabViewSelector.svelte";
   import MatrixDisarrayWarning from "./comps/MatrixDisarrayWarning.svelte";
+  import CashOutConfirmation from "./comps/CashOutConfirmation.svelte";
 
   // Setup Convex client
   const CONVEX_URL = import.meta.env.VITE_CONVEX_URL;
@@ -31,11 +33,22 @@
 
   let gameState = $state(createInitialGameState());
 
+  // Track previous phase to detect victory state transition
+  let previousPhase = $state(gameState.phase);
+
+  function skipToVictory() {
+    gameState.phase = "victory";
+  }
+
   // Active tab state for middle panel
   let activeTab = $state<"profit" | "probability" | "log" | "shop">("profit");
 
   // Matrix disarray warning state
   let showMatrixWarning = $state(false);
+
+  // Cash out confirmation state
+  let showCashOutConfirmation = $state(false);
+  let cashOutPhase = $state<"level" | "marketplace" | "confirmation">("level");
 
   // Screen shake state for bomb pulls
   let isShaking = $state(false);
@@ -67,6 +80,24 @@
   function handleCacheOutFromWarning() {
     showMatrixWarning = false;
     cashOutPostLevel(gameState);
+  }
+
+  function handleCashOutRequest(phase: "level" | "marketplace" | "confirmation") {
+    cashOutPhase = phase;
+    showCashOutConfirmation = true;
+  }
+
+  function handleCashOutConfirm() {
+    showCashOutConfirmation = false;
+    if (cashOutPhase === "level") {
+      cashOutMidLevel(gameState);
+    } else {
+      cashOutPostLevel(gameState);
+    }
+  }
+
+  function handleCashOutCancel() {
+    showCashOutConfirmation = false;
   }
 
   function handleEnterShopClick() {
@@ -113,6 +144,56 @@
     }
   });
 
+  // Watch for victory state and trigger confetti animation
+  $effect(() => {
+    const currentPhase = gameState.phase;
+
+    // Only trigger confetti when transitioning TO victory state
+    if (currentPhase === "victory" && previousPhase !== "victory") {
+      // Play victory sound effect
+      audioManager.playSoundEffect("victory1", 0.7);
+
+      // Trigger confetti burst
+      const duration = 3000;
+      const end = Date.now() + duration;
+
+      const colors = ["#8B5CF6", "#A855F7", "#C084FC", "#9333EA", "#7C3AED"]; // Purple/violet theme
+
+      (function frame() {
+        confetti({
+          particleCount: 3,
+          angle: 60,
+          spread: 55,
+          origin: { x: 0 },
+          colors: colors,
+        });
+        confetti({
+          particleCount: 3,
+          angle: 120,
+          spread: 55,
+          origin: { x: 1 },
+          colors: colors,
+        });
+
+        if (Date.now() < end) {
+          requestAnimationFrame(frame);
+        }
+      })();
+
+      // Also trigger a center burst
+      setTimeout(() => {
+        confetti({
+          particleCount: 100,
+          spread: 70,
+          origin: { y: 0.6 },
+          colors: colors,
+        });
+      }, 250);
+    }
+
+    previousPhase = currentPhase;
+  });
+
   // Initialize audio system when component mounts
   $effect(() => {
     // Initialize background music (using AAC for better compression)
@@ -137,6 +218,7 @@
 
     // Special event sounds
     audioManager.preloadSoundEffect("endgame", "/sounds/endgame.wav", 0.6);
+    audioManager.preloadSoundEffect("victory1", "/sounds/victory1.mp3", 0.7);
     audioManager.preloadSoundEffect("levelup", "/sounds/levelup.wav", 0.7);
     audioManager.preloadSoundEffect("nextlevel", "/sounds/nextlevel.wav", 0.5);
     audioManager.preloadSoundEffect(
@@ -186,7 +268,7 @@
   class="flex flex-col p-1 gap-1 h-full w-full justify-between overflow-hidden"
   class:shake={isShaking}
 >
-  <GlitchHeader {gameState} {controller} bind:controllerAccount />
+  <GlitchHeader {gameState} {controller} {skipToVictory} bind:controllerAccount />
   <PlayerStatsSection {gameState} />
   <div class="flex-1 min-h-0 flex flex-col">
     {#if showMatrixWarning}
@@ -194,6 +276,13 @@
         onAccept={handleAcceptDisarray}
         onCacheOut={handleCacheOutFromWarning}
         playerPoints={gameState.playerStats.points}
+      />
+    {:else if showCashOutConfirmation}
+      <CashOutConfirmation
+        onConfirm={handleCashOutConfirm}
+        onCancel={handleCashOutCancel}
+        points={gameState.playerStats.points}
+        phase={cashOutPhase}
       />
     {:else if activeTab === "profit"}
       <ProfitLossPanel {gameState} />
@@ -212,6 +301,8 @@
     {controllerAccount}
     bind:activeTab
     onEnterShop={handleEnterShopClick}
+    onCashOutRequest={handleCashOutRequest}
+    showingConfirmation={showCashOutConfirmation || showMatrixWarning}
   />
 
   {#if showRedFlash}
