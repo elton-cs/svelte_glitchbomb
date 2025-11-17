@@ -287,7 +287,7 @@
     bind:activeTab
     onEnterShop={handleEnterShopClick}
     onCashOutRequest={handleCashOutRequest}
-    showingConfirmation={showCashOutConfirmation}
+    showingConfirmation={showCashOutConfirmation || showMatrixWarning}
   />
 
   {#if showRedFlash}
