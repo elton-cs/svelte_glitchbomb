@@ -114,6 +114,9 @@
 
     // Only trigger confetti when transitioning TO victory state
     if (currentPhase === "victory" && previousPhase !== "victory") {
+      // Play victory sound effect
+      audioManager.playSoundEffect("victory1", 0.7);
+
       // Trigger confetti burst
       const duration = 3000;
       const end = Date.now() + duration;
@@ -179,6 +182,7 @@
 
     // Special event sounds
     audioManager.preloadSoundEffect("endgame", "/sounds/endgame.wav", 0.6);
+    audioManager.preloadSoundEffect("victory1", "/sounds/victory1.mp3", 0.7);
     audioManager.preloadSoundEffect("levelup", "/sounds/levelup.wav", 0.7);
     audioManager.preloadSoundEffect("nextlevel", "/sounds/nextlevel.wav", 0.5);
     audioManager.preloadSoundEffect(

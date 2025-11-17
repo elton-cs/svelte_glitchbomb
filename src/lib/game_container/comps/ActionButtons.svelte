@@ -126,7 +126,9 @@
   const currentPhase = $derived(displayPhase ?? gameState.phase);
 
   const canStartGame = $derived(
-    (currentPhase === "menu" || currentPhase === "gameover" || currentPhase === "victory") &&
+    (currentPhase === "menu" ||
+      currentPhase === "gameover" ||
+      currentPhase === "victory") &&
       canAffordLevel(gameState.playerStats.glitchbytes, 1)
   );
 
@@ -168,13 +170,32 @@
 </script>
 
 <div class="flex gap-4 p-2 rounded-lg items-stretch action-button-container">
-  {#if canStartGame && (currentPhase === "menu" || currentPhase === "gameover" || currentPhase === "victory")}
+  {#if currentPhase === "victory" && canStartGame}
+    <!-- Victory button - full width with bigger text -->
+    <button
+      onclick={() => handleStartGame()}
+      disabled={buttonsCooldown}
+      class="button-3d w-full min-h-[128px] p-6 rounded text-md font-bold transition-all border-2
+             {!buttonsCooldown
+        ? 'bg-black text-white border-white hover:bg-white hover:text-black active:bg-gray-300 active:text-black'
+        : 'text-gray-500 border-gray-500 cursor-not-allowed opacity-60'}
+             {glowingButtonId === 'startGame' ? 'shadow-glow' : ''}"
+    >
+      <div class="text-center flex flex-col justify-center h-full">
+        <div class="font-bold text-md flex flex-col">
+          <div>CONGRATS YOU WIN!</div>
+          <div>PLAY AGAIN?</div>
+        </div>
+        <div class="text-sm opacity-75 mt-2">(-{getLevelEntryCost(1)} 👾)</div>
+      </div>
+    </button>
+  {:else if canStartGame && (currentPhase === "menu" || currentPhase === "gameover")}
     <SingleActionButton
       label="START GAME"
       onClick={handleStartGame}
       isEnabled={!buttonsCooldown}
       isGlowing={glowingButtonId === "startGame"}
-      subtitle={(currentPhase === "gameover" || currentPhase === "victory") && canStartGame
+      subtitle={currentPhase === "gameover" && canStartGame
         ? `(-${getLevelEntryCost(1)} 👾)`
         : undefined}
     />
@@ -226,5 +247,46 @@
 <style>
   :global(.action-button-container button) {
     min-height: 128px !important;
+  }
+
+  .button-3d {
+    box-shadow:
+      0 -2px 0 0 rgba(255, 255, 255, 0.2) inset,
+      0 2px 0 0 rgba(0, 0, 0, 0.3) inset,
+      0 6px 0 0 rgba(80, 80, 80, 0.9),
+      0 8px 16px -2px rgba(0, 0, 0, 0.7);
+    transform: translateY(0);
+    transition: all 0.15s ease;
+  }
+
+  .button-3d:not(:disabled):hover {
+    box-shadow:
+      0 -2px 0 0 rgba(255, 255, 255, 0.3) inset,
+      0 2px 0 0 rgba(0, 0, 0, 0.3) inset,
+      0 8px 0 0 rgba(80, 80, 80, 1),
+      0 10px 20px -2px rgba(0, 0, 0, 0.8);
+    transform: translateY(-3px);
+  }
+
+  .button-3d:not(:disabled):active {
+    box-shadow:
+      0 2px 4px 0 rgba(0, 0, 0, 0.5) inset,
+      0 1px 0 0 rgba(60, 60, 60, 0.6);
+    transform: translateY(4px);
+  }
+
+  .button-3d:disabled {
+    box-shadow:
+      0 2px 0 0 rgba(100, 100, 100, 0.1),
+      0 3px 6px -2px rgba(0, 0, 0, 0.2);
+  }
+
+  .shadow-glow {
+    box-shadow:
+      0 -2px 0 0 rgba(255, 255, 255, 0.3) inset,
+      0 2px 0 0 rgba(0, 0, 0, 0.3) inset,
+      0 6px 0 0 rgba(80, 80, 80, 0.9),
+      0 8px 24px 0 rgba(74, 222, 128, 0.6),
+      0 0 40px rgba(74, 222, 128, 0.4);
   }
 </style>
