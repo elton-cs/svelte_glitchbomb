@@ -139,7 +139,7 @@
     <div class="text-center">
       <button
         onclick={handleMoonrocksClick}
-        class="text-2xl font-bold m-0.5 flex items-center justify-center gap-1 cursor-pointer hover:scale-105 transition-transform {animationColor ===
+        class="text-2xl font-bold m-0.5 flex items-center justify-center gap-1 cursor-pointer hover:scale-105 transition-transform bg-transparent border-none p-0 {animationColor ===
         'increase'
           ? 'text-green-400'
           : animationColor === 'decrease'
