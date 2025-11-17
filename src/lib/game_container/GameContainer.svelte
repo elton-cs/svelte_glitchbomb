@@ -3,7 +3,7 @@
     createInitialGameState,
     addStructuredLogEntry,
   } from "../game/state.js";
-  import { continueToMarketplace, cashOutPostLevel } from "../game/game.js";
+  import { continueToMarketplace, cashOutPostLevel, cashOutMidLevel } from "../game/game.js";
   import { addOrbsToBag } from "../game/orbs.js";
   import { audioManager } from "../utils/audio.js";
   import confetti from "canvas-confetti";
@@ -16,6 +16,7 @@
   import MarketplaceView from "./comps/MarketplaceView.svelte";
   import TabViewSelector from "./comps/TabViewSelector.svelte";
   import MatrixDisarrayWarning from "./comps/MatrixDisarrayWarning.svelte";
+  import CashOutConfirmation from "./comps/CashOutConfirmation.svelte";
 
   let gameState = $state(createInitialGameState());
 
@@ -31,6 +32,10 @@
 
   // Matrix disarray warning state
   let showMatrixWarning = $state(false);
+
+  // Cash out confirmation state
+  let showCashOutConfirmation = $state(false);
+  let cashOutPhase = $state<"level" | "marketplace" | "confirmation">("level");
 
   // Screen shake state for bomb pulls
   let isShaking = $state(false);
@@ -62,6 +67,24 @@
   function handleCacheOutFromWarning() {
     showMatrixWarning = false;
     cashOutPostLevel(gameState);
+  }
+
+  function handleCashOutRequest(phase: "level" | "marketplace" | "confirmation") {
+    cashOutPhase = phase;
+    showCashOutConfirmation = true;
+  }
+
+  function handleCashOutConfirm() {
+    showCashOutConfirmation = false;
+    if (cashOutPhase === "level") {
+      cashOutMidLevel(gameState);
+    } else {
+      cashOutPostLevel(gameState);
+    }
+  }
+
+  function handleCashOutCancel() {
+    showCashOutConfirmation = false;
   }
 
   function handleEnterShopClick() {
@@ -241,6 +264,13 @@
         onCacheOut={handleCacheOutFromWarning}
         playerPoints={gameState.playerStats.points}
       />
+    {:else if showCashOutConfirmation}
+      <CashOutConfirmation
+        onConfirm={handleCashOutConfirm}
+        onCancel={handleCashOutCancel}
+        points={gameState.playerStats.points}
+        phase={cashOutPhase}
+      />
     {:else if activeTab === "profit"}
       <ProfitLossPanel {gameState} />
     {:else if activeTab === "probability"}
@@ -256,6 +286,8 @@
     {gameState}
     bind:activeTab
     onEnterShop={handleEnterShopClick}
+    onCashOutRequest={handleCashOutRequest}
+    showingConfirmation={showCashOutConfirmation}
   />
 
   {#if showRedFlash}

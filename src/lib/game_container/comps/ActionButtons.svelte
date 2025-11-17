@@ -2,8 +2,6 @@
   import {
     startNewGame,
     pullOrb,
-    cashOutMidLevel,
-    cashOutPostLevel,
     continueToMarketplace,
     proceedToNextLevel,
   } from "../../game/game.js";
@@ -18,9 +16,19 @@
     gameState: GameState;
     activeTab: "profit" | "probability" | "log" | "shop";
     onEnterShop?: () => void;
+    onCashOutRequest?: (
+      phase: "level" | "marketplace" | "confirmation"
+    ) => void;
+    showingConfirmation?: boolean;
   }
 
-  let { gameState, activeTab = $bindable(), onEnterShop }: Props = $props();
+  let {
+    gameState,
+    activeTab = $bindable(),
+    onEnterShop,
+    onCashOutRequest,
+    showingConfirmation = false,
+  }: Props = $props();
 
   let buttonsCooldown = $state(false);
   let cooldownTimeout: ReturnType<typeof setTimeout> | null = null;
@@ -71,34 +79,10 @@
   }
 
   function handleCashOut() {
-    withCooldown(() => {
-      audioManager.playSoundEffect("click", 0.3);
-      if (gameState.phase === "level") {
-        if (
-          confirm(
-            `Cache out ${gameState.playerStats.points} points for glitchbytes? You'll lose progress and glitchbytes spent on this level.`
-          )
-        ) {
-          cashOutMidLevel(gameState);
-        }
-      } else if (gameState.phase === "marketplace") {
-        if (
-          confirm(
-            `Cache out ${gameState.playerStats.points} points for glitchbytes and end the run?`
-          )
-        ) {
-          cashOutPostLevel(gameState);
-        }
-      } else if (gameState.phase === "confirmation") {
-        if (
-          confirm(
-            `Cache out ${gameState.playerStats.points} points for glitchbytes and end the run?`
-          )
-        ) {
-          cashOutPostLevel(gameState);
-        }
-      }
-    }, "cashOut");
+    audioManager.playSoundEffect("click", 0.3);
+    onCashOutRequest?.(
+      gameState.phase as "level" | "marketplace" | "confirmation"
+    );
   }
 
   function handleEnterShop() {
@@ -175,7 +159,7 @@
     <SingleActionButton
       label="CONGRATS YOU WIN! PLAY AGAIN?"
       onClick={handleStartGame}
-      isEnabled={!buttonsCooldown}
+      isEnabled={!buttonsCooldown && !showingConfirmation}
       isGlowing={glowingButtonId === "startGame"}
       subtitle={`(-${getLevelEntryCost(1)} 👾)`}
     />
@@ -183,7 +167,7 @@
     <SingleActionButton
       label="START GAME"
       onClick={handleStartGame}
-      isEnabled={!buttonsCooldown}
+      isEnabled={!buttonsCooldown && !showingConfirmation}
       isGlowing={glowingButtonId === "startGame"}
       subtitle={currentPhase === "gameover" && canStartGame
         ? `(-${getLevelEntryCost(1)} 👾)`
@@ -193,10 +177,10 @@
 
   {#if canCashOut}
     <SingleActionButton
-      label="CASH OUT"
+      label="CACHE OUT"
       onClick={handleCashOut}
-      isEnabled={!buttonsCooldown}
-      isGlowing={glowingButtonId === "cashOut"}
+      isEnabled={!showingConfirmation}
+      isGlowing={false}
       subtitle={canCashOut
         ? `(+${gameState.playerStats.points} 👾)`
         : undefined}
@@ -207,7 +191,7 @@
     <SingleActionButton
       label="PULL ORB"
       onClick={handleExecute}
-      isEnabled={!buttonsCooldown}
+      isEnabled={!buttonsCooldown && !showingConfirmation}
       isGlowing={glowingButtonId === "pullOrb"}
     />
   {/if}
@@ -216,11 +200,13 @@
     <SingleActionButton
       label="ENTER SHOP"
       onClick={handleEnterShop}
-      isEnabled={!buttonsCooldown}
+      isEnabled={!buttonsCooldown && !showingConfirmation}
       isGlowing={glowingButtonId === "enterShop"}
     >
       {#snippet subtitle()}
-        <div class="text-md opacity-75 mt-0.5 flex items-center justify-center gap-1">
+        <div
+          class="text-md opacity-75 mt-0.5 flex items-center justify-center gap-1"
+        >
           <span>(+{gameState.playerStats.points}</span>
           <ChipIcon size="lg" class="inline text-yellow-400" />
           <span>)</span>
@@ -233,7 +219,7 @@
     <SingleActionButton
       label="NEXT LEVEL"
       onClick={handleNextLevel}
-      isEnabled={!buttonsCooldown}
+      isEnabled={!buttonsCooldown && !showingConfirmation}
       isGlowing={glowingButtonId === "nextLevel"}
       subtitle={canProceed && currentPhase === "marketplace"
         ? `(-${nextLevelCost} 👾)`
