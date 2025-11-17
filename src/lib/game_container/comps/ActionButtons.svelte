@@ -52,6 +52,25 @@
     }
   });
 
+  // Update moonrocks in Convex if controller is connected
+  async function updateMoonrocksInConvex() {
+    if (!controllerAccount) {
+      console.log("No controller account connected, skipping moonrocks update");
+      return;
+    }
+
+    try {
+      const walletAddress = controllerAccount.address;
+      await client.mutation(api.players.updateMoonrocks, {
+        walletAddress,
+        moonrocks: gameState.playerStats.glitchbytes,
+      });
+      console.log("Moonrocks updated in Convex:", gameState.playerStats.glitchbytes);
+    } catch (error) {
+      console.error("Failed to update moonrocks:", error);
+    }
+  }
+
   function withCooldown(action: () => void, buttonId: string) {
     if (buttonsCooldown) return;
 
@@ -89,19 +108,13 @@
             walletAddress,
           });
           console.log("New game created in Convex");
-          
-          // Update player moonrocks
-          await client.mutation(api.players.updateMoonrocks, {
-            walletAddress,
-            moonrocks: gameState.playerStats.glitchbytes,
-          });
-          console.log("Moonrocks updated in Convex:", gameState.playerStats.glitchbytes);
         } catch (error) {
-          console.error("Failed to create game or update moonrocks:", error);
+          console.error("Failed to create game:", error);
         }
-      } else {
-        console.log("No controller account connected, skipping game creation");
       }
+      
+      // Update moonrocks
+      await updateMoonrocksInConvex();
     }, "startGame");
   }
 
@@ -110,27 +123,19 @@
       audioManager.playSoundEffect("click", 0.3);
       pullOrb(gameState);
       
-      // Update game state in Convex if controller is connected
-      if (controllerAccount) {
-        try {
-          const walletAddress = controllerAccount.address;
-          await client.mutation(api.games.updateGame, {
-            walletAddress,
-            gameState,
-          });
-          console.log("Game state updated after pulling orb");
-        } catch (error) {
-          console.error("Failed to update game state:", error);
-        }
-      }
+      // Update moonrocks
+      await updateMoonrocksInConvex();
     }, "pullOrb");
   }
 
-  function handleCashOut() {
+  async function handleCashOut() {
     audioManager.playSoundEffect("click", 0.3);
     onCashOutRequest?.(
       gameState.phase as "level" | "marketplace" | "confirmation"
     );
+    
+    // Update moonrocks
+    await updateMoonrocksInConvex();
   }
 
   async function handleEnterShop() {
@@ -144,19 +149,8 @@
         activeTab = "shop";
       }
       
-      // Update game state in Convex if controller is connected
-      if (controllerAccount) {
-        try {
-          const walletAddress = controllerAccount.address;
-          await client.mutation(api.games.updateGame, {
-            walletAddress,
-            gameState,
-          });
-          console.log("Game state updated after entering shop");
-        } catch (error) {
-          console.error("Failed to update game state:", error);
-        }
-      }
+      // Update moonrocks
+      await updateMoonrocksInConvex();
     }, "enterShop");
   }
 
@@ -167,19 +161,8 @@
       // Switch to profit tab when proceeding to next level
       activeTab = "profit";
       
-      // Update game state in Convex if controller is connected
-      if (controllerAccount) {
-        try {
-          const walletAddress = controllerAccount.address;
-          await client.mutation(api.games.updateGame, {
-            walletAddress,
-            gameState,
-          });
-          console.log("Game state updated after proceeding to next level");
-        } catch (error) {
-          console.error("Failed to update game state:", error);
-        }
-      }
+      // Update moonrocks
+      await updateMoonrocksInConvex();
     }, "nextLevel");
   }
 
