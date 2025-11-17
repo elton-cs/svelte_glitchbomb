@@ -18,9 +18,11 @@
     "vite": "^7.1.0"
   },
   "dependencies": {
+    "@cartridge/controller": "^0.11.2",
     "@tailwindcss/vite": "^4.1.11",
     "convex": "^1.29.1",
     "convex-svelte": "^0.0.12",
+    "starknet": "^8.9.0",
     "tailwindcss": "^4.1.11"
   }
 }
