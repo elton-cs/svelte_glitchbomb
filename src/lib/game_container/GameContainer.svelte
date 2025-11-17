@@ -6,7 +6,8 @@
   import { continueToMarketplace, cashOutPostLevel, cashOutMidLevel } from "../game/game.js";
   import { addOrbsToBag } from "../game/orbs.js";
   import { audioManager } from "../utils/audio.js";
-  import { setupConvex } from "convex-svelte";
+  import { setupConvex, useConvexClient } from "convex-svelte";
+  import { api } from "../../convex/_generated/api";
   import Controller from "@cartridge/controller";
   import confetti from "canvas-confetti";
   import GlitchHeader from "./comps/GlitchHeader.svelte";
@@ -26,6 +27,7 @@
     throw new Error("VITE_CONVEX_URL environment variable is not set");
   }
   setupConvex(CONVEX_URL);
+  const client = useConvexClient();
 
   // Setup Controller instance to be shared across components
   const controller = new Controller({});
@@ -77,9 +79,11 @@
     activeTab = "shop";
   }
 
-  function handleCacheOutFromWarning() {
+  async function handleCacheOutFromWarning() {
     showMatrixWarning = false;
     cashOutPostLevel(gameState);
+    // Update moonrocks after cash out from warning
+    await updateMoonrocksInConvex();
   }
 
   function handleCashOutRequest(phase: "level" | "marketplace" | "confirmation") {
@@ -87,13 +91,34 @@
     showCashOutConfirmation = true;
   }
 
-  function handleCashOutConfirm() {
+  // Update moonrocks in Convex if controller is connected
+  async function updateMoonrocksInConvex() {
+    if (!controllerAccount) {
+      console.log("No controller account connected, skipping moonrocks update");
+      return;
+    }
+
+    try {
+      const walletAddress = controllerAccount.address;
+      await client.mutation(api.players.updateMoonrocks, {
+        walletAddress,
+        moonrocks: gameState.playerStats.glitchbytes,
+      });
+      console.log("Moonrocks updated in Convex:", gameState.playerStats.glitchbytes);
+    } catch (error) {
+      console.error("Failed to update moonrocks:", error);
+    }
+  }
+
+  async function handleCashOutConfirm() {
     showCashOutConfirmation = false;
     if (cashOutPhase === "level") {
       cashOutMidLevel(gameState);
     } else {
       cashOutPostLevel(gameState);
     }
+    // Update moonrocks after cash out confirmation
+    await updateMoonrocksInConvex();
   }
 
   function handleCashOutCancel() {

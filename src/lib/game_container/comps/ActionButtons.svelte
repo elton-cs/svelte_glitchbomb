@@ -128,14 +128,12 @@
     }, "pullOrb");
   }
 
-  async function handleCashOut() {
+  function handleCashOut() {
     audioManager.playSoundEffect("click", 0.3);
     onCashOutRequest?.(
       gameState.phase as "level" | "marketplace" | "confirmation"
     );
-    
-    // Update moonrocks
-    await updateMoonrocksInConvex();
+    // Note: moonrocks update happens after confirmation in GameContainer
   }
 
   async function handleEnterShop() {
