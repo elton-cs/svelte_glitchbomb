@@ -3,7 +3,6 @@
   import { cubicOut } from "svelte/easing";
   import { saveGlitchbytes, resetGameSession } from "../../game/state";
   import type { GameState } from "../../game/types";
-  import Controller from "@cartridge/controller";
   import { useConvexClient } from "convex-svelte";
   import { api } from "../../../convex/_generated/api";
 
@@ -11,9 +10,11 @@
 
   interface Props {
     gameState: GameState;
+    controller: any; // Controller type from @cartridge/controller
+    controllerAccount?: any;
   }
 
-  let { gameState }: Props = $props();
+  let { gameState, controller, controllerAccount = $bindable() }: Props = $props();
 
   // Track previous value to detect increase/decrease
   let previousGlitchBytes = $state(gameState.playerStats.glitchbytes);
@@ -25,13 +26,13 @@
     easing: cubicOut,
   });
 
-  let controller = new Controller({});
   let connectedUsername = $state<string | undefined>(undefined);
 
   async function connect() {
     try {
       const account = await controller.connect();
       if (account) {
+        controllerAccount = account; // Update parent state
         connectedUsername = await controller.username();
         console.log("Connected to Controller:", connectedUsername);
 

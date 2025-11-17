@@ -12,14 +12,20 @@
   import type { GameState } from "../../game/types.js";
   import { audioManager } from "../../utils/audio.js";
   import SingleActionButton from "./SingleActionButton.svelte";
+  import { useConvexClient } from "convex-svelte";
+  import { api } from "../../../convex/_generated/api";
+
+  const client = useConvexClient();
 
   interface Props {
     gameState: GameState;
     activeTab: "profit" | "probability" | "log" | "shop";
+    controller: any; // Controller type from @cartridge/controller
+    controllerAccount?: any;
     onEnterShop?: () => void;
   }
 
-  let { gameState, activeTab = $bindable(), onEnterShop }: Props = $props();
+  let { gameState, activeTab = $bindable(), controller, controllerAccount, onEnterShop }: Props = $props();
 
   let buttonsCooldown = $state(false);
   let cooldownTimeout: ReturnType<typeof setTimeout> | null = null;
@@ -55,10 +61,26 @@
     }, 300);
   }
 
-  function handleStartGame() {
-    withCooldown(() => {
+  async function handleStartGame() {
+    withCooldown(async () => {
       audioManager.playSoundEffect("nextlevel", 0.5);
       startNewGame(gameState);
+      
+      // Update moonrocks in Convex if controller is connected
+      if (controllerAccount) {
+        try {
+          const walletAddress = controllerAccount.address;
+          await client.mutation(api.players.updateMoonrocks, {
+            walletAddress,
+            moonrocks: gameState.playerStats.glitchbytes,
+          });
+          console.log("Moonrocks updated in Convex:", gameState.playerStats.glitchbytes);
+        } catch (error) {
+          console.error("Failed to update moonrocks:", error);
+        }
+      } else {
+        console.log("No controller account connected, skipping moonrocks update");
+      }
     }, "startGame");
   }
 

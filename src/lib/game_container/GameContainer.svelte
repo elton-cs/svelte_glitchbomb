@@ -7,6 +7,7 @@
   import { addOrbsToBag } from "../game/orbs.js";
   import { audioManager } from "../utils/audio.js";
   import { setupConvex } from "convex-svelte";
+  import Controller from "@cartridge/controller";
   import GlitchHeader from "./comps/GlitchHeader.svelte";
   import PlayerStatsSection from "./comps/PlayerStatsSection.svelte";
   import ActionButtons from "./comps/ActionButtons.svelte";
@@ -23,6 +24,10 @@
     throw new Error("VITE_CONVEX_URL environment variable is not set");
   }
   setupConvex(CONVEX_URL);
+
+  // Setup Controller instance to be shared across components
+  const controller = new Controller({});
+  let controllerAccount = $state<any>(null);
 
   let gameState = $state(createInitialGameState());
 
@@ -181,7 +186,7 @@
   class="flex flex-col p-1 gap-1 h-full w-full justify-between overflow-hidden"
   class:shake={isShaking}
 >
-  <GlitchHeader {gameState} />
+  <GlitchHeader {gameState} {controller} bind:controllerAccount />
   <PlayerStatsSection {gameState} />
   <div class="flex-1 min-h-0 flex flex-col">
     {#if showMatrixWarning}
@@ -203,6 +208,8 @@
   <TabViewSelector bind:activeTab />
   <ActionButtons
     {gameState}
+    {controller}
+    {controllerAccount}
     bind:activeTab
     onEnterShop={handleEnterShopClick}
   />
