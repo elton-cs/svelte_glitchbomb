@@ -66,34 +66,58 @@
       audioManager.playSoundEffect("nextlevel", 0.5);
       startNewGame(gameState);
       
-      // Update moonrocks in Convex if controller is connected
+      // Create new game and update moonrocks in Convex if controller is connected
       if (controllerAccount) {
         try {
           const walletAddress = controllerAccount.address;
+          
+          // Create new game entry
+          await client.mutation(api.games.newGame, {
+            walletAddress,
+          });
+          console.log("New game created in Convex");
+          
+          // Update player moonrocks
           await client.mutation(api.players.updateMoonrocks, {
             walletAddress,
             moonrocks: gameState.playerStats.glitchbytes,
           });
           console.log("Moonrocks updated in Convex:", gameState.playerStats.glitchbytes);
         } catch (error) {
-          console.error("Failed to update moonrocks:", error);
+          console.error("Failed to create game or update moonrocks:", error);
         }
       } else {
-        console.log("No controller account connected, skipping moonrocks update");
+        console.log("No controller account connected, skipping game creation");
       }
     }, "startGame");
   }
 
-  function handleExecute() {
-    withCooldown(() => {
+  async function handleExecute() {
+    withCooldown(async () => {
       audioManager.playSoundEffect("click", 0.3);
       pullOrb(gameState);
+      
+      // Update game state in Convex if controller is connected
+      if (controllerAccount) {
+        try {
+          const walletAddress = controllerAccount.address;
+          await client.mutation(api.games.updateGame, {
+            walletAddress,
+            gameState,
+          });
+          console.log("Game state updated after pulling orb");
+        } catch (error) {
+          console.error("Failed to update game state:", error);
+        }
+      }
     }, "pullOrb");
   }
 
-  function handleCashOut() {
-    withCooldown(() => {
+  async function handleCashOut() {
+    withCooldown(async () => {
       audioManager.playSoundEffect("click", 0.3);
+      let didCashOut = false;
+      
       if (gameState.phase === "level") {
         if (
           confirm(
@@ -101,6 +125,7 @@
           )
         ) {
           cashOutMidLevel(gameState);
+          didCashOut = true;
         }
       } else if (gameState.phase === "marketplace") {
         if (
@@ -109,6 +134,7 @@
           )
         ) {
           cashOutPostLevel(gameState);
+          didCashOut = true;
         }
       } else if (gameState.phase === "confirmation") {
         if (
@@ -117,13 +143,28 @@
           )
         ) {
           cashOutPostLevel(gameState);
+          didCashOut = true;
+        }
+      }
+      
+      // Update game state in Convex if controller is connected and cash out happened
+      if (didCashOut && controllerAccount) {
+        try {
+          const walletAddress = controllerAccount.address;
+          await client.mutation(api.games.updateGame, {
+            walletAddress,
+            gameState,
+          });
+          console.log("Game state updated after cashing out");
+        } catch (error) {
+          console.error("Failed to update game state:", error);
         }
       }
     }, "cashOut");
   }
 
-  function handleEnterShop() {
-    withCooldown(() => {
+  async function handleEnterShop() {
+    withCooldown(async () => {
       audioManager.playSoundEffect("click", 0.3);
       if (onEnterShop) {
         onEnterShop();
@@ -132,15 +173,43 @@
         continueToMarketplace(gameState);
         activeTab = "shop";
       }
+      
+      // Update game state in Convex if controller is connected
+      if (controllerAccount) {
+        try {
+          const walletAddress = controllerAccount.address;
+          await client.mutation(api.games.updateGame, {
+            walletAddress,
+            gameState,
+          });
+          console.log("Game state updated after entering shop");
+        } catch (error) {
+          console.error("Failed to update game state:", error);
+        }
+      }
     }, "enterShop");
   }
 
-  function handleNextLevel() {
-    withCooldown(() => {
+  async function handleNextLevel() {
+    withCooldown(async () => {
       audioManager.playSoundEffect("nextlevel", 0.5);
       proceedToNextLevel(gameState);
       // Switch to profit tab when proceeding to next level
       activeTab = "profit";
+      
+      // Update game state in Convex if controller is connected
+      if (controllerAccount) {
+        try {
+          const walletAddress = controllerAccount.address;
+          await client.mutation(api.games.updateGame, {
+            walletAddress,
+            gameState,
+          });
+          console.log("Game state updated after proceeding to next level");
+        } catch (error) {
+          console.error("Failed to update game state:", error);
+        }
+      }
     }, "nextLevel");
   }
 
