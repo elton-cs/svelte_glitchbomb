@@ -5,5 +5,5 @@ export default defineSchema({
   players: defineTable({
     walletAddress: v.string(),
     moonrocks: v.number(),
-  }),
+  }).index("by_wallet", ["walletAddress"]),
 });

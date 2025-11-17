@@ -4,6 +4,8 @@
   import { saveGlitchbytes, resetGameSession } from "../../game/state";
   import type { GameState } from "../../game/types";
   import Controller from "@cartridge/controller";
+  import { convexClient } from "../../convex";
+  import { api } from "../../../convex/_generated/api";
 
   interface Props {
     gameState: GameState;
@@ -30,6 +32,14 @@
       if (account) {
         connectedUsername = await controller.username();
         console.log("Connected to Controller:", connectedUsername);
+        
+        // Call Convex mutation to signup/get player
+        const walletAddress = account.address;
+        const playerData = await convexClient.mutation(
+          api.players.controllerWalletSignup,
+          { walletAddress }
+        );
+        console.log("Player data retrieved:", playerData);
       }
     } catch (error) {
       console.error("Failed to connect to Controller:", error);
