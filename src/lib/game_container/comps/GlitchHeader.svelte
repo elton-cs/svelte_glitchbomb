@@ -6,9 +6,10 @@
 
   interface Props {
     gameState: GameState;
+    skipToVictory: () => void;
   }
 
-  let { gameState }: Props = $props();
+  let { gameState, skipToVictory }: Props = $props();
 
   // Track previous value to detect increase/decrease
   let previousGlitchBytes = $state(gameState.playerStats.glitchbytes);
@@ -63,7 +64,15 @@
 
 <div class="p-1 rounded-lg border border-white">
   <div class="grid grid-cols-3 items-center gap-1">
-    <div></div>
+    <div class="flex justify-start">
+      <button
+        onclick={() => skipToVictory()}
+        class="p-3 text-sm font-medium text-yellow-400 border border-yellow-400 hover:bg-yellow-400 hover:text-black rounded transition-colors aspect-square flex items-center justify-center min-h-[48px]"
+        title="Skip to victory (for testing)"
+      >
+        SKIP
+      </button>
+    </div>
     <div class="text-center">
       <div
         class="text-2xl font-bold m-0.5 flex items-center justify-center gap-1 {animationColor ===

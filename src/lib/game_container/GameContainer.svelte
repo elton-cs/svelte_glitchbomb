@@ -18,6 +18,10 @@
 
   let gameState = $state(createInitialGameState());
 
+  function skipToVictory() {
+    gameState.phase = "victory";
+  }
+
   // Active tab state for middle panel
   let activeTab = $state<"profit" | "probability" | "log" | "shop">("profit");
 
@@ -173,7 +177,7 @@
   class="flex flex-col p-1 gap-1 h-full w-full justify-between overflow-hidden"
   class:shake={isShaking}
 >
-  <GlitchHeader {gameState} />
+  <GlitchHeader {gameState} {skipToVictory} />
   <PlayerStatsSection {gameState} />
   <div class="flex-1 min-h-0 flex flex-col">
     {#if showMatrixWarning}
