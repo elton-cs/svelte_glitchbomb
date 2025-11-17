@@ -167,9 +167,7 @@
   );
 </script>
 
-<div
-  class="flex gap-1 p-1 border rounded-lg items-stretch action-button-container"
->
+<div class="flex gap-4 p-2 rounded-lg items-stretch action-button-container">
   {#if canStartGame && (currentPhase === "menu" || currentPhase === "gameover")}
     <SingleActionButton
       label="START GAME"

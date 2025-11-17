@@ -192,12 +192,12 @@
       <MarketplaceView {gameState} />
     {/if}
   </div>
+  <TabViewSelector bind:activeTab />
   <ActionButtons
     {gameState}
     bind:activeTab
     onEnterShop={handleEnterShopClick}
   />
-  <TabViewSelector bind:activeTab />
 
   {#if showRedFlash}
     <div class="red-flash-overlay"></div>
