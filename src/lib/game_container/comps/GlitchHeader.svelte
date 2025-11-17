@@ -15,7 +15,12 @@
     skipToVictory: () => void;
   }
 
-  let { gameState, controller, controllerAccount = $bindable(), skipToVictory }: Props = $props();
+  let {
+    gameState,
+    controller,
+    controllerAccount = $bindable(),
+    skipToVictory,
+  }: Props = $props();
 
   // Track previous value to detect increase/decrease
   let previousGlitchBytes = $state(gameState.playerStats.glitchbytes);
@@ -35,17 +40,17 @@
 
   function handleMoonrocksClick() {
     clickCount++;
-    
+
     // Clear existing timeout
     if (clickTimeout) {
       clearTimeout(clickTimeout);
     }
-    
+
     // Reset click count after 2 seconds of inactivity
     clickTimeout = setTimeout(() => {
       clickCount = 0;
     }, 2000);
-    
+
     // Trigger victory on 5 clicks
     if (clickCount >= 5) {
       console.log("🎉 Easter egg activated! Skipping to victory...");
@@ -137,17 +142,23 @@
       </button>
     </div>
     <div class="text-center">
-      <button
-        onclick={handleMoonrocksClick}
-        class="text-2xl font-bold m-0.5 flex items-center justify-center gap-1 cursor-pointer hover:scale-105 transition-transform bg-transparent border-none p-0 {animationColor ===
+      <div
+        class="text-2xl font-bold m-0.5 flex items-center justify-center gap-1 {animationColor ===
         'increase'
           ? 'text-green-400'
           : animationColor === 'decrease'
             ? 'text-red-400'
             : 'text-white'}"
       >
-        {Math.round($animatedGlitchBytes)}<span class="text-2xl">👾</span>
-      </button>
+        {Math.round($animatedGlitchBytes)}<span class="text-2xl">
+          <button
+            onclick={handleMoonrocksClick}
+            class="text-center cursor-pointer"
+          >
+            👾
+          </button>
+        </span>
+      </div>
       <div class="text-white text-[10px]">MOONROCKS</div>
     </div>
     <div class="flex justify-end">
