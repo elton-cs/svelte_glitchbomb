@@ -21,17 +21,33 @@
     easing: cubicOut,
   });
 
-  // Initialize Cartridge Controller
   let controller = new Controller({});
+  let connectedUsername = $state<string | undefined>(undefined);
 
   async function connect() {
     try {
       const account = await controller.connect();
-      console.log("Connecting to Controller...");
+      if (account) {
+        connectedUsername = await controller.username();
+        console.log("Connected to Controller:", connectedUsername);
+      }
     } catch (error) {
       console.error("Failed to connect to Controller:", error);
     }
   }
+
+  function openSettings() {
+    controller.openSettings();
+  }
+
+  // Auto-connect on mount if already connected
+  $effect(() => {
+    (async () => {
+      if (await controller.probe()) {
+        await connect();
+      }
+    })();
+  });
 
   function resetGlitchbytes() {
     if (
@@ -78,10 +94,10 @@
   <div class="grid grid-cols-3 items-center gap-1">
     <div class="flex justify-start">
       <button
-        onclick={connect}
-        class="p-3 text-sm font-medium text-blue-400 border border-blue-400 hover:bg-blue-400 hover:text-black rounded transition-colors flex items-center justify-center w-[90px] h-[48px]"
+        onclick={connectedUsername ? openSettings : connect}
+        class="p-3 text-sm font-medium text-blue-400 border border-blue-400 hover:bg-blue-400 hover:text-black rounded transition-colors flex items-center justify-center min-w-[90px] h-[48px]"
       >
-        CONNECT
+        {connectedUsername || "CONNECT"}
       </button>
     </div>
     <div class="text-center">
