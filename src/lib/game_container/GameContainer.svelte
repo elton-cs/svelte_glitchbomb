@@ -6,6 +6,7 @@
   import { continueToMarketplace, cashOutPostLevel } from "../game/game.js";
   import { addOrbsToBag } from "../game/orbs.js";
   import { audioManager } from "../utils/audio.js";
+  import confetti from "canvas-confetti";
   import GlitchHeader from "./comps/GlitchHeader.svelte";
   import PlayerStatsSection from "./comps/PlayerStatsSection.svelte";
   import ActionButtons from "./comps/ActionButtons.svelte";
@@ -17,6 +18,9 @@
   import MatrixDisarrayWarning from "./comps/MatrixDisarrayWarning.svelte";
 
   let gameState = $state(createInitialGameState());
+
+  // Track previous phase to detect victory state transition
+  let previousPhase = $state(gameState.phase);
 
   function skipToVictory() {
     gameState.phase = "victory";
@@ -102,6 +106,53 @@
       // Log was cleared, reset tracking
       previousLogLength = currentLength;
     }
+  });
+
+  // Watch for victory state and trigger confetti animation
+  $effect(() => {
+    const currentPhase = gameState.phase;
+
+    // Only trigger confetti when transitioning TO victory state
+    if (currentPhase === "victory" && previousPhase !== "victory") {
+      // Trigger confetti burst
+      const duration = 3000;
+      const end = Date.now() + duration;
+
+      const colors = ["#8B5CF6", "#A855F7", "#C084FC", "#9333EA", "#7C3AED"]; // Purple/violet theme
+
+      (function frame() {
+        confetti({
+          particleCount: 3,
+          angle: 60,
+          spread: 55,
+          origin: { x: 0 },
+          colors: colors,
+        });
+        confetti({
+          particleCount: 3,
+          angle: 120,
+          spread: 55,
+          origin: { x: 1 },
+          colors: colors,
+        });
+
+        if (Date.now() < end) {
+          requestAnimationFrame(frame);
+        }
+      })();
+
+      // Also trigger a center burst
+      setTimeout(() => {
+        confetti({
+          particleCount: 100,
+          spread: 70,
+          origin: { y: 0.6 },
+          colors: colors,
+        });
+      }, 250);
+    }
+
+    previousPhase = currentPhase;
   });
 
   // Initialize audio system when component mounts
