@@ -5,7 +5,9 @@
 </script>
 
 <div class="flex h-full w-full">
+  <div class="hidden md:flex flex-col h-full md:w-1/2 lg:w-full"></div>
   <GameContainer />
+  <div class="hidden md:flex flex-col h-full md:w-1/2 lg:w-full"></div>
 </div>
 
 <style>
