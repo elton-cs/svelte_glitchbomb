@@ -126,7 +126,7 @@
   const currentPhase = $derived(displayPhase ?? gameState.phase);
 
   const canStartGame = $derived(
-    (currentPhase === "menu" || currentPhase === "gameover") &&
+    (currentPhase === "menu" || currentPhase === "gameover" || currentPhase === "victory") &&
       canAffordLevel(gameState.playerStats.glitchbytes, 1)
   );
 
@@ -168,13 +168,13 @@
 </script>
 
 <div class="flex gap-4 p-2 rounded-lg items-stretch action-button-container">
-  {#if canStartGame && (currentPhase === "menu" || currentPhase === "gameover")}
+  {#if canStartGame && (currentPhase === "menu" || currentPhase === "gameover" || currentPhase === "victory")}
     <SingleActionButton
       label="START GAME"
       onClick={handleStartGame}
       isEnabled={!buttonsCooldown}
       isGlowing={glowingButtonId === "startGame"}
-      subtitle={currentPhase === "gameover" && canStartGame
+      subtitle={(currentPhase === "gameover" || currentPhase === "victory") && canStartGame
         ? `(-${getLevelEntryCost(1)} 👾)`
         : undefined}
     />
