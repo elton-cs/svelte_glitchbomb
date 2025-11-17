@@ -38,7 +38,7 @@
       }
     }}
   >
-    PROBABILITY
+    ODDS
   </button>
   <button
     {disabled}

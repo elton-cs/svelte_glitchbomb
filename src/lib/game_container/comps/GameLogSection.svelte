@@ -219,10 +219,8 @@
 </script>
 
 <!-- Game Log - Always visible -->
-<div
-  class="p-3 rounded-lg border border-white h-full flex flex-col min-h-0"
->
-  <h2 class="text-sm font-bold mb-3 text-white">COMMAND HISTORY</h2>
+<div class="p-3 rounded-lg border border-white h-full flex flex-col min-h-0">
+  <h2 class="text-md font-bold mb-3 text-white">PULL LOG</h2>
   <div class="flex-1 overflow-y-auto min-h-0">
     <div class="text-sm font-mono space-y-0.5">
       {#if gameState.gameLog.length === 0}

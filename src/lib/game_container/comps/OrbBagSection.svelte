@@ -172,8 +172,8 @@
     : 'opacity-60 pointer-events-none'}"
 >
   <div class="flex justify-between items-center mb-3">
-    <h2 class="text-sm font-bold text-white">
-      GLITCH RIFT ({totalAvailableOrbs}) {gameState.phase === "level" ||
+    <h2 class="text-md font-bold text-white">
+      ORB MATRIX ({totalAvailableOrbs}) {gameState.phase === "level" ||
       gameState.phase === "confirmation"
         ? ""
         : "(INACTIVE)"}

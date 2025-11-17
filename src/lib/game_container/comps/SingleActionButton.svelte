@@ -21,7 +21,7 @@
 <button
   onclick={onClick}
   disabled={!isEnabled}
-  class="flex-1 min-h-[64px] py-4 px-3 rounded text-xs font-medium transition-all border
+  class="flex-1 min-h-[64px] p-4 rounded text-xs font-medium transition-all border
          {isEnabled
     ? 'text-white border-white hover:bg-white hover:text-black'
     : 'text-gray-500 border-gray-500 cursor-not-allowed'}

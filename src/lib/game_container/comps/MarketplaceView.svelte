@@ -240,22 +240,22 @@
     : 'opacity-60'}"
 >
   <div class="flex items-center justify-between mb-1">
-    <h2 class="text-xs font-bold text-white">
-      {gameState.phase === "confirmation" ? "LEVEL COMPLETE!" : "MOD SHOP"}
+    <h2 class="text-md font-bold text-white">
+      {gameState.phase === "confirmation" ? "LEVEL COMPLETE!" : "ORB SHOP"}
       {(gameState.phase === "marketplace" ||
         gameState.phase === "confirmation") &&
       gameState.marketplace.available
         ? ""
         : "(CLOSED)"}
     </h2>
-    <div class="text-xs font-bold text-yellow-400 flex items-center gap-0.5">
+    <div class="text-md font-bold text-yellow-400 flex items-center gap-0.5">
       BALANCE: <span class="text-lg">{gameState.playerStats.chips}</span>
       <ChipIcon size="md" class="text-yellow-400" />
     </div>
   </div>
 
   <!-- Shop Grid - Fixed 2x3 layout -->
-  <div class="grid grid-cols-3 grid-rows-2 gap-1 flex-1">
+  <div class="grid grid-cols-3 grid-rows-2 gap-2 p-2 flex-1">
     {#each shopInventory as item}
       <button
         disabled={!item.available ||
