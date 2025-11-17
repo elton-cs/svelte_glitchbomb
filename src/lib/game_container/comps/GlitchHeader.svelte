@@ -74,7 +74,7 @@
         const walletAddress = account.address;
         const playerData = await client.mutation(
           api.players.controllerWalletSignup,
-          { walletAddress }
+          { walletAddress, username: connectedUsername || "Anonymous" }
         );
         console.log("Player data retrieved:", playerData);
       }

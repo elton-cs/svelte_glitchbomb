@@ -4,6 +4,7 @@ import { v } from "convex/values";
 export default defineSchema({
   players: defineTable({
     walletAddress: v.string(),
+    username: v.string(),
     moonrocks: v.number(),
   }).index("by_wallet", ["walletAddress"]),
   

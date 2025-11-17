@@ -4,9 +4,10 @@ import { v } from "convex/values";
 export const controllerWalletSignup = mutation({
   args: {
     walletAddress: v.string(),
+    username: v.string(),
   },
   handler: async (ctx, args) => {
-    console.log("controllerWalletSignup mutation called with wallet:", args.walletAddress);
+    console.log("controllerWalletSignup mutation called with wallet:", args.walletAddress, "username:", args.username);
 
     // Check if player already exists
     const existingPlayer = await ctx.db
@@ -22,6 +23,7 @@ export const controllerWalletSignup = mutation({
     // Create new player with 1000 moonrocks
     const newPlayer = {
       walletAddress: args.walletAddress,
+      username: args.username,
       moonrocks: 1000,
     };
 
