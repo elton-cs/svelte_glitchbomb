@@ -63,7 +63,13 @@
 
 <div class="p-1 rounded-lg border border-white">
   <div class="grid grid-cols-3 items-center gap-1">
-    <div></div>
+    <div class="flex justify-start">
+      <button
+        class="p-3 text-sm font-medium text-blue-400 border border-blue-400 hover:bg-blue-400 hover:text-black rounded transition-colors flex items-center justify-center w-[90px] h-[48px]"
+      >
+        CONNECT
+      </button>
+    </div>
     <div class="text-center">
       <div
         class="text-2xl font-bold m-0.5 flex items-center justify-center gap-1 {animationColor ===
@@ -80,7 +86,7 @@
     <div class="flex justify-end">
       <button
         onclick={resetGlitchbytes}
-        class="p-3 text-sm font-medium text-red-400 border border-red-400 hover:bg-red-400 hover:text-black rounded transition-colors aspect-square flex items-center justify-center min-h-[48px]"
+        class="p-3 text-sm font-medium text-red-400 border border-red-400 hover:bg-red-400 hover:text-black rounded transition-colors flex items-center justify-center w-[90px] h-[48px]"
       >
         RESET
       </button>
