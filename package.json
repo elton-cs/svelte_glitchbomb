@@ -23,6 +23,8 @@
     "convex": "^1.29.1",
     "convex-svelte": "^0.0.12",
     "starknet": "^8.9.0",
-    "tailwindcss": "^4.1.11"
+    "tailwindcss": "^4.1.11",
+    "vite-plugin-top-level-await": "^1.6.0",
+    "vite-plugin-wasm": "^3.5.0"
   }
 }

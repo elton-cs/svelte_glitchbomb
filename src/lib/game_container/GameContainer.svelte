@@ -6,6 +6,7 @@
   import { continueToMarketplace, cashOutPostLevel } from "../game/game.js";
   import { addOrbsToBag } from "../game/orbs.js";
   import { audioManager } from "../utils/audio.js";
+  import { setupConvex } from "convex-svelte";
   import GlitchHeader from "./comps/GlitchHeader.svelte";
   import PlayerStatsSection from "./comps/PlayerStatsSection.svelte";
   import ActionButtons from "./comps/ActionButtons.svelte";
@@ -15,6 +16,13 @@
   import MarketplaceView from "./comps/MarketplaceView.svelte";
   import TabViewSelector from "./comps/TabViewSelector.svelte";
   import MatrixDisarrayWarning from "./comps/MatrixDisarrayWarning.svelte";
+
+  // Setup Convex client
+  const CONVEX_URL = import.meta.env.VITE_CONVEX_URL;
+  if (!CONVEX_URL) {
+    throw new Error("VITE_CONVEX_URL environment variable is not set");
+  }
+  setupConvex(CONVEX_URL);
 
   let gameState = $state(createInitialGameState());
 
