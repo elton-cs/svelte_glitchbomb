@@ -64,14 +64,8 @@
   });
 
   function resetGlitchbytes() {
-    if (
-      confirm(
-        "Reset moonrocks to 1000 and restart the game? This will clear all progress."
-      )
-    ) {
-      saveGlitchbytes(1000);
-      resetGameSession(gameState, 1000);
-    }
+    saveGlitchbytes(1000);
+    resetGameSession(gameState, 1000);
   }
 
   // Save glitchbytes whenever they change
