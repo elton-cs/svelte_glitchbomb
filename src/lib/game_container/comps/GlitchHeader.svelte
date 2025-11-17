@@ -66,8 +66,9 @@
   <div class="grid grid-cols-3 items-center gap-1">
     <div class="flex justify-start">
       <button
+        disabled
         onclick={() => skipToVictory()}
-        class="p-3 text-sm font-medium text-yellow-400 border border-yellow-400 hover:bg-yellow-400 hover:text-black rounded transition-colors aspect-square flex items-center justify-center min-h-[48px]"
+        class="p-3 text-sm font-medium text-black border border-black rounded aspect-square flex items-center justify-center min-h-[48px] opacity-50 cursor-not-allowed"
         title="Skip to victory (for testing)"
       >
         SKIP
