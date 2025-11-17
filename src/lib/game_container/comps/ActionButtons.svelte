@@ -168,7 +168,9 @@
   const currentPhase = $derived(displayPhase ?? gameState.phase);
 
   const canStartGame = $derived(
-    (currentPhase === "menu" || currentPhase === "gameover") &&
+    (currentPhase === "menu" ||
+      currentPhase === "gameover" ||
+      currentPhase === "victory") &&
       canAffordLevel(gameState.playerStats.glitchbytes, 1)
   );
 
