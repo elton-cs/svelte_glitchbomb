@@ -21,6 +21,34 @@
     easing: cubicOut,
   });
 
+  // Easter egg: click moonrocks 5 times to skip to victory
+  let clickCount = $state(0);
+  let clickTimeout: ReturnType<typeof setTimeout> | null = null;
+
+  function handleMoonrocksClick() {
+    clickCount++;
+
+    // Clear existing timeout
+    if (clickTimeout) {
+      clearTimeout(clickTimeout);
+    }
+
+    // Reset click count after 2 seconds of inactivity
+    clickTimeout = setTimeout(() => {
+      clickCount = 0;
+    }, 2000);
+
+    // Trigger victory on 5 clicks
+    if (clickCount >= 5) {
+      console.log("🎉 Easter egg activated! Skipping to victory...");
+      skipToVictory();
+      clickCount = 0;
+      if (clickTimeout) {
+        clearTimeout(clickTimeout);
+      }
+    }
+  }
+
   function resetGlitchbytes() {
     if (
       confirm(
@@ -83,7 +111,14 @@
             ? 'text-red-400'
             : 'text-white'}"
       >
-        {Math.round($animatedGlitchBytes)}<span class="text-2xl">👾</span>
+        {Math.round($animatedGlitchBytes)}<span class="text-2xl">
+          <button
+            onclick={handleMoonrocksClick}
+            class="text-center cursor-pointer"
+          >
+            👾
+          </button>
+        </span>
       </div>
       <div class="text-white text-[10px]">MOONROCKS</div>
     </div>
