@@ -3,7 +3,11 @@
     createInitialGameState,
     addStructuredLogEntry,
   } from "../game/state.js";
-  import { continueToMarketplace, cashOutPostLevel, cashOutMidLevel } from "../game/game.js";
+  import {
+    continueToMarketplace,
+    cashOutPostLevel,
+    cashOutMidLevel,
+  } from "../game/game.js";
   import { addOrbsToBag } from "../game/orbs.js";
   import { audioManager } from "../utils/audio.js";
   import { setupConvex, useConvexClient } from "convex-svelte";
@@ -20,6 +24,7 @@
   import TabViewSelector from "./comps/TabViewSelector.svelte";
   import MatrixDisarrayWarning from "./comps/MatrixDisarrayWarning.svelte";
   import CashOutConfirmation from "./comps/CashOutConfirmation.svelte";
+  import ConnectControllerPrompt from "./comps/ConnectControllerPrompt.svelte";
 
   // Setup Convex client
   const CONVEX_URL = import.meta.env.VITE_CONVEX_URL;
@@ -86,7 +91,9 @@
     await updateMoonrocksInConvex();
   }
 
-  function handleCashOutRequest(phase: "level" | "marketplace" | "confirmation") {
+  function handleCashOutRequest(
+    phase: "level" | "marketplace" | "confirmation"
+  ) {
     cashOutPhase = phase;
     showCashOutConfirmation = true;
   }
@@ -104,7 +111,10 @@
         walletAddress,
         moonrocks: gameState.playerStats.glitchbytes,
       });
-      console.log("Moonrocks updated in Convex:", gameState.playerStats.glitchbytes);
+      console.log(
+        "Moonrocks updated in Convex:",
+        gameState.playerStats.glitchbytes
+      );
     } catch (error) {
       console.error("Failed to update moonrocks:", error);
     }
@@ -293,7 +303,12 @@
   class="flex flex-col p-1 gap-1 h-full w-full justify-between overflow-hidden"
   class:shake={isShaking}
 >
-  <GlitchHeader {gameState} {controller} {skipToVictory} bind:controllerAccount />
+  <GlitchHeader
+    {gameState}
+    {controller}
+    {skipToVictory}
+    bind:controllerAccount
+  />
   <PlayerStatsSection {gameState} />
   <div class="flex-1 min-h-0 flex flex-col">
     {#if showMatrixWarning}
@@ -320,15 +335,19 @@
     {/if}
   </div>
   <TabViewSelector bind:activeTab />
-  <ActionButtons
-    {gameState}
-    {controller}
-    {controllerAccount}
-    bind:activeTab
-    onEnterShop={handleEnterShopClick}
-    onCashOutRequest={handleCashOutRequest}
-    showingConfirmation={showCashOutConfirmation || showMatrixWarning}
-  />
+  {#if controllerAccount}
+    <ActionButtons
+      {gameState}
+      {controller}
+      {controllerAccount}
+      bind:activeTab
+      onEnterShop={handleEnterShopClick}
+      onCashOutRequest={handleCashOutRequest}
+      showingConfirmation={showCashOutConfirmation || showMatrixWarning}
+    />
+  {:else}
+    <ConnectControllerPrompt />
+  {/if}
 
   {#if showRedFlash}
     <div class="red-flash-overlay"></div>

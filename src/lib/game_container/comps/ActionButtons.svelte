@@ -65,7 +65,10 @@
         walletAddress,
         moonrocks: gameState.playerStats.glitchbytes,
       });
-      console.log("Moonrocks updated in Convex:", gameState.playerStats.glitchbytes);
+      console.log(
+        "Moonrocks updated in Convex:",
+        gameState.playerStats.glitchbytes
+      );
     } catch (error) {
       console.error("Failed to update moonrocks:", error);
     }
@@ -97,12 +100,12 @@
     withCooldown(async () => {
       audioManager.playSoundEffect("nextlevel", 0.5);
       startNewGame(gameState);
-      
+
       // Create new game and update moonrocks in Convex if controller is connected
       if (controllerAccount) {
         try {
           const walletAddress = controllerAccount.address;
-          
+
           // Create new game entry
           await client.mutation(api.games.newGame, {
             walletAddress,
@@ -112,7 +115,7 @@
           console.error("Failed to create game:", error);
         }
       }
-      
+
       // Update moonrocks
       await updateMoonrocksInConvex();
     }, "startGame");
@@ -122,7 +125,7 @@
     withCooldown(async () => {
       audioManager.playSoundEffect("click", 0.3);
       pullOrb(gameState);
-      
+
       // Update moonrocks
       await updateMoonrocksInConvex();
     }, "pullOrb");
@@ -146,7 +149,7 @@
         continueToMarketplace(gameState);
         activeTab = "shop";
       }
-      
+
       // Update moonrocks
       await updateMoonrocksInConvex();
     }, "enterShop");
@@ -158,7 +161,7 @@
       proceedToNextLevel(gameState);
       // Switch to profit tab when proceeding to next level
       activeTab = "profit";
-      
+
       // Update moonrocks
       await updateMoonrocksInConvex();
     }, "nextLevel");
@@ -284,9 +287,3 @@
     />
   {/if}
 </div>
-
-<style>
-  :global(.action-button-container button) {
-    min-height: 128px !important;
-  }
-</style>
