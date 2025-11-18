@@ -1,4 +1,4 @@
-import { resetLevelStats } from './state.js';
+import { resetLevelStats, createInitialGameState } from './state.js';
 import type { GameState } from './types.js';
 import { pullRandomOrb, resetConsumedOrbs, addOrbsToBag, calculatePointsPerAnyOrbPoints, createInitialBag } from './orbs.js';
 import { audioManager } from '../utils/audio.js';
@@ -37,6 +37,12 @@ function applyPointsWithMultiplier(gameState: GameState, basePoints: number, act
 
 export function startNewGame(gameState: GameState): boolean {
   try {
+    const currentGlitchbytes = gameState.playerStats.glitchbytes;
+    
+    // Reset entire game state to fresh state (preserving glitchbytes)
+    const newState = createInitialGameState(currentGlitchbytes);
+    Object.assign(gameState, newState);
+    
     // Clear game log for new session
     clearGameLog(gameState);
     
@@ -45,9 +51,6 @@ export function startNewGame(gameState: GameState): boolean {
     
     // Add initial point history entry
     addPointHistoryEntry(gameState, 0, 'Game started', getCumulativeLevelCost(1));
-    
-    // Reset shop deck to initial prices (new game session)
-    gameState.shopDeck = initializeShopDeck();
     
     const success = enterLevel(gameState, 1);
     if (success) {
@@ -426,10 +429,7 @@ export function completeLevel(gameState: GameState): void {
 
 export function cashOutMidLevel(gameState: GameState): number {
   const cashOut = gameState.playerStats.points;
-  
-  gameState.playerStats.glitchbytes += cashOut;
-  gameState.phase = 'menu';
-  gameState.gameStarted = false;
+  const newGlitchbytes = gameState.playerStats.glitchbytes + cashOut;
   
   addStructuredLogEntry(gameState, {
     type: 'game_event',
@@ -442,24 +442,19 @@ export function cashOutMidLevel(gameState: GameState): number {
     }
   });
   
-  // Reset orb bag to initial state (lose all purchased orbs)
-  gameState.orbBag = createInitialBag();
+  // Save the updated glitchbytes to localStorage before resetting
+  saveGlitchbytes(newGlitchbytes);
   
-  // Reset shop deck to initial prices (new game session)
-  gameState.shopDeck = initializeShopDeck();
-  
-  // Reset commitment flag and matrix disarray
-  gameState.committedToNextLevel = false;
-  gameState.matrixDisarrayActive = false;
+  // Reset entire game state to fresh state (with updated glitchbytes)
+  const newState = createInitialGameState(newGlitchbytes);
+  Object.assign(gameState, newState);
   
   return cashOut;
 }
 
 export function cashOutPostLevel(gameState: GameState): number {
   const points = gameState.playerStats.points;
-  gameState.playerStats.glitchbytes += points;
-  gameState.phase = 'menu';
-  gameState.gameStarted = false;
+  const newGlitchbytes = gameState.playerStats.glitchbytes + points;
   
   addStructuredLogEntry(gameState, {
     type: 'points_conversion',
@@ -471,15 +466,12 @@ export function cashOutPostLevel(gameState: GameState): number {
     }
   });
   
-  // Reset orb bag to initial state (lose all purchased orbs)
-  gameState.orbBag = createInitialBag();
+  // Save the updated glitchbytes to localStorage before resetting
+  saveGlitchbytes(newGlitchbytes);
   
-  // Reset shop deck to initial prices (new game session)
-  gameState.shopDeck = initializeShopDeck();
-  
-  // Reset commitment flag and matrix disarray
-  gameState.committedToNextLevel = false;
-  gameState.matrixDisarrayActive = false;
+  // Reset entire game state to fresh state (with updated glitchbytes)
+  const newState = createInitialGameState(newGlitchbytes);
+  Object.assign(gameState, newState);
   
   return points;
 }
@@ -599,19 +591,18 @@ export function proceedToNextLevel(gameState: GameState): boolean {
 }
 
 export function restartGame(gameState: GameState): boolean {
-  // Reset orb bag to initial state (same as going to main menu then starting)
-  gameState.orbBag = createInitialBag();
+  const currentGlitchbytes = gameState.playerStats.glitchbytes;
   
-  // Reset other game state
-  gameState.gameStarted = false;
-  gameState.levelCompleted = false;
-  gameState.marketplace.available = false;
-  gameState.committedToNextLevel = false;
+  // Reset entire game state to fresh state (preserving glitchbytes)
+  const newState = createInitialGameState(currentGlitchbytes);
+  Object.assign(gameState, newState);
   
   return startNewGame(gameState);
 }
 
 export function returnToMenu(gameState: GameState): void {
+  const currentGlitchbytes = gameState.playerStats.glitchbytes;
+  
   addStructuredLogEntry(gameState, {
     type: 'game_event',
     data: {
@@ -619,20 +610,9 @@ export function returnToMenu(gameState: GameState): void {
     }
   });
   
-  gameState.phase = 'menu';
-  gameState.gameStarted = false;
-  gameState.levelCompleted = false;
-  gameState.marketplace.available = false;
-  
-  // Reset orb bag to initial state (lose all purchased orbs)
-  gameState.orbBag = createInitialBag();
-  
-  // Reset shop deck to initial prices (new game session)
-  gameState.shopDeck = initializeShopDeck();
-  
-  // Reset commitment flag and matrix disarray
-  gameState.committedToNextLevel = false;
-  gameState.matrixDisarrayActive = false;
+  // Reset entire game state to fresh state (preserving glitchbytes)
+  const newState = createInitialGameState(currentGlitchbytes);
+  Object.assign(gameState, newState);
 }
 
 export function skipLevel(gameState: GameState): boolean {
