@@ -84,11 +84,9 @@
     activeTab = "shop";
   }
 
-  async function handleCacheOutFromWarning() {
+  function handleCacheOutFromWarning() {
     showMatrixWarning = false;
     cashOutPostLevel(gameState);
-    // Update moonrocks after cash out from warning
-    await updateMoonrocksInConvex();
   }
 
   function handleCashOutRequest(
@@ -96,28 +94,6 @@
   ) {
     cashOutPhase = phase;
     showCashOutConfirmation = true;
-  }
-
-  // Update moonrocks in Convex if controller is connected
-  async function updateMoonrocksInConvex() {
-    if (!controllerAccount) {
-      console.log("No controller account connected, skipping moonrocks update");
-      return;
-    }
-
-    try {
-      const walletAddress = controllerAccount.address;
-      await client.mutation(api.players.updateMoonrocks, {
-        walletAddress,
-        moonrocks: gameState.playerStats.glitchbytes,
-      });
-      console.log(
-        "Moonrocks updated in Convex:",
-        gameState.playerStats.glitchbytes
-      );
-    } catch (error) {
-      console.error("Failed to update moonrocks:", error);
-    }
   }
 
   // Sync game state to Convex whenever it changes
@@ -145,15 +121,13 @@
     })();
   });
 
-  async function handleCashOutConfirm() {
+  function handleCashOutConfirm() {
     showCashOutConfirmation = false;
     if (cashOutPhase === "level") {
       cashOutMidLevel(gameState);
     } else {
       cashOutPostLevel(gameState);
     }
-    // Update moonrocks after cash out confirmation
-    await updateMoonrocksInConvex();
   }
 
   function handleCashOutCancel() {

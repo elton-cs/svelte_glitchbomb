@@ -52,28 +52,6 @@
     }
   });
 
-  // Update moonrocks in Convex if controller is connected
-  async function updateMoonrocksInConvex() {
-    if (!controllerAccount) {
-      console.log("No controller account connected, skipping moonrocks update");
-      return;
-    }
-
-    try {
-      const walletAddress = controllerAccount.address;
-      await client.mutation(api.players.updateMoonrocks, {
-        walletAddress,
-        moonrocks: gameState.playerStats.glitchbytes,
-      });
-      console.log(
-        "Moonrocks updated in Convex:",
-        gameState.playerStats.glitchbytes
-      );
-    } catch (error) {
-      console.error("Failed to update moonrocks:", error);
-    }
-  }
-
   function withCooldown(action: () => void, buttonId: string) {
     if (buttonsCooldown) return;
 
@@ -101,7 +79,7 @@
       audioManager.playSoundEffect("nextlevel", 0.5);
       startNewGame(gameState);
 
-      // Create new game and update moonrocks in Convex if controller is connected
+      // Create new game in Convex if controller is connected
       if (controllerAccount) {
         try {
           const walletAddress = controllerAccount.address;
@@ -115,19 +93,13 @@
           console.error("Failed to create game:", error);
         }
       }
-
-      // Update moonrocks
-      await updateMoonrocksInConvex();
     }, "startGame");
   }
 
-  async function handleExecute() {
-    withCooldown(async () => {
+  function handleExecute() {
+    withCooldown(() => {
       audioManager.playSoundEffect("click", 0.3);
       pullOrb(gameState);
-
-      // Update moonrocks
-      await updateMoonrocksInConvex();
     }, "pullOrb");
   }
 
@@ -136,11 +108,10 @@
     onCashOutRequest?.(
       gameState.phase as "level" | "marketplace" | "confirmation"
     );
-    // Note: moonrocks update happens after confirmation in GameContainer
   }
 
-  async function handleEnterShop() {
-    withCooldown(async () => {
+  function handleEnterShop() {
+    withCooldown(() => {
       audioManager.playSoundEffect("click", 0.3);
       if (onEnterShop) {
         onEnterShop();
@@ -149,21 +120,15 @@
         continueToMarketplace(gameState);
         activeTab = "shop";
       }
-
-      // Update moonrocks
-      await updateMoonrocksInConvex();
     }, "enterShop");
   }
 
-  async function handleNextLevel() {
-    withCooldown(async () => {
+  function handleNextLevel() {
+    withCooldown(() => {
       audioManager.playSoundEffect("nextlevel", 0.5);
       proceedToNextLevel(gameState);
       // Switch to profit tab when proceeding to next level
       activeTab = "profit";
-
-      // Update moonrocks
-      await updateMoonrocksInConvex();
     }, "nextLevel");
   }
 

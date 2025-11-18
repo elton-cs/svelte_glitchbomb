@@ -191,6 +191,14 @@ export const updateGame = mutation({
     // Update the game state
     await ctx.db.patch(latestGame._id, { gameState: args.gameState });
 
+    // Extract glitchbytes from gameState and update player's moonrocks
+    if (args.gameState?.playerStats?.glitchbytes !== undefined) {
+      await ctx.db.patch(player._id, { 
+        moonrocks: args.gameState.playerStats.glitchbytes 
+      });
+      console.log("Moonrocks updated to:", args.gameState.playerStats.glitchbytes);
+    }
+
     const updatedGame = await ctx.db.get(latestGame._id);
     console.log("Game state updated for gameId:", latestGame.gameId);
 
