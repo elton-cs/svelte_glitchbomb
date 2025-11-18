@@ -120,6 +120,31 @@
     }
   }
 
+  // Sync game state to Convex whenever it changes
+  $effect(() => {
+    // Watch the entire gameState object for changes
+    const stateSnapshot = gameState;
+    
+    // Only sync if controller account is connected
+    if (!controllerAccount) {
+      return;
+    }
+    
+    // Sync immediately on every state change
+    (async () => {
+      try {
+        const walletAddress = controllerAccount.address;
+        await client.mutation(api.games.updateGame, {
+          walletAddress,
+          gameState: stateSnapshot,
+        });
+        console.log("Game state synced to Convex");
+      } catch (error) {
+        console.error("Failed to sync game state:", error);
+      }
+    })();
+  });
+
   async function handleCashOutConfirm() {
     showCashOutConfirmation = false;
     if (cashOutPhase === "level") {
