@@ -88,6 +88,8 @@
     previousGlitchBytes = currentValue;
     animatedGlitchBytes.set(currentValue);
   });
+
+  const canReset = $derived(gameState.playerStats.glitchbytes < 900);
 </script>
 
 <div class="p-1 rounded-lg border border-white">
@@ -124,8 +126,11 @@
     </div>
     <div class="flex justify-end">
       <button
+        disabled={!canReset}
         onclick={resetGlitchbytes}
-        class="p-3 text-sm font-medium text-red-400 border border-red-400 hover:bg-red-400 hover:text-black rounded transition-colors aspect-square flex items-center justify-center min-h-[48px]"
+        class="p-3 text-sm font-medium rounded transition-colors aspect-square flex items-center justify-center min-h-[48px] {canReset
+          ? 'text-red-400 border border-red-400 hover:bg-red-400 hover:text-black'
+          : 'text-black border border-black opacity-50 cursor-not-allowed'}"
       >
         RESET
       </button>
