@@ -1,7 +1,5 @@
 <div class="flex gap-4 rounded-lg items-center justify-center p-8 border">
-  <div class="text-3xl font-bold mb-2 animate-pulse">
-    CONNECT CONTROLLER TO PLAY
-  </div>
+  <div class="text-xl font-bold mb-2 animate-pulse">CONNECT CONTROLLER</div>
 </div>
 
 <style>
